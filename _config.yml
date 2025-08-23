@@ -21,7 +21,7 @@ title                    : "닷커넥터의 지식과 경험의 발자국"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "김진관(닷커넥터)"
-description              : "An amazing website."
+description              : "닷커넥터의 지식과 경험의 발자국"
 url                      : "https://tigerjk9.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -114,7 +114,7 @@ analytics:
 # Site Author
 author:
   name             : "김진관(닷커넥터)"
-  avatar           : "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/bio-photo.jpg"
   bio              : "배움, 나눔, 성장을 추구하는 연결주의자"
   location         : "대한민국 대전광역시"
   email            : "faithfuljk@naver.com"
