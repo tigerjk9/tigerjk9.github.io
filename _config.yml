@@ -117,11 +117,11 @@ author:
   avatar           : "/assets/bio-photo.jpg"
   bio              : "배움, 나눔, 성장을 추구하는 연결주의자"
   location         : #"대한민국 대전광역시"
-  email            : #"faithfuljk@naver.com"
+  email            : "faithfuljk@naver.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: "faithfuljk@naver.com"
+      # url: "faithfuljk@naver.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       url: "https://linktr.ee/Dot_Connector"
