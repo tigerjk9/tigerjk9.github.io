@@ -116,15 +116,15 @@ author:
   name             : "김진관(닷커넥터)"
   avatar           : "/assets/bio-photo.jpg"
   bio              : "배움, 나눔, 성장을 추구하는 연결주의자"
-  location         : "대한민국 대전광역시"
-  email            : "faithfuljk@naver.com"
+  location         : #"대한민국 대전광역시"
+  email            : #"faithfuljk@naver.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:your.name@email.com"
+      url: "faithfuljk@naver.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
+      url: "https://linktr.ee/Dot_Connector"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url: "https://twitter.com/"
@@ -133,10 +133,10 @@ author:
       url: "https://www.facebook.com/faithfuljk/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/"
+      url: "https://github.com/tigerjk9/"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+      url: "https://www.instagram.com/jinkwan_soul_groove/#"
 
 # Site Footer
 footer:
