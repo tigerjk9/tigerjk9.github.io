@@ -137,7 +137,11 @@ author:
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       url: "https://www.instagram.com/jinkwan_soul_groove/#"
-
+sidebar:
+  - title: "Categories"
+    html: sidebar/categories.html
+  - title: "Tag Cloud"
+    html: sidebar/tag_cloud.html
 # Site Footer
 footer:
   links:
