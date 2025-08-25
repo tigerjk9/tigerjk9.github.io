@@ -1,0 +1,15 @@
+<div class="tag-cloud">
+  {% assign tags = site.tags | sort %}
+  {% for tag in tags %}
+    <span style="font-size: {{ tag[1].size | times: 100 | divided_by: site.tags.size | plus: 80  }}%">
+      <a href="{{ site.baseurl }}/tags/#{{ tag[0] | slugify }}">
+        {{ tag[0] }}
+      </a>
+    </span>
+  {% endfor %}
+</div>
+<style>
+  .tag-cloud { text-align: justify; padding: 5px; }
+  .tag-cloud a { text-decoration: none; border: none; padding: 0 3px; }
+  .tag-cloud span { line-height: 2.2; }
+</style>
