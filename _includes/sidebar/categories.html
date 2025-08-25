@@ -1,0 +1,12 @@
+<div class="nav__list">
+  <ul>
+    {% for category in site.categories %}
+      <li>
+        <a href="{{ site.baseurl }}/categories/#{{ category[0] | slugify }}" class="nav__item">
+          {{ category[0] }}
+          <span class="nav__sub-title">({{ category[1].size }})</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
