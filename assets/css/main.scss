@@ -7,3 +7,23 @@ search: false
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+/* --- Tag Cloud & Sidebar Fix --- */
+
+/* 1. Tag Cloud 스타일 */
+.tag-cloud {
+  text-align: justify;
+  padding: 5px;
+}
+.tag-cloud a {
+  text-decoration: none !important; /* 링크 밑줄 강제 제거 */
+  border: none !important; /* 테두리 강제 제거 */
+  padding: 0 3px;
+}
+.tag-cloud span {
+  line-height: 2.2;
+}
+
+/* 2. 사이드바 스크롤바 제어 */
+.sidebar.sticky {
+  overflow-y: hidden; /* 세로 스크롤바 항상 숨기기 */
+}
