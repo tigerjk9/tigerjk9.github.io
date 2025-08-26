@@ -23,7 +23,9 @@ search: false
   line-height: 2.2;
 }
 
-/* 2. 사이드바 스크롤바 제어 */
+/* --- 사이드바 고정 기능 해제 및 잘림 방지 --- */
 .sidebar.sticky {
-  overflow-y: hidden; /* 세로 스크롤바 항상 숨기기 */
+  position: static; /* 화면에 붙어있는 'sticky' 기능을 해제하고 일반 블록처럼 만듭니다. */
+  overflow-y: visible; /* 내용이 넘칠 경우 잘리지 않고 보이도록 합니다. */
+  max-height: none; /* 최대 높이 제한을 없앱니다. */
 }
