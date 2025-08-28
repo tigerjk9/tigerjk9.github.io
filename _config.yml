@@ -10,8 +10,8 @@
 # Review documentation to determine if you should use `theme` or `remote_theme`
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
-# theme                  : "minimal-mistakes-jekyll"
-# remote_theme           : "mmistakes/minimal-mistakes"
+# theme                   : "minimal-mistakes-jekyll"
+# remote_theme            : "mmistakes/minimal-mistakes"
 minimal_mistakes_skin    : "dark" # "default" , "air", "aqua", "contrast", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
@@ -113,11 +113,11 @@ analytics:
 
 # Site Author
 author:
-  name             : "김진관(닷커넥터)"
-  avatar           : "/assets/bio-photo.jpg"
-  bio              : "배움, 나눔, 성장을 추구하는 연결주의자"
-  location         : #"대한민국 대전광역시"
-  email            : "faithfuljk@naver.com"
+  name                   : "김진관(닷커넥터)"
+  avatar                 : "/assets/bio-photo.jpg"
+  bio                    : "배움, 나눔, 성장을 추구하는 연결주의자"
+  location               : #"대한민국 대전광역시"
+  email                  : "faithfuljk@naver.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
@@ -215,6 +215,7 @@ sass:
 # Outputting
 permalink: /:categories/:title/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+future: true
 
 
 # Pagination with jekyll-paginate
