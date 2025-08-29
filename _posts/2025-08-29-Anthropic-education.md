@@ -32,7 +32,7 @@ AI는 단순히 정보를 찾아주는 것을 넘어, 교육자와 함께 새로
 보고서에 따르면, 교육자들은 재무 관리나 기록 보관 같은 단순 행정 업무는 **'자동화(Automation)'**하는 반면, 수업 설계나 학생 상담처럼 창의성과 인간적인 교감이 필요한 영역에서는 AI를 **'협업(Augmentation)'** 도구로 사용합니다. 모든 것을 AI에 맡기기보다는, 어떤 업무를 위임하고 어떤 부분에 더 집중할지 전략적으로 판단하는 것이 중요합니다.
 
 ![Augmentation vs. Automation for Educator Tasks](/assets/augmentation-vs-automation.jpg)
-*<p align="center">교육자 업무에 대한 AI 활용 방식: 협업(Augmentation) vs 자동화(Automation)</p>*
+*교육자 업무에 대한 AI 활용 방식: 협업(Augmentation) vs 자동화(Automation)*
 
 위 차트는 교육자들이 AI를 활용하는 방식에 대한 매우 구체적인 인사이트를 제공합니다.
 
