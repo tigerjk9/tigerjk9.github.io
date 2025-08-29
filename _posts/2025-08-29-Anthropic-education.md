@@ -1,8 +1,8 @@
 ---
 title: "AI 시대, 교육자를 위한 새로운 가능성: Anthropic 보고서 인사이트"
 date: 2025-08-29 13:00:00 +0900
-categories: [AI, 교육]
-tags: [Anthropic, 교육혁신, AI활용]
+categories: [AI]
+tags: [Anthropic, 교육혁신]
 ---
 
 ## AI 시대, 교육자를 위한 새로운 가능성: Anthropic 보고서 인사이트
