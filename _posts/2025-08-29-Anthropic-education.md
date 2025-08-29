@@ -8,7 +8,7 @@ tags: [Anthropic, 교육혁신, AI활용]
 ## AI 시대, 교육자를 위한 새로운 가능성: Anthropic 보고서 인사이트
 
 Anthropic의 교육 보고서는 인공지능(AI)이 더 이상 먼 미래의 이야기가 아니라, 교육 현장을 혁신할 수 있는 강력한 도구임을 보여줍니다. AI를 막연하게 느끼셨던 교육자분들을 위해, 보고서의 핵심 내용을 바탕으로 교육 현장에 바로 적용할 수 있는 5가지 인사이트를 정리했습니다.
-https://www.anthropic.com/news/anthropic-education-report-how-educators-use-claude
+- [Anthropic 보고서 바로가기](https://www.anthropic.com/news/anthropic-education-report-how-educators-use-claude)
 
 ### 1. AI는 수업 준비와 행정 업무를 돕는 '만능 조수'입니다.
 교육자들은 AI를 활용해 강의 계획안, 수업 자료, 과제, 이메일 초안 작성 등 반복적이고 시간이 많이 소요되는 업무를 효율적으로 처리하고 있습니다. 이를 통해 확보된 시간은 학생들과의 개별적인 상호작용, 상담, 그리고 더 깊이 있는 수업 연구에 투자될 수 있습니다.
