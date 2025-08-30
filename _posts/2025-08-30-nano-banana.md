@@ -263,7 +263,7 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 ## 📚 출처, 참고 자료 및 추가 학습
 
 ### 🔗 출처
-- [개발자를 위한 Google]([https://ai.google.dev/gemini-api/docs/image-generation](https://developers.googleblog.com/en/how-to-prompt-gemini-2-5-flash-image-generation-for-the-best-results/)
+- [개발자를 위한 Google](https://developers.googleblog.com/en/how-to-prompt-gemini-2-5-flash-image-generation-for-the-best-results/)
 
 ### 🔗 공식 리소스 및 이미지 프롬프트 참고자료
 - [Google AI Studio](https://aistudio.google.com/prompts/new_chat?model=gemini-2.5-flash-image-preview)
@@ -283,6 +283,7 @@ Gemini 2.5 Flash Image(구글 나노 바나나)는 단순한 이미지 생성기
 
 
 **기억하세요**: 완벽한 프롬프트는 없습니다. 지속적인 실험과 개선을 통해 원하는 결과에 점점 더 가까워질 수 있습니다.
+
 
 
 
