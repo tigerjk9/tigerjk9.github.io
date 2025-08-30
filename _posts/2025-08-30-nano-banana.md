@@ -23,7 +23,7 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 
 > **핵심 원칙**: 키워드 나열이 아닌, 서술적 묘사가 핵심입니다.
 
-❌ **잘못된 예**: `cat, hat, wizard, cute, sitting`
+❌ **잘못된 예**: `cat, hat, wizard, cute, sitting`<br>
 ✅ **올바른 예**: `A fluffy orange tabby cat wearing a tiny pointed wizard hat, sitting regally on an ancient leather-bound spellbook with soft candlelight creating warm shadows`
 
 ---
@@ -286,3 +286,4 @@ Gemini 2.5 Flash Image(구글 나노 바나나)는 단순한 이미지 생성기
 
 
 **기억하세요**: 완벽한 프롬프트는 없습니다. 지속적인 실험과 개선을 통해 원하는 결과에 점점 더 가까워질 수 있습니다.
+
