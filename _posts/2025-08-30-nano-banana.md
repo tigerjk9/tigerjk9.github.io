@@ -26,7 +26,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 ❌ **잘못된 예**: `cat, hat, wizard, cute, sitting`<br>
 ✅ **올바른 예**: `A fluffy orange tabby cat wearing a tiny pointed wizard hat, sitting regally on an ancient leather-bound spellbook with soft candlelight creating warm shadows`
 
----
 
 ## 📸 1. 사실적인 사진 생성
 
@@ -57,7 +56,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 - `85mm 인물 렌즈`: 자연스러운 인물 사진
 - `더치 앵글 (Dutch angle)`: 역동적이고 불안정한 구도
 
----
 
 ## 🎨 2. 스타일화된 그래픽 및 스티커
 
@@ -84,7 +82,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 - **빈티지**: 레트로하고 클래식한 느낌
 - **플랫 디자인**: 그림자 없는 2D 스타일
 
----
 
 ## 🔤 3. 텍스트 포함 이미지 생성
 
@@ -104,7 +101,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 색상 구성은 검은색과 흰색입니다.
 ```
 
----
 
 ## 🛍️ 4. 전문 제품 사진
 
@@ -127,7 +123,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 커피에서 올라오는 김에 선명한 초점을 맞춘 초현실적 이미지. 정사각형 이미지.
 ```
 
----
 
 ## 🎭 5. 미니멀 배경 & 네거티브 스페이스
 
@@ -140,7 +135,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 부드럽고 미묘한 조명. [화면 비율].
 ```
 
----
 
 ## 📚 6. 만화/스토리보드 패널
 
@@ -202,7 +196,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 최종 이미지는 [최종 장면 설명]이어야 합니다.
 ```
 
----
 
 ## 💡 프로 팁 & 고급 기술
 
@@ -229,7 +222,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 - `소프트 박스`: 부드럽고 확산된 조명
 - `림 라이팅`: 가장자리를 강조하는 역광
 
----
 
 ## ⚠️ 현재 한계점 및 해결법
 
@@ -243,7 +235,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 2. **참조 이미지 활용**: 원하는 스타일의 예시 이미지 제공
 3. **단계별 접근**: 복잡한 요청을 여러 단계로 나누어 처리
 
----
 
 ## 🚀 실습 워크플로우
 
@@ -263,9 +254,11 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 - 부족한 부분 식별
 - 추가 프롬프트로 개선
 
----
 
-## 📚 참고 자료 및 추가 학습
+## 📚 출처, 참고 자료 및 추가 학습
+
+### 🔗 출처
+- [개발자를 위한 Google]([https://ai.google.dev/gemini-api/docs/image-generation](https://developers.googleblog.com/en/how-to-prompt-gemini-2-5-flash-image-generation-for-the-best-results/))
 
 ### 🔗 공식 리소스 및 이미지 프롬프트 참고자료
 - [Google AI Studio](https://aistudio.google.com/prompts/new_chat?model=gemini-2.5-flash-image-preview)
@@ -278,7 +271,6 @@ Gemini 2.5 Flash Image는 단순한 이미지 생성을 넘어선 혁신적인 A
 3. **커뮤니티 참여**: 다른 사용자들의 프롬프트 학습
 4. **지속적인 연습**: 매일 새로운 프롬프트 시도
 
----
 
 ## 🎉 마치며
 
@@ -286,4 +278,5 @@ Gemini 2.5 Flash Image(구글 나노 바나나)는 단순한 이미지 생성기
 
 
 **기억하세요**: 완벽한 프롬프트는 없습니다. 지속적인 실험과 개선을 통해 원하는 결과에 점점 더 가까워질 수 있습니다.
+
 
