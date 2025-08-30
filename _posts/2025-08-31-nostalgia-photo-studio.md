@@ -9,7 +9,6 @@ tags: [toyproject, 바이브코딩]
 이 프로젝트를 만들게 된 계기와 과정, 그리고 사용된 기술에 대해 이야기해보려고 합니다.
 
 
-
 ### 🤔 왜 만들었을까? (기획 동기)
 
 > "만약 내가 100년 전에 태어났다면 어떤 모습이었을까?"
@@ -64,9 +63,9 @@ tags: [toyproject, 바이브코딩]
 (1980년대 졸업 사진 프롬프트 예시)
 > "An 1980s South Korean graduation album style studio portrait... The photo should have a soft, hazy lighting effect and a plain, classic studio backdrop... The pose should be formal but slightly awkward..."
 
-또한, AI가 임의로 텍스트(특히 한글)를 이미지에 추가하는 것을 막기 위해 `"The image must not contain any text or letters."` 와 같은 **부정 프롬프트(Negative Prompt)**를 모든 프롬프트에 포함하는 것이 핵심이었습니다.
+또한, AI가 임의로 텍스트(특히 한글)를 이미지에 추가하는 것을 막기 위해 `"The image must not contain any text or letters."` 와 같은 부정 프롬프트(Negative Prompt)를 모든 프롬프트에 포함하는 것이 핵심이었습니다.
 
-
+ **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
 
 ### 🚀 마치며
 
