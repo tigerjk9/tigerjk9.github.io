@@ -76,4 +76,4 @@ tags: [toyproject, 바이브코딩]
 프로젝트를 직접 체험해보거나, 전체 코드를 확인하고 싶으시다면 아래 링크를 방문해주세요. 
 
 * 🌐 **라이브 데모**: [nostalgia-photo-studio.netlify.app](https://nostalgia-photo-studio.netlify.app)
-* 🔗 **GitHub 저장소**: (여기에 본인의 GitHub 저장소 링크를 입력하세요)
+* 🔗 **GitHub 저장소**: [https://github.com/tigerjk9/nostalgia-photo-studio/tree/main](https://github.com/tigerjk9/nostalgia-photo-studio/tree/main)
