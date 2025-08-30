@@ -67,6 +67,7 @@ tags: [toyproject, 바이브코딩]
 
  **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
 
+
 ### 🚀 마치며
 
 '추억 사진관'은 AI의 놀라운 이미지 생성 능력을 활용하여 과거와 현재를 잇는 재미있는 경험을 만들어보자는 생각에서 시작된 프로토타입입니다. 제 사진이 1920년대 모던 보이처럼, 또는 90년대 잡지 모델처럼 변하는 것을 보며 저 스스로도 무척 즐거웠습니다.
