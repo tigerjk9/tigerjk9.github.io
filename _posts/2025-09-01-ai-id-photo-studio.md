@@ -83,9 +83,11 @@ tags: [바이브코딩, 웹앱, 증명사진]
 
 특히 프롬프트 한 줄, 단어 하나의 차이로 결과물이 크게 달라지는 것을 보며 프롬프트 엔지니어링의 중요성을 다시 한번 깨달을 수 있었습니다. Google 나노 바나나와 같은 강력한 AI 도구가 계속 발전하는 만큼, 앞으로는 개발자뿐만 아니라 누구나 자신만의 아이디어를 훨씬 쉽게 현실로 만들 수 있는 시대가 오리라 기대합니다.
 
+*여러분도 Google 나노 바나나 API를 활용하여 생활 속의 작은 불편함을 해결하는 자신만의 프로젝트를 시작해 보시는 건 어떨까요?*
+
 * 🔗 **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
 * 🌐 **라이브 데모**: [ai-id-photo-studio.netlify.app](https://ai-id-photo-studio.netlify.app/) 
 * 🔗 **GitHub 저장소**: [https://github.com/tigerjk9/ai-id-photo-studio/tree/main](https://github.com/tigerjk9/ai-id-photo-studio/tree/main)
 
 
-*여러분도 Google 나노 바나나 API를 활용하여 생활 속의 작은 불편함을 해결하는 자신만의 프로젝트를 시작해 보시는 건 어떨까요?*
+
