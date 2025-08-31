@@ -2,7 +2,7 @@
 title: "Google 나노 바나나로 어릴 적 사진으로 미래 모습 만들기"
 date: 2025-08-31 14:30:00 +0900
 categories: [AI]
-tags: [바이브코딩, 웹앱]
+tags: [토이프로젝트, 바이브코딩, 웹앱]
 ---
 
 ## Google 나노 바나나로 어릴 적 사진으로 미래 모습 만들기
@@ -27,7 +27,7 @@ tags: [바이브코딩, 웹앱]
 
 * **언어**: `HTML`, `CSS`, `JavaScript` (Vanilla JS)
 * **스타일링**: `TailwindCSS`
-* **핵심 API**: `Google Gemini API (gemini-1.5-flash-image-preview)`
+* **핵심 API**: `Google Gemini API (gemini-2.5-flash-image-preview)`
 * **라이브러리**: `JSZip` (이미지 전체 다운로드 기능)
 
 가장 핵심적인 부분은 사용자가 업로드한 이미지와 각 세대별 프롬프트를 Gemini API에 전송하여 새로운 이미지를 생성하는 로직입니다. `gemini-2.5-flash-image-preview` 모델은 텍스트와 이미지를 동시에 입력받아 이미지를 출력하는 멀티모달(Multi-modal) 기능을 가지고 있어 이런 작업에 매우 적합합니다.
@@ -45,8 +45,15 @@ tags: [바이브코딩, 웹앱]
 * **50대**: `"A highly realistic, dignified portrait of the person from the original image, aged up to be in their mid-50s. Their core facial features, ethnicity, and gender must be preserved. They look accomplished and wise. The setting is a nice home or office... "`
 * **70대**: `"A highly realistic, warm, and heartwarming photograph of the person from the original image, aged up to be in their 70s. Their core facial features, ethnicity, and gender must be preserved. They have laugh lines and a gentle, happy expression... "`
 
+**나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
+
+
 ### 🚀 마치며
 
 '인생 파노라마 스튜디오'는 Gemini와 같은 강력한 AI 모델을 활용하면 복잡한 서버 없이도 얼마나 창의적이고 재미있는 웹 애플리케이션을 만들 수 있는지 보여주는 좋은 예시라고 생각합니다. 프롬프트 엔지니어링을 통해 결과물을 세밀하게 제어하는 과정도 매우 흥미로웠습니다.
 
 여러분도 이 프로젝트를 참고하여 자신만의 아이디어를 실현해 보시는 건 어떨까요?
+
+* 🌐 **라이브 데모**: [https://life-panorama.netlify.app/](https://life-panorama.netlify.app/)
+* 🌐 **유사 토이 프로젝트**: [nostalgia-photo-studio.netlify.app](https://nostalgia-photo-studio.netlify.app)
+* 🔗 **GitHub 저장소**: [https://github.com/tigerjk9/life-panorama-studio](https://github.com/tigerjk9/life-panorama-studio)
