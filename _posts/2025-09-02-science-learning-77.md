@@ -16,7 +16,7 @@ tags: [학습과학, 공부법, 메타인지]
 이 글은 '학습과학 77'의 정수를 뽑아, 교육 전문가와 학부모, 그리고 학생이 지금 바로 실천할 수 있는 9가지 핵심 전략으로 정리한 최종 가이드입니다.
 
 <p align="center">
-  <img src="/assets/science-learning-77.png" alt="책 표지">
+  <img src="/assets/science-learning-77.jpg" alt="책 표지">
 </p>
 
 ## Part 1. 공부의 '기술'을 연마하라: 뇌를 속이는 기억법
