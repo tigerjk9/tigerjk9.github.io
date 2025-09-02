@@ -1,5 +1,5 @@
 ---
-title: "🎮 웹캠으로 즐기는 알콩달콩 가위바위보 제작"
+title: "웹캠으로 즐기는 알콩달콩 가위바위보 제작"
 date: 2025-09-02 01:30:00 +0900
 categories: [AI]
 tags: [바이브코딩, mediapipe, 머신러닝, gesture-recognition, gamedev]
