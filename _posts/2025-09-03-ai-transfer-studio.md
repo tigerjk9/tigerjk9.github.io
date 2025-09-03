@@ -11,7 +11,7 @@ tags: [바이브코딩, 웹앱]
 
 <p align="center">
   <img src="/assets/jung.jpg" alt="정채연">
-  <img src="/assets/jung-style.jpg" alt="정채연">
+  <img src="/assets/jung-style.png" alt="정채연">
 </p>
 
 
