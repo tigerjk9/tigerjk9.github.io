@@ -45,7 +45,6 @@ tags: [토이프로젝트, 바이브코딩, 웹앱]
 * **50대**: `"A highly realistic, dignified portrait of the person from the original image, aged up to be in their mid-50s. Their core facial features, ethnicity, and gender must be preserved. They look accomplished and wise. The setting is a nice home or office... "`
 * **70대**: `"A highly realistic, warm, and heartwarming photograph of the person from the original image, aged up to be in their 70s. Their core facial features, ethnicity, and gender must be preserved. They have laugh lines and a gentle, happy expression... "`
 
-**나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
 
 ![원본 사진과 변환된 사진 비교](/assets/lifepanorama.png)
 
@@ -56,5 +55,7 @@ tags: [토이프로젝트, 바이브코딩, 웹앱]
 여러분도 이 프로젝트를 참고하여 자신만의 아이디어를 실현해 보시는 건 어떨까요?
 
 * 🌐 **라이브 데모**: [https://life-panorama.netlify.app/](https://life-panorama.netlify.app/)
-* 🌐 **유사 토이 프로젝트**: [nostalgia-photo-studio.netlify.app](https://nostalgia-photo-studio.netlify.app)
+* 🌐 **유사 토이 프로젝트**: [https://nostalgia-photo-studio.netlify.app](https://nostalgia-photo-studio.netlify.app)
+* 🌐 **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
 * 🔗 **GitHub 저장소**: [https://github.com/tigerjk9/life-panorama-studio](https://github.com/tigerjk9/life-panorama-studio)
+
