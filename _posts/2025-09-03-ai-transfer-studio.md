@@ -63,5 +63,3 @@ tags: [바이브코딩, 웹앱]
 
 * 🌐 라이브 데모: [hand-tracking-rps-game.netlify.app/](https://ai-style-transfer-studio.netlify.app/)  // AI 증명사진 웹앱의 변형으로 학생 행사나 체험 코너에서 인화하여 배부할 수 있습니다.
 * 🔗 **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
-* 🔗 **GitHub 저장소**: [https://github.com/tigerjk9/ai-id-photo-studio/tree/main](https://github.com/tigerjk9/AI-style-transfer-studio-1310/tree/main)
-
