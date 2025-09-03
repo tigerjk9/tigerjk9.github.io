@@ -61,6 +61,6 @@ tags: [바이브코딩, 웹앱]
 
 지금 바로 **AI 그림체 변신 스튜디오**에서 세상에 단 하나뿐인 당신의 새로운 모습을 만나보세요!
 
-* 🌐 라이브 데모: [ai-style-transfer-1310-studio.netlify.app/](https://ai-style-transfer-1310-studio.netlify.app/))  // AI 증명사진 웹앱의 변형으로 학생 행사나 체험 코너에서 인화하여 배부할 수 있습니다.
+* 🌐 라이브 데모: [https://ai-style-transfer-1310-studio.netlify.app/](https://ai-style-transfer-1310-studio.netlify.app/)  <br> AI 증명사진 웹앱의 변형으로 학생 행사나 체험 코너에서 인화하여 배부할 수 있습니다.
 * 🔗 **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
 * 🔗 **GitHub 저장소**: [https://github.com/tigerjk9/AI-style-transfer-studio-1310/tree/main](https://github.com/tigerjk9/AI-style-transfer-studio-1310/tree/main)
