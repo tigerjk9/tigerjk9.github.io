@@ -76,5 +76,5 @@ tags: [바이브코딩, mediapipe, 머신러닝, gesture-recognition, gamedev]
 
 여러분도 친구와 함께 이 가위바위보 게임을 즐겨보시고, 더 나아가 여러분만의 제스처 인식 프로젝트에 도전해 보시는 건 어떨까요?
 
-* 🌐 **라이브 데모**: [hand-tracking-rps-game.netlify.app/](https://hand-tracking-rps-game.netlify.app/)
+* 🌐 **라이브 데모**: [https://hand-tracking-rps-game.netlify.app/](https://hand-tracking-rps-game.netlify.app/)
 * PC 화면에 크게 띄워놓고 시켜주세요(모바일X). 코드가 좀 무거워서 로딩시간이 걸릴 수 있습니다. 초등 저학년 대상 체험에 좋으리라 생각합니다.
