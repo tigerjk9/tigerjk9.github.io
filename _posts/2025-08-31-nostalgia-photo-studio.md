@@ -67,9 +67,6 @@ tags: [토이프로젝트, 바이브코딩, 웹앱]
 
 또한, AI가 임의로 텍스트(특히 한글)를 이미지에 추가하는 것을 막기 위해 `"The image must not contain any text or letters."` 와 같은 부정 프롬프트(Negative Prompt)를 모든 프롬프트에 포함하는 것이 핵심이었습니다.
 
- **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
-
-
 
 ### 🚀 마치며
 
@@ -79,5 +76,6 @@ tags: [토이프로젝트, 바이브코딩, 웹앱]
 
 프로젝트를 직접 체험해보거나, 전체 코드를 확인하고 싶으시다면 아래 링크를 방문해주세요. 
 
-* 🌐 **라이브 데모**: [nostalgia-photo-studio.netlify.app](https://nostalgia-photo-studio.netlify.app)
+* 🌐 **라이브 데모**: [https://nostalgia-photo-studio.netlify.app/](https://nostalgia-photo-studio.netlify.app/)
 * 🔗 **GitHub 저장소**: [https://github.com/tigerjk9/nostalgia-photo-studio/tree/main](https://github.com/tigerjk9/nostalgia-photo-studio/tree/main)
+* 🌐 **나노 바나나 프롬프트 참고**: [https://tigerjk9.github.io/ai/nano-banana/](https://tigerjk9.github.io/ai/nano-banana/)
