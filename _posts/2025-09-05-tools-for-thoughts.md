@@ -1,7 +1,7 @@
 ---
 title: "생성형 AI는 효율을 넘어 사고 도구가 될 수 있을까?"
 date: 2025-09-05 11:51:00 +0900
-categories: [AI, HCI]
+categories: [AI]
 tags: [생성형AI, 사고도구, 인지증강]
 ---
 
