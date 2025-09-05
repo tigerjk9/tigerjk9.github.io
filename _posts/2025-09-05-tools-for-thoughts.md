@@ -40,4 +40,4 @@ tags: [생성형AI, 사고도구, 인지증강]
 
 ---
 
-*출처: Tankelevitch, L., Glassman, E. L., He, J., Kittur, A., Lee, M., Palani, S., Sarkar, A., Ramos, G., Rogers, Y., & Subramonyam, H. (2025). Understanding, Protecting, and Augmenting Human Cognition with Generative AI: A Synthesis of the CHI 2025 Tools for Thought Workshop. arXiv. https://doi.org/10.48550/arXiv.2508.21036*
+*출처: Tankelevitch, L., Glassman, E. L., He, J., Kittur, A., Lee, M., Palani, S., Sarkar, A., Ramos, G., Rogers, Y., & Subramonyam, H. (2025). Understanding, Protecting, and Augmenting Human Cognition with Generative AI: A Synthesis of the CHI 2025 Tools for Thought Workshop. arXiv. [https://doi.org/10.48550/arXiv.2508.21036](https://doi.org/10.48550/arXiv.2508.21036)*     
