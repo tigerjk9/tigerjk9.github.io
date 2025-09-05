@@ -36,6 +36,8 @@ tags: [생성형AI, 사고도구, 인지증강]
 
 이러한 질문들을 꾸준히 던지는 그룹들이 분야를 가로지르며 세계적으로 생겨나고 있다. 자체 연구회나 커뮤니티 차원에서도 선행사례를 참고해 이러한 워크숍 형태로 숙의하고 깊게 토의해 볼 기회를 갖는 것을 제안해보면 어떨까 싶다.
 
+![워크숍](/assets/tools-fot-thoughts.jpg)
+
 ---
 
 *출처: Tankelevitch, L., Glassman, E. L., He, J., Kittur, A., Lee, M., Palani, S., Sarkar, A., Ramos, G., Rogers, Y., & Subramonyam, H. (2025). Understanding, Protecting, and Augmenting Human Cognition with Generative AI: A Synthesis of the CHI 2025 Tools for Thought Workshop. arXiv. https://doi.org/10.48550/arXiv.2508.21036*
