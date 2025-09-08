@@ -16,7 +16,7 @@ tags: [LLM, AI윤리, 모델불일치]
 * **제목**: 모델 불일치와 언어 변화: 대본 없는 구어체 영어에 나타난 AI 관련 언어의 흔적
 * **저자**: Anderson, B., Galpin, R., & Juzek, T. S. (2025)
 * **출처 (APA 7th)**: 
-    > Anderson, B., Galpin, R., & Juzek, T. S. (2025). *Model Misalignment and Language Change: Traces of AI-Associated Language in Unscripted Spoken English*. arXiv. https://doi.org/10.48550/arXiv.2508.00238
+    > Anderson, B., Galpin, R., & Juzek, T. S. (2025). *Model Misalignment and Language Change: Traces of AI-Associated Language in Unscripted Spoken English*. arXiv. [https://doi.org/10.48550/arXiv.2508.00238](https://doi.org/10.48550/arXiv.2508.00238)
 
 <br>
 
@@ -91,4 +91,4 @@ tags: [LLM, AI윤리, 모델불일치]
 <br>
 
 ---
-_출처: Anderson, B., Galpin, R., & Juzek, T. S. (2025). Model Misalignment and Language Change: Traces of AI-Associated Language in Unscripted Spoken English. arXiv. https://doi.org/10.48550/arXiv.2508.00238_
+_출처: Anderson, B., Galpin, R., & Juzek, T. S. (2025). Model Misalignment and Language Change: Traces of AI-Associated Language in Unscripted Spoken English. arXiv. [https://doi.org/10.48550/arXiv.2508.00238](https://doi.org/10.48550/arXiv.2508.00238)
