@@ -75,4 +75,4 @@ tags: [LLM, AI윤리]
 <br>
 
 ---
-_출처: Guo, J., & Xu, Y. (2025). Your AI Bosses Are Still Prejudiced: The Emergence of Stereotypes in LLM-Based Multi-Agent Systems. arXiv. https://arxiv.org/abs/2508.19919_
+_출처: Guo, J., & Xu, Y. (2025). Your AI Bosses Are Still Prejudiced: The Emergence of Stereotypes in LLM-Based Multi-Agent Systems. arXiv. [https://arxiv.org/abs/2508.19919_](https://arxiv.org/abs/2508.19919_)
