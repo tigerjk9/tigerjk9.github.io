@@ -13,8 +13,6 @@ tags: [정책패러독스, 정책]
 <br><p align="center">
   <img src="/assets/policy-paradox.png" alt="책 표지">
 </p>
-<br>
----
 
 ### 1. 정책은 기술 도입이 아닌 '가치 투쟁'의 장이다.
 
