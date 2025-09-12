@@ -7,7 +7,7 @@ tags: [심리적안전감, 조직문화, 리더십]
 
 ## [심리적 안전감 시리즈 5] 심리적 안전감 4단계 모델(Timothy R. Clark)
 
-> 티모시 R. 클라크(Timothy R. Clark)는 '심리적 안정감의 4단계(The 4 Stages of Psychological Safety)' 모델을 통해, 조직 구성원이 심리적으로 안전하다고 느낄 때 더 높은 수준의 참여와 혁신을 이끌어낼 수 있음을 보여줍니다.
+> 티모시 R. 클라크(Timothy R. Clark)는 '심리적 안정감 4단계(The 4 Stages of Psychological Safety)' 모델을 통해, 조직 구성원이 심리적으로 안전하다고 느낄 때 더 높은 수준의 참여와 혁신을 이끌어낼 수 있음을 보여줍니다.
 
 <br>![심리적 안전감 모델](/assets/psychological-safety.jpg)
 
