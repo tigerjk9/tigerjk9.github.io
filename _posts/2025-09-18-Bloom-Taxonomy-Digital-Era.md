@@ -68,6 +68,7 @@ tags: [블룸 분류법, 마르자노]
 
 ### 참고문헌
 
+* 이찬승. (2022년 2월 10일). 학습과학의 이해와 적용(24) - *<원리 23> 효과적인 학습은 ‘지식’과 3가지 ‘사고 시스템’, <자기 시스템, 상위인지 시스템, 인지 시스템>의 상호 작용에 달렸다.* 교육을바꾸는사람들. [https://21erick.org/column/7703/](https://21erick.org/column/7703/)
 * Anderson, L. W., & Krathwohl, D. R. (Eds.). (2001). *A taxonomy for learning, teaching, and assessing: A revision of Bloom's Taxonomy of educational objectives*. Longman.
 * Bloom, B. S. (Ed.). (1956). *Taxonomy of educational objectives: The classification of educational goals. Handbook I: Cognitive domain*. David McKay.
 * Irvine, J. (2018). A comparison of revised Bloom and Marzano's new taxonomy of learning. *Research in Higher Education Journal, 33*.
