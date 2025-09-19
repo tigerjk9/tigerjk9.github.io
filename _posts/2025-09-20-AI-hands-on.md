@@ -60,7 +60,7 @@ tags: [AI, 웹앱, 부스운영]
 * **참고:** 웹캠 및 PC 필요 (무료)
 * **관련 설명글:** [Facebook에서 자세히 보기](https://www.facebook.com/share/p/19A4SJo15k/)
 
----
+
 
 ## ✨ 모두가 즐거운 AI Hands-On 부스
 
