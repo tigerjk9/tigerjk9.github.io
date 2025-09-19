@@ -71,6 +71,7 @@ tags: [성찰, 듀이, 쇤, AI윤리, 교육공학]
 
 <br>
 <br>
+
 ### 참고 문헌
 
 * Anderson, E. (2021). Dewey's Moral Philosophy. In E. N. Zalta (Ed.), *The Stanford Encyclopedia of Philosophy* (Winter 2021 ed.). Metaphysics Research Lab, Stanford University.
