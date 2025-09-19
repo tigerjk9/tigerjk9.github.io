@@ -12,8 +12,6 @@ tags: [AI, 웹앱, 부스운영]
 
 ### 1. AI 그림체 변환 스튜디오 웹앱
 
-![AI 그림체 변환](/assets/style-transfer.png)
-
 * **웹앱 주소:** [https://ai-style-transfer-studio.netlify.app/](https://ai-style-transfer-studio.netlify.app/)
 * **참고:** 제미나이 API 비용 소요 (한 장당 55원)
 * **관련 설명글:** [Facebook에서 자세히 보기](https://www.facebook.com/share/p/1BKRvmKyDF/)
