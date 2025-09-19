@@ -47,7 +47,6 @@ tags: [AI, 웹앱, 부스운영]
 
 ### 5. 둘이서 함께 즐기는 알콩달콩 가위바위보 웹게임
 
-![가위바위보 게임](/assets/rps-game.png)
 
 * **웹앱 주소:** [https://hand-tracking-rps-game.netlify.app/](https://hand-tracking-rps-game.netlify.app/)
 * **참고:** 웹캠 및 PC 필요 (무료)
