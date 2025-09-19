@@ -68,4 +68,5 @@ tags: [AI, 웹앱, 부스운영]
 
 **바로가기 👉 [https://ai-hands-on-booth.netlify.app/](https://ai-hands-on-booth.netlify.app/)**
 <br>
+
 ![AI-hands-on](/assets/AI-hands-on.png)
