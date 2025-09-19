@@ -64,4 +64,4 @@ tags: [블룸 분류법, 마르자노]
 * Marzano, R. J. (2000). *Designing a new taxonomy of educational objectives*. Corwin Press.
 * Marzano, R. J., & Kendall, J. S. (2007). *The new taxonomy of educational objectives (2nd ed.)*. Corwin Press.
 * Mehta, J. (2018, March 21). Opinion: Here's what's wrong with Bloom's taxonomy: A deeper learning perspective. *Education Week*.
-* Mmoud, M., & Shaqour, A. (2024). AIed Bloom’s Taxonomy: A Proposed Model for Enhancing Educational Efficiency and Effectiveness in the Artificial Intelligence Era. *The International Journal of Technologies in Learning, 31*(2), 111–128. https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128
+* Mmoud, M., & Shaqour, A. (2024). AIed Bloom’s Taxonomy: A Proposed Model for Enhancing Educational Efficiency and Effectiveness in the Artificial Intelligence Era. *The International Journal of Technologies in Learning, 31*(2), 111–128. [https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128](https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128)
