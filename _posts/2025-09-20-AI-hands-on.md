@@ -67,4 +67,4 @@ tags: [AI, 웹앱, 부스운영]
 > 위의 모든 앱들을 한 곳에서 체험해볼 수 있는 웹페이지입니다.
 
 **바로가기 👉 [https://ai-hands-on-booth.netlify.app/](https://ai-hands-on-booth.netlify.app/)**
-![AI-hands-on](/assets/AI-hands-on.png)
+<br>![AI-hands-on](/assets/AI-hands-on.png)
