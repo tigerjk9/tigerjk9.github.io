@@ -1,0 +1,31 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+search: false
+---
+
+@charset "utf-8";
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+/* --- Tag Cloud & Sidebar Fix --- */
+
+/* 1. Tag Cloud 스타일 */
+.tag-cloud {
+  text-align: justify;
+  padding: 5px;
+}
+.tag-cloud a {
+  text-decoration: none !important; /* 링크 밑줄 강제 제거 */
+  border: none !important; /* 테두리 강제 제거 */
+  padding: 0 3px;
+}
+.tag-cloud span {
+  line-height: 2.2;
+}
+
+/* --- 사이드바 고정 기능 해제 및 잘림 방지 --- */
+.sidebar.sticky {
+  position: static; /* 화면에 붙어있는 'sticky' 기능을 해제하고 일반 블록처럼 만듭니다. */
+  overflow-y: visible; /* 내용이 넘칠 경우 잘리지 않고 보이도록 합니다. */
+  max-height: none; /* 최대 높이 제한을 없앱니다. */
+}
