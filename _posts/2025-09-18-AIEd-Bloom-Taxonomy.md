@@ -89,4 +89,4 @@ tags: [AIEd블룸분류법]
 즉, AIEd 블룸 분류법은 인공지능 시대의 교육자들이 기존의 교육 목표를 AI를 활용한 현대적 학습 활동으로 구현해낼 수 있도록 돕는 실용적인 가이드 역할을 합니다. 이 모델을 통해 교육자는 각 인지 단계에 맞는 AI 활용법을 체계적으로 고민하고, 미래 사회가 요구하는 역량을 갖춘 인재를 길러내는 데 큰 도움을 받을 수 있을 것입니다.
 
 ---
-출처: "Mmoud, M., & Shaqour, A. (2024). AIed Bloom’s Taxonomy: A Proposed Model for Enhancing Educational Efficiency and Effectiveness in the Artificial Intelligence Era. The International Journal of Technologies in Learning, 31(2), 111–128. [https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128](https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128)" 
+출처: Mmoud, M., & Shaqour, A. (2024). AIed Bloom’s Taxonomy: A Proposed Model for Enhancing Educational Efficiency and Effectiveness in the Artificial Intelligence Era. The International Journal of Technologies in Learning, 31(2), 111–128. [https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128](https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128)
