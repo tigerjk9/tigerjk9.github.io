@@ -79,4 +79,14 @@ tags: [AIEd블룸분류법]
 **'AIEd 블룸 분류법'**은 그 변화의 중심에서, 아이들에게 필요한 '생각하는 힘'을 길러주는 의미 있는 나침반의 역할을 할 수 있습니다.
 
 ---
+
+### 4. 결론: 대체가 아닌, 확장으로서의 가치
+
+'AIEd 블룸 분류법'이 기존의 견고한 블룸 분류법을 완전히 대체할 수 있는지에 대한 의문은 타당합니다. 하지만 이 모델의 진정한 가치는 '대체'가 아닌 '확장'에 있습니다.
+
+> 기존 블룸 분류법이 **'무엇을 목표로 할 것인가'**에 대한 교육의 뼈대를 제시한다면, AIEd 블룸 분류법은 **'AI라는 도구를 가지고 그 목표를 어떻게 효율적으로 달성할 것인가'**에 대한 구체적인 실행 방안을 제시합니다.
+
+즉, AIEd 블룸 분류법은 인공지능 시대의 교육자들이 기존의 교육 목표를 AI를 활용한 현대적 학습 활동으로 구현해낼 수 있도록 돕는 실용적인 가이드 역할을 합니다. 이 모델을 통해 교육자는 각 인지 단계에 맞는 AI 활용법을 체계적으로 고민하고, 미래 사회가 요구하는 역량을 갖춘 인재를 길러내는 데 큰 도움을 받을 수 있을 것입니다.
+
+---
 출처: "Mmoud, M., & Shaqour, A. (2024). AIed Bloom’s Taxonomy: A Proposed Model for Enhancing Educational Efficiency and Effectiveness in the Artificial Intelligence Era. The International Journal of Technologies in Learning, 31(2), 111–128. [https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128](https://doi.org/10.18848/2327-0144/CGP/v31i02/111-128)" 
