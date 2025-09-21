@@ -1,6 +1,6 @@
 ---
 title: "키보드 없이 손끝으로 타닥! 웹캠 AI 타이핑 게임 웹앱"
-date: 2025-09-22 10:00:00 +0900
+date: 2025-09-21 09::00 +0900
 categories: [AI]
 tags: [mediapipe, 웹앱, gamedev]
 ---
