@@ -24,7 +24,7 @@ AI 체험 부스나 교육용 콘텐츠, 또는 친구와 함께 즐길 수 있�
 
 이 간단한 두 가지 제스처의 조합만으로 실제 키보드처럼 타이핑하는 경험을 만들어낼 수 있습니다.
 
-![AI 타이핑 배틀](assets/AI-typing-battle.jpg)
+![AI-typing-battle](assets/AI-typing-battle.jpg)
 
 <br>
 
