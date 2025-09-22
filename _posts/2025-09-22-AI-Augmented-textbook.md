@@ -22,7 +22,6 @@ tags: [AI, textbook, personalization]
 
 **키워드**: 개인화 학습, 생성형 교육, 콘텐츠 변환
 
-### 
 
 ### **1\. 서론**
 
