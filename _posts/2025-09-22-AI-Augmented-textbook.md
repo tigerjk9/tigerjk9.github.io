@@ -7,12 +7,13 @@ tags: [AI, textbook, personalization]
 
 - 이 글은 **Towards an AI-Augmented Textbook(출처: 아래 참고)**를 번역한 글 전문입니다.
 - 출처: LearnLM Team, Google, Martín, A., Globerson, A., Wang, A., Shekhawat, A., Iurchenko, A., Choudhury, A., Hassidim, A., Çakmakli, A., Shasha Evron, A., Yang, C., Heldreth, C., Akrong, D., Elidan, G., Mu, H., Li, I., Cohen, I., Chou, K., Singh, K., Borovoi, L., Hackmon, L., Belinsky, L., Fink, M., Efron, N., Singh, P., Levitt, R., Agarwal, S., Sharon, S., Lee-Joe, T., Hao, X., Gold-Zamir, Y., Haramaty, Y., Mor, Y., Bar Sinai, Y., & Matias, Y. (2025). Towards an AI-augmented textbook. arXiv. [https://arxiv.org/abs/2509.13348](https://arxiv.org/abs/2509.13348)
+- 관련 링크: [https://research.google/blog/learn-your-way-reimagining-textbooks-with-generative-ai/](https://research.google/blog/learn-your-way-reimagining-textbooks-with-generative-ai/)
+- 관련 플랫폼: [https://learnyourway.withgoogle.com/](https://learnyourway.withgoogle.com/)
 
-**Google**
 
 ## **AI 증강 교과서를 향하여**
 
-2025-09-19
+2025-09-19 **Google**
 
 **Google LearnLM 팀**: Alicia Martín, Amir Globerson, Amy Wang, Anirudh Shekhawat, Anisha Choudhury, Anna Iurchenko, Avinatan Hassidim, Ayça Çakmakli, Ayelet Shasha Evron, Charlie Yang, Courtney Heldreth, Diana Akrong, Gal Elidan, Hairong Mu, Ian Li, Ido Cohen, Katherine Chou, Komal Singh, Lev Borovoi, Lidan Hackmon, Lior Belinsky, Michael Fink, Niv Efron, Preeti Singh, Rena Levitt, Shashank Agarwal, Shay Sharon, Tracey Lee-Joe, Xiaohong Hao, Yael Gold-Zamir, Yael Haramaty, Yishay Mor, Yoav Bar Sinai, Yossi Matias
 
@@ -39,7 +40,6 @@ tags: [AI, textbook, personalization]
 
 그림 1은 개인화와 다중 표현이 어떻게 결합되는지를 보여주는 'Learn Your Way'의 중심 보기를 보여줍니다. 결과적으로 AI 증강 교과서는 학습자에게 개인화되고 매력적인 학습 경험을 제공하는 동시에, 이해를 높이기 위해 다양한 양식 중에서 선택할 수 있도록 합니다. 다음 섹션에서는 'Learn Your Way'의 **각 구성 요소와 각 구성 요소의 교육학적 장점에 대한 평가**를 설명합니다. 마지막으로, 우리의 개인화 및 다중 표현 'Learn Your Way' 시스템을 사용한 학습이 동일한 자료에 대한 표준 디지털 리더에 비해 학습 효과를 향상시킬 수 있음을 보여주는 **무작위 통제 연구 결과**를 보고합니다. 종합적으로, 우리의 결과는 **생성형 AI 시대에 교과서라는 매체를 재창조**할 수 있는 잠재력을 보여줍니다.
 
-### 
 
 ### **2\. 개인화 및 다중 뷰를 통한 교과서 증강**
 
