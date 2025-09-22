@@ -1,6 +1,6 @@
 ---
 title: "AI 증강 교과서를 향하여"
-date: 2025-09-22 23::025 +0900
+date: 2025-09-23 01:25 +0900
 categories: [AI]
 tags: [AI, textbook, personalization]
 ---
