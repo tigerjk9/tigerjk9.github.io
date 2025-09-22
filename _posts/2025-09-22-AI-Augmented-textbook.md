@@ -1,3 +1,10 @@
+---
+title: "AI 증강 교과서를 향하여"
+date: 2025-09-22 23::025 +0900
+categories: [AI]
+tags: [AI, textbook, personalization]
+---
+
 arXiv:submit/6808119 \[cs.CY\] 2025년 9월 19일
 
 **Google**
