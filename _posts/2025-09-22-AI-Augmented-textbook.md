@@ -6,6 +6,8 @@ tags: [AI, textbook, personalization]
 ---
 
 arXiv:submit/6808119 \[cs.CY\] 2025년 9월 19일
+- 이 글은 **Towards an AI-Augmented Textbook(출처: 아래 참고)**를 번역한 글 전문입니다.
+- 출처: LearnLM Team, Google, Martín, A., Globerson, A., Wang, A., Shekhawat, A., Iurchenko, A., Choudhury, A., Hassidim, A., Çakmakli, A., Shasha Evron, A., Yang, C., Heldreth, C., Akrong, D., Elidan, G., Mu, H., Li, I., Cohen, I., Chou, K., Singh, K., Borovoi, L., Hackmon, L., Belinsky, L., Fink, M., Efron, N., Singh, P., Levitt, R., Agarwal, S., Sharon, S., Lee-Joe, T., Hao, X., Gold-Zamir, Y., Haramaty, Y., Mor, Y., Bar Sinai, Y., & Matias, Y. (2025). Towards an AI-augmented textbook. arXiv. [https://arxiv.org/abs/2509.13348](https://arxiv.org/abs/2509.13348)
 
 **Google**
 
