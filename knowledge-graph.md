@@ -6,6 +6,10 @@ class: "page--knowledge-graph"
 ---
 
 <style>
+  body.page--knowledge-graph {
+    background-color: #0A192F; /* 페이지 전체 배경색을 캔버스와 통일 */
+  }
+
   /* 프레임 확장 */
   .page--knowledge-graph .page__inner-wrap {
     max-width: none !important;
@@ -20,17 +24,6 @@ class: "page--knowledge-graph"
   .page--knowledge-graph #main {
     /* 사이드바 너비(300px) + 여백 만큼 왼쪽 여백을 줍니다. */
     margin-left: 320px; 
-  }
-
-    /* 이 부분을 추가하세요 */
-  body.page--knowledge-graph {
-    background-color: #0A192F;
-  }
-
-  /* --- 이하 기존 코드 --- */
-  /* 프레임 확장 */
-  .page--knowledge-graph .page__inner-wrap {
-    max-width: none !important;
   }
 </style>
 
@@ -80,9 +73,6 @@ class: "page--knowledge-graph"
               strokeWidth: 0 
             }
           },
-          // =================================================================
-          // 연결선(edges) 스타일 수정: 노드 색상 따라가기 + 화살표 + 곡선
-          // =================================================================
           edges: {
             width: 0.5,
             smooth: {
@@ -99,7 +89,6 @@ class: "page--knowledge-graph"
               opacity: 0.8     // 선의 투명도를 설정합니다.
             }
           },
-          // =================================================================
           physics: {
             solver: 'forceAtlas2Based',
             forceAtlas2Based: {
