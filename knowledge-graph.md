@@ -21,6 +21,17 @@ class: "page--knowledge-graph"
     /* 사이드바 너비(300px) + 여백 만큼 왼쪽 여백을 줍니다. */
     margin-left: 320px; 
   }
+
+    /* 이 부분을 추가하세요 */
+  body.page--knowledge-graph {
+    background-color: #0A192F;
+  }
+
+  /* --- 이하 기존 코드 --- */
+  /* 프레임 확장 */
+  .page--knowledge-graph .page__inner-wrap {
+    max-width: none !important;
+  }
 </style>
 
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
