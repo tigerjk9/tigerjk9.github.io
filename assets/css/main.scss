@@ -14,6 +14,12 @@ $max-width: 100%;
 @import "minimal-mistakes"; // main partials
 
 // 3. 사용자 정의 스타일 (Custom CSS)
+
+/* --- 전체 콘텐츠 시작 위치 조정 --- */
+#main {
+  margin-left: 320px; /* 모든 페이지의 콘텐츠를 왼쪽에서 320px 밀어냅니다. */
+}
+
 /* --- Tag Cloud & Sidebar Fix --- */
 
 /* 1. Tag Cloud 스타일 */
