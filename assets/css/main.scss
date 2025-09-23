@@ -36,23 +36,25 @@ $max-width: 100%;
   padding-top: 10px;
 }
 
-.tag-cloud a {
+.tag-cloud a,
+.tag-cloud a:visited { /* 방문한 링크(:visited) 상태 추가 */
   text-decoration: none !important;
   border: none !important;
   transition: all 0.2s ease-in-out;
 }
 
-/* 등급별 폰트 크기 및 색상 정의 */
-.tag-weight-1 { font-size: 0.8em; color: #888; }
-.tag-weight-2 { font-size: 1.0em; color: #aaa; }
-.tag-weight-3 { font-size: 1.2em; color: #ccc; }
-.tag-weight-4 { font-size: 1.4em; color: #ddd; }
-.tag-weight-5 { font-size: 1.6em; color: #fff; font-weight: bold; }
+/* 등급별 폰트 크기 및 색상 정의 (각 줄에 :visited 추가) */
+.tag-weight-1, .tag-weight-1:visited { font-size: 0.8em; color: #888; }
+.tag-weight-2, .tag-weight-2:visited { font-size: 1.0em; color: #aaa; }
+.tag-weight-3, .tag-weight-3:visited { font-size: 1.2em; color: #ccc; }
+.tag-weight-4, .tag-weight-4:visited { font-size: 1.4em; color: #ddd; }
+.tag-weight-5, .tag-weight-5:visited { font-size: 1.6em; color: #fff; font-weight: bold; }
 
-/* 마우스를 올렸을 때 효과 */
-.tag-cloud a:hover {
-  color: #42a5f5;
-  transform: scale(1.1);
+/* 마우스를 올렸을 때 효과 (방문한 링크에도 동일하게 적용) */
+.tag-cloud a:hover,
+.tag-cloud a:visited:hover {
+  color: #42a5f5; /* 하이라이트 색상 */
+  transform: scale(1.1); /* 살짝 확대되는 효과 */
 }
 
 
