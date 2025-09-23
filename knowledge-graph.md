@@ -6,8 +6,12 @@ class: "page--knowledge-graph"
 ---
 
 <style>
-  body.page--knowledge-graph {
-    background-color: #0A192F; /* 페이지 전체 배경색을 캔버스와 통일 */
+  html, body.page--knowledge-graph {
+    background-color: #0A192F !important; /* 페이지와 body 배경색을 강제 지정 */
+  }
+
+  .page__footer {
+    background-color: transparent !important; /* 꼬리말 배경을 투명하게 만듭니다. */
   }
 
   /* 프레임 확장 */
@@ -22,7 +26,6 @@ class: "page--knowledge-graph"
 
   /* 콘텐츠 시작 위치 조정 */
   .page--knowledge-graph #main {
-    /* 사이드바 너비(300px) + 여백 만큼 왼쪽 여백을 줍니다. */
     margin-left: 320px; 
   }
 </style>
@@ -85,8 +88,8 @@ class: "page--knowledge-graph"
               }
             },
             color: {
-              inherit: 'both', // 양쪽 노드의 색상을 모두 상속받습니다.
-              opacity: 0.8     // 선의 투명도를 설정합니다.
+              inherit: 'both',
+              opacity: 0.8
             }
           },
           physics: {
@@ -112,12 +115,10 @@ class: "page--knowledge-graph"
 
         var network = new vis.Network(container, data, options);
         
-        // 그래프가 안정화된 후 물리 엔진을 꺼서 노드를 고정
         network.on("stabilizationIterationsDone", function () {
           network.setOptions( { physics: false } );
         });
 
-        // 노드 클릭 시 해당 게시물 URL로 이동
         network.on("click", function (params) {
             if (params.nodes.length > 0) {
                 var nodeId = params.nodes[0];
