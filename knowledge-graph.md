@@ -60,8 +60,8 @@ permalink: /knowledge-graph/
       }
     };
 
-    // '게시물'과 '태그' 데이터가 모두 포함된 JSON 파일을 불러옵니다.
-    fetch('/pages/graph-data.json')
+    // '게시물'과 '태그' 데이터가 모두 포함된 JSON 파일을 최상위 경로에서 불러옵니다.
+    fetch('/graph-data.json')
       .then(response => response.json())
       .then(data => {
         // Vis.js 데이터 형식에 맞게 변환
