@@ -96,8 +96,8 @@ class: "page--knowledge-graph"
             solver: 'forceAtlas2Based',
             forceAtlas2Based: {
               gravitationalConstant: -120,
-              centralGravity: 0.001,
-              springLength: 200,
+              centralGravity: 0.02,
+              springLength: 100,
               springConstant: 0.05,
               avoidOverlap: 0.8
             },
