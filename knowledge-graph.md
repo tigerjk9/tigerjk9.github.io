@@ -60,8 +60,8 @@ permalink: /knowledge-graph/
       }
     };
 
-    // '게시물'과 '태그' 데이터가 모두 포함된 JSON 파일을 최상위 경로에서 불러옵니다.
-    fetch('/graph-data.json')
+    // '게시물'과 '태그' 데이터가 모두 포함된 JSON 파일을 캐시 없이 항상 새로 불러옵니다.
+    fetch('/graph-data.json', { cache: 'no-cache' })
       .then(response => response.json())
       .then(data => {
         // Vis.js 데이터 형식에 맞게 변환
@@ -83,7 +83,7 @@ permalink: /knowledge-graph/
               // 노드가 'post' 그룹이면 해당 게시물 URL로 이동
               window.open(node.id, '_blank');
             } else if (node.group === 'tag') {
-              // 노드가 'tag' 그룹이면 해당 태그 페이지로 이동
+// 노드가 'tag' 그룹이면 해당 태그 페이지로 이동
               window.open(`/tags/#${node.id}`, '_blank');
             }
           }
