@@ -1,10 +1,27 @@
+{% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+{% assign tag_words = site_tags | split:',' | sort %}
+
+{% assign max_count = 0 %}
+{% assign min_count = 9999 %}
+{% for tag_word in tag_words %}
+  {% assign post_count = site.tags[tag_word].size %}
+  {% if post_count > max_count %}
+    {% assign max_count = post_count %}
+  {% endif %}
+  {% if post_count < min_count %}
+    {% assign min_count = post_count %}
+  {% endif %}
+{% endfor %}
+
 <div class="tag-cloud">
-  {% assign tags = site.tags | sort %}
-  {% for tag in tags %}
-    <span style="font-size: {{ tag[1].size | times: 40 | divided_by: site.tags.size | plus: 80  }}%">
-      <a href="{{ site.baseurl }}/tags/#{{ tag[0] | slugify }}">
-        {{ tag[0] }}
-      </a>
-    </span>
+  {% for tag_word in tag_words %}
+    {% assign post_count = site.tags[tag_word].size %}
+    
+    {% assign diff = max_count | minus: min_count %}
+    {% assign weight = post_count | minus: min_count | times: 1.0 | divided_by: diff | times: 4 | plus: 1 | round %}
+
+    <a href="{{ site.baseurl }}/tags/#{{ tag_word | cgi_escape }}" class="tag-weight-{{ weight }}">
+      {{ tag_word }}
+    </a>
   {% endfor %}
 </div>
