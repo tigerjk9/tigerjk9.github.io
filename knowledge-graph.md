@@ -1,6 +1,6 @@
 ---
 layout: single # 사용하시는 테마의 기본 페이지 레이아웃으로 변경하셔도 됩니다. (예: page)
-title: "태그 지식 그래프"
+title: "태그 지식 그래프!"
 permalink: /knowledge-graph/
 ---
 
