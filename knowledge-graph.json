@@ -16,19 +16,24 @@ layout: null
     {% assign processed_pairs = "" | split: "," %}
     {% for post1 in site.posts %}
       {% for post2 in site.posts %}
-        {% if post1.url != post2.url %}
-          {% assign pair1 = post1.url | append: "|" | append: post2.url %}
-          {% assign pair2 = post2.url | append: "|" | append: post1.url %}
-          {% unless processed_pairs contains pair1 or processed_pairs contains pair2 %}
-            {% assign common_tags = post1.tags | join: ' ' | split: ' ' | intersperse: post2.tags %}
-            {% if common_tags.size > 0 %}
-              {
-                "from": "{{ post1.url | relative_url }}",
-                "to": "{{ post2.url | relative_url }}"
-              },
-            {% endif %}
-            {% assign processed_pairs = processed_pairs | push: pair1 %}
-          {% endunless %}
+        {% if post1.url < post2.url %}
+          {% assign has_common_tag = false %}
+          {% for tag1 in post1.tags %}
+            {% for tag2 in post2.tags %}
+              {% if tag1 == tag2 %}
+                {% assign has_common_tag = true %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+            {% if has_common_tag %}{% break %}{% endif %}
+          {% endfor %}
+
+          {% if has_common_tag %}
+            {
+              "from": "{{ post1.url | relative_url }}",
+              "to": "{{ post2.url | relative_url }}"
+            },
+          {% endif %}
         {% endif %}
       {% endfor %}
     {% endfor %}
