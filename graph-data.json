@@ -1,12 +1,8 @@
 ---
-# 이 두 줄은 Jekyll이 이 파일을 처리하도록 하는 데 필요합니다.
-layout: null 
+layout: null
 ---
 {%- comment -%}
-  각종 변수들을 초기화합니다.
-  nodes: 태그 이름 목록 (중복 없음)
-  edges: 태그 간의 연결 목록
-  tag_counts: 태그별 사용 횟수
+  모든 게시물에서 사용된 태그 목록을 수집합니다.
 {%- endcomment -%}
 {%- assign all_tags = "" | split: "," -%}
 {%- for post in site.posts -%}
@@ -15,12 +11,24 @@ layout: null
   {%- endfor -%}
 {%- endfor -%}
 
-{%- assign unique_tags = all_tags | uniq -%}
+{%- comment -%}
+  중복을 제거하여 고유한 태그 목록만 남깁니다.
+{%- endcomment -%}
+{%- assign unique_tags = all_tags | uniq | sort -%}
 
 {
   "nodes": [
+    {%- comment -%}
+      각 고유 태그가 전체 태그 목록에서 몇 번 나타나는지 계산합니다.
+      이 부분이 오류를 해결하기 위해 수정된 부분입니다.
+    {%- endcomment -%}
     {%- for tag in unique_tags -%}
-      {%- assign count = all_tags | where: tag | size -%}
+      {%- assign count = 0 -%}
+      {%- for t in all_tags -%}
+        {%- if t == tag -%}
+          {%- assign count = count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
       {
         "id": "{{ tag | escape }}",
         "label": "{{ tag | escape }}",
@@ -33,19 +41,19 @@ layout: null
     {%- assign processed_edges = "" | split: "," -%}
     {%- for post in site.posts -%}
       {%- if post.tags.size > 1 -%}
-        {%- for tag1 in post.tags -%}
-          {%- for tag2 in post.tags -%}
-            {%- if tag1 != tag2 -%}
-              {%- assign edge_pair = tag1 | append: '--' | append: tag2 -%}
-              {%- assign reverse_edge_pair = tag2 | append: '--' | append: tag1 -%}
-              {%- unless processed_edges contains edge_pair or processed_edges contains reverse_edge_pair -%}
-                {
-                  "from": "{{ tag1 | escape }}",
-                  "to": "{{ tag2 | escape }}"
-                }
-                {%- assign processed_edges = processed_edges | push: edge_pair -%},
-              {%- endunless -%}
-            {%- endif -%}
+        {%- assign post_tags_sorted = post.tags | sort -%}
+        {%- for i in (0..post_tags_sorted.size-2) -%}
+          {%- for j in (i+1..post_tags_sorted.size-1) -%}
+            {%- assign tag1 = post_tags_sorted[i] -%}
+            {%- assign tag2 = post_tags_sorted[j] -%}
+            {%- assign edge_pair = tag1 | append: '--' | append: tag2 -%}
+            {%- unless processed_edges contains edge_pair -%}
+              {
+                "from": "{{ tag1 | escape }}",
+                "to": "{{ tag2 | escape }}"
+              }
+              {%- assign processed_edges = processed_edges | push: edge_pair -%},
+            {%- endunless -%}
           {%- endfor -%}
         {%- endfor -%}
       {%- endif -%}
