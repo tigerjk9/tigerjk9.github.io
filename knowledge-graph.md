@@ -1,10 +1,10 @@
 ---
-layout: single # 사용하시는 테마의 기본 페이지 레이아웃으로 변경하셔도 됩니다. (예: page)
-title: "태그 지식 그래프!"
+layout: single
+title: "지식 네트워크"
 permalink: /knowledge-graph/
 ---
 
-<div id="graph-container" style="width: 100%; height: 70vh; background-color: #f9f9f9; border: 1px solid #e1e1e1; border-radius: 8px;"></div>
+<div id="graph-container" style="width: 100%; height: 80vh; background-color: #0d1117; border: 1px solid #30363d; border-radius: 8px;"></div>
 
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
@@ -14,58 +14,78 @@ permalink: /knowledge-graph/
 
     // 그래프의 모양, 물리 효과 등 옵션을 설정합니다.
     const options = {
+      groups: {
+        tag: {
+          color: { background: '#6A5ACD', border: '#9370DB' }, // 태그는 보라색 계열
+          shape: 'dot',
+          font: { color: '#ffffff' }
+        },
+        post: {
+          color: { background: '#FFA500', border: '#FFDAB9' }, // 게시물은 주황색 계열
+          shape: 'box', // 게시물은 사각형 모양
+          font: { color: '#ffffff', size: 14 }
+        }
+      },
       nodes: {
-        shape: 'dot',
         borderWidth: 2,
-        font: { size: 16 },
         scaling: {
-          min: 10,
-          max: 40,
-          label: { enabled: true, min: 14, max: 22 }
+          min: 15,
+          max: 40
+        },
+        font: {
+          size: 16,
+          face: 'tahoma',
+          strokeWidth: 3,
+          strokeColor: '#0d1117'
         }
       },
       edges: {
-        width: 0.5,
-        color: { inherit: 'from' },
+        width: 1,
+        color: { color: '#4B525B' },
         smooth: { type: 'continuous' }
       },
       physics: {
         enabled: true,
         solver: 'forceAtlas2Based',
         forceAtlas2Based: {
-          gravitationalConstant: -70,
+          gravitationalConstant: -150,
           centralGravity: 0.01,
-          springLength: 200,
-          springConstant: 0.09
+          springLength: 250,
+          avoidOverlap: 0.8
         }
       },
       interaction: {
-        hover: true, 
+        hover: true,
         tooltipDelay: 200
       }
     };
 
-    // 1단계에서 만든 graph-data.json 파일을 불러옵니다.
-    fetch('/graph-data.json')
+    // '게시물'과 '태그' 데이터가 모두 포함된 JSON 파일을 불러옵니다.
+    fetch('/pages/graph-data.json')
       .then(response => response.json())
       .then(data => {
-        // 마지막 빈 edge 객체 제거
-        data.edges = data.edges.filter(edge => edge.from);
-
+        // Vis.js 데이터 형식에 맞게 변환
         const graphData = {
-            nodes: new vis.DataSet(data.nodes),
-            edges: new vis.DataSet(data.edges)
+          nodes: new vis.DataSet(data.nodes),
+          edges: new vis.DataSet(data.edges)
         };
-
+        
         // 네트워크(그래프)를 생성하고 화면에 그립니다.
         const network = new vis.Network(container, graphData, options);
 
-        // 노드를 클릭하면 해당 태그 페이지로 이동하는 이벤트
+        // 노드 클릭 이벤트를 수정하여 게시물과 태그를 구분합니다.
         network.on("click", function (params) {
           if (params.nodes.length > 0) {
-            const clickedNodeId = params.nodes[0];
-            // 블로그의 태그 URL 구조에 맞게 수정하세요. (보통 /tags/#태그명 형식입니다)
-            window.open(`/tags/#${clickedNodeId}`, '_blank');
+            const nodeId = params.nodes[0];
+            const node = graphData.nodes.get(nodeId); // 클릭한 노드의 전체 정보 가져오기
+
+            if (node.group === 'post') {
+              // 노드가 'post' 그룹이면 해당 게시물 URL로 이동
+              window.open(node.id, '_blank');
+            } else if (node.group === 'tag') {
+              // 노드가 'tag' 그룹이면 해당 태그 페이지로 이동
+              window.open(`/tags/#${node.id}`, '_blank');
+            }
           }
         });
       })
