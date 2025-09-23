@@ -14,6 +14,12 @@ class: "page--knowledge-graph"
   .page--knowledge-graph .page__title {
     text-align: center;
   }
+
+  /* 콘텐츠 시작 위치 조정 (수정된 값) */
+  .page--knowledge-graph #main {
+    /* 사이드바 너비(300px) + 여백 만큼 왼쪽 여백을 줍니다. */
+    margin-left: 320px; 
+  }
 </style>
 
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
