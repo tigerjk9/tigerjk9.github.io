@@ -1,21 +1,22 @@
 ---
-layout: single
+layout: wide
 title: "지식 그래프 (Knowledge Graph)"
 permalink: /knowledge-graph/
 class: "page--knowledge-graph"
 ---
 
 <style>
+  /* 프레임 확장 */
   .page--knowledge-graph .page__inner-wrap {
     max-width: none !important;
   }
 
-   /* 제목 가운데 정렬 (이 부분을 추가하세요) */
+  /* 제목 가운데 정렬 */
   .page--knowledge-graph .page__title {
     text-align: center;
   }
 
-  /* 콘텐츠 시작 위치 조정 (수정된 값) */
+  /* 콘텐츠 시작 위치 조정 */
   .page--knowledge-graph #main {
     /* 사이드바 너비(300px) + 여백 만큼 왼쪽 여백을 줍니다. */
     margin-left: 320px; 
@@ -28,7 +29,6 @@ class: "page--knowledge-graph"
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
-    // 이전과 동일한 스크립트 코드...
     var container = document.getElementById('mynetwork');
 
     fetch('/knowledge-graph.json')
@@ -52,14 +52,42 @@ class: "page--knowledge-graph"
           nodes: {
             shape: 'dot',
             borderWidth: 0,
-            scaling: { min: 10, max: 40, label: { min: 14, max: 30, drawThreshold: 8, maxVisible: 25 }},
-            font: { color: '#d3d3d3', size: 16, face: 'sans-serif', strokeWidth: 0 }
+            scaling: { 
+              min: 10, 
+              max: 40, 
+              label: { 
+                min: 14, 
+                max: 30, 
+                drawThreshold: 8, 
+                maxVisible: 25 
+              }
+            },
+            font: { 
+              color: '#d3d3d3', 
+              size: 16, 
+              face: 'sans-serif', 
+              strokeWidth: 0 
+            }
           },
+          
+          /* --- 연결선 스타일 (화살표 + 동적 곡선 적용) --- */
           edges: {
             width: 0.5,
-            color: { color: '#505050', highlight: '#848484' },
-            smooth: { type: 'continuous' }
+            color: {
+              color: '#505050',
+              highlight: '#848484'
+            },
+            smooth: {
+              type: 'dynamic' // 곡률을 동적으로 계산합니다.
+            },
+            arrows: {
+              to: {
+                enabled: true,    // 화살표를 활성화합니다.
+                scaleFactor: 0.5  // 화살표의 크기를 조절합니다.
+              }
+            }
           },
+          
           physics: {
             solver: 'forceAtlas2Based',
             forceAtlas2Based: {
@@ -83,10 +111,12 @@ class: "page--knowledge-graph"
 
         var network = new vis.Network(container, data, options);
         
+        // 그래프가 안정화된 후 물리 엔진을 꺼서 노드를 고정
         network.on("stabilizationIterationsDone", function () {
           network.setOptions( { physics: false } );
         });
 
+        // 노드 클릭 시 해당 게시물 URL로 이동
         network.on("click", function (params) {
             if (params.nodes.length > 0) {
                 var nodeId = params.nodes[0];
