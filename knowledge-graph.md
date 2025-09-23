@@ -69,25 +69,26 @@ class: "page--knowledge-graph"
               strokeWidth: 0 
             }
           },
-          
-          /* --- 연결선 스타일 (화살표 + 동적 곡선 적용) --- */
+          // =================================================================
+          // 연결선(edges) 스타일 수정: 노드 색상 따라가기 + 화살표 + 곡선
+          // =================================================================
           edges: {
             width: 0.5,
-            color: {
-              color: '#505050',
-              highlight: '#848484'
-            },
             smooth: {
-              type: 'dynamic' // 곡률을 동적으로 계산합니다.
+              type: 'dynamic'
             },
             arrows: {
               to: {
-                enabled: true,    // 화살표를 활성화합니다.
-                scaleFactor: 0.5  // 화살표의 크기를 조절합니다.
+                enabled: true,
+                scaleFactor: 0.5
               }
+            },
+            color: {
+              inherit: 'both', // 양쪽 노드의 색상을 모두 상속받습니다.
+              opacity: 0.8     // 선의 투명도를 설정합니다.
             }
           },
-          
+          // =================================================================
           physics: {
             solver: 'forceAtlas2Based',
             forceAtlas2Based: {
