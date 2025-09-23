@@ -9,6 +9,11 @@ class: "page--knowledge-graph"
   .page--knowledge-graph .page__inner-wrap {
     max-width: none !important;
   }
+
+   /* 제목 가운데 정렬 (이 부분을 추가하세요) */
+  .page--knowledge-graph .page__title {
+    text-align: center;
+  }
 </style>
 
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
