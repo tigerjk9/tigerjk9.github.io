@@ -4,6 +4,14 @@ title: "지식 그래프 (Knowledge Graph)"
 permalink: /knowledge-graph/
 ---
 
+<style>
+  .page__inner-wrap {
+    max-width: 100% !important;
+    padding-left: 1em !important;
+    padding-right: 1em !important;
+  }
+</style>
+
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
 <div id="mynetwork" style="width: 100%; height: 90vh; background-color: #202020;"></div>
@@ -30,56 +38,36 @@ permalink: /knowledge-graph/
         };
 
         // =================================================================
-        // 옵시디언 스타일을 위한 그래프 옵션 (대폭 수정)
+        // 2번 요청: 무작위성 강화를 위한 물리 엔진 옵션 수정
         // =================================================================
         var options = {
-          nodes: {
+          nodes: { /* 이전과 동일 */
             shape: 'dot',
-            borderWidth: 0, // 노드 테두리 제거
-            scaling: {
-              min: 10,
-              max: 40,
-              label: {
-                min: 14,
-                max: 30,
-                drawThreshold: 8, // 줌 레벨이 8 이상일 때만 라벨 표시
-                maxVisible: 25   // 최대 25개 라벨만 동시 표시
-              }
-            },
-            font: {
-              color: '#d3d3d3', // 폰트 색상을 밝은 회색으로 변경
-              size: 16,
-              face: 'sans-serif',
-              strokeWidth: 0 // 폰트 테두리 제거
-            }
+            borderWidth: 0,
+            scaling: { min: 10, max: 40, label: { min: 14, max: 30, drawThreshold: 8, maxVisible: 25 }},
+            font: { color: '#d3d3d3', size: 16, face: 'sans-serif', strokeWidth: 0 }
           },
-          edges: {
-            width: 0.5, // 연결선을 더 가늘게
-            color: {
-              color: '#505050', // 연결선 색상을 은은한 회색으로
-              highlight: '#848484'
-            },
-            smooth: {
-              type: 'continuous'
-            }
+          edges: { /* 이전과 동일 */
+            width: 0.5,
+            color: { color: '#505050', highlight: '#848484' },
+            smooth: { type: 'continuous' }
           },
           physics: {
-            // 노드 간 거리를 확보하고 자연스러운 배치를 위한 물리엔진 설정
             solver: 'forceAtlas2Based',
             forceAtlas2Based: {
-              gravitationalConstant: -100, // 서로 밀어내는 힘을 강하게 (노드 간격 확보)
-              centralGravity: 0.01,
-              springLength: 200, // 연결된 노드 간의 기본 거리를 길게
+              gravitationalConstant: -120,
+              centralGravity: 0.001, // 중앙으로 당기는 힘을 거의 0에 가깝게 대폭 줄임
+              springLength: 200,
               springConstant: 0.05,
-              avoidOverlap: 0.5 // 노드가 겹치지 않도록 하는 강도
+              avoidOverlap: 0.8 // 겹침 방지 강도를 높임
             },
             minVelocity: 0.75,
             stabilization: {
-              iterations: 200
+              iterations: 300 // 안정화 계산을 더 많이 하여 노드가 충분히 퍼지도록 함
             }
           },
-          interaction: {
-            hover: true, // 마우스를 올렸을 때 하이라이트
+          interaction: { /* 이전과 동일 */
+            hover: true,
             tooltipDelay: 200,
             hideEdgesOnDrag: true
           }
@@ -87,6 +75,11 @@ permalink: /knowledge-graph/
         // =================================================================
 
         var network = new vis.Network(container, data, options);
+        
+        // (선택 사항) 그래프가 안정화된 후 물리 엔진을 꺼서 노드를 고정
+        network.on("stabilizationIterationsDone", function () {
+          network.setOptions( { physics: false } );
+        });
 
         network.on("click", function (params) {
             if (params.nodes.length > 0) {
