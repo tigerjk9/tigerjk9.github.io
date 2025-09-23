@@ -18,7 +18,7 @@ class: "page--knowledge-graph"
 
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
-<div id="mynetwork" style="width: 100%; height: 90vh; background-color: #202020;"></div>
+<div id="mynetwork" style="width: 100%; height: 90vh; background-color: #0A192F;"></div>
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
