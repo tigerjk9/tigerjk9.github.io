@@ -2,13 +2,12 @@
 layout: single
 title: "지식 그래프 (Knowledge Graph)"
 permalink: /knowledge-graph/
+class: "page--knowledge-graph"
 ---
 
 <style>
-  .page__inner-wrap {
-    max-width: 100% !important;
-    padding-left: 1em !important;
-    padding-right: 1em !important;
+  .page--knowledge-graph .page__inner-wrap {
+    max-width: none !important;
   }
 </style>
 
@@ -18,6 +17,7 @@ permalink: /knowledge-graph/
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
+    // 이전과 동일한 스크립트 코드...
     var container = document.getElementById('mynetwork');
 
     fetch('/knowledge-graph.json')
@@ -37,17 +37,14 @@ permalink: /knowledge-graph/
           edges: graphData.edges
         };
 
-        // =================================================================
-        // 2번 요청: 무작위성 강화를 위한 물리 엔진 옵션 수정
-        // =================================================================
         var options = {
-          nodes: { /* 이전과 동일 */
+          nodes: {
             shape: 'dot',
             borderWidth: 0,
             scaling: { min: 10, max: 40, label: { min: 14, max: 30, drawThreshold: 8, maxVisible: 25 }},
             font: { color: '#d3d3d3', size: 16, face: 'sans-serif', strokeWidth: 0 }
           },
-          edges: { /* 이전과 동일 */
+          edges: {
             width: 0.5,
             color: { color: '#505050', highlight: '#848484' },
             smooth: { type: 'continuous' }
@@ -56,27 +53,25 @@ permalink: /knowledge-graph/
             solver: 'forceAtlas2Based',
             forceAtlas2Based: {
               gravitationalConstant: -120,
-              centralGravity: 0.001, // 중앙으로 당기는 힘을 거의 0에 가깝게 대폭 줄임
+              centralGravity: 0.001,
               springLength: 200,
               springConstant: 0.05,
-              avoidOverlap: 0.8 // 겹침 방지 강도를 높임
+              avoidOverlap: 0.8
             },
             minVelocity: 0.75,
             stabilization: {
-              iterations: 300 // 안정화 계산을 더 많이 하여 노드가 충분히 퍼지도록 함
+              iterations: 300
             }
           },
-          interaction: { /* 이전과 동일 */
+          interaction: {
             hover: true,
             tooltipDelay: 200,
             hideEdgesOnDrag: true
           }
         };
-        // =================================================================
 
         var network = new vis.Network(container, data, options);
         
-        // (선택 사항) 그래프가 안정화된 후 물리 엔진을 꺼서 노드를 고정
         network.on("stabilizationIterationsDone", function () {
           network.setOptions( { physics: false } );
         });
