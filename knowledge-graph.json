@@ -1,0 +1,37 @@
+---
+layout: null
+---
+{
+  "nodes": [
+    {% for post in site.posts %}
+      {
+        "id": "{{ post.url | relative_url }}",
+        "label": "{{ post.title | escape }}",
+        "group": "{{ post.categories.first | default: 'default' }}",
+        "url": "{{ post.url | relative_url }}"
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
+  "edges": [
+    {% assign processed_pairs = "" | split: "," %}
+    {% for post1 in site.posts %}
+      {% for post2 in site.posts %}
+        {% if post1.url != post2.url %}
+          {% assign pair1 = post1.url | append: "|" | append: post2.url %}
+          {% assign pair2 = post2.url | append: "|" | append: post1.url %}
+          {% unless processed_pairs contains pair1 or processed_pairs contains pair2 %}
+            {% assign common_tags = post1.tags | join: ' ' | split: ' ' | intersperse: post2.tags %}
+            {% if common_tags.size > 0 %}
+              {
+                "from": "{{ post1.url | relative_url }}",
+                "to": "{{ post2.url | relative_url }}"
+              },
+            {% endif %}
+            {% assign processed_pairs = processed_pairs | push: pair1 %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    {}
+  ]
+}
