@@ -5,8 +5,15 @@ search: false
 
 @charset "utf-8";
 
+// 1. 테마 변수 덮어쓰기 (Overrides)
+// 콘텐츠 영역의 최대 너비 제한을 없애 전체 너비로 확장합니다.
+$max-width: 100%;
+
+// 2. 테마 기본 스타일 불러오기
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+// 3. 사용자 정의 스타일 (Custom CSS)
 /* --- Tag Cloud & Sidebar Fix --- */
 
 /* 1. Tag Cloud 스타일 */
