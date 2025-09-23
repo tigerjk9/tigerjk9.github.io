@@ -1,94 +1,99 @@
 ---
 layout: single
-title: "지식 네트워크"
+title: "지식 그래프 (Knowledge Graph)"
 permalink: /knowledge-graph/
 ---
 
-<div id="graph-container" style="width: 100%; height: 80vh; background-color: #0d1117; border: 1px solid #30363d; border-radius: 8px;"></div>
-
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
+<div id="mynetwork" style="width: 100%; height: 800px; border: 1px solid #ddd;"></div>
+
 <script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function() {
-    const container = document.getElementById('graph-container');
+  // DOM이 로드되면 스크립트 실행
+  document.addEventListener('DOMContentLoaded', function() {
+    // 그래프가 그려질 컨테이너
+    var container = document.getElementById('mynetwork');
 
-    // 그래프의 모양, 물리 효과 등 옵션을 설정합니다.
-    const options = {
-      groups: {
-        tag: {
-          color: { background: '#6A5ACD', border: '#9370DB' }, // 태그는 보라색 계열
-          shape: 'dot',
-          font: { color: '#ffffff' }
-        },
-        post: {
-          color: { background: '#FFA500', border: '#FFDAB9' }, // 게시물은 주황색 계열
-          shape: 'box', // 게시물은 사각형 모양
-          font: { color: '#ffffff', size: 14 }
-        }
-      },
-      nodes: {
-        borderWidth: 2,
-        scaling: {
-          min: 15,
-          max: 40
-        },
-        font: {
-          size: 16,
-          face: 'tahoma',
-          strokeWidth: 3,
-          strokeColor: '#0d1117'
-        }
-      },
-      edges: {
-        width: 1,
-        color: { color: '#4B525B' },
-        smooth: { type: 'continuous' }
-      },
-      physics: {
-        enabled: true,
-        solver: 'forceAtlas2Based',
-        forceAtlas2Based: {
-          gravitationalConstant: -150,
-          centralGravity: 0.01,
-          springLength: 250,
-          avoidOverlap: 0.8
-        }
-      },
-      interaction: {
-        hover: true,
-        tooltipDelay: 200
-      }
-    };
-
-    // '게시물'과 '태그' 데이터가 모두 포함된 JSON 파일을 캐시 없이 항상 새로 불러옵니다.
-    fetch('/graph-data.json', { cache: 'no-cache' })
+    // 1단계에서 생성한 JSON 데이터 가져오기
+    fetch('/knowledge-graph.json')
       .then(response => response.json())
-      .then(data => {
-        // Vis.js 데이터 형식에 맞게 변환
-        const graphData = {
-          nodes: new vis.DataSet(data.nodes),
-          edges: new vis.DataSet(data.edges)
-        };
+      .then(graphData => {
         
-        // 네트워크(그래프)를 생성하고 화면에 그립니다.
-        const network = new vis.Network(container, graphData, options);
+        // 빈 엣지 데이터 제거 (JSON 생성 시 마지막 쉼표 처리용)
+        graphData.edges = graphData.edges.filter(edge => edge.from && edge.to);
 
-        // 노드 클릭 이벤트를 수정하여 게시물과 태그를 구분합니다.
-        network.on("click", function (params) {
-          if (params.nodes.length > 0) {
-            const nodeId = params.nodes[0];
-            const node = graphData.nodes.get(nodeId); // 클릭한 노드의 전체 정보 가져오기
-
-            if (node.group === 'post') {
-              // 노드가 'post' 그룹이면 해당 게시물 URL로 이동
-              window.open(node.id, '_blank');
-            } else if (node.group === 'tag') {
-// 노드가 'tag' 그룹이면 해당 태그 페이지로 이동
-              window.open(`/tags/#${node.id}`, '_blank');
-            }
-          }
+        // 노드 크기 계산: 각 노드가 얼마나 많은 연결(엣지)을 가졌는지 계산
+        const a_nodes = graphData.nodes.map(node => {
+          const degree = graphData.edges.filter(edge => edge.from === node.id || edge.to === node.id).length;
+          // 연결 수에 비례하여 노드 크기(value) 설정 (최소값 1)
+          node.value = Math.max(degree, 1); 
+          return node;
         });
-      })
-      .catch(error => console.error('그래프 데이터를 불러오는 중 오류 발생:', error));
+
+        // 데이터 객체 생성
+        var data = {
+          nodes: a_nodes,
+          edges: graphData.edges
+        };
+
+        // 그래프 옵션 설정
+        var options = {
+          nodes: {
+            shape: 'dot', // 노드 모양
+            scaling: {
+              min: 10,
+              max: 40,
+              label: {
+                min: 8,
+                max: 20
+              }
+            },
+            font: {
+              size: 14,
+              face: 'Tahoma'
+            }
+          },
+          edges: {
+            width: 0.15,
+            color: { inherit: 'from' },
+            smooth: {
+              type: 'continuous'
+            }
+          },
+          physics: {
+            // 물리 엔진 설정으로 노드들이 자연스럽게 퍼지도록 함
+            forceAtlas2Based: {
+              gravitationalConstant: -26,
+              centralGravity: 0.005,
+              springLength: 230,
+              springConstant: 0.18
+            },
+            maxVelocity: 146,
+            solver: 'forceAtlas2Based',
+            timestep: 0.35,
+            stabilization: { iterations: 150 }
+          },
+          interaction: {
+            // 마우스 오버, 드래그 등 상호작용 설정
+            tooltipDelay: 200,
+            hideEdgesOnDrag: true
+          }
+        };
+
+        // 네트워크 생성
+        var network = new vis.Network(container, data, options);
+
+        // 노드를 클릭했을 때 해당 게시물 URL로 이동하는 이벤트 추가
+        network.on("click", function (params) {
+            if (params.nodes.length > 0) {
+                var nodeId = params.nodes[0];
+                var node = data.nodes.find(n => n.id === nodeId);
+                if (node && node.url) {
+                    window.open(node.url, '_blank');
+                }
+            }
+        });
+
+      });
   });
 </script>
