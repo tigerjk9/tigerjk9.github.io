@@ -60,8 +60,8 @@ class: "page--knowledge-graph"
             shape: 'dot',
             borderWidth: 0,
             scaling: { 
-              min: 10, 
-              max: 40, 
+              min: 15, 
+              max: 50, 
               label: { 
                 min: 14, 
                 max: 30, 
@@ -74,10 +74,15 @@ class: "page--knowledge-graph"
               size: 16, 
               face: 'sans-serif', 
               strokeWidth: 0 
+            },
+            shadow: {
+              enabled: true,
+              color: '#255784',
+              size: 15
             }
           },
           edges: {
-            width: 0.5,
+            width: 1,
             smooth: {
               type: 'dynamic'
             },
@@ -88,8 +93,13 @@ class: "page--knowledge-graph"
               }
             },
             color: {
-              inherit: 'both',
-              opacity: 0.8
+              color: '#84A9C0',
+              highlight: '#FFFFFF'
+            },
+            shadow: {
+              enabled: true,
+              color: '#255784',
+              size: 10
             }
           },
           physics: {
@@ -97,7 +107,7 @@ class: "page--knowledge-graph"
             forceAtlas2Based: {
               gravitationalConstant: -120,
               centralGravity: 0.02,
-              springLength: 100,
+              springLength: 150,
               springConstant: 0.05,
               avoidOverlap: 0.8
             },
