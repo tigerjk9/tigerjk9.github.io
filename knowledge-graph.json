@@ -18,5 +18,32 @@ layout: null
     {%- endfor -%}
     {{ nodes_array | join: "," }}
   ],
-  "edges": []
+  "edges": [
+    {%- assign edges_list = "" -%}
+    {% for post1 in site.posts %}
+      {% for post2 in site.posts %}
+        {% if post1.url < post2.url %}
+
+          {%- assign common_tag_count = 0 -%}
+          {% for tag1 in post1.tags %}
+            {% if post2.tags contains tag1 %}
+              {%- assign common_tag_count = common_tag_count | plus: 1 -%}
+            {% endif %}
+          {% endfor %}
+
+          {% if common_tag_count > 0 %}
+            {%- capture edge_json -%}
+              {
+                "from": "{{ post1.url | relative_url }}",
+                "to": "{{ post2.url | relative_url }}",
+                "value": {{ common_tag_count }}
+              }
+            {%- endcapture -%}
+            {%- assign edges_list = edges_list | append: edge_json | append: "," -%}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    {{ edges_list | remove_last: "," }}
+  ]
 }
