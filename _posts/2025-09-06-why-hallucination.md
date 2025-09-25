@@ -5,11 +5,11 @@ categories: [AI]
 tags: [AI, LLM, 환각, Hallucination]
 ---
 
-![할루시네이션](/assets/hallucination.png)
-
 ## AI 언어모델이 환각을 일으키는 이유는 무엇일까?
 
 > AI가 때때로 틀린 정보를 마치 사실인 양 자신 있게 이야기하는 '환각(Hallucination)' 현상은 마치 어려운 시험 문제 앞에서 정답을 모를 때 "모른다"고 말하기보다 아는 척하며 답을 지어내는 학생의 모습과 닮았습니다. 이는 단순한 기술적 결함이 아니라, AI가 훈련되고 평가받는 방식에 깊이 뿌리내린 문제입니다.
+
+![할루시네이션](/assets/hallucination.png)
 
 
 ### 1. AI는 어떻게 찍는 습관을 갖게 될까?
