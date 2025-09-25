@@ -2,7 +2,7 @@
 title: "실용적인 인간 중심 AI 프레임워크 (Beyond human in the loop)"
 date: 2025-09-04 00:10:00 +0900
 categories: [AI]
-tags: [인간중심AI, AI프레임워크, human-in-the-loop]
+tags: [인간중심AI, AI프레임워크, human-in-the-loop, AI, 교육]
 ---
 
 ## 실용적인 '인간 중심' 프레임워크 (Beyond “human in the loop”)
