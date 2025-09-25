@@ -2,16 +2,14 @@
 layout: wide
 title: "포스트 활동 히트맵"
 permalink: /heatmap/
-class: "page--knowledge-graph" # 지식그래프와 동일한 다크모드/전체너비 스타일 적용
+class: "page--knowledge-graph"
 ---
 
 <style>
-  /* Cal-Heatmap 라이브러리 기본 스타일 */
   .cal-heatmap-container {
     display: block;
     padding: 2em;
   }
-  /* 툴팁 스타일 (옵션) */
   .ch-tooltip {
     background: #333;
     color: #fff;
@@ -50,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
         value: postsByDay[date]
       }));
 
-      const cal = new CalHeatmap();
+      const cal = new calheatmap(); // new CalHeatmap() -> new calheatmap() 으로 수정
 
       cal.paint({
         data: {
@@ -84,9 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }, 
       [
-        // [수정] Tooltip을 CalHeatmap.Tooltip으로 정확하게 지정
+        // [수정] CalHeatmap.Tooltip -> calheatmap.Tooltip 으로 정확하게 지정
         [
-          CalHeatmap.Tooltip,
+          calheatmap.Tooltip,
           {
             text: function (date, value, dayjsDate) {
               return (value ? value : 'No') + ' post' + (value > 1 ? 's' : '') + ' on ' + dayjsDate.format('LL');
@@ -96,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
       ]);
     })
     .catch(error => {
-      // 오류 발생 시, 화면에 에러 메시지를 표시하여 원인 파악을 돕습니다.
       document.getElementById('cal-heatmap').innerHTML = '<h3 style="color:red;">오류 발생: ' + error.message + '</h3><p>개발자 도구(F12)의 Console 탭에서 더 자세한 정보를 확인하세요.</p>';
       console.error(error);
     });
