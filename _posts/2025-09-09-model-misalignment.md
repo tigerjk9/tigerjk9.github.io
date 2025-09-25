@@ -2,7 +2,7 @@
 title: "AI 언어에 물들다: LLM이 인간의 말에 미치는 영향"
 date: 2025-09-09 00:58:00 +0900
 categories: [AI]
-tags: [LLM, AI윤리, 모델불일치]
+tags: [LLM, AI윤리, 모델불일치, AI, 인간중심AI]
 ---
 
 ## 논문 분석: M​odel Misalignment and Language Change
