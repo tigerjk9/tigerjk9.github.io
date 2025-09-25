@@ -2,7 +2,7 @@
 title: "[심리적 안전감 시리즈 2] 심리적 안전감 공학(psychological safety engineering)"
 date: 2025-09-11 01:05:02 +0900
 categories: [교육]
-tags: [심리적안전감, 피드백, 스캐폴딩, 교육설계]
+tags: [심리적안전감, 피드백, 스캐폴딩, 교육설계, 학습과학, 교육공학, 교육]
 ---
 
 ## [심리적 안전감 시리즈 2] 심리적 안전감 공학(Psychological Safety Engineering)
