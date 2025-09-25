@@ -14,12 +14,18 @@ layout: null
     {% endfor %}
   ],
   "edges": [
-    {%- assign edges = "" -%}
+    {%- assign edges_list = "" -%}
     {% for post1 in site.posts %}
       {% for post2 in site.posts %}
         {% if post1.url < post2.url %}
-          {% assign common_tags = post1.tags | intersperse: ',' | join: ',' | split: ',' | uniq | where_exp: "item", "post2.tags contains item" %}
-          {% assign common_tag_count = common_tags | size %}
+
+          {% comment %} 공통 태그 개수 계산 (안정적인 방식으로 복구) {% endcomment %}
+          {%- assign common_tag_count = 0 -%}
+          {% for tag1 in post1.tags %}
+            {% if post2.tags contains tag1 %}
+              {%- assign common_tag_count = common_tag_count | plus: 1 -%}
+            {% endif %}
+          {% endfor %}
 
           {% if common_tag_count > 0 %}
             {%- capture edge_json -%}
@@ -29,11 +35,11 @@ layout: null
                 "value": {{ common_tag_count }}
               }
             {%- endcapture -%}
-            {%- assign edges = edges | append: edge_json | append: "," -%}
+            {%- assign edges_list = edges_list | append: edge_json | append: "," -%}
           {% endif %}
         {% endif %}
       {% endfor %}
     {% endfor %}
-    {{ edges | remove_last: "," }}
+    {{ edges_list | remove_last: "," }}
   ]
 }
