@@ -12,7 +12,6 @@ class: "page--knowledge-graph"
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/plugins/Tooltip.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.css">
 
 <div id="cal-heatmap" style="color: #eee;"></div>
@@ -42,7 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const cal = new CalHeatmap();
 
+      // [수정] paint() 함수를 올바른 방식으로 호출합니다.
       cal.paint({
+        // =================== 데이터 및 기본 설정 ===================
         data: {
           source: heatmapData,
           x: 'date',
@@ -71,19 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
           width: 15,
           height: 15,
           gutter: 4
-        }
-      },
-      [
-        [
-          CalHeatmap.Tooltip, // 이제 이 코드가 정상적으로 동작합니다.
-          {
-            text: function (date, value, dayjsDate) {
+        },
+        // ========================================================
+        // [수정] 플러그인은 options 객체 안에 'plugins' 키로 설정합니다.
+        // ========================================================
+        plugins: {
+          tooltip: {
+            enabled: true,
+            text: function(date, value, dayjsDate) {
               return (value ? value : '게시물 없음') + (value ? '개' : '') + ' (' + dayjsDate.format('YYYY-MM-DD') + ')';
             }
           }
-        ]
-      ]
-      );
+        }
+      });
     })
     .catch(error => {
       document.getElementById('cal-heatmap').innerHTML = '<h3 style="color:red;">오류 발생: ' + error.message + '</h3><p>개발자 도구(F12)의 Console 탭에서 더 자세한 정보를 확인하세요.</p>';
