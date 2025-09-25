@@ -12,6 +12,7 @@ class: "page--knowledge-graph"
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/plugins/Tooltip.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.css">
 
 <div id="cal-heatmap" style="color: #eee;"></div>
@@ -39,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
         value: postsByDay[date]
       }));
 
-      const cal = new CalHeatmap(); // new CalHeatmap()으로 최종 수정
-      console.log(CalHeatmap); // <--- 이 줄을 추가해주세요!
+      const cal = new CalHeatmap();
+
       cal.paint({
         data: {
           source: heatmapData,
@@ -72,17 +73,17 @@ document.addEventListener('DOMContentLoaded', function() {
           gutter: 4
         }
       },
-      // [수정] 주석을 해제하여 툴팁 플러그인을 다시 활성화합니다.
       [
         [
-          CalHeatmap.Tooltip, // CalHeatmap.Tooltip으로 최종 수정
+          CalHeatmap.Tooltip, // 이제 이 코드가 정상적으로 동작합니다.
           {
             text: function (date, value, dayjsDate) {
               return (value ? value : '게시물 없음') + (value ? '개' : '') + ' (' + dayjsDate.format('YYYY-MM-DD') + ')';
             }
           }
         ]
-      ]);
+      ]
+      );
     })
     .catch(error => {
       document.getElementById('cal-heatmap').innerHTML = '<h3 style="color:red;">오류 발생: ' + error.message + '</h3><p>개발자 도구(F12)의 Console 탭에서 더 자세한 정보를 확인하세요.</p>';
