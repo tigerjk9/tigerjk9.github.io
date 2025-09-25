@@ -25,7 +25,6 @@ class: "page--knowledge-graph"
     padding: 0;
   }
   
-  /* --- [추가] 태그 버튼 및 레이아웃 스타일 --- */
   #graph-container {
     position: relative;
     width: 100vw;
@@ -60,8 +59,6 @@ class: "page--knowledge-graph"
     background-color: #255784;
     color: #ffffff;
   }
-  /* --- [추가] --- */
-
 </style>
 
 <div id="graph-container">
@@ -85,12 +82,10 @@ class: "page--knowledge-graph"
         const a_nodes = graphData.nodes.map(node => {
           const degree = graphData.edges.filter(edge => edge.from === node.id || edge.to === node.id).length;
           node.value = Math.max(degree, 1);
-          // [추가] 원본 색상 정보 저장
-          node.originalColor = '#97C2FC'; // vis.js 기본 노드 색상
+          node.originalColor = '#97C2FC';
           return node;
         });
 
-        // [수정] vis.DataSet 사용
         var nodesDataSet = new vis.DataSet(a_nodes);
         var edgesDataSet = new vis.DataSet(graphData.edges);
 
@@ -162,24 +157,22 @@ class: "page--knowledge-graph"
             }
         });
 
-        // --- [추가] 태그 버튼 생성 및 하이라이트 기능 ---
+        // --- 태그 버튼 생성 및 하이라이트 기능 ---
 
-        // 1. 모든 태그 추출 및 버튼 생성
         const allTags = new Set();
         nodesDataSet.forEach(node => {
-          if (node.tags) {
+          // [수정] node.tags가 존재하고, '배열'인 경우에만 태그를 추출하도록 변경
+          if (node.tags && Array.isArray(node.tags)) {
             node.tags.forEach(tag => allTags.add(tag));
           }
         });
         
-        // '전체 보기' 버튼 추가
         const resetButton = document.createElement('button');
         resetButton.innerText = '전체 보기';
-        resetButton.className = 'active'; // 처음엔 활성화 상태
+        resetButton.className = 'active';
         resetButton.onclick = () => highlightByTag(null);
         tagButtonsContainer.appendChild(resetButton);
 
-        // 태그 버튼들 추가
         Array.from(allTags).sort().forEach(tag => {
           const button = document.createElement('button');
           button.innerText = tag;
@@ -187,9 +180,7 @@ class: "page--knowledge-graph"
           tagButtonsContainer.appendChild(button);
         });
         
-        // 2. 하이라이트 함수
         function highlightByTag(tag) {
-          // 모든 버튼의 active 클래스 제거 후, 현재 클릭된 버튼에만 추가
           const buttons = tagButtonsContainer.getElementsByTagName('button');
           for (let btn of buttons) {
             if (btn.innerText === (tag || '전체 보기')) {
@@ -200,7 +191,6 @@ class: "page--knowledge-graph"
           }
 
           if (tag === null) {
-            // 전체 보기: 모든 노드와 엣지를 원래 스타일로 복구
             const allNodes = nodesDataSet.map(node => {
               delete node.color;
               delete node.font.color;
@@ -219,12 +209,10 @@ class: "page--knowledge-graph"
           const dimmedFontColor = 'rgba(211, 211, 211, 0.4)';
           const dimmedEdgeColor = 'rgba(132, 169, 192, 0.2)';
 
-          // 하이라이트할 노드 ID 집합 생성
           const highlightedNodeIds = new Set();
           nodesDataSet.forEach(node => {
-            if (node.tags && node.tags.includes(tag)) {
+            if (node.tags && Array.isArray(node.tags) && node.tags.includes(tag)) {
               highlightedNodeIds.add(node.id);
-              // 직접 연결된 이웃 노드 추가
               const connectedEdges = network.getConnectedEdges(node.id);
               connectedEdges.forEach(edgeId => {
                 const edge = edgesDataSet.get(edgeId);
@@ -234,7 +222,6 @@ class: "page--knowledge-graph"
             }
           });
 
-          // 노드 스타일 업데이트
           const nodesToUpdate = nodesDataSet.map(node => {
             if (highlightedNodeIds.has(node.id)) {
               delete node.color;
@@ -246,7 +233,6 @@ class: "page--knowledge-graph"
             return node;
           });
 
-          // 엣지 스타일 업데이트
           const edgesToUpdate = edgesDataSet.map(edge => {
             if (highlightedNodeIds.has(edge.from) && highlightedNodeIds.has(edge.to)) {
               delete edge.color;
@@ -259,7 +245,6 @@ class: "page--knowledge-graph"
           nodesDataSet.update(nodesToUpdate);
           edgesDataSet.update(edgesToUpdate);
         }
-        // --- [추가] 종료 ---
       });
   });
 </script>
