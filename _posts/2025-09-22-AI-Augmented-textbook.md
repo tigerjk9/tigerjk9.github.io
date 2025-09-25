@@ -2,7 +2,7 @@
 title: "AI 증강 교과서를 향하여"
 date: 2025-09-23 01:25 +0900
 categories: [AI]
-tags: [AI, textbook, personalization]
+tags: [AI, 개인화교육, 교과서, AI수업, 미래교육]
 ---
 
 - 이 글은 **Towards an AI-Augmented Textbook(출처: 아래 참고)**를 번역한 글 전문입니다.
