@@ -1,18 +1,4 @@
 ---
-layout: archive
-author_profile: true # [추가] 사이드바에 프로필을 표시하는 설정임
+layout: home
+author_profile: true
 ---
-
-<h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
-
-{% if paginator %}
-  {% assign posts = paginator.posts %}
-{% else %}
-  {% assign posts = site.posts %}
-{% endif %}
-
-<div class="entries-{{ page.entries_layout | default: 'list' }}">
-  {% include documents-collection.html entries=posts type=(page.entries_layout | default: 'list') %}
-</div>
-
-{% include paginator.html %}
