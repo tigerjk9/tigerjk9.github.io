@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         value: postsByDay[date]
       }));
 
-      const cal = new CalHeatmap(); // 대문자 'C'로 되돌림
+      const cal = new CalHeatmap(); // new CalHeatmap()으로 최종 수정
 
       cal.paint({
         data: {
@@ -71,19 +71,18 @@ document.addEventListener('DOMContentLoaded', function() {
           height: 15,
           gutter: 4
         }
-      }
-      // , // [수정] 플러그인 부분을 잠시 주석 처리하여 비활성화합니다.
-      // [
-      //   [
-      //     CalHeatmap.Tooltip,
-      //     {
-      //       text: function (date, value, dayjsDate) {
-      //         return (value ? value : 'No') + ' post' + (value > 1 ? 's' : '') + ' on ' + dayjsDate.format('LL');
-      //       }
-      //     }
-      //   ]
-      // ]
-      );
+      },
+      // [수정] 주석을 해제하여 툴팁 플러그인을 다시 활성화합니다.
+      [
+        [
+          CalHeatmap.Tooltip, // CalHeatmap.Tooltip으로 최종 수정
+          {
+            text: function (date, value, dayjsDate) {
+              return (value ? value : '게시물 없음') + (value ? '개' : '') + ' (' + dayjsDate.format('YYYY-MM-DD') + ')';
+            }
+          }
+        ]
+      ]);
     })
     .catch(error => {
       document.getElementById('cal-heatmap').innerHTML = '<h3 style="color:red;">오류 발생: ' + error.message + '</h3><p>개발자 도구(F12)의 Console 탭에서 더 자세한 정보를 확인하세요.</p>';
