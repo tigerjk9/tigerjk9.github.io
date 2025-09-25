@@ -10,55 +10,55 @@
 # Review documentation to determine if you should use `theme` or `remote_theme`
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
-# theme                         : "minimal-mistakes-jekyll"
-# remote_theme                  : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin     : "dark" # "default" , "air", "aqua", "contrast", "dirt", "neon", "mint", "plum", "sunrise"
+# theme                          : "minimal-mistakes-jekyll"
+# remote_theme                   : "mmistakes/minimal-mistakes"
+minimal_mistakes_skin    : "dark" # "default" , "air", "aqua", "contrast", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
-locale                    : "ko-KR"
-title                     : "닷커넥터의 지식과 경험의 발자국"
-title_separator           : "-"
-name                      : "김진관(닷커넥터)"
-description               : "닷커넥터의 지식과 경험의 발자국"
-url                       : "https://tigerjk9.github.io"
-baseurl                   : # the subpath of your site, e.g. "/blog"
-repository                : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-logo                      : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
-masthead_title            : # overrides the website title displayed in the masthead, use " " for no title
-words_per_minute          : 200
+locale                   : "ko-KR"
+title                    : "닷커넥터의 지식과 경험의 발자국"
+title_separator          : "-"
+name                     : "김진관(닷커넥터)"
+description              : "닷커넥터의 지식과 경험의 발자국"
+url                      : "https://tigerjk9.github.io"
+baseurl                  : # the subpath of your site, e.g. "/blog"
+repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
+words_per_minute         : 200
 comments:
-  provider              : # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
+  provider               : # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
 
 # SEO Related
-google_site_verification  :
-bing_site_verification    :
-naver_site_verification   :
-yandex_site_verification  :
-baidu_site_verification   :
+google_site_verification   :
+bing_site_verification     :
+naver_site_verification    :
+yandex_site_verification   :
+baidu_site_verification    :
 
 # Social Sharing
 twitter:
-  username              :
+  username               :
 facebook:
-  username              :
-  app_id                :
-  publisher             :
-og_image                : # Open Graph/Twitter default site image
+  username               :
+  app_id                 :
+  publisher              :
+og_image                 : # Open Graph/Twitter default site image
 
 # Analytics
 analytics:
-  provider              : false # false (default), "google", "google-universal", "google-gtag", "custom"
+  provider               : false # false (default), "google", "google-universal", "google-gtag", "custom"
   google:
-    tracking_id         :
-    anonymize_ip        : # true, false (default)
+    tracking_id          :
+    anonymize_ip         : # true, false (default)
 
 # Site Author
 author:
-  name                  : "김진관(닷커넥터)"
-  avatar                : "/assets/jinkwan.png"
-  bio                   : "배움, 나눔, 성장을 추구하는 연결주의자"
-  location              : #"대한민국 대전광역시"
-  email                 : "faithfuljk@naver.com"
+  name                   : "김진관(닷커넥터)"
+  avatar                 : "/assets/jinkwan.png"
+  bio                    : "배움, 나눔, 성장을 추구하는 연결주의자"
+  location               : #"대한민국 대전광역시"
+  email                  : "faithfuljk@naver.com"
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
@@ -145,3 +145,51 @@ sass:
 # Outputting
 permalink: /:categories/:title/
 timezone: #
+
+# Paginate
+paginate: 10 # amount of posts to show
+paginate_path: /page:num/
+
+# Plugins (previously gems:)
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jekyll-include-cache
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+      classes: wide
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
+# Archives
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+
+# HTML Compression
+compress_html:
+  clippings: all
+  ignore:
+    envs: development
