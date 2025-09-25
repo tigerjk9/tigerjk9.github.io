@@ -2,7 +2,7 @@
 title: "AI도 경력이 쌓이면 꼰대가 된다?!"
 date: 2025-09-08 00:39:00 +0900
 categories: [AI]
-tags: [LLM, AI윤리]
+tags: [LLM, AI윤리, 생성형AI, 인간중심AI, AI]
 ---
 
 ## AI도 경력이 쌓이면 꼰대가 된다?!
