@@ -171,7 +171,6 @@ defaults:
       comments: true
       share: true
       related: true
-      classes: wide
   # _pages
   - scope:
       path: ""
