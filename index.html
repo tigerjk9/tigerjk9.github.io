@@ -10,8 +10,7 @@ layout: archive
   {% assign posts = site.posts %}
 {% endif %}
 
-{% assign entries_layout = 'grid' %}
-<div class="entries-{{ entries_layout }}">
+{% assign entries_layout = 'list' %} <div class="entries-{{ entries_layout }}">
   {% include documents-collection.html entries=posts type=entries_layout %}
 </div>
 
