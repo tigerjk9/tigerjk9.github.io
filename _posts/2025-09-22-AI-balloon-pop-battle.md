@@ -2,7 +2,7 @@
 title: "손끝으로 즐기는 짜릿한 승부! AI 풍선 터뜨리기 게임"
 date: 2025-09-22 10:00:00 +0900
 categories: [AI]
-tags: [mediapipe, 웹앱, gamedev]
+tags: [mediapipe, 토이프로젝트, 바이브코딩, 웹앱, 이미지생성, 제미나이, 부스운영, gamedev]
 ---
 
 ## 손끝으로 즐기는 짜릿한 승부! AI 풍선 터뜨리기 게임 🎈
