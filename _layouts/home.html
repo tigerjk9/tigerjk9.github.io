@@ -2,6 +2,75 @@
 layout: archive
 ---
 
+{% raw %}
+<style>
+  #heatmap-section {
+    background-color: #0A192F; /* 히트맵 영역의 배경색 */
+    padding: 1em 0;
+  }
+  .cal-heatmap-container { 
+    display: block; 
+    padding: 2em; 
+  }
+  .ch-tooltip { 
+    background: #333; 
+    color: #fff; 
+    padding: 10px; 
+    border-radius: 4px; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); 
+  }
+</style>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.2/dist/cal-heatmap.css">
+
+<div id="heatmap-section">
+  <h2 style="color: #fff; text-align: center; margin-top: 0;">포스트 활동 히트맵</h2>
+  <div id="cal-heatmap" style="color: #eee;"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('/heatmap-data.json')
+    .then(response => {
+      if (!response.ok) { throw new Error('heatmap-data.json 로딩 실패'); }
+      return response.json();
+    })
+    .then(posts => {
+      const postsByDay = posts.reduce((acc, post) => {
+        const date = post.date;
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+      }, {});
+      const heatmapData = Object.keys(postsByDay).map(date => ({ date: date, value: postsByDay[date] }));
+
+      const cal = new CalHeatmap();
+      cal.paint({
+        data: { source: heatmapData, x: 'date', y: 'value' },
+        date: { start: new Date(new Date().setFullYear(new Date().getFullYear() - 1)), locale: 'ko' },
+        range: 12,
+        scale: { color: { scheme: 'Greens', type: 'threshold', domain: [1, 2, 3, 4] } },
+        domain: { type: 'month', gutter: 4, label: { text: 'MMM', textAlign: 'start', position: 'top' } },
+        subDomain: { type: 'day', radius: 2, width: 15, height: 15, gutter: 4 }
+      },
+      [
+        [ CalHeatmap.Tooltip, {
+            text: function (date, value, dayjsDate) {
+              return (value ? value : '게시물 없음') + (value ? '개' : '') + ' (' + dayjsDate.format('YYYY-MM-DD') + ')';
+            }
+        }]
+      ]);
+    })
+    .catch(error => {
+      document.getElementById('cal-heatmap').innerHTML = '<p style="color:red;">히트맵 로딩 중 오류 발생: ' + error.message + '</p>';
+      console.error(error);
+    });
+});
+</script>
+{% endraw %}
+
+
 {{ content }}
 
 <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
