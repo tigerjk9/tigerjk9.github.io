@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }));
 
       const cal = new CalHeatmap(); // new CalHeatmap()으로 최종 수정
-
+      console.log(CalHeatmap); // <--- 이 줄을 추가해주세요!
       cal.paint({
         data: {
           source: heatmapData,
