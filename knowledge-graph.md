@@ -21,10 +21,9 @@ class: "page--knowledge-graph"
     text-align: center;
   }
   .page--knowledge-graph #main {
-    margin-left: 0; /* 사이드바 여백 제거 */
+    margin-left: 0;
     padding: 0;
   }
-  
   #graph-container {
     position: relative;
     width: 100vw;
@@ -74,15 +73,18 @@ class: "page--knowledge-graph"
     var tagButtonsContainer = document.getElementById('tag-buttons');
 
     fetch('/knowledge-graph.json')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();
+      })
       .then(graphData => {
-        
         graphData.edges = graphData.edges.filter(edge => edge.from && edge.to);
 
         const a_nodes = graphData.nodes.map(node => {
           const degree = graphData.edges.filter(edge => edge.from === node.id || edge.to === node.id).length;
           node.value = Math.max(degree, 1);
-          node.originalColor = '#97C2FC';
           return node;
         });
 
@@ -98,16 +100,16 @@ class: "page--knowledge-graph"
           nodes: {
             shape: 'dot',
             borderWidth: 0,
-            scaling: { 
-              min: 15, 
-              max: 50, 
+            scaling: {
+              min: 15,
+              max: 50,
               label: { min: 14, max: 30, drawThreshold: 8, maxVisible: 25 }
             },
-            font: { 
-              color: '#d3d3d3', 
-              size: 16, 
-              face: 'sans-serif', 
-              strokeWidth: 0 
+            font: {
+              color: '#d3d3d3',
+              size: 16,
+              face: 'sans-serif',
+              strokeWidth: 0
             },
             shadow: { enabled: true, color: '#255784', size: 15 }
           },
@@ -117,8 +119,8 @@ class: "page--knowledge-graph"
             color: { color: '#84A9C0', highlight: '#FFFFFF' },
             shadow: { enabled: true, color: '#255784', size: 10 },
             scaling: {
-              min: 0.5, 
-              max: 5, 
+              min: 0.5,
+              max: 5,
               label: false
             }
           },
@@ -142,7 +144,7 @@ class: "page--knowledge-graph"
         };
 
         var network = new vis.Network(container, data, options);
-        
+
         network.on("stabilizationIterationsDone", function () {
           network.setOptions( { physics: false } );
         });
@@ -157,16 +159,13 @@ class: "page--knowledge-graph"
             }
         });
 
-        // --- 태그 버튼 생성 및 하이라이트 기능 ---
-
         const allTags = new Set();
         nodesDataSet.forEach(node => {
-          // [수정] node.tags가 존재하고, '배열'인 경우에만 태그를 추출하도록 변경
           if (node.tags && Array.isArray(node.tags)) {
             node.tags.forEach(tag => allTags.add(tag));
           }
         });
-        
+
         const resetButton = document.createElement('button');
         resetButton.innerText = '전체 보기';
         resetButton.className = 'active';
@@ -179,7 +178,7 @@ class: "page--knowledge-graph"
           button.onclick = () => highlightByTag(tag);
           tagButtonsContainer.appendChild(button);
         });
-        
+
         function highlightByTag(tag) {
           const buttons = tagButtonsContainer.getElementsByTagName('button');
           for (let btn of buttons) {
@@ -245,6 +244,9 @@ class: "page--knowledge-graph"
           nodesDataSet.update(nodesToUpdate);
           edgesDataSet.update(edgesToUpdate);
         }
+      })
+      .catch(error => {
+        console.error('Error fetching or parsing knowledge-graph.json:', error);
       });
   });
 </script>
