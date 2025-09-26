@@ -77,3 +77,7 @@ tags: [연결주의, 지식, 학습, 세컨드브레인]
 > 이는 저 스스로를 **닷커넥터(Dot Connector)**라고 부르고 스스로에게 되뇌이는 이유이기도 합니다.
 
 ---
+
+### 참고문헌
+- Siemens, G. (2005). Connectivism: A learning theory for the digital age. *International Journal of Instructional Technology & Distance Learning, 2*(1), 3-10.
+- 위키백과. (2018년 11월 1일). 연결주의 (학습이론). *[https://ko.wikipedia.org/wiki/연결주의_(학습이론)](https://ko.wikipedia.org/wiki/연결주의_(학습이론))
