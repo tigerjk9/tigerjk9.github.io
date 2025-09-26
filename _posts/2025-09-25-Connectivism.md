@@ -82,4 +82,4 @@ tags: [연결주의, 지식, 학습, 세컨드브레인, 미래교육, 학습과
 
 ### 참고문헌
 - Siemens, G. (2005). Connectivism: A learning theory for the digital age. *International Journal of Instructional Technology & Distance Learning, 2*(1), 3-10.
-- 위키백과. (2018년 11월 1일). 연결주의 (학습이론). *[https://ko.wikipedia.org/wiki/연결주의_(학습이론)](https://ko.wikipedia.org/wiki/연결주의_(학습이론))
+- 위키백과. (2018년 11월 1일). 연결주의 (학습이론). [https://ko.wikipedia.org/wiki/연결주의_(학습이론)](https://ko.wikipedia.org/wiki/연결주의_(학습이론))
