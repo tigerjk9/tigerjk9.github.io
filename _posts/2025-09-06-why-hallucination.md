@@ -1,5 +1,5 @@
 ---
-title: "AI 언어모델은 왜 환각을 일으킬까? (feat. OpenAI 논문)"
+title: "AI 언어모델은 대체 왜 환각을 일으킬까? (feat. OpenAI 논문)"
 date: 2025-09-06 00:42:00 +0900
 categories: [AI]
 tags: [AI, LLM, 환각, Hallucination]
