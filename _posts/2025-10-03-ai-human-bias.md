@@ -57,5 +57,5 @@ AI 시대의 교사는 지식 전달자를 넘어, 학생들이 AI와 상호작�
 
 ## 참고자료
 
-* **원문:** Felten, N. von. (2025). *Beyond isolation: Towards an interactionist perspective on human cognitive bias and AI bias*. In CHI 2025. ACM. https://doi.org/10.48550/arXiv.2504.18759
-* **논문 번역 전문:** https://blog.naver.com/dot_connector/224031203811, https://tigerjk9.github.io/ai/hci/Felten/
+* **원문:** Felten, N. von. (2025). *Beyond isolation: Towards an interactionist perspective on human cognitive bias and AI bias*. In CHI 2025. ACM. [https://doi.org/10.48550/arXiv.2504.18759](https://doi.org/10.48550/arXiv.2504.18759)
+* **논문 번역 전문:** [https://blog.naver.com/dot_connector/224031203811](https://blog.naver.com/dot_connector/224031203811), [https://tigerjk9.github.io/ai/hci/Felten/](https://tigerjk9.github.io/ai/hci/Felten/)
