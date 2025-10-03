@@ -5,7 +5,7 @@ categories: [AI, 교육]
 tags: [인간-AI복합편향, 상호작용주의, AI리터러시, 메타인지]
 ---
 
-'Beyond Isolation: Towards an Interactionist Perspective on Human Cognitive Bias and AI Bias' 논문은 AI 시대를 살아가는 우리에게 매우 중요한 화두를 던집니다. 단순히 'AI의 편향'이나 '인간의 편향'을 개별적으로 논하는 수준을 넘어, 둘이 만났을 때 어떤 증폭 효과(synergy) 또는 상쇄 효과가 일어나는지에 주목해야 한다는 **상호작용주의적 관점**을 제시하기 때문입니다. 이 연구가 갖는 의미와 교육 현장에 주는 인사이트를 다음과 같이 정리해 보았습니다.
+'Beyond Isolation: Towards an Interactionist Perspective on Human Cognitive Bias and AI Bias' 논문은 AI 시대를 살아가는 우리에게 매우 중요한 화두를 던집니다. 단순히 'AI의 편향'이나 '인간의 편향'을 개별적으로 논하는 수준을 넘어, 둘이 만났을 때 어떤 증폭의 효과(synergy) 또는 상쇄 효과가 일어나는지에 주목해야 한다는 **상호작용주의적 관점**을 제시하기 때문입니다. 이 연구가 갖는 의미와 교육 현장에 주는 인사이트를 다음과 같이 정리해 보았습니다.
 
 <br>
 
