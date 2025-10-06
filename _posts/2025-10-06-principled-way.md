@@ -5,7 +5,7 @@ categories: [AI, 교육]
 tags: [논문리뷰, 교육철학, AI윤리, 교수법, 학습과학]
 ---
 
-![이미지l](/assets/principled-way-1)
+![이미지l](/assets/principled-way-1.png)
 
 ## 교육의 본질을 묻다: AI 시대, 길을 잃지 않는 교육 원칙
 
