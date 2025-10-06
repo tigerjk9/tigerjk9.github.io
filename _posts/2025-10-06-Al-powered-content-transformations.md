@@ -5,11 +5,11 @@ categories: [AI, 교육]
 tags: [논문리뷰, 에듀테크, 생성형AI, 맞춤형학습, LearnYourWay]
 ---
 
-![이미지](/assets/Al-powered-content-transformations-1.png)
-
 ## AI, 교과서를 변신시키다: 동적 학습 경험의 효과
 
 > 딱딱한 교과서 PDF가 AI를 만나 비디오, 마인드맵, 맞춤형 퀴즈로 변신한다면 어떨까요? Heldreth 등(2025)의 연구는 'Learn Your Way'라는 AI 플랫폼을 통해, 정적인 콘텐츠를 동적인 학습 경험으로 바꾸는 것이 학생들의 기억력과 학습 만족도에 미치는 긍정적인 영향을 실험적으로 검증합니다.
+
+![이미지](/assets/Al-powered-content-transformations-1.png)
 
 <br>
 
