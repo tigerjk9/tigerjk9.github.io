@@ -5,11 +5,11 @@ categories: [AI, 교육]
 tags: [논문리뷰, 교육용LLM, 대화설계, 소크라테스식대화법, HCI, 교수법]
 ---
 
-![이미지](/assets/Socratic-and-narrative-approaches-1.png)
-
 ## AI 튜터의 두 얼굴: 소크라테스식 질문 vs. 서사적 제안
 
 > "정답을 알려주는 AI"를 넘어 "생각하게 만드는 AI"는 어떻게 설계해야 할까요? Chen 등(2025)의 연구는 교수자들을 위한 LLM 프로토타입 'TeaPT'를 통해, 성찰을 유도하는 '소크라테스식 대화'와 구체적 아이디어를 제공하는 '서사적 대화'의 효과를 비교합니다. 이 연구는 사용자의 선호도와 실제 학습 효과 사이에 흥미로운 불일치가 있음을 밝혀주며, 교육용 AI 설계의 새로운 방향을 제시합니다.
+
+![이미지](/assets/Socratic-and-narrative-approaches-1.png)
 
 <br>
 
