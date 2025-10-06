@@ -5,11 +5,11 @@ categories: [AI, 음악]
 tags: [논문리뷰, AI음악, Suno, 생성형AI, HCI, 디지털리터러시]
 ---
 
-![이미지](/assets/Echoes-of-humanity-1.png)
-
 ## AI 음악 속 '인간성의 메아리'를 찾아서
 
 > Suno와 같은 AI가 만든 음악, 과연 우리는 인간의 창작물과 구분할 수 있을까요? Figueiredo 등(2025)의 연구는 '음악판 튜링 테스트'를 통해 AI 음악에 숨겨진 미묘한 비인간적 특징과, 그것을 감지해내는 인간의 인식 능력을 탐구합니다. 이 연구는 AI 시대의 창의성과 인간성에 대한 깊은 질문을 던집니다.
+
+![이미지](/assets/Echoes-of-humanity-1.png)
 
 <br>
 
