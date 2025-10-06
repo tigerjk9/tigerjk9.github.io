@@ -2,7 +2,7 @@
 title: "AI 음악의 인지된 인간성에 대한 탐구 (논문 리뷰)"
 date: 2025-10-06 13:29:00 +0900
 categories: [AI, 음악]
-tags: [논문리뷰, AI음악, Suno, 생성형AI, 인간-AI상호작용, 디지털리터러시]
+tags: [논문리뷰, AI음악, Suno, 생성형AI, HCI, 디지털리터러시]
 ---
 
 ![이미지](/assets/Echoes-of-humanity-1.png)
