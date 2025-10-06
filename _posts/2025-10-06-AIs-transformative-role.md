@@ -5,7 +5,7 @@ categories: [AI, 교육]
 tags: [논문리뷰, 미래교육, 인간-AI협업, 전인교육, 창의성]
 ---
 
-![사진](/asstes/AIs-transformative-role.png)
+![사진](/assets/AIs-transformative-role.png)
 
 ## AI는 교사를 대체할까?? 전인적 학습을 위한 AI 파트너십
 
