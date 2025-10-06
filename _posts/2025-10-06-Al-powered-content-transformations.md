@@ -2,7 +2,7 @@
 title: "AI, 교과서를 변신시키다: 동적 학습 경험의 효과 (논문 리뷰)"
 date: 2025-10-06 13:43:00 +0900
 categories: [AI, 교육]
-tags: [논문리뷰, 에듀테크, 학습효과, 생성형AI, 맞춤형학습, LearnYourWay]
+tags: [논문리뷰, 에듀테크, 생성형AI, 맞춤형학습, LearnYourWay]
 ---
 
 ![이미지](/assets/Al-powered-content-transformations-1.png)
