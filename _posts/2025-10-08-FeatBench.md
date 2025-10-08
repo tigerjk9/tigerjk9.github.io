@@ -1,7 +1,7 @@
 ---
 title: "FeatBench: 바이브 코딩 환경에서 기능 구현 역량을 평가하는 코딩 에이전트 벤치마크"
 date: 2025-10-09 01:41:15 +0900
-categories: [AI, 개발]
+categories: [AI]
 tags: [논문리뷰, 바이브코딩, AI코딩에이전트, LLM]
 ---
 
