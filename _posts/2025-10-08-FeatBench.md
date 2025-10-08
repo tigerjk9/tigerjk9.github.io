@@ -9,7 +9,7 @@ tags: [논문리뷰, 바이브코딩, AI코딩에이전트, LLM]
 
 > 이 연구는 바이브 코딩(Vibe Coding)이라는 새로운 소프트웨어 개발 패러다임에 맞춰 LLM 기반 코딩 에이전트의 능력을 제대로 평가할 새로운 기준(벤치마크)을 제시합니다. 기존 평가 방식의 한계를 넘어, 실제 개발 현장에서 가장 중요한 역량 중 하나인 '새로운 기능 추가(Feature Implementation)' 능력을 평가하기 위해 특화된 '피처벤치(FeatBench)'를 개발하고 제안합니다.
 
-![이미지](/assets/featbench.png)
+![이미지](/assets/FeatBench.png)
 
 <br>
 
