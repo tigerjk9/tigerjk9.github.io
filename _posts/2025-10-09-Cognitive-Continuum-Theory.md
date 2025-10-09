@@ -1,4 +1,5 @@
 ---
+layout: single
 title: "인지 연속체 이론의 확장: CCT2"
 date: 2025-10-09 00:19:21 +0900
 categories: [인지과학, 철학]
