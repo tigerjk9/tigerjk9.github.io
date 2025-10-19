@@ -1,5 +1,5 @@
 ---
-title: "Webb의 지식의 깊이와 블룸의 분류법(택소노미) 비교"
+title: "Webb의 지식의 깊이와 블룸 분류법(택소노미) 비교"
 date: 2025-10-16 09:49:00 +0900
 categories: [교육]
 tags: [Webb, DOK, 블룸분류법, Taxonomy, 과정중심평가, 인지복잡성]
