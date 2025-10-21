@@ -76,6 +76,8 @@ tags: [논문리뷰, 비판적이론, 랑시에르, 지적자율성, AI리터러
 2.  **(접근의 형평성):** 숙달은 고성능 유료 AI 모델(본문에서 사용한 Claude Sonnet 4 등) 에 접근할 수 있는 학생에게 절대적으로 유리합니다. 이러한 접근성의 차이가 교실 내에서 새로운 **AI 격차**를 만들고 **기술-봉건주의(technofeudalism)**를 심화시킬 때, 랑시에르가 전제한 지성의 평등(equality of intelligence) 은 어떻게 유지될 수 있을까?
 3.  **(교육자의 수용성):** **비판적 개입자**라는 새로운 역할은 교육자에게 AI를 직접 탐구하고 새로운 교수법을 개발해야 하는 상당한 추가 노동을 요구합니다. 이미 과중한 업무에 시달리는 교육자들이 이러한 변화에 저항하며 **의도적 무지**를 선택할 때, 이들을 실질적으로 지원하고 동기를 부여할 제도적 방안은 무엇일까?
 
+![이미지](/assets/Emancipatory-AI-Pedagogy.png)
+
 ---
 
 _**출처:** Rocco, L. (2025). The Mechanical Yes-Man: Emancipatory AI Pedagogy in Higher Education. Concreta, (26)._
