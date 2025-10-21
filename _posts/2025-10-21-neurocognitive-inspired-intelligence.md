@@ -31,7 +31,7 @@ tags: [논문리뷰, AGI, 뇌신경과학, 메타인지]
 6.  **적응 레이어 (Adaptation Layer):** 시스템 전반의 오류를 감시하고 전략을 수정하는 메타인지 컨트롤러
 7.  **행동 및 결정 실행 장치 (Action/Decision Execution Unit):** 인지적 결정을 실제 행동으로 변환하고, 그 결과를 다시 피드백하는 폐쇄 루프(closed-loop)를 완성
 
-![이미지](assets/neurocognitive-inspired-intelligence-1.png)
+![이미지](/assets/neurocognitive-inspired-intelligence-1.png)
 
 저자들은 이 프레임워크의 타당성을 설명하기 위해 두 가지 개념 증명(Proof-of-Concept) 실험(1. 적대적 노이즈 모니터링, 2. 로봇의 시각-촉각 융합)과 세 가지 개념적 적용 사례(1. 노인 건강 모니터링, 2. 산업 안전, 3. 개인 맞춤형 교육 )를 제시합니다.
 
