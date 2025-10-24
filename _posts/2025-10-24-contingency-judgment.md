@@ -80,4 +80,4 @@ tags: [논문리뷰, LLM, 인과추론, 인지편향, 인과성의환상]
 
 ---
 
-_**출처:** Carro, M. V., Mester, D. A., Selasco, F. G., Marraffini, G. F. G., Leiva, M. A., Simari, G. I., & Martinez, M. V. (2025). Do large language models show biases in causal learning? Insights from contingency judgment. arXiv. https://arxiv.org/abs/2510.13985v1_
+_**출처:** Carro, M. V., Mester, D. A., Selasco, F. G., Marraffini, G. F. G., Leiva, M. A., Simari, G. I., & Martinez, M. V. (2025). Do large language models show biases in causal learning? Insights from contingency judgment. arXiv. [https://arxiv.org/abs/2510.13985v1](https://arxiv.org/abs/2510.13985v1)
