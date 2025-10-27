@@ -42,6 +42,9 @@ tags: [바이브코딩]
 * 그런면에서 **바이브 코딩**이라 읽고, **매니지 코딩**이라 이해하는 중이다.
 
   ![이미지](/assets/photo-landmark-1.png)
+  
   ![이미지](/assets/photo-landmark-2.png)
+  
   ![이미지](/assets/photo-landmark-3.png)
+  
   ![이미지](/assets/photo-landmark-4.png)
