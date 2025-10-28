@@ -71,4 +71,4 @@ tags: [논문리뷰, 의미론적지식, 혁신, 누적문화진화, 사회적�
 
 ---
 
-_**출처:** Yaman, A., Tian, S., & Lindström, B. (2025). Semantic knowledge guides innovation and drives cultural evolution. arXiv. https://arxiv.org/abs/2510.12837v1_
+_**출처:** Yaman, A., Tian, S., & Lindström, B. (2025). Semantic knowledge guides innovation and drives cultural evolution. arXiv. [https://arxiv.org/abs/2510.12837v1](https://arxiv.org/abs/2510.12837v1)
