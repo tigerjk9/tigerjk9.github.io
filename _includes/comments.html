@@ -13,14 +13,11 @@
     {% when "staticman_v2" %}
       <section id="static-comments">
         {% if site.repository and site.comments.staticman.branch %}
-          <!-- Start static comments -->
           <div class="js-comments">
             {% if site.data.comments[page.slug] %}
               <h4 class="page__comments-title">{{ site.data.ui-text[site.locale].comments_title | default: "Comments" }}</h4>
               {% assign comments = site.data.comments[page.slug] %}
 
-              <!-- In order to sort by date we must have an array of objects, not an array of arrays, so
-                    create a new array of plain comment objects and then sort by the comment date. -->
               {% assign commentObjects = '' | split: '' %}
               {% for comment in comments %}
                 {% assign commentObject = comment[1] %}
@@ -38,9 +35,6 @@
               {% endfor %}
             {% endif %}
           </div>
-          <!-- End static comments -->
-
-          <!-- Start new comment form -->
           <div class="page__comments-form">
             <h4 class="page__comments-title">{{ site.data.ui-text[site.locale].comments_label | default: "Leave a Comment" }}</h4>
             <p class="small">{{ site.data.ui-text[site.locale].comment_form_info | default: "Your email address will not be published. Required fields are marked" }} <span class="required">*</span></p>
@@ -74,11 +68,9 @@
                 {% if site.reCaptcha.siteKey %}<input type="hidden" name="options[reCaptcha][siteKey]" value="{{ site.reCaptcha.siteKey }}">{% endif %}
                 {% if site.reCaptcha.secret %}<input type="hidden" name="options[reCaptcha][secret]" value="{{ site.reCaptcha.secret }}">{% endif %}
               </div>
-              <!-- Start comment form alert messaging -->
               <p class="hidden js-notice">
                 <strong class="js-notice-text"></strong>
               </p>
-              <!-- End comment form alert messaging -->
               {% if site.reCaptcha.siteKey %}
                 <div class="form-group">
                   <div class="g-recaptcha" data-sitekey="{{ site.reCaptcha.siteKey }}"></div>
@@ -89,21 +81,17 @@
               </div>
             </form>
           </div>
-          <!-- End new comment form -->
           {% if site.reCaptcha.siteKey %}<script async src="https://www.google.com/recaptcha/api.js"></script>{% endif %}
         {% endif %}
       </section>
     {% when "staticman" %}
       <section id="static-comments">
         {% if site.repository and site.staticman.branch %}
-          <!-- Start static comments -->
           <div class="js-comments">
             {% if site.data.comments[page.slug] %}
               <h4 class="page__comments-title">{{ site.data.ui-text[site.locale].comments_title | default: "Comments" }}</h4>
               {% assign comments = site.data.comments[page.slug] %}
 
-              <!-- In order to sort by date we must have an array of objects, not an array of arrays, so
-                    create a new array of plain comment objects and then sort by the comment date. -->
               {% assign commentObjects = '' | split: '' %}
               {% for comment in comments %}
                 {% assign commentObject = comment[1] %}
@@ -121,9 +109,6 @@
               {% endfor %}
             {% endif %}
           </div>
-          <!-- End static comments -->
-
-          <!-- Start new comment form -->
           <div class="page__comments-form">
             <h4 class="page__comments-title">{{ site.data.ui-text[site.locale].comments_label | default: "Leave a Comment" }}</h4>
             <p class="small">{{ site.data.ui-text[site.locale].comment_form_info | default: "Your email address will not be published. Required fields are marked" }} <span class="required">*</span></p>
@@ -155,25 +140,38 @@
                 <label for="comment-form-location">Not used. Leave blank if you are a human.</label>
                 <input type="text" id="comment-form-location" name="fields[hidden]" autocomplete="off"/>
               </div>
-              <!-- Start comment form alert messaging -->
               <p class="hidden js-notice">
                 <strong class="js-notice-text"></strong>
               </p>
-              <!-- End comment form alert messaging -->
               <div class="form-group">
                 <button type="submit" id="comment-form-submit" tabindex="5" class="btn btn--primary btn--large">{{ site.data.ui-text[site.locale].comment_btn_submit | default: "Submit Comment" }}</button>
               </div>
             </form>
           </div>
-          <!-- End new comment form -->
-        {% endif %}
+          {% endif %}
       </section>
     {% when "utterances" %}
       <h4 class="page__comments-title">{{ comments_label }}</h4>
       <section id="utterances-comments"></section>
+
     {% when "giscus" %}
       <h4 class="page__comments-title">{{ comments_label }}</h4>
-      <section id="giscus-comments"></section>
+      <section id="giscus-comments">
+        <script src="https://giscus.app/client.js"
+          data-repo="{{ site.comments.giscus.repo }}"
+          data-repo-id="{{ site.comments.giscus.repo_id }}"
+          data-category="{{ site.comments.giscus.category }}"
+          data-category-id="{{ site.comments.giscus.category_id }}"
+          data-mapping="{{ site.comments.giscus.mapping }}"
+          data-reactions-enabled="{{ site.comments.giscus.reactions_enabled }}"
+          data-emit-metadata="{{ site.comments.giscus.emit_metadata }}"
+          data-input-position="{{ site.comments.giscus.input_position }}"
+          data-theme="{{ site.comments.giscus.theme }}"
+          data-lang="{{ site.comments.giscus.lang }}"
+          crossorigin="anonymous"
+          async>
+        </script>
+      </section>
     {% when "custom" %}
       {% include /comments-providers/custom.html %}
   {% endcase %}
