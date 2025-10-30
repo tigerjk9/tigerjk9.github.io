@@ -63,10 +63,10 @@ og_image                    : # Open Graph/Twitter default site image
 
 # Analytics
 analytics:
-  provider                  : false # false (default), "google", "google-universal", "google-gtag", "custom"
+  provider                  : "google-gtag" # provider를 "google-gtag"로 변경
   google:
-    tracking_id             :
-    anonymize_ip            : # true, false (default)
+    tracking_id             : "G-Y8TNBPZQEZ" # 여기에 본인의 측정 ID 붙여넣기
+    anonymize_ip            : false
 
 # Site Author
 author:
