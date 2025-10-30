@@ -37,7 +37,7 @@ comments:
     repo_id: "R_kgDOPyuEzg"
     category: "Comments"
     category_id: "DIC_kwDOPyuEzs4CxP6T"
-    mapping: "title"
+    mapping: "specific-term"
     reactions_enabled: "1"
     emit_metadata: "0"
     input_position: "top"
