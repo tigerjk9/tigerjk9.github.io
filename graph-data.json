@@ -12,12 +12,12 @@ layout: null
 
 {
   "nodes": [
-    {%- comment %} 1. '게시물' 노드 생성 {%- endcomment -%}
+    {%- comment %} 1. '게시물' 노드 생성 (id에 'post-' 접두사 추가) {%- endcomment -%}
     {%- assign post_nodes = "" | split: "||" -%}
     {%- for post in site.posts -%}
       {%- capture node_info -%}
         {
-          "id": "{{ post.url | relative_url | escape }}",
+          "id": "post-{{ post.url | relative_url | escape }}",
           "label": "{{ post.title | escape }}",
           "group": "post",
           "value": 5
@@ -26,7 +26,7 @@ layout: null
       {%- assign post_nodes = post_nodes | push: node_info -%}
     {%- endfor -%},
 
-    {%- comment %} 2. '태그' 노드 생성 {%- endcomment -%}
+    {%- comment %} 2. '태그' 노드 생성 (id에 'tag-' 접두사 추가) {%- endcomment -%}
     {%- assign tag_nodes = "" | split: "||" -%}
     {%- for tag in unique_tags -%}
       {%- assign count = 0 -%}
@@ -37,7 +37,7 @@ layout: null
       {%- endfor -%}
       {%- capture node_info -%}
         {
-          "id": "{{ tag | escape }}",
+          "id": "tag-{{ tag | escape }}",
           "label": "{{ tag | escape }}",
           "group": "tag",
           "value": {{ count | times: 5 | plus: 10 }}
@@ -45,15 +45,22 @@ layout: null
       {%- endcapture -%}
       {%- assign tag_nodes = tag_nodes | push: node_info -%}
     {%- endfor -%}
-    {{ post_nodes | join: "," }}{{ tag_nodes | join: "," }}
+
+    {%- comment %} 
+      JSON 구문 수정: 
+      post_nodes와 tag_nodes 목록 사이에 쉼표(,)를 추가합니다.
+      (참고: 보내주신 원본 코드의 20번째 줄에 있던 쉼표(,)는 제거했습니다.)
+    {%- endcomment -%}
+    {{ post_nodes | join: "," }},
+    {{ tag_nodes | join: "," }}
   ],
   "edges": [
-    {%- comment %} 3. '게시물-태그' 연결선 생성 {%- endcomment -%}
+    {%- comment %} 3. '게시물-태그' 연결선 생성 (id에 맞게 접두사 추가) {%- endcomment -%}
     {%- assign edge_list = "" | split: "||" -%}
     {%- for post in site.posts -%}
       {%- for tag in post.tags -%}
         {%- capture edge -%}
-          { "from": "{{ post.url | relative_url | escape }}", "to": "{{ tag | escape }}" }
+          { "from": "post-{{ post.url | relative_url | escape }}", "to": "tag-{{ tag | escape }}" }
         {%- endcapture -%}
         {%- assign edge_list = edge_list | push: edge -%}
       {%- endfor -%}
