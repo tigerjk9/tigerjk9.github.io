@@ -23,15 +23,44 @@ class: "page--knowledge-graph"
   .page--knowledge-graph #main {
     margin-left: 320px; 
   }
+
+  /* --- 1. 스피너 CSS (여기에 추가됨) --- */
+  .loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+    
+    /* 스피너를 #mynetwork 정중앙에 배치 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -30px;  /* (height / 2) */
+    margin-left: -30px; /* (width / 2) */
+    z-index: 10; /* 그래프 위에 보이도록 */
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 </style>
 
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
-<div id="mynetwork" style="width: 100%; height: 100vh; background-color: #0A192F;"></div>
+<div id="mynetwork" style="width: 100%; height: 100vh; background-color: #0A192F; position: relative;">
+  <div id="graph-spinner" class="loader"></div>
+</div>
+
 
 <script type="text/javascript">
+  // --- 3. JavaScript가 스피너를 제어하도록 수정됨 ---
   document.addEventListener('DOMContentLoaded', function() {
     var container = document.getElementById('mynetwork');
+    // 스피너 요소를 가져옵니다 (추가)
+    var spinner = document.getElementById('graph-spinner');
 
     fetch('/knowledge-graph.json')
       .then(response => response.json())
@@ -51,6 +80,7 @@ class: "page--knowledge-graph"
         };
 
         var options = {
+          // ... (기존 옵션은 그대로) ...
           nodes: {
             shape: 'dot',
             borderWidth: 0,
@@ -68,17 +98,14 @@ class: "page--knowledge-graph"
             shadow: { enabled: true, color: '#255784', size: 15 }
           },
           edges: {
-            // width 속성 삭제 -> scaling이 제어하도록 함
             smooth: { type: 'dynamic' },
             arrows: { to: { enabled: true, scaleFactor: 0.5 } },
             color: { color: '#84A9C0', highlight: '#FFFFFF' },
             shadow: { enabled: true, color: '#255784', size: 10 },
-            
-            // [추가] 연결선 가중치에 따른 굵기 조절
             scaling: {
-              min: 0.5,  // 최소 굵기
-              max: 5,    // 최대 굵기
-              label: false // 굵기 값을 텍스트로 표시하지 않음
+              min: 0.5, 
+              max: 5,   
+              label: false
             }
           },
           physics: {
@@ -102,8 +129,10 @@ class: "page--knowledge-graph"
 
         var network = new vis.Network(container, data, options);
         
+        // 그래프 안정화(렌더링)가 완료되면 스피너를 숨깁니다 (수정)
         network.on("stabilizationIterationsDone", function () {
           network.setOptions( { physics: false } );
+          spinner.style.display = 'none'; // <-- 스피너 숨기기
         });
 
         network.on("click", function (params) {
@@ -115,6 +144,11 @@ class: "page--knowledge-graph"
                 }
             }
         });
+      })
+      // fetch가 실패할 경우(예: 404) 스피너를 숨깁니다 (추가)
+      .catch(error => {
+        console.error('Error loading graph data:', error);
+        spinner.style.display = 'none'; // <-- 스피너 숨기기
       });
   });
 </script>
