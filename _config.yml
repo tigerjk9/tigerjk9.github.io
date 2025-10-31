@@ -14,10 +14,8 @@
 # remote_theme              : "mmistakes/minimal-mistakes"
 minimal_mistakes_skin     : "dark" # "default" , "air", "aqua", "contrast", "dirt", "neon", "mint", "plum", "sunrise"
 
-# ===================================================================
 # Turbolinks 비활성화 (Giscus 충돌 해결)
 turbo: false
-# ===================================================================
 
 # Site Settings
 locale                    : "ko-KR"
@@ -33,7 +31,7 @@ masthead_title            : # overrides the website title displayed in the masth
 words_per_minute          : 200
 
 # ===================================================================
-# Giscus 댓글 설정
+# Giscus 댓글 설정 (그대로 둡니다. defaults에서 껐기 때문에 사용되지 않습니다)
 # ===================================================================
 comments:
   provider: "giscus"
@@ -42,7 +40,7 @@ comments:
     repo_id: "R_kgDOPyuEzg"
     category: "Comments"
     category_id: "DIC_kwDOPyuEzs4CxP6T"
-    mapping: "specific-term" # page.path를 사용하기 위해 'specific-term'으로 설정
+    mapping: "specific-term"
     reactions_enabled: "1"
     emit_metadata: "0"
     input_position: "top"
@@ -68,9 +66,9 @@ og_image                    : # Open Graph/Twitter default site image
 
 # Analytics
 analytics:
-  provider                  : "google-gtag" # provider를 "google-gtag"로 변경
+  provider                  : "google-gtag" 
   google:
-    tracking_id             : "G-Y8TNBPZQEZ" # 여기에 본인의 측정 ID 붙여넣기
+    tracking_id             : "G-Y8TNBPZQEZ" 
     anonymize_ip            : false
 
 # Site Author
@@ -101,7 +99,7 @@ sidebar:
   - title: "Tag Cloud"
     html: sidebar/tag_cloud.html
 footer:
-  links: [] # 이와 같이 links 목록을 비워줍니다.
+  links: [] 
 
 # Reading Files
 include:
@@ -189,7 +187,7 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: true 
+      comments: false # <-- ✅ 이 부분이 true에서 false로 변경되었습니다.
       share: true
       related: true
   # _pages
