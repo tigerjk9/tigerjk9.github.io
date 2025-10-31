@@ -24,7 +24,7 @@ class: "page--knowledge-graph"
     margin-left: 320px; 
   }
 
-  /* --- 스피너 CSS --- */
+  /* --- 스피너 CSS (z-index 수정됨) --- */
   .loader {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #3498db; /* Blue */
@@ -33,12 +33,14 @@ class: "page--knowledge-graph"
     height: 60px;
     animation: spin 1.5s linear infinite;
     
+    /* 부모(#graph-wrapper)의 정중앙에 배치 */
     position: absolute;
     top: 50%;
     left: 50%;
     margin-top: -30px;
     margin-left: -30px;
-    z-index: 10;
+    /* 그래프(z-index: 1)보다 항상 위에 있도록 z-index를 높게 설정 */
+    z-index: 1000;
   }
 
   @keyframes spin {
@@ -49,17 +51,21 @@ class: "page--knowledge-graph"
 
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
-<div id="mynetwork" style="width: 100%; height: 100vh; background-color: #0A192F; position: relative;">
+<div id="graph-wrapper" style="width: 100%; height: 100vh; position: relative;">
+  
   <div id="graph-spinner" class="loader"></div>
+  
+  <div id="mynetwork" style="width: 100%; height: 100%; background-color: #0A192F; z-index: 1;"></div>
+
 </div>
 
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
+    // 컨테이너와 스피너를 각각 가져옵니다.
     var container = document.getElementById('mynetwork');
     var spinner = document.getElementById('graph-spinner');
     
-    // 로딩 시작 시간 기록
     var startTime = new Date().getTime();
 
     fetch('/knowledge-graph.json')
@@ -87,28 +93,26 @@ class: "page--knowledge-graph"
           interaction: { hover: true, tooltipDelay: 200, hideEdgesOnDrag: true }
         };
 
+        // vis.js는 이제 #mynetwork만 제어합니다. 스피너는 안전합니다.
         var network = new vis.Network(container, data, options);
         
-        // --- 1. 스피너 숨기기 로직 (수정됨) ---
         var hideSpinner = function() {
           var endTime = new Date().getTime();
-          var duration = endTime - startTime; // 로드에 걸린 시간 (ms)
+          var duration = endTime - startTime; 
           var minDuration = 1000; // 최소 1초 (1000ms)
 
           if (duration < minDuration) {
-            // 1초가 안 걸렸으면, 1초를 채운 후에 스피너 숨김
             setTimeout(function() {
               spinner.style.display = 'none';
             }, minDuration - duration);
           } else {
-            // 1초 이상 걸렸으면, 즉시 스피너 숨김
             spinner.style.display = 'none';
           }
         };
 
         network.on("stabilizationIterationsDone", function () {
           network.setOptions( { physics: false } );
-          hideSpinner(); // <-- 스피너 숨기기 함수 호출
+          hideSpinner(); 
         });
 
         network.on("click", function (params) {
@@ -122,9 +126,7 @@ class: "page--knowledge-graph"
         });
       })
       .catch(error => {
-        // --- 2. 에러 발생 시에도 스피너 숨김 (수정됨) ---
         console.error('Error loading graph data:', error);
-        // 에러 시에는 즉시 숨김
         spinner.style.display = 'none';
       });
   });
