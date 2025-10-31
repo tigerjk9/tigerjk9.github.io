@@ -14,6 +14,11 @@
 # remote_theme              : "mmistakes/minimal-mistakes"
 minimal_mistakes_skin     : "dark" # "default" , "air", "aqua", "contrast", "dirt", "neon", "mint", "plum", "sunrise"
 
+# ===================================================================
+# Turbolinks 비활성화 (Giscus 충돌 해결)
+turbo: false
+# ===================================================================
+
 # Site Settings
 locale                    : "ko-KR"
 title                     : "닷커넥터의 지식과 경험의 발자국"
@@ -28,7 +33,7 @@ masthead_title            : # overrides the website title displayed in the masth
 words_per_minute          : 200
 
 # ===================================================================
-# Giscus 댓글 설정 (여기가 수정되었습니다)
+# Giscus 댓글 설정
 # ===================================================================
 comments:
   provider: "giscus"
@@ -37,7 +42,7 @@ comments:
     repo_id: "R_kgDOPyuEzg"
     category: "Comments"
     category_id: "DIC_kwDOPyuEzs4CxP6T"
-    mapping: "specific-term"
+    mapping: "specific-term" # page.path를 사용하기 위해 'specific-term'으로 설정
     reactions_enabled: "1"
     emit_metadata: "0"
     input_position: "top"
@@ -184,7 +189,7 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: true # <-- 이 부분이 true여야 댓글이 보입니다 (이미 true로 잘 되어 있습니다)
+      comments: true 
       share: true
       related: true
   # _pages
