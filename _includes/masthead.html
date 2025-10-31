@@ -21,7 +21,11 @@
               >{{ link.title }}</a>
             </li>
           {%- endfor -%}
-        </ul>
+
+          <li class="masthead__menu-item">
+            <a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/https%3A%2F%2Ftigerjk9.github.io?color=yellow&label=hits&size=medium&base_count=100" alt="hits" /></a>
+          </li>
+          </ul>
         {% if site.search == true %}
         <button class="search__toggle" type="button">
           <span class="visually-hidden">{{ site.data.ui-text[site.locale].search_label | default: "Toggle search" }}</span>
