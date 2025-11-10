@@ -20,3 +20,17 @@ AITS 오프라인 모임에서 신혜수 타로 마스터님과 함께 하는 �
 
 1.  **덧 1.** 제 API키를 한시적으로 넣어놓았으니 테스트 가능하고, 직접 본인의 제미나이 API키를 활용하시면 마음껏 활용하실 수 있습니다.
 2.  **덧 2.** 웹 서비스에 활용된 타로 버전은 1909년 아서 에드워드 웨이트와 일러스트레이터 파멜라 콜먼 스미스가 제작한 라이더-웨이트(Rider-Waite) 덱 버전입니다.
+
+![이미지](/assets/AI-Taro-Master-1.jpg)
+
+![이미지](/assets/AI-Taro-Master-2.jpg)
+
+![이미지](/assets/AI-Taro-Master-3.jpg)
+
+![이미지](/assets/AI-Taro-Master-4.jpg)
+
+![이미지](/assets/AI-Taro-Master-5.jpg)
+
+![이미지](/assets/AI-Taro-Master-6.jpg)
+
+
