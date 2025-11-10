@@ -27,3 +27,15 @@ tags: [AI, 교육, 웹앱, 교육공학, 에듀테크]
 * 아직 우리학교 학생들 대상으로 테스트 해보지 않아 못알아차린 변수들이 분명 있을겁니다.
 * 허나 완벽을 추구하기 보다는 일단 꺼내어 놓고 개선해나가보고자 합니다.
 * **피드백 언제나 환영입니다.**
+
+![이미지](/assets/level-up-note-1.jpg)
+
+![이미지](/assets/level-up-note-2.jpg)
+
+![이미지](/assets/level-up-note-3.jpg)
+
+![이미지](/assets/level-up-note-4.jpg)
+
+![이미지](/assets/level-up-note-5.jpg)
+
+![이미지](/assets/level-up-note-6.jpg)
