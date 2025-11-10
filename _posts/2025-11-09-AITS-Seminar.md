@@ -28,6 +28,14 @@ tags: [AI, 교육, 웰빙, 교사효능감]
 
 앞으로도 AITS는 AI 디지털 교육 뿐 아니라 교수 나침반의 내면의 닻, 주도성, 역량, 웰빙을 든든히 지원하는 학습문화 커뮤니티로 서가도록 하겠습니다.
 
----
+![이미지](/assets/AITS-Seminar-1.jpg)
 
-#AI티처스쿨 #AITS #참여 #교사효능감 #웰빙 #대전AI교육교사커뮤니티 #AITS오프라인세미나 #학습문화커뮤니티
+![이미지](/assets/AITS-Seminar-2.jpg)
+
+![이미지](/assets/AITS-Seminar-3.jpg)
+
+![이미지](/assets/AITS-Seminar-4.jpg)
+
+![이미지](/assets/AITS-Seminar-5.jpg)
+
+![이미지](/assets/AITS-Seminar-6.jpg)
