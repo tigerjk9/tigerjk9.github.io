@@ -50,4 +50,12 @@ tags: [AI, 교육, 스토리리빙, 웹앱]
 
 ---
 
-#AI교육 #스토리리빙 #교육기술 #인터랙티브학습 #EdTech
+![이미지](/assets/Story-living-1.jpg)
+
+![이미지](/assets/Story-living-2.jpg)
+
+![이미지](/assets/Story-living-3.jpg)
+
+![이미지](/assets/Story-living-4.jpg)
+
+![이미지](/assets/Story-living-5.jpg)
