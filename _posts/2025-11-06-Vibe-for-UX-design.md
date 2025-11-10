@@ -62,4 +62,4 @@ tags: [AI, UX디자인, 바이브코딩]
 
 ---
 
-_**출처:** Li, J., et al. (2025). Vibe coding for UX design: Understanding UX professionals' perceptions of AI-assisted design and development. [https://arxiv.org/abs/2509.10652v1_](https://arxiv.org/abs/2509.10652v1_)
+_**출처:** Li, J., et al. (2025). Vibe coding for UX design: Understanding UX professionals' perceptions of AI-assisted design and development. [https://arxiv.org/abs/2509.10652v1](https://arxiv.org/abs/2509.10652v1)
