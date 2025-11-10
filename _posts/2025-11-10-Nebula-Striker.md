@@ -23,3 +23,17 @@ tags: [AI, 게임]
 * 당신은 인류의 마지막 희망, 최첨단 전투기 네뷸라 스트라이커의 조종사입니다. 성운 제7구역에서 몰려오는 외계 함대를 격파하고, 강력한 보스들을 물리쳐 지구를 지켜내시면 됩니다.
 * **기술 스택:** HTML5, CSS3, JavaScript (ES6+)
 * [https://nebula-striker.vercel.app/](https://nebula-striker.vercel.app/)
+
+![이미지](/assets/nebula-striker-1.jpg)
+
+![이미지](/assets/nebula-striker-2.jpg)
+
+![이미지](/assets/nebula-striker-3.jpg)
+
+![이미지](/assets/nebula-striker-4.jpg)
+
+![이미지](/assets/nebula-striker-5.jpg)
+
+![이미지](/assets/nebula-striker-6.jpg)
+
+![이미지](/assets/nebula-striker-7.jpg)
