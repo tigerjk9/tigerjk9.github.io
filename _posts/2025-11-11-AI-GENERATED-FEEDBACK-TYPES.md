@@ -62,4 +62,4 @@ tags: [논문리뷰, 생성형AI, 피드백, 메타인지]
 
 ---
 
-_**출처:** Alsaiari, O. et al. (2025). A COMPARISON OF AI-GENERATED FEEDBACK TYPES ON STUDENT ENGAGEMENT, CONFIDENCE, AND OUTCOMES. https://arxiv.org/abs/2510.19685v1_
+_**출처:** Alsaiari, O. et al. (2025). A COMPARISON OF AI-GENERATED FEEDBACK TYPES ON STUDENT ENGAGEMENT, CONFIDENCE, AND OUTCOMES. [https://arxiv.org/abs/2510.19685v1](https://arxiv.org/abs/2510.19685v1)
