@@ -87,5 +87,3 @@ tags: [논문리뷰, 에듀테크, 생성형AI, 맞춤형학습]
 
 _**출처:** Herzog, N. J., Sulaiman, R. B., Herzog, D. J., & Fong, R. (2025). AI-Driven Personalized Learning: Predicting Academic Performance Through Leadership Personality Traits. arXiv. https://arxiv.org/abs/2510.19964v1_
 ```
-
-변환된 마크다운 결과물에 만족하시나요? 혹시 특정 부분의 **마크다운 문법을 수정**하고 싶거나, **추가적인 질문**이 있으시면 언제든지 말씀해주세요\!
