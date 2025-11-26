@@ -1,5 +1,5 @@
 ---
-title: "AI 자동화는 환상인가? LLM이 촉발한 교사들의 '숨은 노동(Hidden Labour)'에 대한 비판적 고찰"
+title: "AI 자동화는 환상인가? LLM이 촉발한 교사들의 숨은 노동(Hidden Labour)에 대한 비판적 고찰"
 date: 2025-11-26 16:18:20 +0900
 categories: [AI, 교육]
 tags: [교육적취약성, 숨은노동, 유사자동화]
