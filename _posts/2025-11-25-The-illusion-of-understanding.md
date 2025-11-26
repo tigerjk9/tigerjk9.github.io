@@ -5,7 +5,7 @@ categories: [AI, 철학, 인지과학]
 tags: [LLM, 환각, 이해의환상, 이중부호화이론, RoseFrame]
 ---
 
-# LLM은 직관 기계(System 1)인가? AI가 촉발하는 '이해의 환상'
+# LLM은 직관 기계(System 1)인가? AI가 촉발하는 이해의 환상
 
 > LLM(거대 언어 모델)의 **환각(Hallucination)**을 넘어, LLM이 생성하는 더 근본적인 문제, 즉 사용자가 AI를 깊이 이해했다고 착각하게 만드는 **'이해의 환상(Illusion of Understanding)'**을 탐구하는 연구입니다. 본 연구는 LLM을 **'직관 기계'**로 정의하고, 인간과 AI 간의 인지적 붕괴를 진단하는 새로운 프레임워크 **로즈-프레임(Rose-Frame)**을 제시합니다.
 
