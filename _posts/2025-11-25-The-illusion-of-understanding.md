@@ -91,7 +91,7 @@ LLM 환각의 근본 원인은 LLM이 학습하는 데이터, 즉 **인간의 �
 * **직관/이성:** 나의 판단이 **직관(System 1)**에 의한 것인지 혹은 **이성(System 2)**에 의한 것인지?
 * **확증/갈등:** 내가 AI의 의견을 단순히 **확증**하고 있는지, 또는 비판적으로 **반증(갈등)**하려 노력했는지?
 
-* ![이미지](/assets/The-illusion-of-understanding-2.jpg)
+![이미지](/assets/The-illusion-of-understanding-2.jpg)
 
 ### (2) 건설적 갈등 문화 조성
 
