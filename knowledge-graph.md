@@ -191,7 +191,6 @@ class: "page--knowledge-graph"
       <li>🖱️ 드래그: 회전</li>
       <li>🔍 스크롤: 줌</li>
       <li>👆 클릭: 정보 표시</li>
-      <li>👆👆 더블클릭: 게시물 이동</li>
     </ul>
   </div>
 </div>
