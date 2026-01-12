@@ -1,6 +1,6 @@
 ---
 layout: wide
-title: "지식 그래프 (Knowledge Graph)"
+title: "지식 그래프 3D (Knowledge Graph 3D)"
 permalink: /knowledge-graph/
 class: "page--knowledge-graph"
 ---
@@ -8,7 +8,9 @@ class: "page--knowledge-graph"
 <style>
   html, body.page--knowledge-graph {
     background-color: #0A192F !important;
-    overflow-y: hidden;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
   }
   .page__footer {
     background-color: transparent !important;
@@ -19,27 +21,98 @@ class: "page--knowledge-graph"
   }
   .page--knowledge-graph .page__title {
     text-align: center;
+    color: #64FFDA;
+    text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
   }
   .page--knowledge-graph #main {
     margin-left: 320px; 
   }
 
-  /* --- 스피너 CSS (z-index 수정됨) --- */
+  #info-panel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(10, 25, 47, 0.95);
+    border: 2px solid #64FFDA;
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: #CCD6F6;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    z-index: 100;
+    max-width: 350px;
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+    display: none;
+    backdrop-filter: blur(10px);
+  }
+
+  #info-panel h3 {
+    margin: 0 0 10px 0;
+    color: #64FFDA;
+    font-size: 18px;
+    border-bottom: 1px solid #64FFDA;
+    padding-bottom: 5px;
+  }
+
+  #info-panel p {
+    margin: 5px 0;
+    line-height: 1.6;
+  }
+
+  #info-panel .category {
+    display: inline-block;
+    background: rgba(100, 255, 218, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #64FFDA;
+  }
+
+  #controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(10, 25, 47, 0.95);
+    border: 2px solid #64FFDA;
+    border-radius: 10px;
+    padding: 15px;
+    color: #CCD6F6;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    z-index: 100;
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+    backdrop-filter: blur(10px);
+  }
+
+  #controls h4 {
+    margin: 0 0 10px 0;
+    color: #64FFDA;
+    font-size: 14px;
+  }
+
+  #controls ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #controls li {
+    margin: 5px 0;
+    padding: 3px 0;
+  }
+
   .loader {
-    border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #3498db; /* Blue */
+    border: 8px solid #233554;
+    border-top: 8px solid #64FFDA;
     border-radius: 50%;
     width: 60px;
     height: 60px;
     animation: spin 1.5s linear infinite;
-    
-    /* 부모(#graph-wrapper)의 정중앙에 배치 */
     position: absolute;
     top: 50%;
     left: 50%;
     margin-top: -30px;
     margin-left: -30px;
-    /* 그래프(z-index: 1)보다 항상 위에 있도록 z-index를 높게 설정 */
     z-index: 1000;
   }
 
@@ -49,24 +122,37 @@ class: "page--knowledge-graph"
   }
 </style>
 
-<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<script src="//unpkg.com/3d-force-graph"></script>
 
 <div id="graph-wrapper" style="width: 100%; height: 100vh; position: relative;">
-  
   <div id="graph-spinner" class="loader"></div>
+  <div id="3d-graph"></div>
   
-  <div id="mynetwork" style="width: 100%; height: 100%; background-color: #0A192F; z-index: 1;"></div>
+  <div id="info-panel">
+    <h3 id="node-title">게시물 제목</h3>
+    <p><span class="category" id="node-category"></span></p>
+    <p id="node-connections"></p>
+    <p style="color: #64FFDA; font-size: 11px; margin-top: 10px;">💡 더블클릭하여 게시물로 이동</p>
+  </div>
 
+  <div id="controls">
+    <h4>🎮 조작법</h4>
+    <ul>
+      <li>🖱️ 드래그: 회전</li>
+      <li>🔍 스크롤: 줌</li>
+      <li>👆 클릭: 정보 표시</li>
+      <li>👆👆 더블클릭: 게시물 이동</li>
+    </ul>
+  </div>
 </div>
-
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
-    // 컨테이너와 스피너를 각각 가져옵니다.
-    var container = document.getElementById('mynetwork');
-    var spinner = document.getElementById('graph-spinner');
+    const elem = document.getElementById('3d-graph');
+    const spinner = document.getElementById('graph-spinner');
+    const infoPanel = document.getElementById('info-panel');
     
-    var startTime = new Date().getTime();
+    const startTime = new Date().getTime();
 
     fetch('/knowledge-graph.json')
       .then(response => response.json())
@@ -74,61 +160,88 @@ class: "page--knowledge-graph"
         
         graphData.edges = graphData.edges.filter(edge => edge.from && edge.to);
 
-        const a_edges = graphData.edges.map(edge => {
-          edge.width = edge.value ? Math.max(0.5, Math.min(edge.value * 0.8, 5)) : 1;
-          return edge;
+        const edges = graphData.edges.map(edge => ({
+          source: edge.from,
+          target: edge.to,
+          value: edge.value || 1
+        }));
+
+        const nodes = graphData.nodes.map(node => {
+          const degree = edges.filter(e => e.source === node.id || e.target === node.id).length;
+          return {
+            id: node.id,
+            name: node.label,
+            group: node.group,
+            url: node.url,
+            val: Math.max(degree * 2, 5),
+            connections: degree
+          };
         });
 
-        const a_nodes = graphData.nodes.map(node => {
-          const degree = graphData.edges.filter(edge => edge.from === node.id || edge.to === node.id).length;
-          node.value = Math.max(degree, 1); 
-          return node;
-        });
+        const data = { nodes, links: edges };
 
-        var data = {
-          nodes: a_nodes,
-          edges: a_edges
+        const categoryColors = {
+          'default': '#8892B0',
+          'AI': '#64FFDA',
+          'ML': '#64FFDA',
+          'Deep Learning': '#64FFDA',
+          'Data Science': '#5EEAD4',
+          'Programming': '#A78BFA',
+          'Web': '#F472B6',
+          'Algorithm': '#FBBF24',
+          'Database': '#34D399',
+          'System': '#60A5FA'
         };
 
-        var options = {
-          // ... (기존 옵션) ...
-          nodes: { shape: 'dot', borderWidth: 0, scaling: { min: 15, max: 50, label: { min: 14, max: 30, drawThreshold: 8, maxVisible: 25 } }, font: { color: '#d3d3d3', size: 16, face: 'sans-serif', strokeWidth: 0 }, shadow: { enabled: true, color: '#255784', size: 15 } },
-          edges: { smooth: { type: 'dynamic' }, arrows: { to: { enabled: true, scaleFactor: 0.5 } }, color: { color: '#84A9C0', highlight: '#FFFFFF' }, shadow: { enabled: true, color: '#255784', size: 10 }, scaling: { min: 0.5, max: 5, label: false } },
-          physics: { solver: 'forceAtlas2Based', forceAtlas2Based: { gravitationalConstant: -120, centralGravity: 0.02, springLength: 150, springConstant: 0.05, avoidOverlap: 0.8 }, minVelocity: 0.75, stabilization: { iterations: 300 } },
-          interaction: { hover: true, tooltipDelay: 200, hideEdgesOnDrag: true }
-        };
-
-        // vis.js는 이제 #mynetwork만 제어합니다. 스피너는 안전합니다.
-        var network = new vis.Network(container, data, options);
-        
-        var hideSpinner = function() {
-          var endTime = new Date().getTime();
-          var duration = endTime - startTime; 
-          var minDuration = 1000; // 최소 1초 (1000ms)
-
-          if (duration < minDuration) {
-            setTimeout(function() {
-              spinner.style.display = 'none';
-            }, minDuration - duration);
-          } else {
-            spinner.style.display = 'none';
-          }
-        };
-
-        network.on("stabilizationIterationsDone", function () {
-          network.setOptions( { physics: false } );
-          hideSpinner(); 
-        });
-
-        network.on("click", function (params) {
-            if (params.nodes.length > 0) {
-                var nodeId = params.nodes[0];
-                var node = data.nodes.find(n => n.id === nodeId);
-                if (node && node.url) {
-                    window.open(node.url, '_blank');
-                }
+        const Graph = ForceGraph3D()
+          (elem)
+          .graphData(data)
+          .nodeLabel('name')
+          .nodeAutoColorBy('group')
+          .nodeVal('val')
+          .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
+          .nodeOpacity(0.9)
+          .nodeResolution(16)
+          .linkWidth(link => Math.sqrt(link.value) * 0.5)
+          .linkColor(() => 'rgba(132, 169, 192, 0.4)')
+          .linkOpacity(0.6)
+          .linkDirectionalParticles(link => link.value)
+          .linkDirectionalParticleWidth(2)
+          .linkDirectionalParticleSpeed(0.005)
+          .backgroundColor('#0A192F')
+          .showNavInfo(false)
+          .enableNodeDrag(true)
+          .enableNavigationControls(true)
+          .onNodeClick(node => {
+            document.getElementById('node-title').textContent = node.name;
+            document.getElementById('node-category').textContent = node.group || 'default';
+            document.getElementById('node-connections').textContent = `연결: ${node.connections}개`;
+            infoPanel.style.display = 'block';
+            
+            Graph.cameraPosition(
+              { x: node.x * 1.5, y: node.y * 1.5, z: node.z * 1.5 },
+              node,
+              1000
+            );
+          })
+          .onNodeDblClick(node => {
+            if (node.url) {
+              window.open(node.url, '_blank');
             }
-        });
+          })
+          .onBackgroundClick(() => {
+            infoPanel.style.display = 'none';
+          })
+          .d3Force('charge', d3.forceManyBody().strength(-120))
+          .d3Force('link', d3.forceLink().distance(80).strength(1))
+          .d3Force('center', d3.forceCenter());
+
+        setTimeout(() => {
+          spinner.style.display = 'none';
+        }, 2000);
+
+        Graph.d3Force('link').links(data.links);
+        
       })
       .catch(error => {
         console.error('Error loading graph data:', error);
