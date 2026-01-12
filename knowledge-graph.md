@@ -245,6 +245,26 @@ class: "page--knowledge-graph"
           'System': '#60A5FA'
         };
 
+        function createGlowTexture(node) {
+          const canvas = document.createElement('canvas');
+          canvas.width = 64;
+          canvas.height = 64;
+          const ctx = canvas.getContext('2d');
+          
+          const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+          const color = categoryColors[node.group] || categoryColors['default'];
+          
+          gradient.addColorStop(0, color);
+          gradient.addColorStop(0.4, color + 'CC');
+          gradient.addColorStop(0.7, color + '66');
+          gradient.addColorStop(1, color + '00');
+          
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, 64, 64);
+          
+          return canvas;
+        }
+
         const Graph = ForceGraph3D()(elem)
           .graphData(data)
           .nodeLabel('name')
@@ -269,15 +289,22 @@ class: "page--knowledge-graph"
           .width(elem.clientWidth)
           .height(elem.clientHeight)
           .nodeThreeObject(node => {
-            const sprite = new THREE.Sprite(
-              new THREE.SpriteMaterial({
-                map: new THREE.CanvasTexture(createGlowTexture(node)),
-                transparent: true,
-                blending: THREE.AdditiveBlending
-              })
-            );
-            sprite.scale.set(12, 12, 1);
-            return sprite;
+            if (typeof THREE === 'undefined') return null;
+            
+            try {
+              const sprite = new THREE.Sprite(
+                new THREE.SpriteMaterial({
+                  map: new THREE.CanvasTexture(createGlowTexture(node)),
+                  transparent: true,
+                  blending: THREE.AdditiveBlending
+                })
+              );
+              sprite.scale.set(12, 12, 1);
+              return sprite;
+            } catch (e) {
+              console.warn('Failed to create glow sprite:', e);
+              return null;
+            }
           })
           .onNodeClick(node => {
             document.getElementById('node-title').textContent = node.name;
@@ -338,25 +365,6 @@ class: "page--knowledge-graph"
           .onBackgroundClick(() => {
             infoPanel.style.display = 'none';
           });
-
-        function createGlowTexture(node) {
-          const canvas = document.createElement('canvas');
-          canvas.width = 64;
-          canvas.height = 64;
-          const ctx = canvas.getContext('2d');
-          
-          const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-          const color = categoryColors[node.group] || categoryColors['default'];
-          gradient.addColorStop(0, color);
-          gradient.addColorStop(0.3, color.replace(')', ', 0.8)').replace('rgb', 'rgba'));
-          gradient.addColorStop(0.6, color.replace(')', ', 0.3)').replace('rgb', 'rgba'));
-          gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-          
-          ctx.fillStyle = gradient;
-          ctx.fillRect(0, 0, 64, 64);
-          
-          return canvas;
-        }
 
         setTimeout(() => {
           spinner.style.display = 'none';
