@@ -74,6 +74,11 @@ class: "page--knowledge-graph"
         
         graphData.edges = graphData.edges.filter(edge => edge.from && edge.to);
 
+        const a_edges = graphData.edges.map(edge => {
+          edge.width = edge.value ? Math.max(0.5, Math.min(edge.value * 0.8, 5)) : 1;
+          return edge;
+        });
+
         const a_nodes = graphData.nodes.map(node => {
           const degree = graphData.edges.filter(edge => edge.from === node.id || edge.to === node.id).length;
           node.value = Math.max(degree, 1); 
@@ -82,7 +87,7 @@ class: "page--knowledge-graph"
 
         var data = {
           nodes: a_nodes,
-          edges: graphData.edges
+          edges: a_edges
         };
 
         var options = {
