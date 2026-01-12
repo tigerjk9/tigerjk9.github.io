@@ -288,6 +288,39 @@ class: "page--knowledge-graph"
           .enableNavigationControls(true)
           .width(elem.clientWidth)
           .height(elem.clientHeight)
+          .d3Force('charge', d3.forceManyBody().strength(-300))
+          .d3Force('link', d3.forceLink().distance(link => 100 + link.value * 20).strength(0.5))
+          .d3Force('center', d3.forceCenter())
+          .d3Force('brain', () => {
+            data.nodes.forEach(node => {
+              if (!node.x || !node.y || !node.z) return;
+              
+              const distance = Math.sqrt(node.x * node.x + node.y * node.y + node.z * node.z);
+              if (distance === 0) return;
+              
+              const brainRadiusX = 200;
+              const brainRadiusY = 180;
+              const brainRadiusZ = 160;
+              
+              const theta = Math.atan2(node.y, node.x);
+              const phi = Math.acos(node.z / distance);
+              
+              const targetX = brainRadiusX * Math.sin(phi) * Math.cos(theta);
+              const targetY = brainRadiusY * Math.sin(phi) * Math.sin(theta);
+              const targetZ = brainRadiusZ * Math.cos(phi);
+              
+              const wrinkle = Math.sin(phi * 5) * Math.cos(theta * 5) * 15;
+              
+              node.vx = node.vx || 0;
+              node.vy = node.vy || 0;
+              node.vz = node.vz || 0;
+              
+              const strength = 0.02;
+              node.vx += (targetX + wrinkle - node.x) * strength;
+              node.vy += (targetY + wrinkle - node.y) * strength;
+              node.vz += (targetZ + wrinkle - node.z) * strength;
+            });
+          })
           .nodeThreeObject(node => {
             if (typeof THREE === 'undefined') return null;
             
@@ -365,6 +398,10 @@ class: "page--knowledge-graph"
           .onBackgroundClick(() => {
             infoPanel.style.display = 'none';
           });
+
+        Graph.d3Force('link').links(data.links);
+        
+        Graph.d3ReheatSimulation();
 
         setTimeout(() => {
           spinner.style.display = 'none';
