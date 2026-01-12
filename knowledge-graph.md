@@ -40,10 +40,18 @@ class: "page--knowledge-graph"
     font-family: 'Consolas', 'Monaco', monospace;
     font-size: 14px;
     z-index: 100;
-    max-width: 350px;
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(100, 255, 218, 0.5), 0 0 60px rgba(100, 255, 218, 0.2);
     display: none;
     backdrop-filter: blur(10px);
+    animation: panelGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes panelGlow {
+    from { box-shadow: 0 0 30px rgba(100, 255, 218, 0.5), 0 0 60px rgba(100, 255, 218, 0.2); }
+    to { box-shadow: 0 0 40px rgba(100, 255, 218, 0.7), 0 0 80px rgba(100, 255, 218, 0.3); }
   }
 
   #info-panel h3 {
@@ -66,6 +74,30 @@ class: "page--knowledge-graph"
     border-radius: 4px;
     font-size: 12px;
     color: #64FFDA;
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+  }
+
+  #top-connections-list li {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 5px;
+    border-radius: 4px;
+  }
+
+  #top-connections-list li:hover {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+  }
+
+  #node-link {
+    transition: all 0.3s ease;
+  }
+
+  #node-link:hover {
+    background: rgba(100, 255, 218, 0.2);
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+    transform: scale(1.05);
   }
 
   #controls {
@@ -148,7 +180,7 @@ class: "page--knowledge-graph"
     </div>
     <p style="margin-top: 10px;">
       <a id="node-link" href="#" target="_blank" style="color: #64FFDA; text-decoration: none; font-size: 12px; border: 1px solid #64FFDA; padding: 5px 10px; border-radius: 5px; display: inline-block;">
-        📄 게시물로 이동
+        🧠 본 게시물로 이동
       </a>
     </p>
   </div>
@@ -218,20 +250,35 @@ class: "page--knowledge-graph"
           .nodeLabel('name')
           .nodeVal('val')
           .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
-          .nodeOpacity(0.9)
-          .nodeResolution(16)
+          .nodeOpacity(0.95)
+          .nodeResolution(20)
           .linkWidth(link => link.value * 0.8)
-          .linkColor(() => 'rgba(132, 169, 192, 0.4)')
-          .linkOpacity(0.6)
-          .linkDirectionalParticles(link => link.value)
-          .linkDirectionalParticleWidth(2)
-          .linkDirectionalParticleSpeed(0.005)
+          .linkColor(link => {
+            const intensity = Math.min(link.value / 10, 1);
+            return `rgba(100, 255, 218, ${0.2 + intensity * 0.4})`;
+          })
+          .linkOpacity(0.7)
+          .linkDirectionalParticles(link => Math.min(link.value * 2, 8))
+          .linkDirectionalParticleWidth(link => 1 + link.value * 0.3)
+          .linkDirectionalParticleSpeed(0.006)
+          .linkDirectionalParticleColor(() => '#64FFDA')
           .backgroundColor('#0A192F')
           .showNavInfo(false)
           .enableNodeDrag(true)
           .enableNavigationControls(true)
           .width(elem.clientWidth)
           .height(elem.clientHeight)
+          .nodeThreeObject(node => {
+            const sprite = new THREE.Sprite(
+              new THREE.SpriteMaterial({
+                map: new THREE.CanvasTexture(createGlowTexture(node)),
+                transparent: true,
+                blending: THREE.AdditiveBlending
+              })
+            );
+            sprite.scale.set(12, 12, 1);
+            return sprite;
+          })
           .onNodeClick(node => {
             document.getElementById('node-title').textContent = node.name;
             document.getElementById('node-category').textContent = node.group || 'default';
@@ -260,13 +307,18 @@ class: "page--knowledge-graph"
             });
             
             connectionMap.sort((a, b) => b.weight - a.weight);
-            const top5 = connectionMap.slice(0, 5);
+            const top10 = connectionMap.slice(0, 10);
             
-            top5.forEach(conn => {
+            top10.forEach(conn => {
               const li = document.createElement('li');
               li.style.margin = '3px 0';
               li.style.color = '#CCD6F6';
               li.innerHTML = `<span style="color: #64FFDA;">[${conn.weight}]</span> ${conn.node.name || conn.node.id}`;
+              li.onclick = () => {
+                if (conn.node.url) {
+                  window.open(conn.node.url, '_blank');
+                }
+              };
               topConnectionsList.appendChild(li);
             });
             
@@ -286,6 +338,25 @@ class: "page--knowledge-graph"
           .onBackgroundClick(() => {
             infoPanel.style.display = 'none';
           });
+
+        function createGlowTexture(node) {
+          const canvas = document.createElement('canvas');
+          canvas.width = 64;
+          canvas.height = 64;
+          const ctx = canvas.getContext('2d');
+          
+          const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+          const color = categoryColors[node.group] || categoryColors['default'];
+          gradient.addColorStop(0, color);
+          gradient.addColorStop(0.3, color.replace(')', ', 0.8)').replace('rgb', 'rgba'));
+          gradient.addColorStop(0.6, color.replace(')', ', 0.3)').replace('rgb', 'rgba'));
+          gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, 64, 64);
+          
+          return canvas;
+        }
 
         setTimeout(() => {
           spinner.style.display = 'none';
