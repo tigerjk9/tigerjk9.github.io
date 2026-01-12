@@ -120,8 +120,18 @@ class: "page--knowledge-graph"
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  #3d-graph {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 </style>
 
+<script src="//unpkg.com/d3"></script>
+<script src="//unpkg.com/three"></script>
 <script src="//unpkg.com/3d-force-graph"></script>
 
 <div id="graph-wrapper" style="width: 100%; height: 100vh; position: relative;">
@@ -193,11 +203,9 @@ class: "page--knowledge-graph"
           'System': '#60A5FA'
         };
 
-        const Graph = ForceGraph3D()
-          (elem)
+        const Graph = ForceGraph3D()(elem)
           .graphData(data)
           .nodeLabel('name')
-          .nodeAutoColorBy('group')
           .nodeVal('val')
           .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
           .nodeOpacity(0.9)
@@ -212,6 +220,8 @@ class: "page--knowledge-graph"
           .showNavInfo(false)
           .enableNodeDrag(true)
           .enableNavigationControls(true)
+          .width(elem.clientWidth)
+          .height(elem.clientHeight)
           .onNodeClick(node => {
             document.getElementById('node-title').textContent = node.name;
             document.getElementById('node-category').textContent = node.group || 'default';
@@ -231,16 +241,11 @@ class: "page--knowledge-graph"
           })
           .onBackgroundClick(() => {
             infoPanel.style.display = 'none';
-          })
-          .d3Force('charge', d3.forceManyBody().strength(-120))
-          .d3Force('link', d3.forceLink().distance(80).strength(1))
-          .d3Force('center', d3.forceCenter());
+          });
 
         setTimeout(() => {
           spinner.style.display = 'none';
         }, 2000);
-
-        Graph.d3Force('link').links(data.links);
         
       })
       .catch(error => {
