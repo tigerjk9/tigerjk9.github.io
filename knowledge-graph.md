@@ -142,7 +142,15 @@ class: "page--knowledge-graph"
     <h3 id="node-title">게시물 제목</h3>
     <p><span class="category" id="node-category"></span></p>
     <p id="node-connections"></p>
-    <p style="color: #64FFDA; font-size: 11px; margin-top: 10px;">💡 더블클릭하여 게시물로 이동</p>
+    <div id="top-connections" style="margin-top: 10px; font-size: 12px;">
+      <strong style="color: #64FFDA;">주요 연결:</strong>
+      <ul id="top-connections-list" style="margin: 5px 0; padding-left: 20px; list-style: none;"></ul>
+    </div>
+    <p style="margin-top: 10px;">
+      <a id="node-link" href="#" target="_blank" style="color: #64FFDA; text-decoration: none; font-size: 12px; border: 1px solid #64FFDA; padding: 5px 10px; border-radius: 5px; display: inline-block;">
+        📄 게시물로 이동
+      </a>
+    </p>
   </div>
 
   <div id="controls">
@@ -177,14 +185,16 @@ class: "page--knowledge-graph"
         }));
 
         const nodes = graphData.nodes.map(node => {
-          const degree = edges.filter(e => e.source === node.id || e.target === node.id).length;
+          const nodeEdges = edges.filter(e => e.source === node.id || e.target === node.id);
+          const degree = nodeEdges.length;
           return {
             id: node.id,
             name: node.label,
             group: node.group,
             url: node.url,
-            val: Math.max(degree * 2, 5),
-            connections: degree
+            val: Math.max(degree * 0.5, 2),
+            connections: degree,
+            edges: nodeEdges
           };
         });
 
@@ -210,7 +220,7 @@ class: "page--knowledge-graph"
           .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
           .nodeOpacity(0.9)
           .nodeResolution(16)
-          .linkWidth(link => Math.sqrt(link.value) * 0.5)
+          .linkWidth(link => link.value * 0.8)
           .linkColor(() => 'rgba(132, 169, 192, 0.4)')
           .linkOpacity(0.6)
           .linkDirectionalParticles(link => link.value)
@@ -226,6 +236,40 @@ class: "page--knowledge-graph"
             document.getElementById('node-title').textContent = node.name;
             document.getElementById('node-category').textContent = node.group || 'default';
             document.getElementById('node-connections').textContent = `연결: ${node.connections}개`;
+            
+            const nodeLink = document.getElementById('node-link');
+            nodeLink.href = node.url;
+            nodeLink.onclick = (e) => {
+              e.preventDefault();
+              window.open(node.url, '_blank');
+            };
+            
+            const topConnectionsList = document.getElementById('top-connections-list');
+            topConnectionsList.innerHTML = '';
+            
+            const connectedEdges = data.links.filter(link => 
+              link.source.id === node.id || link.target.id === node.id
+            );
+            
+            const connectionMap = connectedEdges.map(link => {
+              const connectedNode = link.source.id === node.id ? link.target : link.source;
+              return {
+                node: connectedNode,
+                weight: link.value
+              };
+            });
+            
+            connectionMap.sort((a, b) => b.weight - a.weight);
+            const top5 = connectionMap.slice(0, 5);
+            
+            top5.forEach(conn => {
+              const li = document.createElement('li');
+              li.style.margin = '3px 0';
+              li.style.color = '#CCD6F6';
+              li.innerHTML = `<span style="color: #64FFDA;">[${conn.weight}]</span> ${conn.node.name || conn.node.id}`;
+              topConnectionsList.appendChild(li);
+            });
+            
             infoPanel.style.display = 'block';
             
             Graph.cameraPosition(
