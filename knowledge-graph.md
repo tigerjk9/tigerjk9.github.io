@@ -325,9 +325,9 @@ class: "page--knowledge-graph"
   }
 </style>
 
-<script src="//unpkg.com/d3"></script>
-<script src="//unpkg.com/three"></script>
-<script src="//unpkg.com/3d-force-graph"></script>
+<script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
+<script src="https://unpkg.com/d3@7"></script>
+<script src="https://unpkg.com/3d-force-graph@1"></script>
 
 <div id="graph-wrapper" style="width: 100%; height: 100vh; position: relative;">
   <div id="nav-buttons">
@@ -452,38 +452,47 @@ class: "page--knowledge-graph"
           value: edge.value || 1
         }));
 
-        // 뇌 모양 3D 분포 함수
+        // 구형 뇌 신경망 3D 분포 함수 (폭과 깊이 확대)
         function getBrainPosition(index, total) {
+          // 피보나치 구 분포 알고리즘 (균등 분포)
+          const goldenRatio = (1 + Math.sqrt(5)) / 2;
+          const angleIncrement = Math.PI * 2 * goldenRatio;
+          
           const t = index / total;
+          const inclination = Math.acos(1 - 2 * t);
+          const azimuth = angleIncrement * index;
           
-          // 뇌의 두 반구를 표현하는 파라메트릭 방정식
-          const u = t * Math.PI * 2;
-          const v = (Math.random() * 0.6 + 0.2) * Math.PI;
+          // 구형 뇌 반지름 (폭과 깊이 대폭 확대)
+          const baseRadius = 400;  // 기본 반지름 2배 증가
           
-          // 뇌 형태의 비대칭 타원체
-          const brainWidth = 200;   // 좌우 폭
-          const brainHeight = 150;  // 상하 높이
-          const brainDepth = 180;   // 앞뒤 깊이
+          // 반지름에 약간의 변화를 주어 뇌 표면의 불규칙성 표현
+          const radiusVariation = 1 + Math.sin(inclination * 8) * 0.15 + Math.sin(azimuth * 6) * 0.1;
+          const radius = baseRadius * radiusVariation;
           
-          // 기본 타원체 좌표
-          let x = brainWidth * Math.sin(v) * Math.cos(u);
-          let y = brainHeight * Math.cos(v);
-          let z = brainDepth * Math.sin(v) * Math.sin(u);
+          // 구면 좌표를 직교 좌표로 변환
+          let x = radius * Math.sin(inclination) * Math.cos(azimuth);
+          let y = radius * Math.sin(inclination) * Math.sin(azimuth);
+          let z = radius * Math.cos(inclination);
           
-          // 뇌의 주름과 비대칭성 추가
-          const wrinkle = Math.sin(u * 8) * 15 + Math.sin(v * 6) * 10;
-          x += wrinkle * Math.sin(v);
+          // 뇌의 주름 효과 (대뇌 피질)
+          const wrinkleFreq = 12;
+          const wrinkleAmp = 30;
+          const wrinkle = Math.sin(inclination * wrinkleFreq) * Math.cos(azimuth * wrinkleFreq) * wrinkleAmp;
           
-          // 전두엽 확장 (앞쪽이 더 넓음)
-          if (z > 0) {
-            x *= 1.1;
-            z *= 1.15;
-          }
+          const wrinkleDir = {
+            x: Math.sin(inclination) * Math.cos(azimuth),
+            y: Math.sin(inclination) * Math.sin(azimuth),
+            z: Math.cos(inclination)
+          };
           
-          // 랜덤 오프셋으로 자연스러움 추가
-          x += (Math.random() - 0.5) * 40;
-          y += (Math.random() - 0.5) * 30;
-          z += (Math.random() - 0.5) * 40;
+          x += wrinkle * wrinkleDir.x;
+          y += wrinkle * wrinkleDir.y;
+          z += wrinkle * wrinkleDir.z;
+          
+          // 약간의 랜덤성 추가 (신경망의 자연스러움)
+          x += (Math.random() - 0.5) * 60;
+          y += (Math.random() - 0.5) * 60;
+          z += (Math.random() - 0.5) * 60;
           
           return { x, y, z };
         }
@@ -500,7 +509,7 @@ class: "page--knowledge-graph"
             name: node.label,
             group: node.group,
             url: node.url,
-            val: Math.max(degree * 2, 3),
+            val: Math.max(degree * 3 + 5, 5),  // 연결 많은 노드 크기 차별화 강화
             connections: degree,
             edges: nodeEdges,
             x: pos.x,
@@ -550,7 +559,7 @@ class: "page--knowledge-graph"
         const Graph = ForceGraph3D()(elem)
           .graphData(data)
           .nodeLabel('name')
-          .nodeVal(node => Math.sqrt(node.connections + 1) * 3)  // 연결 개수에 따른 크기
+          .nodeVal(node => Math.pow(node.connections + 1, 0.6) * 5)  // 연결 개수에 따른 크기 (비선형 스케일)
           .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
           .nodeOpacity(0.95)
           .nodeResolution(20)
@@ -570,38 +579,41 @@ class: "page--knowledge-graph"
           .enableNavigationControls(true)
           .width(elem.clientWidth)
           .height(elem.clientHeight)
-          .d3Force('charge', d3.forceManyBody().strength(-300).distanceMax(400))
+          .d3Force('charge', d3.forceManyBody().strength(-400).distanceMax(600))
           .d3Force('link', d3.forceLink().distance(link => {
             // 유사도 기반 거리: 가중치가 높을수록 가까이 (클러스터링)
-            const baseDistance = 80;
-            const similarityFactor = Math.max(0.5, 5 - link.value);
+            const baseDistance = 120;
+            const similarityFactor = Math.max(0.6, 6 - link.value);
             return baseDistance * similarityFactor;
-          }).strength(0.6))
+          }).strength(0.5))
           .d3Force('center', d3.forceCenter())
-          .d3Force('collision', d3.forceCollide().radius(node => Math.sqrt(node.connections + 1) * 6).strength(0.7))
-          .d3Force('brain', function(alpha) {
-            // 뇌 형태 유지를 위한 커스텀 포스
-            const brainRadiusX = 200;
-            const brainRadiusY = 150;
-            const brainRadiusZ = 180;
-            const strength = 0.03 * alpha;
+          .d3Force('collision', d3.forceCollide().radius(node => Math.pow(node.connections + 1, 0.6) * 8).strength(0.6))
+          .d3Force('sphere', function(alpha) {
+            // 구형 뇌 형태 유지를 위한 커스텀 포스
+            const brainRadius = 400;  // 확대된 반지름
+            const strength = 0.02 * alpha;
             
             nodes.forEach(node => {
-              const dx = node.x / brainRadiusX;
-              const dy = node.y / brainRadiusY;
-              const dz = node.z / brainRadiusZ;
-              const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+              const dist = Math.sqrt(node.x*node.x + node.y*node.y + node.z*node.z);
               
-              if (dist > 1.2) {
-                const factor = strength * (dist - 1);
-                node.vx -= node.x * factor;
-                node.vy -= node.y * factor;
-                node.vz -= node.z * factor;
+              // 구 표면에서 너무 멀어지면 다시 당기기
+              if (dist > brainRadius * 1.3) {
+                const factor = strength * (dist / brainRadius - 1.3);
+                node.vx -= node.x * factor / dist;
+                node.vy -= node.y * factor / dist;
+                node.vz -= node.z * factor / dist;
+              }
+              // 구 중심에 너무 가까우면 밀어내기
+              else if (dist < brainRadius * 0.5) {
+                const factor = strength * (0.5 - dist / brainRadius);
+                node.vx += node.x * factor / (dist + 1);
+                node.vy += node.y * factor / (dist + 1);
+                node.vz += node.z * factor / (dist + 1);
               }
             });
           })
-          .cooldownTime(5000)
-          .warmupTicks(50)
+          .cooldownTime(8000)
+          .warmupTicks(100)
           .nodeThreeObject(node => {
             if (typeof THREE === 'undefined') return null;
             
@@ -613,7 +625,8 @@ class: "page--knowledge-graph"
                   blending: THREE.AdditiveBlending
                 })
               );
-              const scale = Math.sqrt(node.connections + 1) * 4;
+              // 연결 많은 노드 크기 차별화 강화 (비선형 스케일)
+              const scale = Math.pow(node.connections + 1, 0.7) * 6;
               sprite.scale.set(scale, scale, 1);
               return sprite;
             } catch (e) {
@@ -932,85 +945,161 @@ class: "page--knowledge-graph"
         }
         
         // 분석 실행
-        console.log('Running analysis algorithms...');
+        console.log('=== Starting Analysis Algorithms ===');
+        console.log('Nodes count:', nodes.length);
+        console.log('Links count:', data.links.length);
+        
         try {
           calculateCentrality();
-          console.log('Centrality calculated');
-        } catch (e) { console.error('Centrality error:', e); }
+          console.log('✓ Centrality calculated');
+        } catch (e) { 
+          console.error('✗ Centrality error:', e);
+        }
         
         let numCommunities = 0;
         try {
           numCommunities = detectCommunities();
-          console.log('Communities detected:', numCommunities);
-        } catch (e) { console.error('Community detection error:', e); }
+          console.log('✓ Communities detected:', numCommunities);
+        } catch (e) { 
+          console.error('✗ Community detection error:', e);
+        }
         
         // 통계 계산 및 표시
-        calculateStatistics();
+        try {
+          calculateStatistics();
+          console.log('✓ Statistics calculated and displayed');
+        } catch (e) {
+          console.error('✗ Statistics calculation error:', e);
+        }
         
         // ===== UI 인터랙션 =====
+        console.log('=== Setting up UI Interactions ===');
         
         // 통계 패널 토글 - 기본으로 보이도록 설정
-        let statsVisible = true;
-        document.getElementById('stats-panel').style.display = 'block';
-        document.getElementById('toggle-stats').classList.add('active');
-        document.getElementById('toggle-stats').addEventListener('click', function() {
-          statsVisible = !statsVisible;
-          document.getElementById('stats-panel').style.display = statsVisible ? 'block' : 'none';
-          this.classList.toggle('active', statsVisible);
-        });
+        const toggleStatsBtn = document.getElementById('toggle-stats');
+        const statsPanel = document.getElementById('stats-panel');
+        
+        if (!toggleStatsBtn) {
+          console.error('✗ toggle-stats button not found!');
+        } else if (!statsPanel) {
+          console.error('✗ stats-panel not found!');
+        } else {
+          let statsVisible = true;
+          statsPanel.style.display = 'block';
+          toggleStatsBtn.classList.add('active');
+          
+          toggleStatsBtn.addEventListener('click', function() {
+            statsVisible = !statsVisible;
+            statsPanel.style.display = statsVisible ? 'block' : 'none';
+            this.classList.toggle('active', statsVisible);
+            console.log('📊 Stats panel toggled:', statsVisible);
+          });
+          console.log('✓ Stats toggle initialized');
+        }
         
         // 경로 탐색 패널 토글
-        let pathVisible = false;
-        document.getElementById('toggle-path').addEventListener('click', function() {
-          pathVisible = !pathVisible;
-          document.getElementById('path-finder').style.display = pathVisible ? 'block' : 'none';
-          this.classList.toggle('active', pathVisible);
-        });
+        const togglePathBtn = document.getElementById('toggle-path');
+        const pathFinder = document.getElementById('path-finder');
+        
+        if (!togglePathBtn) {
+          console.error('✗ toggle-path button not found!');
+        } else if (!pathFinder) {
+          console.error('✗ path-finder panel not found!');
+        } else {
+          let pathVisible = false;
+          togglePathBtn.addEventListener('click', function() {
+            pathVisible = !pathVisible;
+            pathFinder.style.display = pathVisible ? 'block' : 'none';
+            this.classList.toggle('active', pathVisible);
+            console.log('🔍 Path finder toggled:', pathVisible);
+          });
+          console.log('✓ Path finder toggle initialized');
+        }
         
         // 시간축 패널 토글
-        let timeVisible = false;
-        document.getElementById('toggle-time').addEventListener('click', function() {
-          timeVisible = !timeVisible;
-          document.getElementById('time-slider-container').style.display = timeVisible ? 'block' : 'none';
-          this.classList.toggle('active', timeVisible);
-        });
+        const toggleTimeBtn = document.getElementById('toggle-time');
+        const timeSliderContainer = document.getElementById('time-slider-container');
+        
+        if (!toggleTimeBtn) {
+          console.error('✗ toggle-time button not found!');
+        } else if (!timeSliderContainer) {
+          console.error('✗ time-slider-container not found!');
+        } else {
+          let timeVisible = false;
+          toggleTimeBtn.addEventListener('click', function() {
+            timeVisible = !timeVisible;
+            timeSliderContainer.style.display = timeVisible ? 'block' : 'none';
+            this.classList.toggle('active', timeVisible);
+            console.log('⏱️ Time slider toggled:', timeVisible);
+          });
+          console.log('✓ Time slider toggle initialized');
+        }
         
         // 커뮤니티 색상 토글
-        let communityMode = false;
+        const toggleCommunityBtn = document.getElementById('toggle-community');
         const communityColors = [
           '#64FFDA', '#F472B6', '#FBBF24', '#34D399', '#60A5FA',
           '#A78BFA', '#FB923C', '#EC4899', '#10B981', '#3B82F6'
         ];
         
-        document.getElementById('toggle-community').addEventListener('click', function() {
-          communityMode = !communityMode;
-          this.classList.toggle('active', communityMode);
-          
-          if (communityMode) {
-            Graph.nodeColor(node => communityColors[node.community % communityColors.length]);
-          } else {
-            Graph.nodeColor(node => categoryColors[node.group] || categoryColors['default']);
-          }
-        });
+        if (!toggleCommunityBtn) {
+          console.error('✗ toggle-community button not found!');
+        } else {
+          let communityMode = false;
+          toggleCommunityBtn.addEventListener('click', function() {
+            try {
+              communityMode = !communityMode;
+              this.classList.toggle('active', communityMode);
+              
+              if (communityMode) {
+                Graph.nodeColor(node => {
+                  const communityId = node.community || 0;
+                  return communityColors[communityId % communityColors.length];
+                });
+                console.log('🎨 Community mode enabled');
+              } else {
+                Graph.nodeColor(node => categoryColors[node.group] || categoryColors['default']);
+                console.log('🎨 Community mode disabled');
+              }
+            } catch (e) {
+              console.error('✗ Community toggle error:', e);
+            }
+          });
+          console.log('✓ Community toggle initialized');
+        }
         
         // 경로 탐색 드롭다운 채우기
         const pathStart = document.getElementById('path-start');
         const pathEnd = document.getElementById('path-end');
         
-        nodes.forEach(node => {
-          const option1 = document.createElement('option');
-          option1.value = node.id;
-          option1.textContent = node.name;
-          pathStart.appendChild(option1);
-          
-          const option2 = document.createElement('option');
-          option2.value = node.id;
-          option2.textContent = node.name;
-          pathEnd.appendChild(option2);
-        });
+        if (!pathStart || !pathEnd) {
+          console.error('✗ Path dropdown elements not found!');
+        } else {
+          try {
+            nodes.forEach(node => {
+              const option1 = document.createElement('option');
+              option1.value = node.id;
+              option1.textContent = node.name;
+              pathStart.appendChild(option1);
+              
+              const option2 = document.createElement('option');
+              option2.value = node.id;
+              option2.textContent = node.name;
+              pathEnd.appendChild(option2);
+            });
+            console.log('✓ Path dropdowns populated with', nodes.length, 'nodes');
+          } catch (e) {
+            console.error('✗ Error populating path dropdowns:', e);
+          }
+        }
         
         // 경로 찾기 버튼
-        document.getElementById('find-path-btn').addEventListener('click', function() {
+        const findPathBtn = document.getElementById('find-path-btn');
+        if (!findPathBtn) {
+          console.error('✗ find-path-btn not found!');
+        } else {
+          findPathBtn.addEventListener('click', function() {
+            console.log('🔍 Path finding initiated...');
           const startId = pathStart.value;
           const endId = pathEnd.value;
           
@@ -1057,28 +1146,42 @@ class: "page--knowledge-graph"
           } else {
             document.getElementById('path-result').innerHTML = 
               '<span style="color: #F87171;">경로를 찾을 수 없습니다.</span>';
+            console.log('✗ No path found');
           }
-        });
+          });
+          console.log('✓ Path finder button initialized');
+        }
         
         // 시간축 기능 (날짜 정보가 있다고 가정)
         const timeSlider = document.getElementById('time-slider');
-        let allNodesData = [...nodes];
-        let allLinksData = [...data.links];
-        let isPlaying = false;
-        let playInterval;
+        const playAnimationBtn = document.getElementById('play-animation');
+        const resetTimeBtn = document.getElementById('reset-time');
+        const timeStartSpan = document.getElementById('time-start');
+        const timeEndSpan = document.getElementById('time-end');
+        const timeCurrentSpan = document.getElementById('time-current');
         
-        // 노드에 인덱스 기반 타임스탬프 추가 (실제로는 포스트 날짜 사용)
-        nodes.forEach((node, index) => {
-          node.timestamp = index;
-        });
-        
-        const minTime = 0;
-        const maxTime = nodes.length - 1;
-        
-        document.getElementById('time-start').textContent = '0';
-        document.getElementById('time-end').textContent = nodes.length.toString();
-        
-        timeSlider.addEventListener('input', function() {
+        if (!timeSlider) {
+          console.error('✗ time-slider not found!');
+        } else if (!playAnimationBtn || !resetTimeBtn) {
+          console.error('✗ Time animation buttons not found!');
+        } else {
+          let allNodesData = [...nodes];
+          let allLinksData = [...data.links];
+          let isPlaying = false;
+          let playInterval;
+          
+          // 노드에 인덱스 기반 타임스탬프 추가
+          nodes.forEach((node, index) => {
+            node.timestamp = index;
+          });
+          
+          const minTime = 0;
+          const maxTime = nodes.length - 1;
+          
+          if (timeStartSpan) timeStartSpan.textContent = '0';
+          if (timeEndSpan) timeEndSpan.textContent = nodes.length.toString();
+          
+          timeSlider.addEventListener('input', function() {
           const threshold = parseInt(this.value) * maxTime / 100;
           
           const filteredNodes = allNodesData.filter(n => n.timestamp <= threshold);
@@ -1089,11 +1192,12 @@ class: "page--knowledge-graph"
             return filteredNodeIds.has(sourceId) && filteredNodeIds.has(targetId);
           });
           
-          Graph.graphData({ nodes: filteredNodes, links: filteredLinks });
-          document.getElementById('time-current').textContent = filteredNodes.length.toString();
-        });
-        
-        document.getElementById('play-animation').addEventListener('click', function() {
+            Graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+            if (timeCurrentSpan) timeCurrentSpan.textContent = filteredNodes.length.toString();
+          });
+          console.log('✓ Time slider initialized');
+          
+          playAnimationBtn.addEventListener('click', function() {
           if (!isPlaying) {
             isPlaying = true;
             this.textContent = '⏸️ 일시정지';
@@ -1108,20 +1212,25 @@ class: "page--knowledge-graph"
               timeSlider.value = currentValue;
               timeSlider.dispatchEvent(new Event('input'));
             }, 100);
-          } else {
-            isPlaying = false;
-            this.textContent = '▶️ 재생';
-            clearInterval(playInterval);
-          }
-        });
+            } else {
+              isPlaying = false;
+              this.textContent = '▶️ 재생';
+              clearInterval(playInterval);
+            }
+          });
+          console.log('✓ Play animation button initialized');
+          
+          resetTimeBtn.addEventListener('click', function() {
+            timeSlider.value = 100;
+            timeSlider.dispatchEvent(new Event('input'));
+            if (isPlaying) {
+              playAnimationBtn.click();
+            }
+          });
+          console.log('✓ Reset time button initialized');
+        }
         
-        document.getElementById('reset-time').addEventListener('click', function() {
-          timeSlider.value = 100;
-          timeSlider.dispatchEvent(new Event('input'));
-          if (isPlaying) {
-            document.getElementById('play-animation').click();
-          }
-        });
+        console.log('=== UI Initialization Complete ===');
 
         setTimeout(() => {
           spinner.style.display = 'none';
