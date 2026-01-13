@@ -287,8 +287,8 @@ class: "page--knowledge-graph"
           .enableNavigationControls(true)
           .width(elem.clientWidth)
           .height(elem.clientHeight)
-          .d3Force('charge', d3.forceManyBody().strength(-300))
-          .d3Force('link', d3.forceLink().distance(link => 100 + link.value * 20).strength(0.5))
+          .d3Force('charge', d3.forceManyBody().strength(-800))
+          .d3Force('link', d3.forceLink().distance(link => 150 + link.value * 30).strength(0.3))
           .d3Force('center', d3.forceCenter())
           .d3Force('brain', () => {
             data.nodes.forEach(node => {
@@ -297,9 +297,9 @@ class: "page--knowledge-graph"
               const distance = Math.sqrt(node.x * node.x + node.y * node.y + node.z * node.z);
               if (distance === 0) return;
               
-              const brainRadiusX = 200;
-              const brainRadiusY = 180;
-              const brainRadiusZ = 160;
+              const brainRadiusX = 300;
+              const brainRadiusY = 280;
+              const brainRadiusZ = 260;
               
               const theta = Math.atan2(node.y, node.x);
               const phi = Math.acos(node.z / distance);
@@ -314,7 +314,7 @@ class: "page--knowledge-graph"
               node.vy = node.vy || 0;
               node.vz = node.vz || 0;
               
-              const strength = 0.02;
+              const strength = 0.015;
               node.vx += (targetX + wrinkle - node.x) * strength;
               node.vy += (targetY + wrinkle - node.y) * strength;
               node.vz += (targetZ + wrinkle - node.z) * strength;
