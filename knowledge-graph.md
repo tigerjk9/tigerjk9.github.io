@@ -452,19 +452,37 @@ class: "page--knowledge-graph"
           value: edge.value || 1
         }));
 
-        const nodes = graphData.nodes.map(node => {
+        const nodes = graphData.nodes.map((node, index) => {
           const nodeEdges = edges.filter(e => e.source === node.id || e.target === node.id);
           const degree = nodeEdges.length;
+          
+          // 3D 공간에 초기 위치 분산 배치
+          const theta = (index / graphData.nodes.length) * Math.PI * 2;
+          const phi = Math.acos(2 * (index / graphData.nodes.length) - 1);
+          const radius = 300;
+          
           return {
             id: node.id,
             name: node.label,
             group: node.group,
             url: node.url,
-            val: Math.max(degree * 0.5, 2),
+            val: Math.max(degree * 2, 3),  // 노드 크기를 연결 개수에 비례
             connections: degree,
-            edges: nodeEdges
+            edges: nodeEdges,
+            fx: radius * Math.sin(phi) * Math.cos(theta),
+            fy: radius * Math.sin(phi) * Math.sin(theta),
+            fz: radius * Math.cos(phi)
           };
         });
+        
+        // 초기 배치 후 고정 해제 (자연스러운 움직임)
+        setTimeout(() => {
+          nodes.forEach(node => {
+            node.fx = null;
+            node.fy = null;
+            node.fz = null;
+          });
+        }, 3000);
 
         const data = { nodes, links: edges };
 
@@ -504,16 +522,16 @@ class: "page--knowledge-graph"
         const Graph = ForceGraph3D()(elem)
           .graphData(data)
           .nodeLabel('name')
-          .nodeVal('val')
+          .nodeVal(node => Math.sqrt(node.connections + 1) * 3)  // 연결 개수에 따른 크기
           .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
           .nodeOpacity(0.95)
           .nodeResolution(20)
-          .linkWidth(link => link.value * 0.8)
+          .linkWidth(link => Math.max(link.value * 1.5, 0.5))  // 가중치에 따른 두께
           .linkColor(link => {
-            const intensity = Math.min(link.value / 10, 1);
-            return `rgba(100, 255, 218, ${0.2 + intensity * 0.4})`;
+            const intensity = Math.min(link.value / 5, 1);
+            return `rgba(100, 255, 218, ${0.3 + intensity * 0.5})`;
           })
-          .linkOpacity(0.7)
+          .linkOpacity(0.8)
           .linkDirectionalParticles(link => Math.min(link.value * 2, 8))
           .linkDirectionalParticleWidth(link => 1 + link.value * 0.3)
           .linkDirectionalParticleSpeed(0.006)
@@ -524,10 +542,16 @@ class: "page--knowledge-graph"
           .enableNavigationControls(true)
           .width(elem.clientWidth)
           .height(elem.clientHeight)
-          .d3Force('charge', d3.forceManyBody().strength(-1200))
-          .d3Force('link', d3.forceLink().distance(link => 180 + link.value * 40).strength(0.2))
+          .d3Force('charge', d3.forceManyBody().strength(-800))
+          .d3Force('link', d3.forceLink().distance(link => {
+            // 유사도 기반 거리: 가중치가 높을수록 가까이
+            const baseDistance = 150;
+            const similarityFactor = Math.max(1, 10 - link.value * 2);
+            return baseDistance * similarityFactor;
+          }).strength(0.4))
           .d3Force('center', d3.forceCenter())
-          .d3Force('collision', d3.forceCollide().radius(node => Math.sqrt(node.val) * 15).strength(1.2))
+          .d3Force('collision', d3.forceCollide().radius(node => Math.sqrt(node.val) * 8).strength(0.8))
+          .d3Force('z', d3.forceZ().strength(0.05))  // Z축 힘 추가로 3D 공간감 강화
           .nodeThreeObject(node => {
             if (typeof THREE === 'undefined') return null;
             
@@ -539,7 +563,8 @@ class: "page--knowledge-graph"
                   blending: THREE.AdditiveBlending
                 })
               );
-              sprite.scale.set(12, 12, 1);
+              const scale = Math.sqrt(node.connections + 1) * 4;
+              sprite.scale.set(scale, scale, 1);
               return sprite;
             } catch (e) {
               console.warn('Failed to create glow sprite:', e);
@@ -841,7 +866,8 @@ class: "page--knowledge-graph"
         // ===== UI 인터랙션 =====
         
         // 통계 패널 토글
-        let statsVisible = true;
+        let statsVisible = false;
+        document.getElementById('stats-panel').style.display = 'none';
         document.getElementById('toggle-stats').addEventListener('click', function() {
           statsVisible = !statsVisible;
           document.getElementById('stats-panel').style.display = statsVisible ? 'block' : 'none';
