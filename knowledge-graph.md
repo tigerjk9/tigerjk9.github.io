@@ -452,37 +452,65 @@ class: "page--knowledge-graph"
           value: edge.value || 1
         }));
 
+        // 뇌 모양 3D 분포 함수
+        function getBrainPosition(index, total) {
+          const t = index / total;
+          
+          // 뇌의 두 반구를 표현하는 파라메트릭 방정식
+          const u = t * Math.PI * 2;
+          const v = (Math.random() * 0.6 + 0.2) * Math.PI;
+          
+          // 뇌 형태의 비대칭 타원체
+          const brainWidth = 200;   // 좌우 폭
+          const brainHeight = 150;  // 상하 높이
+          const brainDepth = 180;   // 앞뒤 깊이
+          
+          // 기본 타원체 좌표
+          let x = brainWidth * Math.sin(v) * Math.cos(u);
+          let y = brainHeight * Math.cos(v);
+          let z = brainDepth * Math.sin(v) * Math.sin(u);
+          
+          // 뇌의 주름과 비대칭성 추가
+          const wrinkle = Math.sin(u * 8) * 15 + Math.sin(v * 6) * 10;
+          x += wrinkle * Math.sin(v);
+          
+          // 전두엽 확장 (앞쪽이 더 넓음)
+          if (z > 0) {
+            x *= 1.1;
+            z *= 1.15;
+          }
+          
+          // 랜덤 오프셋으로 자연스러움 추가
+          x += (Math.random() - 0.5) * 40;
+          y += (Math.random() - 0.5) * 30;
+          z += (Math.random() - 0.5) * 40;
+          
+          return { x, y, z };
+        }
+        
         const nodes = graphData.nodes.map((node, index) => {
           const nodeEdges = edges.filter(e => e.source === node.id || e.target === node.id);
           const degree = nodeEdges.length;
           
-          // 3D 공간에 초기 위치 분산 배치
-          const theta = (index / graphData.nodes.length) * Math.PI * 2;
-          const phi = Math.acos(2 * (index / graphData.nodes.length) - 1);
-          const radius = 300;
+          // 뇌 모양 3D 공간에 초기 위치 배치
+          const pos = getBrainPosition(index, graphData.nodes.length);
           
           return {
             id: node.id,
             name: node.label,
             group: node.group,
             url: node.url,
-            val: Math.max(degree * 2, 3),  // 노드 크기를 연결 개수에 비례
+            val: Math.max(degree * 2, 3),
             connections: degree,
             edges: nodeEdges,
-            fx: radius * Math.sin(phi) * Math.cos(theta),
-            fy: radius * Math.sin(phi) * Math.sin(theta),
-            fz: radius * Math.cos(phi)
+            x: pos.x,
+            y: pos.y,
+            z: pos.z
           };
         });
         
-        // 초기 배치 후 고정 해제 (자연스러운 움직임)
-        setTimeout(() => {
-          nodes.forEach(node => {
-            node.fx = null;
-            node.fy = null;
-            node.fz = null;
-          });
-        }, 3000);
+        console.log('Nodes loaded:', nodes.length);
+        console.log('Edges loaded:', edges.length);
 
         const data = { nodes, links: edges };
 
@@ -542,16 +570,38 @@ class: "page--knowledge-graph"
           .enableNavigationControls(true)
           .width(elem.clientWidth)
           .height(elem.clientHeight)
-          .d3Force('charge', d3.forceManyBody().strength(-800))
+          .d3Force('charge', d3.forceManyBody().strength(-300).distanceMax(400))
           .d3Force('link', d3.forceLink().distance(link => {
-            // 유사도 기반 거리: 가중치가 높을수록 가까이
-            const baseDistance = 150;
-            const similarityFactor = Math.max(1, 10 - link.value * 2);
+            // 유사도 기반 거리: 가중치가 높을수록 가까이 (클러스터링)
+            const baseDistance = 80;
+            const similarityFactor = Math.max(0.5, 5 - link.value);
             return baseDistance * similarityFactor;
-          }).strength(0.4))
+          }).strength(0.6))
           .d3Force('center', d3.forceCenter())
-          .d3Force('collision', d3.forceCollide().radius(node => Math.sqrt(node.val) * 8).strength(0.8))
-          .d3Force('z', d3.forceZ().strength(0.05))  // Z축 힘 추가로 3D 공간감 강화
+          .d3Force('collision', d3.forceCollide().radius(node => Math.sqrt(node.connections + 1) * 6).strength(0.7))
+          .d3Force('brain', function(alpha) {
+            // 뇌 형태 유지를 위한 커스텀 포스
+            const brainRadiusX = 200;
+            const brainRadiusY = 150;
+            const brainRadiusZ = 180;
+            const strength = 0.03 * alpha;
+            
+            nodes.forEach(node => {
+              const dx = node.x / brainRadiusX;
+              const dy = node.y / brainRadiusY;
+              const dz = node.z / brainRadiusZ;
+              const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+              
+              if (dist > 1.2) {
+                const factor = strength * (dist - 1);
+                node.vx -= node.x * factor;
+                node.vy -= node.y * factor;
+                node.vz -= node.z * factor;
+              }
+            });
+          })
+          .cooldownTime(5000)
+          .warmupTicks(50)
           .nodeThreeObject(node => {
             if (typeof THREE === 'undefined') return null;
             
@@ -836,38 +886,73 @@ class: "page--knowledge-graph"
           return paths.slice(0, 5);
         }
         
-        // 4. 통계 계산
+        // 4. 통계 계산 (안전하게 수정)
         function calculateStatistics() {
-          const nodeCount = nodes.length;
-          const edgeCount = data.links.length;
-          const avgDegree = (edgeCount * 2 / nodeCount).toFixed(2);
-          const maxPossibleEdges = nodeCount * (nodeCount - 1) / 2;
-          const density = (edgeCount / maxPossibleEdges).toFixed(4);
-          
-          const maxNode = nodes.reduce((max, node) => 
-            node.connections > max.connections ? node : max
-          , nodes[0]);
-          
-          const isolatedNodes = nodes.filter(n => n.connections === 0).length;
-          
-          document.getElementById('stat-nodes').textContent = nodeCount;
-          document.getElementById('stat-edges').textContent = edgeCount;
-          document.getElementById('stat-avg-degree').textContent = avgDegree;
-          document.getElementById('stat-density').textContent = density;
-          document.getElementById('stat-max-node').textContent = maxNode.name;
-          document.getElementById('stat-isolated').textContent = isolatedNodes;
+          try {
+            const nodeCount = nodes.length;
+            const edgeCount = data.links.length;
+            
+            if (nodeCount === 0) {
+              console.warn('No nodes to calculate statistics');
+              return;
+            }
+            
+            const avgDegree = nodeCount > 0 ? (edgeCount * 2 / nodeCount).toFixed(2) : '0';
+            const maxPossibleEdges = nodeCount * (nodeCount - 1) / 2;
+            const density = maxPossibleEdges > 0 ? (edgeCount / maxPossibleEdges).toFixed(4) : '0';
+            
+            let maxNode = { name: '-', connections: 0 };
+            if (nodes.length > 0) {
+              maxNode = nodes.reduce((max, node) => 
+                (node.connections || 0) > (max.connections || 0) ? node : max
+              , nodes[0]);
+            }
+            
+            const isolatedNodes = nodes.filter(n => (n.connections || 0) === 0).length;
+            
+            // DOM 업데이트
+            const statNodes = document.getElementById('stat-nodes');
+            const statEdges = document.getElementById('stat-edges');
+            const statAvgDegree = document.getElementById('stat-avg-degree');
+            const statDensity = document.getElementById('stat-density');
+            const statMaxNode = document.getElementById('stat-max-node');
+            const statIsolated = document.getElementById('stat-isolated');
+            
+            if (statNodes) statNodes.textContent = nodeCount;
+            if (statEdges) statEdges.textContent = edgeCount;
+            if (statAvgDegree) statAvgDegree.textContent = avgDegree;
+            if (statDensity) statDensity.textContent = density;
+            if (statMaxNode) statMaxNode.textContent = maxNode.name || '-';
+            if (statIsolated) statIsolated.textContent = isolatedNodes;
+            
+            console.log('Statistics calculated:', { nodeCount, edgeCount, avgDegree, density, maxNode: maxNode.name, isolatedNodes });
+          } catch (error) {
+            console.error('Error calculating statistics:', error);
+          }
         }
         
         // 분석 실행
-        calculateCentrality();
-        const numCommunities = detectCommunities();
+        console.log('Running analysis algorithms...');
+        try {
+          calculateCentrality();
+          console.log('Centrality calculated');
+        } catch (e) { console.error('Centrality error:', e); }
+        
+        let numCommunities = 0;
+        try {
+          numCommunities = detectCommunities();
+          console.log('Communities detected:', numCommunities);
+        } catch (e) { console.error('Community detection error:', e); }
+        
+        // 통계 계산 및 표시
         calculateStatistics();
         
         // ===== UI 인터랙션 =====
         
-        // 통계 패널 토글
-        let statsVisible = false;
-        document.getElementById('stats-panel').style.display = 'none';
+        // 통계 패널 토글 - 기본으로 보이도록 설정
+        let statsVisible = true;
+        document.getElementById('stats-panel').style.display = 'block';
+        document.getElementById('toggle-stats').classList.add('active');
         document.getElementById('toggle-stats').addEventListener('click', function() {
           statsVisible = !statsVisible;
           document.getElementById('stats-panel').style.display = statsVisible ? 'block' : 'none';
