@@ -100,49 +100,41 @@ class: "page--knowledge-graph"
     transform: scale(1.05);
   }
 
-  #stats-panel {
+  #controls-panel {
     position: absolute;
     bottom: 20px;
     left: 20px;
     background: rgba(10, 25, 47, 0.95);
     border: 2px solid #64FFDA;
     border-radius: 10px;
-    padding: 15px;
+    padding: 15px 20px;
     color: #CCD6F6;
     font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 12px;
+    font-size: 13px;
     z-index: 100;
     box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
     backdrop-filter: blur(10px);
-    min-width: 250px;
   }
 
-  #stats-panel h4 {
+  #controls-panel h4 {
     margin: 0 0 10px 0;
     color: #64FFDA;
-    font-size: 14px;
+    font-size: 15px;
     border-bottom: 1px solid #64FFDA;
     padding-bottom: 5px;
   }
 
-  #stats-panel .stat-item {
+  #controls-panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #controls-panel li {
     margin: 8px 0;
-    display: flex;
-    justify-content: space-between;
+    color: #CCD6F6;
+    line-height: 1.4;
   }
-
-  #stats-panel .stat-label {
-    color: #8892B0;
-  }
-
-  #stats-panel .stat-value {
-    color: #64FFDA;
-    font-weight: bold;
-  }
-
-
-
-
 
   .loader {
     border: 8px solid #233554;
@@ -240,32 +232,13 @@ class: "page--knowledge-graph"
     </p>
   </div>
 
-  <div id="stats-panel">
-    <h4>📊 네트워크 통계</h4>
-    <div class="stat-item">
-      <span class="stat-label">노드 수:</span>
-      <span class="stat-value" id="stat-nodes">0</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-label">엣지 수:</span>
-      <span class="stat-value" id="stat-edges">0</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-label">평균 연결도:</span>
-      <span class="stat-value" id="stat-avg-degree">0</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-label">네트워크 밀도:</span>
-      <span class="stat-value" id="stat-density">0</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-label">최대 연결 노드:</span>
-      <span class="stat-value" id="stat-max-node" style="font-size: 10px;">-</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-label">고립 노드:</span>
-      <span class="stat-value" id="stat-isolated">0</span>
-    </div>
+  <div id="controls-panel">
+    <h4>🎮 조작법</h4>
+    <ul>
+      <li>🖱️ 드래그: 회전</li>
+      <li>🔍 스크롤: 줌</li>
+      <li>👆 클릭: 정보 표시</li>
+    </ul>
   </div>
 
 </div>
@@ -275,8 +248,6 @@ class: "page--knowledge-graph"
     const elem = document.getElementById('3d-graph');
     const spinner = document.getElementById('graph-spinner');
     const infoPanel = document.getElementById('info-panel');
-    
-    const startTime = new Date().getTime();
 
     fetch('/knowledge-graph.json')
       .then(response => response.json())
@@ -290,9 +261,8 @@ class: "page--knowledge-graph"
           value: edge.value || 1
         }));
 
-        // 구형 뇌 신경망 3D 분포 함수 (폭과 깊이 확대)
+        // 구형 뇌 신경망 3D 분포 함수
         function getBrainPosition(index, total) {
-          // 피보나치 구 분포 알고리즘 (균등 분포)
           const goldenRatio = (1 + Math.sqrt(5)) / 2;
           const angleIncrement = Math.PI * 2 * goldenRatio;
           
@@ -300,19 +270,14 @@ class: "page--knowledge-graph"
           const inclination = Math.acos(1 - 2 * t);
           const azimuth = angleIncrement * index;
           
-          // 구형 뇌 반지름 (폭과 깊이 대폭 확대)
-          const baseRadius = 400;  // 기본 반지름 2배 증가
-          
-          // 반지름에 약간의 변화를 주어 뇌 표면의 불규칙성 표현
+          const baseRadius = 400;
           const radiusVariation = 1 + Math.sin(inclination * 8) * 0.15 + Math.sin(azimuth * 6) * 0.1;
           const radius = baseRadius * radiusVariation;
           
-          // 구면 좌표를 직교 좌표로 변환
           let x = radius * Math.sin(inclination) * Math.cos(azimuth);
           let y = radius * Math.sin(inclination) * Math.sin(azimuth);
           let z = radius * Math.cos(inclination);
           
-          // 뇌의 주름 효과 (대뇌 피질)
           const wrinkleFreq = 12;
           const wrinkleAmp = 30;
           const wrinkle = Math.sin(inclination * wrinkleFreq) * Math.cos(azimuth * wrinkleFreq) * wrinkleAmp;
@@ -327,7 +292,6 @@ class: "page--knowledge-graph"
           y += wrinkle * wrinkleDir.y;
           z += wrinkle * wrinkleDir.z;
           
-          // 약간의 랜덤성 추가 (신경망의 자연스러움)
           x += (Math.random() - 0.5) * 60;
           y += (Math.random() - 0.5) * 60;
           z += (Math.random() - 0.5) * 60;
@@ -338,8 +302,6 @@ class: "page--knowledge-graph"
         const nodes = graphData.nodes.map((node, index) => {
           const nodeEdges = edges.filter(e => e.source === node.id || e.target === node.id);
           const degree = nodeEdges.length;
-          
-          // 뇌 모양 3D 공간에 초기 위치 배치
           const pos = getBrainPosition(index, graphData.nodes.length);
           
           return {
@@ -347,7 +309,7 @@ class: "page--knowledge-graph"
             name: node.label,
             group: node.group,
             url: node.url,
-            val: Math.max(degree * 3 + 5, 5),  // 연결 많은 노드 크기 차별화 강화
+            val: Math.max(degree * 3 + 5, 5),
             connections: degree,
             edges: nodeEdges,
             x: pos.x,
@@ -359,62 +321,37 @@ class: "page--knowledge-graph"
         console.log('Nodes loaded:', nodes.length);
         console.log('Edges loaded:', edges.length);
 
-        const data = { nodes, links: edges };
-
-        const categoryColors = {
-          'default': '#8892B0',
-          'AI': '#64FFDA',
-          'ML': '#64FFDA',
-          'Deep Learning': '#64FFDA',
-          'Data Science': '#5EEAD4',
-          'Programming': '#A78BFA',
-          'Web': '#F472B6',
-          'Algorithm': '#FBBF24',
-          'Database': '#34D399',
-          'System': '#60A5FA'
+        const data = {
+          nodes: nodes,
+          links: edges
         };
 
-        function createGlowTexture(node) {
-          const canvas = document.createElement('canvas');
-          canvas.width = 64;
-          canvas.height = 64;
-          const ctx = canvas.getContext('2d');
-          
-          const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-          const color = categoryColors[node.group] || categoryColors['default'];
-          
-          gradient.addColorStop(0, color);
-          gradient.addColorStop(0.4, color + 'CC');
-          gradient.addColorStop(0.7, color + '66');
-          gradient.addColorStop(1, color + '00');
-          
-          ctx.fillStyle = gradient;
-          ctx.fillRect(0, 0, 64, 64);
-          
-          return canvas;
-        }
+        const categoryColors = {
+          'AI': '#A78BFA',
+          'Machine Learning': '#60A5FA',
+          'Deep Learning': '#F472B6',
+          'NLP': '#34D399',
+          'Computer Vision': '#FBBF24',
+          'Robotics': '#FB923C',
+          'default': '#64FFDA'
+        };
 
-        // ForceGraph3D 초기화
         const Graph = ForceGraph3D()(elem);
         
-        // 그래프 데이터 및 기본 설정
         Graph
           .graphData(data)
-          .nodeLabel('name')
+          .nodeLabel(node => `<div style="background: rgba(10, 25, 47, 0.95); padding: 8px 12px; border-radius: 6px; border: 2px solid #64FFDA; color: #CCD6F6; font-family: 'Consolas', monospace; font-size: 14px; font-weight: bold; box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);">${node.name}</div>`)
           .nodeVal(node => Math.pow(node.connections + 1, 0.6) * 5)
           .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
-          .nodeOpacity(0.95)
-          .nodeResolution(20)
-          .linkWidth(link => Math.max(link.value * 1.5, 0.5))
-          .linkColor(link => {
-            const intensity = Math.min(link.value / 5, 1);
-            return `rgba(100, 255, 218, ${0.3 + intensity * 0.5})`;
-          })
-          .linkOpacity(0.8)
-          .linkDirectionalParticles(link => Math.min(link.value * 2, 8))
-          .linkDirectionalParticleWidth(link => 1 + link.value * 0.3)
-          .linkDirectionalParticleSpeed(0.006)
-          .linkDirectionalParticleColor(() => '#64FFDA')
+          .nodeOpacity(0.9)
+          .nodeResolution(16)
+          .linkWidth(link => Math.max(link.value * 1.2, 0.4))
+          .linkColor(() => 'rgba(148, 163, 184, 0.4)')
+          .linkOpacity(0.6)
+          .linkDirectionalParticles(link => Math.min(link.value * 1.5, 6))
+          .linkDirectionalParticleWidth(link => 0.8 + link.value * 0.2)
+          .linkDirectionalParticleSpeed(0.005)
+          .linkDirectionalParticleColor(() => 'rgba(100, 255, 218, 0.6)')
           .backgroundColor('#0A192F')
           .showNavInfo(false)
           .enableNodeDrag(true)
@@ -422,7 +359,6 @@ class: "page--knowledge-graph"
           .width(elem.clientWidth)
           .height(elem.clientHeight);
         
-        // D3 포스 설정
         Graph
           .d3Force('charge', d3.forceManyBody().strength(-400).distanceMax(600))
           .d3Force('link', d3.forceLink().distance(link => {
@@ -456,7 +392,6 @@ class: "page--knowledge-graph"
           .cooldownTime(8000)
           .warmupTicks(100);
         
-        // 노드 클릭 이벤트 (모달창 표시)
         Graph.onNodeClick(node => {
           try {
             document.getElementById('node-title').textContent = node.name;
@@ -513,277 +448,20 @@ class: "page--knowledge-graph"
           }
         });
         
-        // 노드 더블클릭 이벤트 (페이지 이동)
         Graph.onNodeDblClick(node => {
           if (node.url) {
             window.open(node.url, '_blank');
           }
         });
         
-        // 배경 클릭 시 모달창 닫기
         Graph.onBackgroundClick(() => {
           infoPanel.style.display = 'none';
         });
         
-        // 링크 포스 설정
         Graph.d3Force('link').links(data.links);
-        
-        // 시뮬레이션 재가열
         Graph.d3ReheatSimulation();
         
         console.log('✓ Graph initialized successfully');
-
-        // ===== 분석 알고리즘 구현 =====
-        
-        // 1. 중심성 분석 (Centrality Analysis)
-        function calculateCentrality() {
-          // Degree Centrality (이미 계산됨)
-          nodes.forEach(node => {
-            node.degreeCentrality = node.connections;
-          });
-          
-          // Betweenness Centrality - 노드가 많으면 생략 (성능 이슈)
-          if (nodes.length < 100) {
-            const betweenness = {};
-            nodes.forEach(n => betweenness[n.id] = 0);
-            
-            // 샘플링된 노드 쌍만 계산
-            const sampleSize = Math.min(nodes.length, 50);
-            const sampledNodes = nodes.slice(0, sampleSize);
-            
-            sampledNodes.forEach(source => {
-              sampledNodes.forEach(target => {
-                if (source.id !== target.id) {
-                  const paths = findAllPaths(source.id, target.id, data);
-                  paths.forEach(path => {
-                    path.slice(1, -1).forEach(nodeId => {
-                      betweenness[nodeId] += 1 / paths.length;
-                    });
-                  });
-                }
-              });
-            });
-            
-            nodes.forEach(node => {
-              node.betweennessCentrality = betweenness[node.id] || 0;
-            });
-          }
-          
-          // PageRank (간단한 버전)
-          const pagerank = simplePageRank(data, 10);
-          nodes.forEach(node => {
-            node.pagerank = pagerank[node.id] || 0;
-          });
-        }
-        
-        function simplePageRank(graph, iterations = 10) {
-          const d = 0.85;
-          const N = graph.nodes.length;
-          const ranks = {};
-          
-          graph.nodes.forEach(node => ranks[node.id] = 1 / N);
-          
-          for (let i = 0; i < iterations; i++) {
-            const newRanks = {};
-            graph.nodes.forEach(node => newRanks[node.id] = (1 - d) / N);
-            
-            graph.links.forEach(link => {
-              const sourceId = link.source.id || link.source;
-              const targetId = link.target.id || link.target;
-              const sourceNode = graph.nodes.find(n => n.id === sourceId);
-              const outDegree = graph.links.filter(l => 
-                (l.source.id || l.source) === sourceId
-              ).length;
-              
-              if (outDegree > 0) {
-                newRanks[targetId] += d * ranks[sourceId] / outDegree;
-              }
-            });
-            
-            Object.assign(ranks, newRanks);
-          }
-          
-          return ranks;
-        }
-        
-        // 2. 커뮤니티 탐지 (Community Detection) - Louvain-like algorithm
-        function detectCommunities() {
-          const communities = {};
-          let communityId = 0;
-          
-          nodes.forEach(node => {
-            if (!communities[node.id]) {
-              const community = [];
-              const visited = new Set();
-              const queue = [node.id];
-              
-              while (queue.length > 0) {
-                const current = queue.shift();
-                if (visited.has(current)) continue;
-                visited.add(current);
-                community.push(current);
-                
-                const neighbors = data.links
-                  .filter(l => (l.source.id || l.source) === current || (l.target.id || l.target) === current)
-                  .map(l => {
-                    const sourceId = l.source.id || l.source;
-                    const targetId = l.target.id || l.target;
-                    return sourceId === current ? targetId : sourceId;
-                  })
-                  .filter(n => !visited.has(n));
-                
-                // 강한 연결만 커뮤니티로 포함
-                neighbors.forEach(neighbor => {
-                  const edge = data.links.find(l => {
-                    const sourceId = l.source.id || l.source;
-                    const targetId = l.target.id || l.target;
-                    return (sourceId === current && targetId === neighbor) ||
-                           (sourceId === neighbor && targetId === current);
-                  });
-                  if (edge && edge.value >= 2) {
-                    queue.push(neighbor);
-                  }
-                });
-              }
-              
-              community.forEach(nodeId => {
-                communities[nodeId] = communityId;
-              });
-              communityId++;
-            }
-          });
-          
-          nodes.forEach(node => {
-            node.community = communities[node.id];
-          });
-          
-          return communityId;
-        }
-        
-        // 3. 경로 탐색 (Path Finding) - BFS
-        function findShortestPath(startId, endId) {
-          const queue = [[startId]];
-          const visited = new Set([startId]);
-          
-          while (queue.length > 0) {
-            const path = queue.shift();
-            const current = path[path.length - 1];
-            
-            if (current === endId) {
-              return path;
-            }
-            
-            const neighbors = data.links
-              .filter(l => {
-                const sourceId = l.source.id || l.source;
-                const targetId = l.target.id || l.target;
-                return sourceId === current || targetId === current;
-              })
-              .map(l => {
-                const sourceId = l.source.id || l.source;
-                const targetId = l.target.id || l.target;
-                return sourceId === current ? targetId : sourceId;
-              });
-            
-            neighbors.forEach(neighbor => {
-              if (!visited.has(neighbor)) {
-                visited.add(neighbor);
-                queue.push([...path, neighbor]);
-              }
-            });
-          }
-          
-          return null;
-        }
-        
-        function findAllPaths(startId, endId, graph, maxDepth = 3) {
-          const paths = [];
-          const visited = new Set();
-          
-          function dfs(current, target, path, depth) {
-            if (depth > maxDepth) return;
-            if (current === target) {
-              paths.push([...path]);
-              return;
-            }
-            
-            visited.add(current);
-            
-            const neighbors = graph.links
-              .filter(l => {
-                const sourceId = l.source.id || l.source;
-                const targetId = l.target.id || l.target;
-                return sourceId === current || targetId === current;
-              })
-              .map(l => {
-                const sourceId = l.source.id || l.source;
-                const targetId = l.target.id || l.target;
-                return sourceId === current ? targetId : sourceId;
-              });
-            
-            neighbors.forEach(neighbor => {
-              if (!visited.has(neighbor)) {
-                dfs(neighbor, target, [...path, neighbor], depth + 1);
-              }
-            });
-            
-            visited.delete(current);
-          }
-          
-          dfs(startId, endId, [startId], 0);
-          return paths.slice(0, 5);
-        }
-        
-        // 네트워크 통계 계산 (완전 재작성)
-        function calculateStatistics() {
-          console.log('=== Calculating Network Statistics ===');
-          
-          const nodeCount = nodes.length;
-          const edgeCount = data.links.length;
-          
-          console.log('Raw data:', { nodeCount, edgeCount });
-          
-          // 평균 연결도 = (총 엣지 수 × 2) / 노드 수
-          const avgDegree = nodeCount > 0 ? ((edgeCount * 2) / nodeCount).toFixed(2) : 0;
-          
-          // 네트워크 밀도 = 실제 엣지 수 / 가능한 최대 엣지 수
-          const maxPossibleEdges = nodeCount * (nodeCount - 1) / 2;
-          const density = maxPossibleEdges > 0 ? (edgeCount / maxPossibleEdges).toFixed(4) : 0;
-          
-          // 최대 연결 노드 찾기
-          let maxNode = nodes[0];
-          nodes.forEach(node => {
-            if (node.connections > maxNode.connections) {
-              maxNode = node;
-            }
-          });
-          
-          // 고립 노드 (연결이 0인 노드)
-          const isolatedNodes = nodes.filter(n => n.connections === 0).length;
-          
-          console.log('Calculated values:', {
-            nodeCount,
-            edgeCount,
-            avgDegree,
-            density,
-            maxNodeName: maxNode.name,
-            maxNodeConnections: maxNode.connections,
-            isolatedNodes
-          });
-          
-          // DOM 업데이트
-          document.getElementById('stat-nodes').textContent = nodeCount;
-          document.getElementById('stat-edges').textContent = edgeCount;
-          document.getElementById('stat-avg-degree').textContent = avgDegree;
-          document.getElementById('stat-density').textContent = density;
-          document.getElementById('stat-max-node').textContent = maxNode.name;
-          document.getElementById('stat-isolated').textContent = isolatedNodes;
-          
-          console.log('✓ Statistics updated in DOM');
-        }
-        
-        // 통계 계산 및 표시
-        calculateStatistics();
 
         setTimeout(() => {
           spinner.style.display = 'none';
