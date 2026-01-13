@@ -21,6 +21,9 @@
 {% include analytics.html %}
 {% include /comments-providers/scripts.html %}
 
+<!-- Sidebar Toggle Script -->
+<script src="{{ '/assets/js/sidebar-toggle.js' | relative_url }}"></script>
+
 {% if site.after_footer_scripts %}
   {% for script in site.after_footer_scripts %}
     <script src="{{ script | relative_url }}"></script>

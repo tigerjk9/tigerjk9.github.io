@@ -14,16 +14,113 @@ $max-width: 100%;
 
 // 3. 사용자 정의 스타일 (Custom CSS)
 
-/* --- 화면이 1024px 이상일 때만 적용되는 데스크톱 스타일 --- */
+/* --- 접이식 사이드바 스타일 --- */
+.sidebar {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* 사이드바 토글 버튼 */
+.sidebar-toggle {
+  position: fixed;
+  left: 10px;
+  top: 80px;
+  z-index: 1000;
+  background: #252a34;
+  border: 2px solid #42a5f5;
+  color: #42a5f5;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(66, 165, 245, 0.3);
+}
+
+.sidebar-toggle:hover {
+  background: #42a5f5;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(66, 165, 245, 0.5);
+  transform: scale(1.05);
+}
+
+/* 데스크톱: 사이드바 접힌 상태 */
 @media screen and (min-width: 1024px) {
-  /* --- 헤더 제목 위치 조정 --- */
-  .masthead__inner-wrap {
-    padding-left: 320px; 
+  .sidebar-collapsed .sidebar {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
   }
 
-  /* --- 전체 콘텐츠 시작 위치 조정 --- */
+  .sidebar-collapsed .masthead__inner-wrap {
+    padding-left: 0;
+    transition: padding-left 0.3s ease-in-out;
+  }
+
+  .sidebar-collapsed #main {
+    margin-left: 0;
+    transition: margin-left 0.3s ease-in-out;
+  }
+
+  /* 사이드바 펼쳐진 상태 (기본) */
+  .masthead__inner-wrap {
+    padding-left: 320px;
+    transition: padding-left 0.3s ease-in-out;
+  }
+
   #main {
-    margin-left: 320px; 
+    margin-left: 320px;
+    transition: margin-left 0.3s ease-in-out;
+  }
+
+  .sidebar-toggle {
+    left: 10px;
+  }
+
+  .sidebar-collapsed .sidebar-toggle {
+    left: 10px;
+  }
+}
+
+/* 모바일: 오버레이 방식 */
+@media screen and (max-width: 1023px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 999;
+    background: #1a1d23;
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .sidebar-expanded .sidebar {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* 모바일에서 오버레이 배경 */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
+  }
+
+  .sidebar-expanded .sidebar-overlay {
+    display: block;
+  }
+
+  .sidebar-toggle {
+    left: 10px;
+    top: 70px;
   }
 }
 
@@ -54,8 +151,18 @@ $max-width: 100%;
 }
 
 /* --- 사이드바 고정 기능 해제 및 잘림 방지 --- */
-.sidebar.sticky {
-  position: static;
-  overflow-y: visible;
-  max-height: none;
+@media screen and (min-width: 1024px) {
+  .sidebar.sticky {
+    position: static;
+    overflow-y: visible;
+    max-height: none;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .sidebar.sticky {
+    position: fixed;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
 }
