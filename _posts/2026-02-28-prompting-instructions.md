@@ -98,5 +98,5 @@ tags: [논문리뷰, AI, 교육, 프롬프트엔지니어링, 자기조절학습
 ---
 
 <출처>
-Xiao, R., Ye, R., Hou, X., Wen, J., Kumar, H., Liut, M., & Stamper, J. (2018). Transforming GenAI Policy to Prompting Instruction: An RCT of Scalable Prompting Interventions in a CS1 Course. *Proceedings of the ACM*, 11 pages. [https://doi.org/XXXXXXX.XXXXXXX](https://doi.org/XXXXXXX.XXXXXXX)
-</출처>
+
+Xiao, R., Ye, R., Hou, X., Wen, J., Kumar, H., Liut, M., & Stamper, J. (2018). Transforming GenAI Policy to Prompting Instruction: An RCT of Scalable Prompting Interventions in a CS1 Course. *Proceedings of the ACM*, 11 pages. [https://doi.org/10.48550/arXiv.2602.16033](https://doi.org/10.48550/arXiv.2602.16033)
