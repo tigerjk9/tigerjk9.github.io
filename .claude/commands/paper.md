@@ -207,3 +207,54 @@ python scripts/pdf_to_post.py {pdf_path} {옵션들}
 
 실패 시:
 - `[ERROR]` 내용과 해결 방법 안내
+
+---
+
+### [선택] PaperBanana 학술 삽화 생성
+
+배치 모드의 [B-5] 완료 후 또는 단일 모드의 [S-6] 완료 후,
+PaperBanana 환경이 설치되어 있으면 학술 삽화 추가를 제안한다.
+
+#### 환경 확인
+
+```bash
+ls "C:/Users/windo/Desktop/Github Desktop/Image-Generation-for-Writing/PaperBanana/.venv/Scripts/python.exe" 2>/dev/null && echo "OK" || echo "MISSING"
+```
+
+`MISSING`이면 이 단계를 건너뛴다 (안내 없이 조용히 스킵).
+
+#### 사용자 확인
+
+`OK`이면 AskUserQuestion으로 묻는다:
+```
+🍌 PaperBanana 학술 삽화를 추가로 생성하시겠습니까?
+PDF의 Figure 캡션을 기반으로 학술 다이어그램을 자동 생성합니다.
+```
+- 옵션: "예" / "아니오"
+
+#### 실행
+
+"예"를 선택하면:
+
+```bash
+cd "C:/Users/windo/Desktop/Github Desktop/Image-Generation-for-Writing"
+PaperBanana/.venv/Scripts/python scripts/banana_generate.py \
+  --pdf "{원본_pdf_경로}" \
+  --slug "{slug}" \
+  --output-dir "C:/Users/windo/Desktop/Github Desktop/tigerjk9.github.io/assets" \
+  --max-rounds 2 --candidates 1
+```
+
+타임아웃: 300초
+
+#### 결과 처리
+
+`SUCCESS:` 줄을 파싱해 생성된 이미지 경로를 수집하고,
+해당 이미지를 포스트에 삽입할 마크다운 코드를 사용자에게 제안한다:
+
+```
+🍌 PaperBanana 삽화 생성 완료!
+포스트에 다음 코드를 추가하시겠습니까?
+
+![Figure 1: caption](/assets/slug-fig1.jpg)
+```
