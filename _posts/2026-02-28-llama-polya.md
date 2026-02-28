@@ -1,5 +1,5 @@
 ---
-title: "Llama-Polya는 Polya의 문제 해결 단계를 기반으로 LLM 튜터링을 어떻게 향상시키는가?"
+title: "Llama-Polya는 Polya의 문제 해결 단계를 기반으로 LLM 튜터링을 어떻게 향상시키는가?" 
 date: 2026-02-28 09:00:00 +0900
 categories: [AI, 교육공학]
 tags: [논문리뷰, AI, 교육, 생성형AI, 학습과학, 자기조절학습]
