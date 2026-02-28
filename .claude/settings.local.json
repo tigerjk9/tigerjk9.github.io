@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(GEMINI_API_KEY=\"AIzaSyCFQYe2IZaY7_5u87GlF0e36Fl74Jyf-94\" python:*)",
+      "Bash(find _posts:*)",
+      "Bash(grep:*)"
+    ]
+  }
+}

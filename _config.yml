@@ -132,6 +132,8 @@ exclude:
   - tmp
   - /docs # ignore Minimal Mistakes /docs
   - /test # ignore Minimal Mistakes /test
+  - _papers
+  - scripts
 keep_files:
   - .git
   - .svn
