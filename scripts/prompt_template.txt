@@ -7,7 +7,7 @@
 
 ---
 title: "{논문의 핵심 내용을 묻는 한국어 질문 형태의 제목. 예: 'AI 챗봇은 자기조절학습을 어떻게 지원하는가?'}"
-date: {DATE_PLACEHOLDER} 09:00:00 +0900
+date: {DATE_PLACEHOLDER} +0900
 categories: [{주제1}, {주제2}]
 tags: [{태그1}, {태그2}, {태그3}]
 ---

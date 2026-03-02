@@ -274,7 +274,8 @@ def load_prompt_template(
     tags_str = ", ".join(tags) if tags else "논문리뷰, AI, 교육"
     fig_instructions = build_figure_instructions(figures, slug)
 
-    template = template.replace("{DATE_PLACEHOLDER}", date_str)
+    time_str = datetime.now().strftime("%H:%M:%S")
+    template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
     template = template.replace("{FIGURE_INSTRUCTIONS}", fig_instructions)
