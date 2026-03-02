@@ -165,7 +165,7 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
-timezone: #
+timezone: Asia/Seoul
 
 # Paginate
 paginate: 10 # amount of posts to show
