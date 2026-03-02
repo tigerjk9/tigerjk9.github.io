@@ -24,7 +24,7 @@ tags: [논문리뷰, AI, 교육, 생성형AI, 학습과학, 교육공학, 자기
 
 (3) 분석 관점: 생성된 학습 활동의 품질 (교사 및 LLM 평가), 시스템의 효율성 (시간, 토큰 사용량, 요청 횟수), 교사의 AI 도구 사용 경험 및 선호도
 
-![교사들이 평가한 시스템별 점수](/assets/applying-ls-to-ai-instructional-design-fig-2.jpg)
+![교사들의 AI 도구 사용 빈도](/assets/applying-ls-to-ai-instructional-design-fig-1.jpg)
 
 ---
 
@@ -36,7 +36,7 @@ tags: [논문리뷰, AI, 교육, 생성형AI, 학습과학, 교육공학, 자기
 
 (3) 높은 품질의 교육적 산출물을 얻기 위해서는 더 복잡한 에이전트 설계와 그에 따른 계산 비용이 수반됨을 확인
 
-![AI 도구 사용 빈도](/assets/applying-ls-to-ai-instructional-design-fig-1.jpg)
+![세 시스템의 QM 루브릭 항목별 평균 점수 비교](/assets/applying-ls-to-ai-instructional-design-fig-2.jpg)
 
 ---
 
