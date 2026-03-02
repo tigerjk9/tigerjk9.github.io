@@ -413,6 +413,43 @@ def git_commit_and_push(file_paths: list[Path], commit_msg: str) -> None:
 
 
 # ──────────────────────────────────────────────────────────────
+# Jekyll 설정 확인
+# ──────────────────────────────────────────────────────────────
+
+def ensure_timezone_config() -> bool:
+    """_config.yml의 timezone이 Asia/Seoul인지 확인하고 필요하면 자동 수정.
+
+    Returns:
+        True  — 파일을 수정했음 (git commit 대상에 포함 필요)
+        False — 이미 올바르게 설정되어 있음
+    """
+    config_path = REPO_ROOT / "_config.yml"
+    if not config_path.exists():
+        return False
+
+    content = config_path.read_text(encoding="utf-8")
+
+    # 이미 Asia/Seoul로 설정되어 있으면 스킵
+    if re.search(r"^timezone:\s*Asia/Seoul\s*$", content, re.MULTILINE):
+        return False
+
+    # timezone 라인을 Asia/Seoul로 교체 (주석 처리 · 빈값 모두 포함)
+    new_content = re.sub(
+        r"^timezone:.*$",
+        "timezone: Asia/Seoul",
+        content,
+        flags=re.MULTILINE,
+    )
+
+    if new_content == content:
+        return False
+
+    config_path.write_text(new_content, encoding="utf-8")
+    print("[INFO] _config.yml timezone → Asia/Seoul 자동 수정 (KST 기준 포스트 노출)")
+    return True
+
+
+# ──────────────────────────────────────────────────────────────
 # 진입점
 # ──────────────────────────────────────────────────────────────
 
@@ -469,6 +506,9 @@ def main() -> None:
     if not pdf_path.exists():
         print(f"[ERROR] 파일을 찾을 수 없습니다: {pdf_path}")
         sys.exit(1)
+
+    # ── timezone 설정 확인 및 자동 수정 ──
+    config_modified = ensure_timezone_config()
 
     # ── 슬러그 결정 ──
     slug = args.slug if args.slug else slugify(pdf_path.stem)
@@ -548,6 +588,8 @@ def main() -> None:
             f"Source: {pdf_path.name}"
         )
         all_files = [output_path] + [fig["local_path"] for fig in figures]
+        if config_modified:
+            all_files.append(REPO_ROOT / "_config.yml")
         try:
             git_commit_and_push(all_files, commit_msg)
         except RuntimeError as e:
