@@ -122,7 +122,7 @@ def extract_figures_from_pdf(pdf_path: str, slug: str) -> list[dict]:
     ASSETS_DIR.mkdir(exist_ok=True)
 
     seen_hashes: set[str] = set()
-    candidates: list[dict] = []  # (area, page, xref, ext, bytes, w, h)
+    candidates: list[dict] = []
 
     try:
         doc = fitz.open(pdf_path)
@@ -194,7 +194,7 @@ def extract_figures_from_pdf(pdf_path: str, slug: str) -> list[dict]:
     return results
 
 
-def build_figure_instructions(figures: list[dict], slug: str) -> str:
+def build_figure_instructions(figures: list[dict]) -> str:
     """추출된 Figure 목록을 Gemini 지시문 형태로 반환."""
     if not figures:
         return "- 이미지 태그 삽입 금지: 이 논문에서 추출된 Figure가 없으므로 이미지 삽입 코드를 작성하지 마세요."
@@ -263,7 +263,6 @@ def load_prompt_template(
     categories: list[str],
     tags: list[str],
     figures: list[dict],
-    slug: str,
 ) -> str:
     """prompt_template.txt 읽기 + 플레이스홀더 치환."""
     if not PROMPT_TEMPLATE_PATH.exists():
@@ -272,13 +271,12 @@ def load_prompt_template(
 
     cats_str = ", ".join(categories) if categories else "AI, 교육"
     tags_str = ", ".join(tags) if tags else "논문리뷰, AI, 교육"
-    fig_instructions = build_figure_instructions(figures, slug)
-
     time_str = datetime.now().strftime("%H:%M:%S")
+
     template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
-    template = template.replace("{FIGURE_INSTRUCTIONS}", fig_instructions)
+    template = template.replace("{FIGURE_INSTRUCTIONS}", build_figure_instructions(figures))
     return template
 
 
@@ -377,37 +375,29 @@ def save_post(content: str, output_path: Path) -> None:
 # Git
 # ──────────────────────────────────────────────────────────────
 
+def _git(args: list[str], check: bool = True) -> subprocess.CompletedProcess:
+    """git 명령 실행. check=True이면 실패 시 RuntimeError."""
+    result = subprocess.run(
+        ["git", *args],
+        capture_output=True, text=True, cwd=str(REPO_ROOT),
+    )
+    if check and result.returncode != 0:
+        raise RuntimeError(f"git {args[0]} 실패:\n{result.stderr.strip()}")
+    return result
+
+
 def git_commit_and_push(file_paths: list[Path], commit_msg: str) -> None:
-    """git add (복수 파일) → commit → push origin main."""
-    # git add 각 파일
-    for fp in file_paths:
-        result = subprocess.run(
-            ["git", "add", str(fp)],
-            capture_output=True, text=True, cwd=str(REPO_ROOT),
-        )
-        if result.returncode != 0:
-            raise RuntimeError(
-                f"git add 실패: {fp}\n{result.stderr.strip()}"
-            )
+    """git add → commit → push origin main."""
+    _git(["add", "--", *[str(fp) for fp in file_paths]])
     print(f"[OK] git add 완료 ({len(file_paths)}개 파일)")
 
-    # git commit
-    result = subprocess.run(
-        ["git", "commit", "-m", commit_msg],
-        capture_output=True, text=True, cwd=str(REPO_ROOT),
-    )
-    if result.returncode != 0:
-        raise RuntimeError(f"git commit 실패:\n{result.stderr.strip()}")
+    _git(["commit", "-m", commit_msg])
     print("[OK] git commit 완료")
 
-    # git push
-    result = subprocess.run(
-        ["git", "push", "origin", "main"],
-        capture_output=True, text=True, cwd=str(REPO_ROOT),
-    )
+    result = _git(["push", "origin", "main"], check=False)
     if result.returncode != 0:
-        print(f"[WARN] git push 실패. 수동으로 push 하세요.")
-        print(f"  → git push origin main")
+        print("[WARN] git push 실패. 수동으로 push 하세요.")
+        print("  → git push origin main")
         print(f"  상세: {result.stderr.strip()}")
     else:
         print("[OK] git push 완료")
@@ -547,7 +537,7 @@ def main() -> None:
     # ── 프롬프트 로드 ──
     try:
         system_prompt = load_prompt_template(
-            args.date, existing_cats, existing_tags, figures, slug
+            args.date, existing_cats, existing_tags, figures
         )
     except RuntimeError as e:
         print(f"[ERROR] {e}")
