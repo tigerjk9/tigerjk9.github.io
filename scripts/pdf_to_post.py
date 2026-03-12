@@ -360,7 +360,7 @@ def build_filename(date_str: str, slug: str) -> str:
     if output_path.exists():
         ts = datetime.now().strftime("%H%M%S")
         filename = f"{date_str}-{slug}-{ts}.md"
-        print(f"[WARN] 파일명 충돌 — 타임스탬프 추가: {filename}")
+        print(f"[WARN] 파일명 충돌 - 타임스탬프 추가: {filename}")
     return filename
 
 

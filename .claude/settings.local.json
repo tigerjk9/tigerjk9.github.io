@@ -7,7 +7,9 @@
       "Bash(find _posts:*)",
       "Bash(grep:*)",
       "WebSearch",
-      "Bash(\"C:/Users/windo/Desktop/Github Desktop/tigerjk9.github.io/.gitignore\":*)"
+      "Bash(\"C:/Users/windo/Desktop/Github Desktop/tigerjk9.github.io/.gitignore\":*)",
+      "Bash(cd \"C:/Users/windo/Desktop/Github Desktop/tigerjk9.github.io\" && python -c \"\nimport re\nfrom pathlib import Path\n\ndef slugify\\(text\\):\n    text = text.lower\\(\\)\n    text = re.sub\\(r'[^a-z0-9\\\\-]', '-', text\\)\n    text = re.sub\\(r'-{2,}', '-', text\\)\n    return text.strip\\('-'\\)\n\npdf_stem = 'The Open-Ended Homogeneity of LLM'\nslug = slugify\\(pdf_stem\\)\nmatches = list\\(Path\\('_posts'\\).glob\\(f'*-{slug}.md'\\)\\)\nprint\\('DONE:' + str\\(matches[0]\\) if matches else 'TODO'\\)\nprint\\('slug:', slug\\)\n\")",
+      "Bash(df -h / 2>/dev/null || wmic logicaldisk get deviceid,freespace,size 2>/dev/null || powershell -command \"Get-PSDrive C | Select-Object Used,Free\")"
     ]
   }
 }
