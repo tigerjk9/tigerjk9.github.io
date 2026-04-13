@@ -212,11 +212,20 @@ $max-width: 100%;
     max-height: none !important;
   }
 
-  /* 데스크톱: 섹션 높이 제한 없음 — 모든 항목 표시 */
+  /* 각 섹션: 뷰포트 절반에서 author profile/여백 공제 → 합산 시 페이지네이션 라인 근방 */
   .sidebar-section__content {
-    max-height: none !important;
-    overflow-y: visible !important;
+    max-height: calc(50vh - 175px) !important;
+    overflow-y: auto !important;
     overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(128,128,128,0.4) transparent;
+  }
+
+  .sidebar-section__content::-webkit-scrollbar { width: 4px; }
+  .sidebar-section__content::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-section__content::-webkit-scrollbar-thumb {
+    background: rgba(128,128,128,0.4);
+    border-radius: 2px;
   }
 }
 
