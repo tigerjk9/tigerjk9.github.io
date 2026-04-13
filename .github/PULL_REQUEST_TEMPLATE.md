@@ -1,30 +1,21 @@
-<!--
-  Thanks for creating a Pull Request! Before you submit, please make sure
-  you've done the following:
+## 변경 내용
 
-  - Read the contributing document at https://github.com/mmistakes/minimal-mistakes#contributing
--->
+<!-- 무엇을 변경했는지 간략히 설명해 주세요 -->
 
-<!--
-  Choose one of the following by uncommenting it:
--->
+## 변경 유형
 
-<!-- This is a bug fix. -->
-<!-- This is an enhancement or feature. -->
-<!-- This is a documentation change. -->
+- [ ] 버그 수정
+- [ ] 기능 추가 / 개선
+- [ ] 포스트 / 문서 수정
+- [ ] 스크립트(자동화) 수정
+- [ ] 기타
 
-## Summary
+## 테스트
 
-<!--
-  Provide a description of what your pull request changes.
--->
+- [ ] `--dry-run`으로 스크립트 출력 확인 (자동화 스크립트 수정 시)
+- [ ] `bundle exec jekyll serve`로 로컬 빌드 확인
+- [ ] `.env` 파일이 커밋에 포함되지 않음을 확인
 
-## Context
+## 관련 이슈
 
-<!--
-  Is this related to any GitHub issue(s)?
--->
-
-<!--
-  Please confirm that you want to submit this Pull Request to Minimal Mistakes, the free Jekyll theme by Michael Rose, by deleting this comment block.
--->
+<!-- 관련 이슈가 있으면 `Closes #123` 형식으로 연결해 주세요 -->
