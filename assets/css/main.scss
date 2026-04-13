@@ -150,6 +150,46 @@ $max-width: 100%;
   transform: scale(1.1);
 }
 
+/* --- 사이드바 섹션 접기/펼치기 --- */
+
+.sidebar-section__toggle {
+  cursor: pointer;
+  user-select: none;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.sidebar-section__toggle:hover {
+  opacity: 0.8;
+}
+
+.sidebar-section__icon {
+  font-size: 11px;
+  opacity: 0.6;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+  margin-left: 6px;
+}
+
+.sidebar-section.collapsed .sidebar-section__icon {
+  transform: rotate(-90deg);
+}
+
+.sidebar-section__content {
+  max-height: 600px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.2s ease;
+  opacity: 1;
+}
+
+.sidebar-section.collapsed .sidebar-section__content {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* --- 사이드바 고정 기능 해제 및 잘림 방지 --- */
 @media screen and (min-width: 1024px) {
   .sidebar.sticky {

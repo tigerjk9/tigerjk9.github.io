@@ -113,10 +113,36 @@
     });
   }
 
+  // 사이드바 섹션 접기/펼치기
+  function initSectionCollapse() {
+    document.querySelectorAll('.sidebar-section__toggle').forEach(function(toggle) {
+      var section = toggle.closest('.sidebar-section');
+      if (!section) return;
+
+      // localStorage에서 상태 복원 (없으면 tag-cloud는 기본 접힘)
+      var key = 'sidebar-sec-' + (toggle.dataset.section || 'unknown');
+      var saved = localStorage.getItem(key);
+      var isTagCloud = (toggle.dataset.section === 'tag-cloud');
+      if (saved === '1' || (saved === null && isTagCloud)) {
+        section.classList.add('collapsed');
+      }
+
+      toggle.addEventListener('click', function() {
+        section.classList.toggle('collapsed');
+        var collapsed = section.classList.contains('collapsed');
+        localStorage.setItem(key, collapsed ? '1' : '0');
+      });
+    });
+  }
+
   // DOM 로드 완료 후 초기화
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSidebarToggle);
+    document.addEventListener('DOMContentLoaded', function() {
+      initSidebarToggle();
+      initSectionCollapse();
+    });
   } else {
     initSidebarToggle();
+    initSectionCollapse();
   }
 })();

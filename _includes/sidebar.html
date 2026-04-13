@@ -3,15 +3,22 @@
     {% if page.author_profile or layout.author_profile %}{% include author-profile.html %}{% endif %}
 
     {% for s in site.sidebar %}
-      {% if s.title %}
-        <h3 class="nav__title--bold">{{ s.title }}</h3>
-      {% endif %}
-      {% if s.html %}
-        {% include {{ s.html }} %}
-      {% endif %}
-      {% if s.text %}
-        {{ s.text | markdownify }}
-      {% endif %}
+      <div class="sidebar-section">
+        {% if s.title %}
+          <h3 class="nav__title--bold sidebar-section__toggle" data-section="{{ s.title | slugify }}">
+            {{ s.title }}
+            <i class="fas fa-chevron-down sidebar-section__icon"></i>
+          </h3>
+        {% endif %}
+        {% if s.html %}
+          <div class="sidebar-section__content">
+            {% include {{ s.html }} %}
+          </div>
+        {% endif %}
+        {% if s.text %}
+          <div class="sidebar-section__content">{{ s.text | markdownify }}</div>
+        {% endif %}
+      </div>
     {% endfor %}
 
     {% if page.sidebar %}
