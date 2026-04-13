@@ -540,9 +540,29 @@ html[data-theme="light"] .breadcrumb__item a {
   color: #0078c8;
 }
 
-/* 방문한 링크 */
+/* 방문한 링크 — 라이트 모드에서 보라색 방지 */
 html[data-theme="light"] a:visited {
-  color: #5a00b5;
+  color: #0078c8;
+}
+
+html[data-theme="light"] .archive__item-title a:visited,
+html[data-theme="light"] .archive__item-title a:visited:hover {
+  color: #252a34;
+}
+
+html[data-theme="light"] .page__taxonomy-item:visited {
+  color: #252a34;
+}
+
+html[data-theme="light"] .nav__list a:visited,
+html[data-theme="light"] .toc li > a:visited,
+html[data-theme="light"] .breadcrumb__item a:visited {
+  color: #0078c8;
+}
+
+html[data-theme="light"] .greedy-nav a:visited,
+html[data-theme="light"] .hidden-links a:visited {
+  color: #252a34;
 }
 
 /* 포스트 날짜·메타 정보 */
