@@ -119,11 +119,10 @@
       var section = toggle.closest('.sidebar-section');
       if (!section) return;
 
-      // localStorage에서 상태 복원 (없으면 tag-cloud는 기본 접힘)
+      // localStorage에서 상태 복원 (기본값: 펼쳐진 상태)
       var key = 'sidebar-sec-' + (toggle.dataset.section || 'unknown');
       var saved = localStorage.getItem(key);
-      var isTagCloud = (toggle.dataset.section === 'tag-cloud');
-      if (saved === '1' || (saved === null && isTagCloud)) {
+      if (saved === '1') {
         section.classList.add('collapsed');
       }
 
