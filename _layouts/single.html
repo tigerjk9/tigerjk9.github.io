@@ -40,6 +40,11 @@ layout: default
       {% endunless %}
 
       <a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/{{ page.url | absolute_url | url_encode }}?color=yellow&label=hits&size=medium&base_count=0" alt="hits" /></a>
+
+      <button class="post-copy-btn" id="post-copy-btn" type="button">
+        <i class="fas fa-fw fa-copy"></i> 본문 복사
+      </button>
+
       <section class="page__content" itemprop="text">
         {% if page.toc %}
           <aside class="sidebar__right {% if page.toc_sticky %}sticky{% endif %}">

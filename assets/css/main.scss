@@ -169,6 +169,61 @@ $max-width: 100%;
 
 
 /* ==========================================================================
+   포스트 본문 복사 버튼
+   ========================================================================== */
+
+.post-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 14px;
+  padding: 8px 18px;
+  background: #42a5f5;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.post-copy-btn:hover {
+  background: #1e88e5;
+  color: #fff;
+}
+
+.post-copy-btn:active,
+.post-copy-btn:focus {
+  outline: none;
+  color: #fff;
+  background: #1565c0;
+}
+
+.post-copy-btn--done {
+  background: #43a047 !important;
+  color: #fff !important;
+}
+
+html[data-theme="light"] .post-copy-btn {
+  background: #0078c8;
+  color: #fff;
+}
+
+html[data-theme="light"] .post-copy-btn:hover {
+  background: #005a9e;
+  color: #fff;
+}
+
+html[data-theme="light"] .post-copy-btn--done {
+  background: #2e7d32 !important;
+  color: #fff !important;
+}
+
+
+/* ==========================================================================
    테마 토글 버튼
    ========================================================================== */
 
