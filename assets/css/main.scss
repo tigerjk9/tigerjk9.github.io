@@ -190,8 +190,9 @@ $max-width: 100%;
 }
 
 .sidebar-section__content {
-  max-height: 3000px;
-  overflow: visible;
+  max-height: 2000px;
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: max-height 0.4s ease, opacity 0.2s ease;
   opacity: 1;
 }
@@ -203,12 +204,63 @@ $max-width: 100%;
   pointer-events: none;
 }
 
-/* --- 사이드바 고정 기능 해제 및 잘림 방지 --- */
+/* --- 사이드바: 뷰포트 높이 채우기 (데스크톱) --- */
 @media screen and (min-width: 1024px) {
   .sidebar.sticky {
-    position: static;
-    overflow-y: visible;
-    max-height: none;
+    position: sticky;
+    top: 4em;
+    height: calc(100vh - 5em);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* author profile은 고정 높이 */
+  .sidebar .author__avatar,
+  .sidebar .author__content,
+  .sidebar .author__urls-wrapper {
+    flex-shrink: 0;
+  }
+
+  /* 각 섹션이 남은 공간을 균등 분할 */
+  .sidebar-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .sidebar-section__toggle {
+    flex-shrink: 0;
+  }
+
+  .sidebar-section__content {
+    flex: 1;
+    min-height: 0;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(128,128,128,0.4) transparent;
+  }
+
+  .sidebar-section__content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .sidebar-section__content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar-section__content::-webkit-scrollbar-thumb {
+    background: rgba(128,128,128,0.4);
+    border-radius: 2px;
+  }
+
+  .sidebar-section.collapsed .sidebar-section__content {
+    flex: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
   }
 }
 
