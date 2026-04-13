@@ -1,0 +1,358 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1776088101447,
+  "projectRoot": "C:\\Users\\windo\\Desktop\\03_코딩·개발\\Github Desktop\\tigerjk9.github.io",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": ">= 0.10.0",
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "Ruby",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "Gemfile"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "bundler",
+    "runtime": "Node.js 0.10.0"
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "assets",
+      "docs",
+      "scripts",
+      "test"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "assets": {
+      "path": "assets",
+      "purpose": "Static assets",
+      "fileCount": 352,
+      "lastAccessed": 1776088101229,
+      "keyFiles": [
+        "1.jpg",
+        "11.jpg",
+        "114.png",
+        "115.png",
+        "116.png"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 8,
+      "lastAccessed": 1776088101233,
+      "keyFiles": [
+        "Gemfile",
+        "Rakefile",
+        "screenshot-layouts.png",
+        "screenshot.png",
+        "_config.dev.yml"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 6,
+      "lastAccessed": 1776088101290,
+      "keyFiles": [
+        "naver_cookies.json",
+        "pdf_to_post.py",
+        "prompt_template.txt",
+        "requirements.txt",
+        "yt_prompt_template.txt"
+      ]
+    },
+    "test": {
+      "path": "test",
+      "purpose": "Test files",
+      "fileCount": 3,
+      "lastAccessed": 1776088101292,
+      "keyFiles": [
+        "Gemfile",
+        "index.html",
+        "_config.yml"
+      ]
+    },
+    "_data": {
+      "path": "_data",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1776088101296,
+      "keyFiles": [
+        "navigation.yml",
+        "ui-text.yml"
+      ]
+    },
+    "_includes": {
+      "path": "_includes",
+      "purpose": null,
+      "fileCount": 44,
+      "lastAccessed": 1776088101299,
+      "keyFiles": [
+        "after-content.html",
+        "analytics.html",
+        "archive-single.html",
+        "author-profile-custom-links.html",
+        "author-profile.html"
+      ]
+    },
+    "_layouts": {
+      "path": "_layouts",
+      "purpose": null,
+      "fileCount": 14,
+      "lastAccessed": 1776088101301,
+      "keyFiles": [
+        "archive-taxonomy.html",
+        "archive.html",
+        "categories.html",
+        "category.html",
+        "collection.html"
+      ]
+    },
+    "_papers": {
+      "path": "_papers",
+      "purpose": null,
+      "fileCount": 16,
+      "lastAccessed": 1776088101303,
+      "keyFiles": [
+        "AI-Human-Feedback.pdf",
+        "Applying-LS-to-AI-Instructional-Design.pdf",
+        "Can LLMs Model Incorrect Student Reasoning.pdf",
+        "Expanding the Scope of Computational Thinking.pdf",
+        "Llama-Polya.pdf"
+      ]
+    },
+    "_posts": {
+      "path": "_posts",
+      "purpose": null,
+      "fileCount": 161,
+      "lastAccessed": 1776088101307,
+      "keyFiles": [
+        "2025-08-20-first.md",
+        "2025-08-21-first.md",
+        "2025-08-21-second.md",
+        "2025-08-22-second.md",
+        "2025-08-23-study-strategies.md"
+      ]
+    },
+    "_sass": {
+      "path": "_sass",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1776088101310,
+      "keyFiles": [
+        "minimal-mistakes.scss"
+      ]
+    },
+    "docs\\assets": {
+      "path": "docs\\assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1776088101317,
+      "keyFiles": []
+    },
+    "test\\assets": {
+      "path": "test\\assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1776088101324,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "assets\\css\\main.scss",
+      "accessCount": 39,
+      "lastAccessed": 1776092864907,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js\\sidebar-toggle.js",
+      "accessCount": 5,
+      "lastAccessed": 1776092201796,
+      "type": "file"
+    },
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 4,
+      "lastAccessed": 1776093413888,
+      "type": "file"
+    },
+    {
+      "path": "_config.yml",
+      "accessCount": 3,
+      "lastAccessed": 1776088877571,
+      "type": "file"
+    },
+    {
+      "path": "_sass\\minimal-mistakes\\_base.scss",
+      "accessCount": 3,
+      "lastAccessed": 1776089248247,
+      "type": "file"
+    },
+    {
+      "path": "_posts\\2026-03-25-cyberjustice-tutor-agentic-ai-framework.md",
+      "accessCount": 3,
+      "lastAccessed": 1776089519434,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\scripts.html",
+      "accessCount": 3,
+      "lastAccessed": 1776090276075,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js\\post-copy.js",
+      "accessCount": 3,
+      "lastAccessed": 1776091124342,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\sidebar.html",
+      "accessCount": 3,
+      "lastAccessed": 1776092201672,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\head.html",
+      "accessCount": 2,
+      "lastAccessed": 1776088881110,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\masthead.html",
+      "accessCount": 2,
+      "lastAccessed": 1776088885078,
+      "type": "file"
+    },
+    {
+      "path": "_sass\\minimal-mistakes\\_syntax.scss",
+      "accessCount": 2,
+      "lastAccessed": 1776089139916,
+      "type": "directory"
+    },
+    {
+      "path": "_sass\\minimal-mistakes\\_variables.scss",
+      "accessCount": 2,
+      "lastAccessed": 1776089162374,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 2,
+      "lastAccessed": 1776089373214,
+      "type": "directory"
+    },
+    {
+      "path": "_layouts\\single.html",
+      "accessCount": 2,
+      "lastAccessed": 1776090261696,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 2,
+      "lastAccessed": 1776093504563,
+      "type": "file"
+    },
+    {
+      "path": ".claude",
+      "accessCount": 1,
+      "lastAccessed": 1776088446875,
+      "type": "directory"
+    },
+    {
+      "path": "_sass\\minimal-mistakes\\skins\\_air.scss",
+      "accessCount": 1,
+      "lastAccessed": 1776088694637,
+      "type": "file"
+    },
+    {
+      "path": "_sass\\minimal-mistakes\\_masthead.scss",
+      "accessCount": 1,
+      "lastAccessed": 1776088720325,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js\\_main.js",
+      "accessCount": 1,
+      "lastAccessed": 1776088755300,
+      "type": "file"
+    },
+    {
+      "path": "_sass\\minimal-mistakes",
+      "accessCount": 1,
+      "lastAccessed": 1776088791010,
+      "type": "directory"
+    },
+    {
+      "path": "assets\\js\\theme-toggle.js",
+      "accessCount": 1,
+      "lastAccessed": 1776088898369,
+      "type": "file"
+    },
+    {
+      "path": "_sass\\minimal-mistakes\\_buttons.scss",
+      "accessCount": 1,
+      "lastAccessed": 1776089943049,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\sidebar\\categories.html",
+      "accessCount": 1,
+      "lastAccessed": 1776090439740,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\sidebar\\tag_cloud.html",
+      "accessCount": 1,
+      "lastAccessed": 1776090440325,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\footer.html",
+      "accessCount": 1,
+      "lastAccessed": 1776090596741,
+      "type": "file"
+    },
+    {
+      "path": "_includes",
+      "accessCount": 1,
+      "lastAccessed": 1776091113393,
+      "type": "directory"
+    }
+  ],
+  "userDirectives": []
+}
