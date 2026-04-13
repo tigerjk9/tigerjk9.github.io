@@ -579,6 +579,35 @@ html[data-theme="light"] .notice--success {
   color: #1b5e20;
 }
 
+/* 소셜 공유 버튼 — 라이트 모드에서 a { color } 전역 규칙에 덮어쓰임 방지 */
+html[data-theme="light"] .btn--x,
+html[data-theme="light"] .btn--x:visited,
+html[data-theme="light"] .btn--x:hover {
+  color: #fff;
+  background-color: #0f1419;
+}
+
+html[data-theme="light"] .btn--facebook,
+html[data-theme="light"] .btn--facebook:visited,
+html[data-theme="light"] .btn--facebook:hover {
+  color: #fff;
+  background-color: #3b5998;
+}
+
+html[data-theme="light"] .btn--linkedin,
+html[data-theme="light"] .btn--linkedin:visited,
+html[data-theme="light"] .btn--linkedin:hover {
+  color: #fff;
+  background-color: #007bb6;
+}
+
+html[data-theme="light"] .btn--bluesky,
+html[data-theme="light"] .btn--bluesky:visited,
+html[data-theme="light"] .btn--bluesky:hover {
+  color: #fff;
+  background-color: #1083fe;
+}
+
 /* Search */
 html[data-theme="light"] .search-content {
   background-color: #fff;
@@ -594,39 +623,58 @@ pre.highlight {
   position: relative;
 }
 
+/* 다크 모드 기본 */
 .clipboard-copy-button {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #3d4655;
+  border: 1.5px solid #6a7a9a;
   border-radius: 6px;
-  color: #bbb;
+  color: #c8d4e8;
   cursor: pointer;
-  font-size: 13px;
-  padding: 4px 8px;
-  line-height: 1.4;
-  opacity: 0.6;
-  transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 4px 10px;
+  line-height: 1.6;
+  opacity: 1;
+  transition: border-color 0.15s ease, background 0.15s ease;
   z-index: 10;
+  white-space: nowrap;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-pre.highlight:hover .clipboard-copy-button,
-div.highlighter-rouge:hover .clipboard-copy-button {
-  opacity: 1;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.22);
+/* "복사" 텍스트 추가 */
+.clipboard-copy-button::after {
+  content: "복사";
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+
+.clipboard-copy-button.copied::after {
+  content: "완료!";
 }
 
 .clipboard-copy-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  border-color: #42a5f5;
+  background: #46526a;
+  color: #c8d4e8;
 }
 
-/* 복사 완료 상태 */
+.clipboard-copy-button:focus,
+.clipboard-copy-button:active {
+  outline: none;
+  color: #c8d4e8;
+  border-color: #42a5f5;
+}
+
+/* 복사 완료 상태 — 색상 변경 없음 */
 .clipboard-copy-button .fa-check.copied {
   display: none;
-  color: #4caf50;
 }
 
 .clipboard-copy-button.copied .fa-copy {
@@ -635,19 +683,25 @@ div.highlighter-rouge:hover .clipboard-copy-button {
 
 .clipboard-copy-button.copied .fa-check.copied {
   display: inline;
+  color: inherit;
 }
 
 /* 라이트 모드 복사 버튼 */
 html[data-theme="light"] .clipboard-copy-button {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.2);
-  color: #444;
-  opacity: 0.6;
+  background: #e4ecf5;
+  border-color: #8aa0be;
+  color: #2a3a52;
 }
 
-html[data-theme="light"] pre.highlight:hover .clipboard-copy-button,
-html[data-theme="light"] div.highlighter-rouge:hover .clipboard-copy-button {
-  opacity: 1;
-  color: #252a34;
-  background: rgba(0, 0, 0, 0.1);
+html[data-theme="light"] .clipboard-copy-button:hover {
+  border-color: #0078c8;
+  background: #d0e4f5;
+  color: #2a3a52;
+}
+
+html[data-theme="light"] .clipboard-copy-button:focus,
+html[data-theme="light"] .clipboard-copy-button:active {
+  outline: none;
+  color: #2a3a52;
+  border-color: #0078c8;
 }
