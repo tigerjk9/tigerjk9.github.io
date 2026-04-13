@@ -207,31 +207,16 @@ $max-width: 100%;
 /* --- 사이드바 고정 기능 해제 (데스크톱) --- */
 @media screen and (min-width: 1024px) {
   .sidebar.sticky {
-    position: static;
-    overflow-y: visible;
-    max-height: none;
+    position: static !important;
+    overflow-y: visible !important;
+    max-height: none !important;
   }
 
-  /* 섹션 콘텐츠: 뷰포트 40% 높이까지, 넘으면 내부 스크롤 */
+  /* 데스크톱: 섹션 높이 제한 없음 — 모든 항목 표시 */
   .sidebar-section__content {
-    max-height: 40vh;
-    overflow-y: auto;
+    max-height: none !important;
+    overflow-y: visible !important;
     overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(128,128,128,0.4) transparent;
-  }
-
-  .sidebar-section__content::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .sidebar-section__content::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .sidebar-section__content::-webkit-scrollbar-thumb {
-    background: rgba(128,128,128,0.4);
-    border-radius: 2px;
   }
 }
 
