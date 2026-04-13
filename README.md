@@ -113,6 +113,34 @@ docs/            # 테마 원본 문서 (블로그 빌드에서 제외)
 
 ---
 
+## 커스텀 UI 기능
+
+### 다크 / 라이트 모드 토글
+
+마스트헤드 우측 버튼으로 전환. `localStorage`에 선택값을 저장해 새로고침 후에도 유지된다.  
+FOUC 방지 인라인 스크립트를 CSS `<link>` 앞에 삽입해 깜빡임 없이 테마가 적용된다.
+
+- 구현: `assets/js/theme-toggle.js`, `_includes/masthead.html`, `_includes/head.html`
+- CSS: `html[data-theme="light"]` 레이어로 컴파일된 dark skin 위에 덮어씀
+
+### 본문 복사 버튼
+
+포스트 상단에 **본문 복사** 버튼 표시. 클릭 시 포스트 본문 전체를 클립보드에 복사한다.  
+TOC("On this page")와 각 헤딩의 Permalink 텍스트는 자동으로 제외된다.
+
+- 구현: `assets/js/post-copy.js`, `_layouts/single.html`
+- DOM 클론 방식 — 페이지 표시에 영향 없음
+
+### 접이식 사이드바 섹션
+
+Categories / Tag Cloud 섹션 헤더를 클릭해 접기/펼치기 가능.  
+상태는 `localStorage`에 저장되어 재방문 시 유지된다.
+
+- 구현: `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html`
+- 각 섹션 콘텐츠 높이: `calc(50vh - 175px)` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남
+
+---
+
 ## 주요 설정값
 
 | 항목 | 값 |
