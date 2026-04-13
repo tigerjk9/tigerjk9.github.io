@@ -521,12 +521,28 @@ html[data-theme="light"] .highlight td.rouge-gutter {
 
 /* Footer */
 html[data-theme="light"] .page__footer {
-  background-color: #0078c8;
-  color: #fff;
+  background-color: #1e2d3d;
+  color: #d0dae6;
 }
 
 html[data-theme="light"] .page__footer a {
+  color: #7ec8f0;
+}
+
+html[data-theme="light"] .page__footer a:visited {
+  color: #7ec8f0;
+}
+
+html[data-theme="light"] .page__footer a:hover {
   color: #fff;
+}
+
+html[data-theme="light"] .page__footer-copyright {
+  color: #8a9bb0;
+}
+
+html[data-theme="light"] .page__footer-wrapper {
+  background-color: #1e2d3d;
 }
 
 /* Headings */
