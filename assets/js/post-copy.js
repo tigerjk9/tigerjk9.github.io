@@ -10,7 +10,14 @@
     var content = document.querySelector('.page__content');
     if (!content) return;
 
-    var text = content.innerText || content.textContent || '';
+    // 클론 후 불필요한 요소 제거
+    var clone = content.cloneNode(true);
+    // "On this page" TOC 제거
+    clone.querySelectorAll('.sidebar__right, .toc, nav.toc').forEach(function (el) { el.remove(); });
+    // Permalink 앵커 제거
+    clone.querySelectorAll('[rel="permalink"], .sr-only').forEach(function (el) { el.remove(); });
+
+    var text = clone.innerText || clone.textContent || '';
 
     function onSuccess() {
       btn.innerHTML = '<i class="fas fa-fw fa-check"></i> 복사됨!';
