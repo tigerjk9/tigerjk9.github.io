@@ -152,13 +152,25 @@ $max-width: 100%;
 
 /* --- 사이드바 섹션 접기/펼치기 --- */
 
+.sidebar-section {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+  padding-bottom: 1.2em;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+}
+
+.sidebar-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
 .sidebar-section__toggle {
   cursor: pointer;
   user-select: none;
   display: flex !important;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.7em;
 }
 
 .sidebar-section__toggle:hover {
@@ -178,7 +190,7 @@ $max-width: 100%;
 }
 
 .sidebar-section__content {
-  max-height: 240px;
+  max-height: 420px;
   overflow-y: auto;
   overflow-x: hidden;
   transition: max-height 0.3s ease, opacity 0.2s ease;
