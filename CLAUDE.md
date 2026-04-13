@@ -51,84 +51,74 @@ bundle exec rake version        # 버전 일괄 업데이트
 
 ## PDF 논문 → 블로그 포스트 자동화 (`/paper`)
 
-### 개요
-
 `scripts/pdf_to_post.py`가 PDF 논문을 한국어 Jekyll 포스트로 자동 변환한다.
-Claude Code에서는 `/paper` 스킬로 호출한다.
 
 ```bash
 python scripts/pdf_to_post.py _papers/paper.pdf          # 변환 + git push
-python scripts/pdf_to_post.py _papers/paper.pdf --dry-run  # 출력만 (저장 안 함)
-python scripts/pdf_to_post.py _papers/paper.pdf --no-push  # 로컬 저장만
+python scripts/pdf_to_post.py _papers/paper.pdf --dry-run
+python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 ```
 
-### 환경 요구사항
+- **환경변수**: `GEMINI_API_KEY` — `.env` 파일에 저장 (gitignore 등록됨)
+- **의존성**: `google-generativeai`, `pdfplumber`, `PyMuPDF`
+- **포스트 구조 (고정)**: 6개 섹션 (연구목적 → 방법 → 발견 → 결론 → ADD One → 탐구질문) + APA 출처
+- **Figure 자동 추출**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장 → 멀티모달 삽입
 
-- **Python**: 3.9.6 (시스템 기본) — `X | Y` 타입 힌트 미지원, `from __future__ import annotations` 필수
-- **환경변수**: `GEMINI_API_KEY` (Google AI Studio)
-- **의존성** (`scripts/requirements.txt`):
-  ```
-  google-generativeai>=0.8.0
-  pdfplumber>=0.11.0
-  PyMuPDF>=1.23.0
-  ```
+---
 
-### 주요 기능
+## YouTube 영상 → 블로그 포스트 자동화 (`/video`)
 
-1. **기존 태그/카테고리 재사용**: `_posts/*.md` 전체 스캔 → 빈도순 목록 → Gemini 프롬프트에 주입해 기존 어휘 우선 사용
-2. **Figure 자동 추출·삽입**: PyMuPDF로 PDF 이미지 추출 (300×200px 이상, 중복 제거, 최대 6개) → `assets/{slug}-fig-N.ext` 저장 → Gemini 멀티모달 API로 포스트 내 관련 섹션 근처에 삽입
-3. **timezone 자동 점검**: `_config.yml`의 `timezone: Asia/Seoul`이 없으면 자동 수정 후 커밋에 포함
-4. **포스트 날짜**: 스크립트 실행 시점의 실제 시각이 자동 삽입 (`YYYY-MM-DD HH:MM:SS +0900`). 같은 날 여러 논문을 처리해도 시간이 달라 중복되지 않음.
+`scripts/yt_to_post.py`가 YouTube URL을 한국어 Jekyll 포스트로 자동 변환한다.
+Claude Code에서는 `/video <URL>` 스킬로 호출한다.
 
-### 포스트 구조 (고정)
-
-Gemini가 임의로 변경 불가. `prompt_template.txt`가 이 구조를 강제함.
-
-```
-title: "연구의 핵심 내용을 묻는 한국어 질문 형태"
-  예) "AI 챗봇은 자기조절학습을 어떻게 지원하는가?"
-
-date: YYYY-MM-DD HH:MM:SS +0900   ← 스크립트 실행 시각 자동삽입
-categories: [카테고리1]            ← 최대 2개, 기존 카테고리 우선
-tags: [태그1, ..., 태그8]          ← 5~8개, 기존 태그 우선
-
-## 1. 연구의 목적
-## 2. 연구의 방법
-## 3. 주요 발견
-## 4. 결론 및 시사점
-## 5. 리뷰어의 ADD(+) One: 생각 더하기
-## 6. 추가 탐구 질문
-<출처>
+```bash
+python scripts/yt_to_post.py <URL>            # 변환 + git push
+python scripts/yt_to_post.py <URL> --dry-run  # 출력만
+python scripts/yt_to_post.py <URL> --no-push  # 로컬 저장만
+python scripts/yt_to_post.py <URL> --lang en  # 영어 자막 우선
 ```
 
-**섹션 내부 형식 규칙**:
-- `### 소제목` 하위헤딩 사용 금지
-- `(1) (2) (3)...` 번호 형식으로 포인트 나열
-- 섹션 5 ADD: 4관점 고정 — (1)인상적 지점, (2)더 넓은 연결, (3)한계·다른 맥락, (4)독창적 제안
-- 섹션 6 탐구질문: `(1) 질문?` 번호 형식 (글머리 기호 금지)
-- 출처: APA 7판, DOI는 마크다운 링크로 표시
+- **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드 (gitignore 등록됨)
+- **의존성**: `google-generativeai`, `yt-dlp`, `youtube-transcript-api`
 
-### Figure 처리 원칙
+### 자막 추출 우선순위
 
-- **포함**: 논문의 실제 연구 Figure (그래프, 플롯, 다이어그램 등)
-- **제외**: 장식용 클립아트, 의미 불명 이미지, 검은 화면, 아이콘류
-- **위치**: 관련 섹션(주로 섹션 2·3) 근처, 내용과 직접 연관된 포인트 바로 뒤
+1. `youtube-transcript-api` — 수동/자동자막 (ko → en)
+2. `yt-dlp` VTT 자동자막 (SSL 우회 포함)
+3. 영상 description으로 대체
+
+### 포스트 스타일
+
+- **문체**: `~이다`, `~한다` 단정체. 존칭/명사형 어미 금지.
+- **분량**: 자막 내용을 빠짐없이 다룸 (생략 없음)
+- **구조**: 도입부 → 본문(영상 흐름 따라 자유 섹션) → 크로스오버 섹션 → 출처
+- **크로스오버**: 실행마다 20개 분야 풀에서 `random.choice()`로 선택 → 프롬프트에 주입
+  - 풀 예시: 신경과학, 행동경제학, 언어학, 음악이론, 요리과학, 스포츠과학, 도시계획, 연극학, 진화생물학, 철학, 인류학, 물리학, 면역학, 정보이론 등
+- **슬러그**: Gemini가 front matter의 `slug:` 필드로 영문 생성 → 스크립트가 파일명으로 사용 후 필드 제거
 
 ### 파일 구조
 
 ```
 scripts/
-  pdf_to_post.py       # 메인 변환 스크립트
-  prompt_template.txt  # Gemini 시스템 프롬프트 (플레이스홀더 포함)
-  requirements.txt     # Python 의존성
-
-_papers/               # PDF 원본 보관 (Jekyll 빌드에서 제외)
-assets/                # 추출된 Figure 이미지 저장 (flat, 서브디렉토리 없음)
+  yt_to_post.py          # 메인 변환 스크립트
+  yt_prompt_template.txt # Gemini 프롬프트 ({CROSSOVER_DOMAIN} 플레이스홀더 포함)
+  requirements.txt       # Python 의존성 (pdf + yt 통합)
+.env                     # GEMINI_API_KEY 저장 (gitignore)
+.env.example             # 키 형식 예시 (git 추적됨)
+.claude/commands/video.md  # 프로젝트 레벨 슬래시 커맨드
 ```
 
-### git push 주의사항
+### 알려진 동작 특성
 
-원격에 로컬에 없는 커밋이 있으면 push가 실패한다. 이때:
+- Gemini가 `date:` 연도를 임의로 바꾸는 버그 있음 → 스크립트가 생성 후 강제 복원
+- 한국어 제목에서 슬러그 직접 추출 불가 → Gemini slug 생성으로 해결
+- 기업 네트워크 SSL 인증서 오류 → `ssl._create_unverified_context` + requests 세션 패치로 우회
+
+---
+
+## 공통: git push 주의사항
+
+원격에 로컬에 없는 커밋이 있으면 push가 실패한다:
 
 ```bash
 git stash
@@ -137,12 +127,8 @@ git stash pop
 git push origin main
 ```
 
-충돌 발생 시 충돌 파일을 수동으로 Edit 해결 후 `git add` → `git rebase --continue`.
+## 공통: 주요 카테고리·태그
 
-### 주요 카테고리 (빈도순)
+**카테고리** (빈도순): `AI`, `교육`, `학습과학`, `AI디지털기반교육혁신`, `철학`, `인지과학`, `바이브코딩`, `코딩`
 
-`AI`, `교육`, `학습과학`, `AI디지털기반교육혁신`, `철학`, `인지과학`, `바이브코딩`, `코딩`
-
-### 주요 태그 (빈도순 상위)
-
-`이미지`, `논문리뷰`, `바이브코딩`, `AI`, `생성형AI`, `학습과학`, `교육`, `LLM`, `메타인지`, `AI윤리`, `에듀테크`, `교육공학`, `자기조절학습`, `피드백`, `프롬프트엔지니어링`
+**태그** (빈도순 상위): `이미지`, `논문리뷰`, `바이브코딩`, `AI`, `생성형AI`, `학습과학`, `교육`, `LLM`, `메타인지`, `AI윤리`, `에듀테크`, `교육공학`, `자기조절학습`, `피드백`, `프롬프트엔지니어링`

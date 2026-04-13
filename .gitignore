@@ -24,6 +24,9 @@ codekit-config.json
 # macOS
 .DS_Store
 
+# API keys / secrets
+.env
+
 # Jekyll generated files
 .jekyll-cache
 .jekyll-metadata
