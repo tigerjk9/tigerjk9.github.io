@@ -190,27 +190,10 @@ $max-width: 100%;
 }
 
 .sidebar-section__content {
-  max-height: 420px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: max-height 0.3s ease, opacity 0.2s ease;
+  max-height: 3000px;
+  overflow: visible;
+  transition: max-height 0.4s ease, opacity 0.2s ease;
   opacity: 1;
-  /* thin scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(128,128,128,0.4) transparent;
-}
-
-.sidebar-section__content::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-section__content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar-section__content::-webkit-scrollbar-thumb {
-  background: rgba(128,128,128,0.4);
-  border-radius: 2px;
 }
 
 .sidebar-section.collapsed .sidebar-section__content {
