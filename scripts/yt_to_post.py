@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import io
 import os
+import random
 import re
 import subprocess
 import sys
@@ -44,6 +45,30 @@ POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.0-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
+
+# 크로스오버 분야 풀 — 매 실행마다 랜덤 선택
+CROSSOVER_DOMAINS = [
+    "신경과학",
+    "행동경제학",
+    "생태학·먹이그물 이론",
+    "언어학·인지언어학",
+    "음악이론·즉흥연주",
+    "요리과학·발효학",
+    "스포츠과학·운동학습",
+    "도시계획·공간행동학",
+    "연극학·서사이론",
+    "진화생물학·공진화",
+    "철학·인식론",
+    "인류학·문화진화론",
+    "물리학·복잡계 이론",
+    "면역학·항상성",
+    "경제사·제도경제학",
+    "게임이론·협력의 진화",
+    "수면과학·기억 공고화",
+    "동물행동학·각인 이론",
+    "기상학·카오스 이론",
+    "정보이론·엔트로피",
+]
 
 
 # ──────────────────────────────────────────────────────────────
@@ -370,8 +395,12 @@ def load_prompt_template(
     transcript: str,
     categories: "list[str]",
     tags: "list[str]",
-) -> str:
-    """yt_prompt_template.txt 읽기 + 플레이스홀더 치환."""
+) -> "tuple[str, str]":
+    """yt_prompt_template.txt 읽기 + 플레이스홀더 치환.
+
+    Returns:
+        (완성된 프롬프트 문자열, 선택된 크로스오버 분야 이름)
+    """
     if not PROMPT_TEMPLATE_PATH.exists():
         raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {PROMPT_TEMPLATE_PATH}")
     template = PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
@@ -383,6 +412,9 @@ def load_prompt_template(
     upload_date_formatted = format_upload_date(metadata.get("upload_date", ""))
     transcript_section = transcript if transcript else metadata.get("description", "(자막 없음)")
 
+    # 크로스오버 분야 랜덤 선택
+    crossover_domain = random.choice(CROSSOVER_DOMAINS)
+
     template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
     template = template.replace("{VIDEO_TITLE}", metadata.get("title", ""))
     template = template.replace("{CHANNEL_NAME}", metadata.get("channel", ""))
@@ -392,7 +424,8 @@ def load_prompt_template(
     template = template.replace("{TRANSCRIPT}", transcript_section)
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
-    return template
+    template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
+    return template, crossover_domain
 
 
 # ──────────────────────────────────────────────────────────────
@@ -457,6 +490,20 @@ def slugify(text: str, max_len: int = 60) -> str:
     text = re.sub(r"-{2,}", "-", text)
     text = text.strip("-")
     return text[:max_len].rstrip("-")
+
+
+def extract_slug_from_content(content: str) -> "str | None":
+    """Gemini가 front matter에 생성한 slug: 필드를 추출.
+    없거나 유효하지 않으면 None 반환.
+    추출 후 front matter에서 slug 줄을 제거한다 (Jekyll은 slug 필드를 파일명에서 읽으므로 불필요).
+    """
+    m = re.search(r"^slug:\s*[\"']?([a-z0-9][a-z0-9\-]{1,40})[\"']?\s*$", content, re.MULTILINE)
+    return m.group(1).strip("-") if m else None
+
+
+def remove_slug_field(content: str) -> str:
+    """front matter에서 slug: 줄을 제거한다."""
+    return re.sub(r"^slug:.*\n", "", content, flags=re.MULTILINE)
 
 
 def build_filename(date_str: str, slug: str) -> str:
@@ -622,14 +669,8 @@ def main() -> None:
     print(f"[INFO] 채널: {metadata['channel']}")
     print(f"[INFO] 업로드 날짜: {format_upload_date(metadata['upload_date'])}")
 
-    # ── 슬러그 결정 ──
-    if args.slug:
-        slug = args.slug
-    else:
-        slug = slugify(metadata["title"])
-        if not slug:
-            slug = f"yt-{video_id}"
-    print(f"[INFO] 슬러그: {slug}")
+    # ── 슬러그 결정 (임시값 — Gemini 생성 후 front matter에서 덮어씀) ──
+    cli_slug = args.slug  # --slug 옵션이 있으면 최우선
 
     # ── 자막 가져오기 ──
     print(f"[INFO] 자막 가져오는 중 (우선 언어: {args.lang}) ...")
@@ -645,11 +686,12 @@ def main() -> None:
     existing_cats, existing_tags = get_existing_taxonomy()
     print(f"[INFO] 기존 카테고리 {len(existing_cats)}개, 태그 {len(existing_tags)}개 확인")
 
-    # ── 프롬프트 로드 ──
+    # ── 프롬프트 로드 (크로스오버 분야 랜덤 선택) ──
     try:
-        prompt = load_prompt_template(
+        prompt, crossover_domain = load_prompt_template(
             args.date, metadata, transcript, existing_cats, existing_tags
         )
+        print(f"[INFO] 크로스오버 분야: {crossover_domain}")
     except RuntimeError as e:
         print(f"[ERROR] {e}")
         sys.exit(1)
@@ -664,6 +706,21 @@ def main() -> None:
     # Gemini가 date를 임의로 바꾸는 경우 복원
     correct_date = f"{args.date} {datetime.now().strftime('%H:%M:%S')}"
     markdown_content = _fix_date(markdown_content, correct_date)
+
+    # ── 슬러그 확정: CLI 옵션 > Gemini front matter > video ID 폴백 ──
+    if cli_slug:
+        slug = cli_slug
+    else:
+        gemini_slug = extract_slug_from_content(markdown_content)
+        if gemini_slug:
+            slug = gemini_slug
+            print(f"[INFO] 슬러그 (Gemini 생성): {slug}")
+        else:
+            slug = f"yt-{video_id}"
+            print(f"[INFO] 슬러그 (video ID 폴백): {slug}")
+
+    # front matter에서 slug: 줄 제거 (Jekyll 불필요 필드)
+    markdown_content = remove_slug_field(markdown_content)
 
     print("[INFO] 포스트 생성 완료")
 
