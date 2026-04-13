@@ -71,33 +71,11 @@ python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 `scripts/yt_to_post.py`가 YouTube URL을 한국어 Jekyll 포스트로 자동 변환한다.
 Claude Code에서는 `/video <URL>` 스킬로 호출한다.
 
-<<<<<<< HEAD
-### 포스트 구조 (고정)
-
-Gemini가 임의로 변경 불가. `prompt_template.txt`가 이 구조를 강제함.
-
-```
-title: "연구의 핵심 내용을 묻는 한국어 질문 형태"
-  예) "AI 챗봇은 자기조절학습을 어떻게 지원하는가?"
-
-date: YYYY-MM-DD HH:MM:SS +0900   ← 스크립트 실행 시각 자동삽입
-categories: [카테고리1]            ← 최대 2개, 기존 카테고리 우선
-tags: [태그1, ..., 태그5]          ← 4~5개, 핵심 주제 직접 관련 태그만
-
-## 1. 연구의 목적
-## 2. 연구의 방법
-## 3. 주요 발견
-## 4. 결론 및 시사점
-## 5. 리뷰어의 ADD(+) One: 생각 더하기
-## 6. 추가 탐구 질문
-<출처>
-=======
 ```bash
 python scripts/yt_to_post.py <URL>            # 변환 + git push
 python scripts/yt_to_post.py <URL> --dry-run  # 출력만
 python scripts/yt_to_post.py <URL> --no-push  # 로컬 저장만
 python scripts/yt_to_post.py <URL> --lang en  # 영어 자막 우선
->>>>>>> a1fd2933912e00768b2edead5d27c7ab63e0d1d5
 ```
 
 - **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드 (gitignore 등록됨)
