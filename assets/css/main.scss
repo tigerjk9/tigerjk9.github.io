@@ -166,3 +166,361 @@ $max-width: 100%;
     max-height: 100vh;
   }
 }
+
+
+/* ==========================================================================
+   테마 토글 버튼
+   ========================================================================== */
+
+.theme-toggle {
+  background: none;
+  border: 2px solid #42a5f5;
+  border-radius: 50%;
+  color: #42a5f5;
+  cursor: pointer;
+  font-size: 15px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-left: 6px;
+  flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+  vertical-align: middle;
+}
+
+.theme-toggle:hover {
+  background: #42a5f5;
+  color: #fff;
+}
+
+/* 다크 모드: 해 아이콘 표시 (클릭 → 라이트로 전환) */
+.theme-toggle__moon { display: none; }
+.theme-toggle__sun  { display: inline; }
+
+html[data-theme="light"] .theme-toggle {
+  border-color: #0078c8;
+  color: #0078c8;
+}
+
+html[data-theme="light"] .theme-toggle:hover {
+  background: #0078c8;
+  color: #fff;
+}
+
+/* 라이트 모드: 달 아이콘 표시 (클릭 → 다크로 전환) */
+html[data-theme="light"] .theme-toggle__sun  { display: none; }
+html[data-theme="light"] .theme-toggle__moon { display: inline; }
+
+
+/* ==========================================================================
+   라이트 테마 오버라이드  (data-theme="light")
+   다크 스킨 컴파일 값 전체 덮어쓰기
+   ========================================================================== */
+
+html[data-theme="light"] {
+  background-color: #fff;
+}
+
+html[data-theme="light"] body {
+  color: #252a34;
+}
+
+html[data-theme="light"] a {
+  color: #0078c8;
+}
+
+html[data-theme="light"] a:hover,
+html[data-theme="light"] a:focus {
+  color: #005a9e;
+}
+
+/* Masthead / nav */
+html[data-theme="light"] .masthead {
+  border-bottom-color: #dde1e7;
+  background-color: #fff;
+}
+
+html[data-theme="light"] .greedy-nav {
+  background: #fff;
+  color: #252a34;
+}
+
+html[data-theme="light"] .greedy-nav a,
+html[data-theme="light"] .site-title {
+  color: #252a34;
+}
+
+html[data-theme="light"] .greedy-nav a:hover {
+  color: #0078c8;
+}
+
+html[data-theme="light"] .greedy-nav .visible-links a:before {
+  background: #0078c8;
+}
+
+html[data-theme="light"] .greedy-nav__toggle {
+  color: #252a34;
+}
+
+html[data-theme="light"] .hidden-links {
+  background: #fff;
+  border-color: #dde1e7;
+}
+
+html[data-theme="light"] .hidden-links a {
+  color: #252a34;
+}
+
+html[data-theme="light"] .hidden-links a:hover {
+  background: #f0f3f7;
+  color: #0078c8;
+}
+
+/* Sidebar */
+html[data-theme="light"] .sidebar {
+  background-color: #f5f5f5 !important;
+  background: #f5f5f5 !important;
+}
+
+html[data-theme="light"] .sidebar-overlay {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme="light"] .sidebar-toggle {
+  background: #f0f3f7;
+  border-color: #0078c8;
+  color: #0078c8;
+  box-shadow: 0 2px 10px rgba(0, 120, 200, 0.2);
+}
+
+html[data-theme="light"] .sidebar-toggle:hover {
+  background: #0078c8;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 120, 200, 0.4);
+}
+
+/* Nav list */
+html[data-theme="light"] .nav__list a {
+  background-color: transparent;
+  color: #252a34;
+}
+
+html[data-theme="light"] .nav__list a:hover,
+html[data-theme="light"] .nav__list a.active {
+  color: #0078c8;
+}
+
+/* TOC */
+html[data-theme="light"] .toc {
+  background: #f8f9fa;
+  border-color: #dde1e7;
+}
+
+html[data-theme="light"] .toc .nav__title {
+  background: #0078c8;
+  color: #fff;
+}
+
+html[data-theme="light"] .toc li > a {
+  color: #252a34;
+}
+
+html[data-theme="light"] .toc li > a:hover,
+html[data-theme="light"] .toc li > a.active {
+  color: #0078c8;
+}
+
+/* Code blocks */
+html[data-theme="light"] code {
+  background-color: #f6f8fa;
+  color: #24292e;
+}
+
+html[data-theme="light"] pre,
+html[data-theme="light"] .highlight {
+  background-color: #f6f8fa;
+}
+
+/* Footer */
+html[data-theme="light"] .page__footer {
+  background-color: #0078c8;
+  color: #fff;
+}
+
+html[data-theme="light"] .page__footer a {
+  color: #fff;
+}
+
+/* Headings */
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] h5,
+html[data-theme="light"] h6 {
+  color: #252a34;
+}
+
+/* Blockquote */
+html[data-theme="light"] blockquote {
+  border-left-color: #dde1e7;
+  color: #555;
+}
+
+/* Tables */
+html[data-theme="light"] table th {
+  background-color: #f0f3f7;
+  color: #252a34;
+}
+
+html[data-theme="light"] table td,
+html[data-theme="light"] table th {
+  border-color: #dde1e7;
+}
+
+/* Forms / inputs */
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select {
+  background-color: #fff;
+  color: #252a34;
+  border-color: #dde1e7;
+}
+
+/* Sticky sidebar (ToC) */
+html[data-theme="light"] .sticky {
+  background-color: #fff !important;
+}
+
+/* Author profile */
+html[data-theme="light"] .author__name {
+  color: #252a34;
+}
+
+html[data-theme="light"] .author__bio,
+html[data-theme="light"] .author__urls li {
+  color: #555;
+}
+
+/* Page content */
+html[data-theme="light"] .page__content {
+  color: #252a34;
+}
+
+/* Tag/category labels */
+html[data-theme="light"] .page__taxonomy-item {
+  background-color: #f0f3f7;
+  border-color: #dde1e7;
+  color: #252a34;
+}
+
+html[data-theme="light"] .page__taxonomy-item:hover {
+  background-color: #0078c8;
+  color: #fff;
+  border-color: #0078c8;
+}
+
+/* Archive / Post list */
+html[data-theme="light"] .archive__item-title a {
+  color: #252a34;
+}
+
+html[data-theme="light"] .archive__item-title a:hover {
+  color: #0078c8;
+}
+
+html[data-theme="light"] .archive__item-excerpt {
+  color: #555;
+}
+
+/* Tag cloud */
+html[data-theme="light"] .tag-weight-1,
+html[data-theme="light"] .tag-weight-1:visited { color: #777; }
+html[data-theme="light"] .tag-weight-2,
+html[data-theme="light"] .tag-weight-2:visited { color: #555; }
+html[data-theme="light"] .tag-weight-3,
+html[data-theme="light"] .tag-weight-3:visited { color: #333; }
+html[data-theme="light"] .tag-weight-4,
+html[data-theme="light"] .tag-weight-4:visited { color: #111; }
+html[data-theme="light"] .tag-weight-5,
+html[data-theme="light"] .tag-weight-5:visited { color: #000; font-weight: bold; }
+
+html[data-theme="light"] .tag-cloud a:hover,
+html[data-theme="light"] .tag-cloud a:visited:hover {
+  color: #0078c8;
+}
+
+/* Breadcrumbs */
+html[data-theme="light"] .breadcrumb__item a {
+  color: #0078c8;
+}
+
+/* Search */
+html[data-theme="light"] .search-content {
+  background-color: #fff;
+  color: #252a34;
+}
+
+
+/* ==========================================================================
+   코드 블록 복사 버튼 스타일
+   ========================================================================== */
+
+pre.highlight {
+  position: relative;
+}
+
+.clipboard-copy-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 8px;
+  line-height: 1.4;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  z-index: 10;
+}
+
+pre.highlight:hover .clipboard-copy-button {
+  opacity: 1;
+}
+
+.clipboard-copy-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* 복사 완료 상태 */
+.clipboard-copy-button .fa-check.copied {
+  display: none;
+  color: #4caf50;
+}
+
+.clipboard-copy-button.copied .fa-copy {
+  display: none;
+}
+
+.clipboard-copy-button.copied .fa-check.copied {
+  display: inline;
+}
+
+/* 라이트 모드 복사 버튼 */
+html[data-theme="light"] .clipboard-copy-button {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: #555;
+}
+
+html[data-theme="light"] .clipboard-copy-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #252a34;
+}

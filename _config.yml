@@ -17,6 +17,9 @@ minimal_mistakes_skin     : "dark" # "default" , "air", "aqua", "contrast", "dir
 # Turbolinks 비활성화 (Giscus 충돌 해결)
 turbo: false
 
+# 코드 블록 복사 버튼 활성화
+enable_copy_code_button: true
+
 # Site Settings
 locale                    : "ko-KR"
 title                     : "닷커넥터의 지식과 경험의 발자국"

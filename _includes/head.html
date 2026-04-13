@@ -14,6 +14,12 @@
   {% if site.enable_copy_code_button -%}
     window.enable_copy_code_button = true;
   {%- endif %}
+  // 테마 깜빡임 방지: CSS 로드 전에 data-theme 설정
+  (function() {
+    var saved = localStorage.getItem('theme');
+    var preferred = (!saved && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : (saved || 'dark');
+    document.documentElement.setAttribute('data-theme', preferred);
+  })();
 </script>
 
 <!-- For all browsers -->
