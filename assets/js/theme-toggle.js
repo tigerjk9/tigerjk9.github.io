@@ -14,4 +14,11 @@
     var current = document.documentElement.getAttribute('data-theme');
     setTheme(current === 'light' ? 'dark' : 'light');
   });
+
+  // 모바일: 외부 이미지(hits 배지 등) 로드 완료 후 greedy-nav 재계산 트리거
+  if (window.innerWidth < 1024) {
+    window.addEventListener('load', function () {
+      window.dispatchEvent(new Event('resize'));
+    });
+  }
 })();

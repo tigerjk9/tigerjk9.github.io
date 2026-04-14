@@ -874,6 +874,11 @@ html[data-theme="light"] .clipboard-copy-button:active {
 
 @media screen and (max-width: 1023px) {
 
+  /* --- hits 배지 모바일 숨김 (greedy-nav 너비 계산 오염 방지) --- */
+  .masthead__menu-hits {
+    display: none !important;
+  }
+
   /* --- 햄버거 드롭다운 뷰포트 이탈 수정 --- */
   .greedy-nav .hidden-links {
     max-width: calc(100vw - 1rem);
