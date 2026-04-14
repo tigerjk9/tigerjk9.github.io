@@ -866,3 +866,100 @@ html[data-theme="light"] .clipboard-copy-button:active {
   color: #2a3a52;
   border-color: #0078c8;
 }
+
+
+/* ==========================================================================
+   모바일 최적화 (iOS Safari + Android Chrome 공통)
+   ========================================================================== */
+
+@media screen and (max-width: 1023px) {
+
+  /* --- 햄버거 드롭다운 뷰포트 이탈 수정 --- */
+  .greedy-nav .hidden-links {
+    max-width: calc(100vw - 1rem);
+    overflow-x: hidden;
+  }
+
+  /* 라이트 모드 드롭다운 색상 */
+  html[data-theme="light"] .greedy-nav .hidden-links {
+    background: #fff !important;
+    border-color: #dde1e7 !important;
+  }
+
+  html[data-theme="light"] .greedy-nav .hidden-links a {
+    color: #252a34 !important;
+  }
+
+  html[data-theme="light"] .greedy-nav .hidden-links a:hover {
+    background: #f0f3f7 !important;
+    color: #0078c8 !important;
+  }
+
+  html[data-theme="light"] .greedy-nav .hidden-links li {
+    border-bottom-color: #dde1e7 !important;
+  }
+
+  /* --- iOS Safari 100dvh 버그 수정 (max-height 포함) --- */
+  .sidebar {
+    height: 100dvh;     /* 동적 뷰포트: iOS 주소창 제외한 실제 높이 */
+    max-height: 100dvh; /* stale max-height: 100vh 오버라이드 */
+  }
+
+  /* --- 모바일 사이드바 헤더 (테마 토글 포함) --- */
+  .sidebar-mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+    position: sticky;
+    top: 0;
+    background: #1a1d23; /* 다크모드 사이드바 배경과 일치 (scroll 시 콘텐츠 노출 방지) */
+    z-index: 1;
+    min-height: 52px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-mobile-header__title {
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.75;
+    letter-spacing: 0.02em;
+  }
+
+  /* 사이드바 헤더 안 테마 토글 크기 살짝 키우기 */
+  .sidebar-mobile-header .theme-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+
+  /* --- 본문 복사 버튼 — 모바일 전체 너비 --- */
+  .post-copy-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- 코드 복사 버튼 — 터치 타겟 확대 --- */
+  .clipboard-copy-button {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+}
+
+/* 데스크톱에서 사이드바 모바일 헤더 숨김 */
+@media screen and (min-width: 1024px) {
+  .sidebar-mobile-header {
+    display: none !important;
+  }
+}
+
+/* 라이트 모드 — 사이드바 모바일 헤더 */
+html[data-theme="light"] .sidebar-mobile-header {
+  background: #f5f5f5; /* 라이트모드 사이드바 배경과 일치 */
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .sidebar-mobile-header__title {
+  color: #252a34;
+}

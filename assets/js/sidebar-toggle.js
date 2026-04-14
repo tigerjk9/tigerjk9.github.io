@@ -8,8 +8,27 @@
 (function() {
   'use strict';
 
+  // 모바일 사이드바 상단 헤더 주입 (테마 토글 포함)
+  function injectMobileSidebarHeader() {
+    var sidebarEl = document.querySelector('.sidebar');
+    if (!sidebarEl || sidebarEl.querySelector('.sidebar-mobile-header')) return;
+
+    var header = document.createElement('div');
+    header.className = 'sidebar-mobile-header';
+    header.innerHTML =
+      '<span class="sidebar-mobile-header__title">메뉴</span>' +
+      '<button class="theme-toggle" type="button" aria-label="다크/라이트 모드 전환">' +
+      '<i class="fas fa-sun theme-toggle__sun"></i>' +
+      '<i class="fas fa-moon theme-toggle__moon"></i>' +
+      '</button>';
+    sidebarEl.insertBefore(header, sidebarEl.firstChild);
+  }
+
   // 초기화
   function initSidebarToggle() {
+    // 모바일 사이드바 헤더 주입
+    injectMobileSidebarHeader();
+
     // 토글 버튼 생성
     const toggleBtn = document.createElement('button');
     toggleBtn.className = 'sidebar-toggle';
