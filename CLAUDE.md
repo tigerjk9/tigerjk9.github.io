@@ -68,6 +68,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 ## PDF 논문 → 블로그 포스트 자동화 (`/paper`)
 
 `scripts/pdf_to_post.py`가 PDF 논문을 한국어 Jekyll 포스트로 자동 변환한다.
+Claude Code에서는 `/paper <PDF경로>` 슬래시 커맨드로 호출한다 (`.claude/commands/paper.md`).
 
 ```bash
 python scripts/pdf_to_post.py _papers/paper.pdf          # 변환 + git push
@@ -75,10 +76,11 @@ python scripts/pdf_to_post.py _papers/paper.pdf --dry-run
 python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 ```
 
-- **환경변수**: `GEMINI_API_KEY` — `.env` 파일에 저장 (gitignore 등록됨)
+- **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드 (gitignore 등록됨)
 - **의존성**: `google-generativeai`, `pdfplumber`, `PyMuPDF`
 - **포스트 구조 (고정)**: 6개 섹션 (연구목적 → 방법 → 발견 → 결론 → ADD One → 탐구질문) + APA 출처
 - **Figure 자동 추출**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장 → 멀티모달 삽입
+- **APA 출처**: URL/DOI 미포함. Gemini가 생성하는 링크는 신뢰할 수 없으므로 텍스트 출처만 기재한다 (`scripts/prompt_template.txt` 규칙)
 
 ---
 
@@ -116,12 +118,15 @@ python scripts/yt_to_post.py <URL> --lang en  # 영어 자막 우선
 
 ```
 scripts/
-  yt_to_post.py          # 메인 변환 스크립트
+  yt_to_post.py          # YouTube → 포스트 변환 스크립트
   yt_prompt_template.txt # Gemini 프롬프트 ({CROSSOVER_DOMAIN} 플레이스홀더 포함)
+  pdf_to_post.py         # PDF → 포스트 변환 스크립트
+  prompt_template.txt    # Gemini 프롬프트 (APA 출처 URL 제외 규칙 포함)
   requirements.txt       # Python 의존성 (pdf + yt 통합)
-.env                     # GEMINI_API_KEY 저장 (gitignore)
+.env                     # GEMINI_API_KEY 저장 (gitignore, 두 스크립트 공통)
 .env.example             # 키 형식 예시 (git 추적됨)
-.claude/commands/video.md  # 프로젝트 레벨 슬래시 커맨드
+.claude/commands/video.md  # /video 슬래시 커맨드
+.claude/commands/paper.md  # /paper 슬래시 커맨드
 ```
 
 ### 알려진 동작 특성

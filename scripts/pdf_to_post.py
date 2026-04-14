@@ -34,6 +34,29 @@ from pathlib import Path
 # ──────────────────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
+
+
+# ──────────────────────────────────────────────────────────────
+# .env 자동 로드 (python-dotenv 없이 직접 파싱)
+# ──────────────────────────────────────────────────────────────
+def _load_dotenv() -> None:
+    """REPO_ROOT/.env 파일을 읽어 환경변수로 설정 (이미 설정된 값은 덮어쓰지 않음)."""
+    env_path = REPO_ROOT / ".env"
+    if not env_path.exists():
+        return
+    with open(env_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            if key and key not in os.environ:
+                os.environ[key] = value
+
+
+_load_dotenv()
 POSTS_DIR = REPO_ROOT / "_posts"
 ASSETS_DIR = REPO_ROOT / "assets"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "prompt_template.txt"
@@ -252,6 +275,28 @@ def truncate_text(text: str, max_chars: int = MAX_CHARS) -> str:
         return text
     print(f"[INFO] 텍스트가 {len(text):,}자로 길어 앞 {max_chars:,}자만 사용합니다.")
     return text[:max_chars]
+
+
+GITHUB_REPO_BASE = "https://github.com/tigerjk9/tigerjk9.github.io/blob/main"
+
+
+def github_pdf_url(pdf_path: Path) -> str:
+    """_papers/ 에 저장된 PDF의 GitHub blob URL을 반환.
+
+    URL은 추측 없이 레포에 실제 존재하는 파일 경로에서 결정되므로 항상 정확하다.
+    예: _papers/Some Paper.pdf
+      → https://github.com/tigerjk9/tigerjk9.github.io/blob/main/_papers/Some%20Paper.pdf
+    """
+    # REPO_ROOT 기준 상대 경로로 변환
+    try:
+        rel = pdf_path.resolve().relative_to(REPO_ROOT.resolve())
+    except ValueError:
+        rel = pdf_path  # 절대 경로 변환 실패 시 원본 사용
+
+    # URL 인코딩: 공백 → %20, 한글 등 non-ASCII → percent-encode
+    from urllib.parse import quote
+    encoded = quote(rel.as_posix(), safe="/")
+    return f"{GITHUB_REPO_BASE}/{encoded}"
 
 
 # ──────────────────────────────────────────────────────────────

@@ -46,7 +46,8 @@ Claude Code에서는 `/video <URL>` 스킬로 호출한다.
 
 ### `/paper` — PDF 논문 → 블로그 포스트
 
-PDF 논문을 한국어 Jekyll 포스트로 자동 변환한다.
+`_papers/`에 PDF를 넣고 명령어 한 줄로 한국어 포스트를 자동 생성한다.  
+Claude Code에서는 `/paper <PDF경로>` 스킬로 호출한다.
 
 ```bash
 python scripts/pdf_to_post.py _papers/paper.pdf           # 변환 + git push
@@ -54,18 +55,29 @@ python scripts/pdf_to_post.py _papers/paper.pdf --dry-run
 python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 ```
 
+**동작 순서**
+
+1. `.env`에서 `GEMINI_API_KEY` 자동 로드
+2. PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장
+3. pdfplumber로 텍스트 추출 (최대 100,000자)
+4. Gemini(`gemini-2.0-flash`)로 한국어 포스트 생성 (멀티모달)
+5. `_posts/YYYY-MM-DD-{slug}.md` 저장 → git commit + push
+
 **포스트 스타일** (`/paper` 전용)
 
 - **구조 고정**: 연구 목적 → 연구 방법 → 주요 발견 → 결론 → ADD One → 탐구 질문 + APA 출처
-- **Figure 자동 추출**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장 → 멀티모달 삽입
+- **APA 출처**: URL/DOI 미포함 — LLM이 생성하는 링크는 신뢰할 수 없으므로 텍스트만 기재
+- **Figure**: 논문 이미지가 본문 적절한 위치에 자동 삽입됨
 
 ---
 
 ## 환경 설정
 
 ```bash
-# 의존성 설치
+# Ruby 의존성 (Jekyll)
 bundle install
+
+# Python 의존성 (/paper, /video 스크립트 공통)
 pip install -r scripts/requirements.txt
 
 # API 키 설정 (.env는 gitignore 등록됨)
@@ -73,7 +85,7 @@ cp .env.example .env
 # .env 파일에 GEMINI_API_KEY=AIza... 입력
 ```
 
-**`.env` 형식**
+**`.env` 형식** — `/paper`, `/video` 두 스크립트 모두 이 파일에서 자동 로드
 
 ```
 GEMINI_API_KEY=AIza...
@@ -95,14 +107,18 @@ bundle exec rake preview        # 테마 테스트 http://localhost:4000/test/
 
 ```
 _posts/          # 블로그 포스트 (YYYY-MM-DD-slug.md)
-_papers/         # 논문 PDF 원본
+_papers/         # 논문 PDF 원본 (/paper 스크립트 입력)
 assets/          # 이미지 (flat, 서브디렉토리 없음)
 scripts/
-  yt_to_post.py          # YouTube → 포스트 변환
-  pdf_to_post.py         # PDF → 포스트 변환
-  yt_prompt_template.txt # Gemini 프롬프트 템플릿 (video)
-  prompt_template.txt    # Gemini 프롬프트 템플릿 (paper)
-  requirements.txt       # Python 의존성
+  yt_to_post.py          # /video — YouTube → 포스트 변환
+  yt_prompt_template.txt # /video Gemini 프롬프트 ({CROSSOVER_DOMAIN} 포함)
+  pdf_to_post.py         # /paper — PDF → 포스트 변환
+  prompt_template.txt    # /paper Gemini 프롬프트 (URL 미포함 규칙 명시)
+  requirements.txt       # Python 의존성 (두 스크립트 공통)
+.claude/
+  commands/
+    video.md     # /video 슬래시 커맨드 정의
+    paper.md     # /paper 슬래시 커맨드 정의
 _config.yml      # 사이트 설정 (timezone: Asia/Seoul 필수)
 _data/
   navigation.yml # 상단 메뉴
