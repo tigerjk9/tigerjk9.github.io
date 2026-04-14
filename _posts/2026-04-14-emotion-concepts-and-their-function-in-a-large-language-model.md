@@ -1,7 +1,7 @@
 ---
 title: "LLM은 어떻게 감정 개념을 이해하고 활용하는가?"
 date: 2026-04-14 13:40:39 +0900
-categories: [AI, 교육]
+categories: [AI, 교육] 
 tags: [논문리뷰, AI, LLM, 감정, 인간중심AI, 프롬프트, 교육]
 ---
 
@@ -84,5 +84,3 @@ tags: [논문리뷰, AI, LLM, 감정, 인간중심AI, 프롬프트, 교육]
 <출처>
 
 - Sofroniew, N., Kauvar, I., Saunders, W., Chen, R., Henighan, T., Hydrie, S., Citro, C., Pearce, A., Tarng, J., Gurnee, W., Batson, J., Zimmerman, S., Rivoire, K., Fish, K., Olah, C., & Lindsey, J. (2026). Emotion Concepts and their Func in a Large Language Model.
-
-</출처>
