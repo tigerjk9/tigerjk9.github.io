@@ -1,7 +1,7 @@
 {
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"/c/Users/windo/Desktop/03_코딩·개발/Github Desktop/tigerjk9.github.io\\\" && gh api repos/tigerjk9/tigerjk9.github.io/pages 2>&1\",\"description\":\"Check GitHub Pages settings via API\"}",
-  "error": "Exit code 4\nTo get started with GitHub CLI, please run:  gh auth login\nAlternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token.\n[rerun: b2]",
-  "timestamp": "2026-04-13T13:49:14.209Z",
+  "tool_name": "Read",
+  "tool_input_preview": "{\"file_path\":\"C:\\\\Users\\\\windo\\\\.claude\\\\projects\\\\I---------Github-Desktop-tigerjk9-github-io\\\\memory\\\\MEMORY.md\"}",
+  "error": "File does not exist. Note: your current working directory is I:\\내 드라이브\\Github Desktop\\tigerjk9.github.io.",
+  "timestamp": "2026-04-14T14:23:54.114Z",
   "retry_count": 1
 }

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1776088101447,
-  "projectRoot": "C:\\Users\\windo\\Desktop\\03_코딩·개발\\Github Desktop\\tigerjk9.github.io",
+  "lastScanned": 1776176705185,
+  "projectRoot": "I:\\내 드라이브\\Github Desktop\\tigerjk9.github.io",
   "techStack": {
     "languages": [
       {
@@ -54,61 +54,11 @@
   },
   "customNotes": [],
   "directoryMap": {
-    "assets": {
-      "path": "assets",
-      "purpose": "Static assets",
-      "fileCount": 352,
-      "lastAccessed": 1776088101229,
-      "keyFiles": [
-        "1.jpg",
-        "11.jpg",
-        "114.png",
-        "115.png",
-        "116.png"
-      ]
-    },
-    "docs": {
-      "path": "docs",
-      "purpose": "Documentation",
-      "fileCount": 8,
-      "lastAccessed": 1776088101233,
-      "keyFiles": [
-        "Gemfile",
-        "Rakefile",
-        "screenshot-layouts.png",
-        "screenshot.png",
-        "_config.dev.yml"
-      ]
-    },
-    "scripts": {
-      "path": "scripts",
-      "purpose": "Build/utility scripts",
-      "fileCount": 6,
-      "lastAccessed": 1776088101290,
-      "keyFiles": [
-        "naver_cookies.json",
-        "pdf_to_post.py",
-        "prompt_template.txt",
-        "requirements.txt",
-        "yt_prompt_template.txt"
-      ]
-    },
-    "test": {
-      "path": "test",
-      "purpose": "Test files",
-      "fileCount": 3,
-      "lastAccessed": 1776088101292,
-      "keyFiles": [
-        "Gemfile",
-        "index.html",
-        "_config.yml"
-      ]
-    },
     "_data": {
       "path": "_data",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1776088101296,
+      "lastAccessed": 1776176704977,
       "keyFiles": [
         "navigation.yml",
         "ui-text.yml"
@@ -118,7 +68,7 @@
       "path": "_includes",
       "purpose": null,
       "fileCount": 44,
-      "lastAccessed": 1776088101299,
+      "lastAccessed": 1776176705017,
       "keyFiles": [
         "after-content.html",
         "analytics.html",
@@ -131,7 +81,7 @@
       "path": "_layouts",
       "purpose": null,
       "fileCount": 14,
-      "lastAccessed": 1776088101301,
+      "lastAccessed": 1776176705026,
       "keyFiles": [
         "archive-taxonomy.html",
         "archive.html",
@@ -143,21 +93,21 @@
     "_papers": {
       "path": "_papers",
       "purpose": null,
-      "fileCount": 16,
-      "lastAccessed": 1776088101303,
+      "fileCount": 17,
+      "lastAccessed": 1776176705040,
       "keyFiles": [
         "AI-Human-Feedback.pdf",
         "Applying-LS-to-AI-Instructional-Design.pdf",
         "Can LLMs Model Incorrect Student Reasoning.pdf",
-        "Expanding the Scope of Computational Thinking.pdf",
-        "Llama-Polya.pdf"
+        "Emotion Concepts and their Function in a Large Language Model.pdf",
+        "Expanding the Scope of Computational Thinking.pdf"
       ]
     },
     "_posts": {
       "path": "_posts",
       "purpose": null,
-      "fileCount": 161,
-      "lastAccessed": 1776088101307,
+      "fileCount": 162,
+      "lastAccessed": 1776176705069,
       "keyFiles": [
         "2025-08-20-first.md",
         "2025-08-21-first.md",
@@ -170,44 +120,123 @@
       "path": "_sass",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1776088101310,
+      "lastAccessed": 1776176705074,
       "keyFiles": [
         "minimal-mistakes.scss"
       ]
     },
-    "docs\\assets": {
-      "path": "docs\\assets",
+    "assets": {
+      "path": "assets",
       "purpose": "Static assets",
-      "fileCount": 0,
-      "lastAccessed": 1776088101317,
-      "keyFiles": []
+      "fileCount": 358,
+      "lastAccessed": 1776176705103,
+      "keyFiles": [
+        "1.jpg",
+        "11.jpg",
+        "114.png",
+        "115.png",
+        "116.png"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 8,
+      "lastAccessed": 1776176705112,
+      "keyFiles": [
+        "Gemfile",
+        "Rakefile",
+        "_config.dev.yml",
+        "_config.yml",
+        "screenshot-layouts.png"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 6,
+      "lastAccessed": 1776176705124,
+      "keyFiles": [
+        "naver_cookies.json",
+        "pdf_to_post.py",
+        "prompt_template.txt",
+        "requirements.txt",
+        "yt_prompt_template.txt"
+      ]
+    },
+    "test": {
+      "path": "test",
+      "purpose": "Test files",
+      "fileCount": 3,
+      "lastAccessed": 1776176705131,
+      "keyFiles": [
+        "Gemfile",
+        "_config.yml",
+        "index.html"
+      ]
     },
     "test\\assets": {
       "path": "test\\assets",
       "purpose": "Static assets",
       "fileCount": 0,
-      "lastAccessed": 1776088101324,
+      "lastAccessed": 1776176705185,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
       "path": "assets\\css\\main.scss",
-      "accessCount": 39,
-      "lastAccessed": 1776092864907,
+      "accessCount": 46,
+      "lastAccessed": 1776175541617,
       "type": "file"
     },
     {
       "path": "assets\\js\\sidebar-toggle.js",
-      "accessCount": 5,
-      "lastAccessed": 1776092201796,
+      "accessCount": 11,
+      "lastAccessed": 1776174823377,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\masthead.html",
+      "accessCount": 9,
+      "lastAccessed": 1776175532155,
       "type": "file"
     },
     {
       "path": "CLAUDE.md",
-      "accessCount": 4,
-      "lastAccessed": 1776093413888,
+      "accessCount": 7,
+      "lastAccessed": 1776176780247,
       "type": "file"
+    },
+    {
+      "path": "assets\\js\\theme-toggle.js",
+      "accessCount": 6,
+      "lastAccessed": 1776175551018,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js\\plugins\\jquery.greedy-navigation.js",
+      "accessCount": 5,
+      "lastAccessed": 1776175883110,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js\\post-copy.js",
+      "accessCount": 4,
+      "lastAccessed": 1776173320709,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\sidebar.html",
+      "accessCount": 4,
+      "lastAccessed": 1776173328201,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 4,
+      "lastAccessed": 1776174638357,
+      "type": "directory"
     },
     {
       "path": "_config.yml",
@@ -234,27 +263,21 @@
       "type": "file"
     },
     {
-      "path": "assets\\js\\post-copy.js",
+      "path": "_layouts\\single.html",
       "accessCount": 3,
-      "lastAccessed": 1776091124342,
-      "type": "file"
-    },
-    {
-      "path": "_includes\\sidebar.html",
-      "accessCount": 3,
-      "lastAccessed": 1776092201672,
+      "lastAccessed": 1776173329194,
       "type": "file"
     },
     {
       "path": "_includes\\head.html",
-      "accessCount": 2,
-      "lastAccessed": 1776088881110,
+      "accessCount": 3,
+      "lastAccessed": 1776173337465,
       "type": "file"
     },
     {
-      "path": "_includes\\masthead.html",
-      "accessCount": 2,
-      "lastAccessed": 1776088885078,
+      "path": "_sass\\minimal-mistakes\\_navigation.scss",
+      "accessCount": 3,
+      "lastAccessed": 1776173618243,
       "type": "file"
     },
     {
@@ -270,21 +293,21 @@
       "type": "file"
     },
     {
-      "path": "",
-      "accessCount": 2,
-      "lastAccessed": 1776089373214,
-      "type": "directory"
-    },
-    {
-      "path": "_layouts\\single.html",
-      "accessCount": 2,
-      "lastAccessed": 1776090261696,
-      "type": "file"
-    },
-    {
       "path": "README.md",
       "accessCount": 2,
       "lastAccessed": 1776093504563,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js\\_main.js",
+      "accessCount": 2,
+      "lastAccessed": 1776173368039,
+      "type": "file"
+    },
+    {
+      "path": "_sass\\minimal-mistakes\\_masthead.scss",
+      "accessCount": 2,
+      "lastAccessed": 1776173375797,
       "type": "file"
     },
     {
@@ -300,28 +323,10 @@
       "type": "file"
     },
     {
-      "path": "_sass\\minimal-mistakes\\_masthead.scss",
-      "accessCount": 1,
-      "lastAccessed": 1776088720325,
-      "type": "file"
-    },
-    {
-      "path": "assets\\js\\_main.js",
-      "accessCount": 1,
-      "lastAccessed": 1776088755300,
-      "type": "file"
-    },
-    {
       "path": "_sass\\minimal-mistakes",
       "accessCount": 1,
       "lastAccessed": 1776088791010,
       "type": "directory"
-    },
-    {
-      "path": "assets\\js\\theme-toggle.js",
-      "accessCount": 1,
-      "lastAccessed": 1776088898369,
-      "type": "file"
     },
     {
       "path": "_sass\\minimal-mistakes\\_buttons.scss",
@@ -352,6 +357,54 @@
       "accessCount": 1,
       "lastAccessed": 1776091113393,
       "type": "directory"
+    },
+    {
+      "path": "_data\\navigation.yml",
+      "accessCount": 1,
+      "lastAccessed": 1776173606169,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js",
+      "accessCount": 1,
+      "lastAccessed": 1776174634447,
+      "type": "directory"
+    },
+    {
+      "path": "c:\\Users\\windo\\Desktop\\12.jpg",
+      "accessCount": 1,
+      "lastAccessed": 1776175812417,
+      "type": "file"
+    },
+    {
+      "path": "assets\\js\\main.min.js",
+      "accessCount": 1,
+      "lastAccessed": 1776176184840,
+      "type": "directory"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\MEMORY.md",
+      "accessCount": 1,
+      "lastAccessed": 1776176724301,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\feedback_js_bundle.md",
+      "accessCount": 1,
+      "lastAccessed": 1776176735471,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\feedback_greedy_nav.md",
+      "accessCount": 1,
+      "lastAccessed": 1776176743035,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\project_mobile_features.md",
+      "accessCount": 1,
+      "lastAccessed": 1776176754092,
+      "type": "file"
     }
   ],
   "userDirectives": []
