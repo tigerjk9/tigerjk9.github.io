@@ -36,6 +36,7 @@ python scripts/pdf_to_post.py $ARGUMENTS
 ## 옵션
 - `--dry-run` : 파일 저장 없이 출력만 (테스트용)
 - `--no-push` : git push 없이 로컬 저장만
+- `--keep-pdf`: 처리 후 원본 PDF 보존 (기본은 자동 삭제)
 
 ## .env 설정
 프로젝트 루트에 `.env` 파일 생성:
@@ -44,8 +45,12 @@ GEMINI_API_KEY=AIza...
 ```
 `.env`는 `.gitignore`에 등록되어 있어 git에 올라가지 않습니다.
 
-## PDF 파일 위치
-논문 PDF는 `_papers/` 디렉토리에 넣는 것을 권장합니다:
+## PDF 파일 위치 및 생명주기
+논문 PDF는 `_papers/` 디렉토리에 넣습니다:
 ```bash
 python scripts/pdf_to_post.py _papers/paper.pdf
 ```
+
+- `_papers/*.pdf`는 `.gitignore`에 등록되어 저장소에 커밋되지 않습니다.
+- 처리가 완료되면 **원본 PDF는 자동 삭제**되어 로컬 용량이 쌓이지 않습니다.
+- 원본을 보존하려면 `--keep-pdf` 플래그를 사용하세요.

@@ -17,6 +17,7 @@ PDF 입력
   → Gemini API (gemini-2.0-flash): 한국어 포스트 생성
   → _posts/YYYY-MM-DD-slug.md 저장
   → git add → commit → push
+  → 원본 PDF 자동 삭제 (로컬 용량 절약, --keep-pdf 로 보존 가능)
 ```
 
 ---
@@ -77,11 +78,14 @@ scripts/
 ## CLI 옵션
 
 ```bash
-python scripts/pdf_to_post.py <PDF경로>           # 변환 + git push
+python scripts/pdf_to_post.py <PDF경로>            # 변환 + git push + PDF 자동 삭제
 python scripts/pdf_to_post.py <PDF경로> --dry-run  # 출력만, 저장 안 함
-python scripts/pdf_to_post.py <PDF경로> --no-push  # 로컬 저장만
+python scripts/pdf_to_post.py <PDF경로> --no-push  # 로컬 저장만 (PDF는 삭제됨)
+python scripts/pdf_to_post.py <PDF경로> --keep-pdf # 원본 PDF 보존
 python scripts/pdf_to_post.py <PDF경로> --model gemini-2.0-flash
 ```
+
+`_papers/*.pdf`는 `.gitignore`에 등록되어 저장소에 커밋되지 않는다. 기본 동작은 처리 후 원본 삭제 — 로컬 용량이 쌓이지 않도록 한다.
 
 ---
 

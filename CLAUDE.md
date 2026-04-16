@@ -85,13 +85,15 @@ Claude Code에서는 `/paper <PDF경로>` 슬래시 커맨드로 호출한다 (`
 설계 의도: 어떤 논문을 넣어도 일정한 품질이 나오는 반복 가능한 구조 → `scripts/paper-prd.md` 참고.
 
 ```bash
-python scripts/pdf_to_post.py _papers/paper.pdf          # 변환 + git push
+python scripts/pdf_to_post.py _papers/paper.pdf           # 변환 + git push + PDF 자동 삭제
 python scripts/pdf_to_post.py _papers/paper.pdf --dry-run
 python scripts/pdf_to_post.py _papers/paper.pdf --no-push
+python scripts/pdf_to_post.py _papers/paper.pdf --keep-pdf # 원본 PDF 보존
 ```
 
 - **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드 (gitignore 등록됨)
 - **의존성**: `google-generativeai`, `pdfplumber`, `PyMuPDF`
+- **로컬 용량 정책**: `_papers/*.pdf`는 `.gitignore` 등록. 처리 완료 후 원본 PDF 자동 삭제 (로컬 누적 방지). 보존 필요 시 `--keep-pdf`
 - **포스트 구조 (고정 6섹션)**: 연구목적 → 방법 → 주요발견 → 결론 및 시사점 → 리뷰어 ADD One → 탐구질문 + APA 출처
   - 섹션 1·2는 간결하게, 섹션 3·4·5가 전체의 70% 이상 차지
   - 섹션 3(주요 발견): 3개 이상 항목. 프레임워크·모델 제안 논문은 구성요소를 각각 별도 항목으로 전개
