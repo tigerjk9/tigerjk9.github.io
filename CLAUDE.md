@@ -82,6 +82,7 @@ JS 수정 방법:
 
 `scripts/pdf_to_post.py`가 PDF 논문을 한국어 Jekyll 포스트로 자동 변환한다.
 Claude Code에서는 `/paper <PDF경로>` 슬래시 커맨드로 호출한다 (`.claude/commands/paper.md`).
+설계 의도: 어떤 논문을 넣어도 일정한 품질이 나오는 반복 가능한 구조 → `scripts/paper-prd.md` 참고.
 
 ```bash
 python scripts/pdf_to_post.py _papers/paper.pdf          # 변환 + git push
@@ -91,9 +92,14 @@ python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 
 - **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드 (gitignore 등록됨)
 - **의존성**: `google-generativeai`, `pdfplumber`, `PyMuPDF`
-- **포스트 구조 (고정)**: 6개 섹션 (연구목적 → 방법 → 발견 → 결론 → ADD One → 탐구질문) + APA 출처
+- **포스트 구조 (고정 6섹션)**: 연구목적 → 방법 → 주요발견 → 결론 및 시사점 → 리뷰어 ADD One → 탐구질문 + APA 출처
+  - 섹션 1·2는 간결하게, 섹션 3·4·5가 전체의 70% 이상 차지
+  - 섹션 3(주요 발견): 3개 이상 항목. 프레임워크·모델 제안 논문은 구성요소를 각각 별도 항목으로 전개
+  - 섹션 5(리뷰어 ADD One): 3항목 — 주목할 지점 / 인접 분야 연결 / 발전 아이디어
+- **형식 규칙**: 번호 체계 `(1)(2)...`는 최상위만. 하위 목록은 `-` 불릿(2칸 들여쓰기). 중첩 번호 금지
+- **문체**: 단정체(`~함·~됨·~임`). 존칭 어미(`~합니다·~됩니다`) 금지. 따옴표(' ") 금지
 - **Figure 자동 추출**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장 → 멀티모달 삽입
-- **APA 출처**: URL/DOI 미포함. Gemini가 생성하는 링크는 신뢰할 수 없으므로 텍스트 출처만 기재한다 (`scripts/prompt_template.txt` 규칙)
+- **APA 출처**: URL/DOI 미포함. Gemini가 생성하는 링크는 신뢰할 수 없으므로 텍스트 출처만 기재한다
 
 ---
 
