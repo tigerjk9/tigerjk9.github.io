@@ -204,8 +204,8 @@
     },
     {
       "path": "CLAUDE.md",
-      "accessCount": 7,
-      "lastAccessed": 1776176780247,
+      "accessCount": 8,
+      "lastAccessed": 1776360796501,
       "type": "file"
     },
     {
@@ -281,6 +281,18 @@
       "type": "file"
     },
     {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\MEMORY.md",
+      "accessCount": 3,
+      "lastAccessed": 1776360171500,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\paper-prd.md",
+      "accessCount": 3,
+      "lastAccessed": 1776360202912,
+      "type": "file"
+    },
+    {
       "path": "_sass\\minimal-mistakes\\_syntax.scss",
       "accessCount": 2,
       "lastAccessed": 1776089139916,
@@ -308,6 +320,12 @@
       "path": "_sass\\minimal-mistakes\\_masthead.scss",
       "accessCount": 2,
       "lastAccessed": 1776173375797,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\commands\\paper.md",
+      "accessCount": 2,
+      "lastAccessed": 1776361060438,
       "type": "file"
     },
     {
@@ -383,12 +401,6 @@
       "type": "directory"
     },
     {
-      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\MEMORY.md",
-      "accessCount": 1,
-      "lastAccessed": 1776176724301,
-      "type": "file"
-    },
-    {
       "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\feedback_js_bundle.md",
       "accessCount": 1,
       "lastAccessed": 1776176735471,
@@ -404,6 +416,12 @@
       "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\project_mobile_features.md",
       "accessCount": 1,
       "lastAccessed": 1776176754092,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\project_papers_cleanup.md",
+      "accessCount": 1,
+      "lastAccessed": 1776360160332,
       "type": "file"
     }
   ],
