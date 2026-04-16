@@ -11,6 +11,7 @@ pdf_to_post.py — PDF 논문을 Jekyll 블로그 포스트로 자동 변환
   --no-push            로컬 저장만 하고 git push 하지 않음
   --dry-run            _posts/ 에 저장하지 않고 터미널에 출력만
   --model  MODEL       Gemini 모델 ID (기본값: gemini-2.0-flash)
+  --keep-pdf           처리 후 원본 PDF를 삭제하지 않음 (기본: 삭제)
 
 환경변수:
   GEMINI_API_KEY       Google AI Studio API 키 (필수)
@@ -527,6 +528,11 @@ def main() -> None:
         default=DEFAULT_MODEL,
         help=f"Gemini 모델 ID (기본값: {DEFAULT_MODEL})",
     )
+    parser.add_argument(
+        "--keep-pdf",
+        action="store_true",
+        help="처리 후 원본 PDF를 삭제하지 않음 (기본: 삭제하여 로컬 용량 절약)",
+    )
     args = parser.parse_args()
 
     # ── 환경변수 확인 ──
@@ -636,6 +642,16 @@ def main() -> None:
             f"  수동 push: git add {output_path} && "
             f"git commit -m 'Add: {slug}' && git push origin main"
         )
+
+    # ── 원본 PDF 자동 삭제 (기본 동작; --keep-pdf 로 보존) ──
+    if args.keep_pdf:
+        print(f"[INFO] --keep-pdf 옵션으로 원본 PDF를 보존합니다: {pdf_path}")
+    else:
+        try:
+            pdf_path.unlink()
+            print(f"[OK] 원본 PDF 삭제 완료: {pdf_path}")
+        except Exception as e:
+            print(f"[WARN] 원본 PDF 삭제 실패: {e}")
 
     print(f"\n완료! 생성된 포스트: {output_path}")
 

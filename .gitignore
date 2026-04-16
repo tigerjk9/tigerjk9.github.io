@@ -27,6 +27,10 @@ codekit-config.json
 # API keys / secrets
 .env
 
+# PDF 원본은 로컬에만 임시로 두고 커밋하지 않는다
+# (pdf_to_post.py가 처리 후 자동 삭제)
+_papers/*.pdf
+
 # Jekyll generated files
 .jekyll-cache
 .jekyll-metadata
