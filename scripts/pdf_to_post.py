@@ -61,7 +61,7 @@ _load_dotenv()
 POSTS_DIR = REPO_ROOT / "_posts"
 ASSETS_DIR = REPO_ROOT / "assets"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "prompt_template.txt"
-DEFAULT_MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CHARS = 100000  # Gemini 컨텍스트 한도 초과 방지
 
 # Figure 추출 필터 기준
