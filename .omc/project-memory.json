@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1776176705185,
+  "lastScanned": 1776779029948,
   "projectRoot": "I:\\내 드라이브\\Github Desktop\\tigerjk9.github.io",
   "techStack": {
     "languages": [
@@ -58,7 +58,7 @@
       "path": "_data",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1776176704977,
+      "lastAccessed": 1776779027354,
       "keyFiles": [
         "navigation.yml",
         "ui-text.yml"
@@ -68,7 +68,7 @@
       "path": "_includes",
       "purpose": null,
       "fileCount": 44,
-      "lastAccessed": 1776176705017,
+      "lastAccessed": 1776779027880,
       "keyFiles": [
         "after-content.html",
         "analytics.html",
@@ -81,7 +81,7 @@
       "path": "_layouts",
       "purpose": null,
       "fileCount": 14,
-      "lastAccessed": 1776176705026,
+      "lastAccessed": 1776779028211,
       "keyFiles": [
         "archive-taxonomy.html",
         "archive.html",
@@ -93,21 +93,15 @@
     "_papers": {
       "path": "_papers",
       "purpose": null,
-      "fileCount": 17,
-      "lastAccessed": 1776176705040,
-      "keyFiles": [
-        "AI-Human-Feedback.pdf",
-        "Applying-LS-to-AI-Instructional-Design.pdf",
-        "Can LLMs Model Incorrect Student Reasoning.pdf",
-        "Emotion Concepts and their Function in a Large Language Model.pdf",
-        "Expanding the Scope of Computational Thinking.pdf"
-      ]
+      "fileCount": 1,
+      "lastAccessed": 1776779028403,
+      "keyFiles": []
     },
     "_posts": {
       "path": "_posts",
       "purpose": null,
-      "fileCount": 162,
-      "lastAccessed": 1776176705069,
+      "fileCount": 166,
+      "lastAccessed": 1776779028487,
       "keyFiles": [
         "2025-08-20-first.md",
         "2025-08-21-first.md",
@@ -120,7 +114,7 @@
       "path": "_sass",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1776176705074,
+      "lastAccessed": 1776779028511,
       "keyFiles": [
         "minimal-mistakes.scss"
       ]
@@ -128,8 +122,8 @@
     "assets": {
       "path": "assets",
       "purpose": "Static assets",
-      "fileCount": 358,
-      "lastAccessed": 1776176705103,
+      "fileCount": 372,
+      "lastAccessed": 1776779028651,
       "keyFiles": [
         "1.jpg",
         "11.jpg",
@@ -142,7 +136,7 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 8,
-      "lastAccessed": 1776176705112,
+      "lastAccessed": 1776779028675,
       "keyFiles": [
         "Gemfile",
         "Rakefile",
@@ -154,8 +148,8 @@
     "scripts": {
       "path": "scripts",
       "purpose": "Build/utility scripts",
-      "fileCount": 6,
-      "lastAccessed": 1776176705124,
+      "fileCount": 7,
+      "lastAccessed": 1776779028690,
       "keyFiles": [
         "naver_cookies.json",
         "pdf_to_post.py",
@@ -168,7 +162,7 @@
       "path": "test",
       "purpose": "Test files",
       "fileCount": 3,
-      "lastAccessed": 1776176705131,
+      "lastAccessed": 1776779028707,
       "keyFiles": [
         "Gemfile",
         "_config.yml",
@@ -179,7 +173,7 @@
       "path": "test\\assets",
       "purpose": "Static assets",
       "fileCount": 0,
-      "lastAccessed": 1776176705185,
+      "lastAccessed": 1776779028808,
       "keyFiles": []
     }
   },
@@ -218,6 +212,12 @@
       "path": "assets\\js\\plugins\\jquery.greedy-navigation.js",
       "accessCount": 5,
       "lastAccessed": 1776175883110,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\MEMORY.md",
+      "accessCount": 5,
+      "lastAccessed": 1776784510899,
       "type": "file"
     },
     {
@@ -281,16 +281,16 @@
       "type": "file"
     },
     {
-      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\MEMORY.md",
-      "accessCount": 3,
-      "lastAccessed": 1776360171500,
-      "type": "file"
-    },
-    {
       "path": "scripts\\paper-prd.md",
       "accessCount": 3,
       "lastAccessed": 1776360202912,
       "type": "file"
+    },
+    {
+      "path": "scripts\\pdf_to_post.py",
+      "accessCount": 3,
+      "lastAccessed": 1776784480309,
+      "type": "directory"
     },
     {
       "path": "_sass\\minimal-mistakes\\_syntax.scss",
@@ -422,6 +422,60 @@
       "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\project_papers_cleanup.md",
       "accessCount": 1,
       "lastAccessed": 1776360160332,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\a6726884-ae2c-4d54-87d7-4fdb5efe256b\\tasks\\bkbwv5365.output",
+      "accessCount": 1,
+      "lastAccessed": 1776782799366,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\2f1c1f77-2316-447d-b5ed-866ca8d2d103\\tasks\\bl4j0wbcn.output",
+      "accessCount": 1,
+      "lastAccessed": 1776784089274,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\2f1c1f77-2316-447d-b5ed-866ca8d2d103\\tasks\\bfq5wbmiu.output",
+      "accessCount": 1,
+      "lastAccessed": 1776784160156,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\2f1c1f77-2316-447d-b5ed-866ca8d2d103\\tasks\\blefkxfkt.output",
+      "accessCount": 1,
+      "lastAccessed": 1776784222976,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\2f1c1f77-2316-447d-b5ed-866ca8d2d103\\tasks\\bwyd039wy.output",
+      "accessCount": 1,
+      "lastAccessed": 1776784262147,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\2f1c1f77-2316-447d-b5ed-866ca8d2d103\\tasks\\bvrd5wclg.output",
+      "accessCount": 1,
+      "lastAccessed": 1776784375603,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\feedback_pdf_model.md",
+      "accessCount": 1,
+      "lastAccessed": 1776784491806,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\2f1c1f77-2316-447d-b5ed-866ca8d2d103\\tasks\\baudjjopg.output",
+      "accessCount": 1,
+      "lastAccessed": 1776784661053,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\AppData\\Local\\Temp\\claude\\I---------Github-Desktop-tigerjk9-github-io\\2f1c1f77-2316-447d-b5ed-866ca8d2d103\\tasks\\bv79g5j2a.output",
+      "accessCount": 1,
+      "lastAccessed": 1776784882288,
       "type": "file"
     }
   ],

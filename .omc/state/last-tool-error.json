@@ -1,7 +1,7 @@
 {
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"C:\\\\Users\\\\windo\\\\.claude\\\\projects\\\\I---------Github-Desktop-tigerjk9-github-io\\\\memory\\\\MEMORY.md\"}",
-  "error": "File does not exist. Note: your current working directory is I:\\내 드라이브\\Github Desktop\\tigerjk9.github.io.",
-  "timestamp": "2026-04-14T14:23:54.114Z",
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"I:/내 드라이브/Github Desktop/tigerjk9.github.io\\\" && git pull origin main --rebase && git push origin main\",\"description\":\"Pull with rebase then push to GitHub\"}",
+  "error": "Exit code 128\nerror: cannot pull with rebase: You have unstaged changes.\nerror: please commit or stash them.",
+  "timestamp": "2026-04-21T15:13:05.554Z",
   "retry_count": 1
 }
