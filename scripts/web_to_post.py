@@ -42,8 +42,10 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_prompt_template.txt"
+MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_multi_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CONTENT_CHARS = 80000
+MAX_CONTENT_CHARS_PER_URL = 40000  # 복수 URL 시 출처당 최대 글자 수
 
 CROSSOVER_DOMAINS = [
     "신경과학",
@@ -343,6 +345,47 @@ def load_prompt_template(
 
 
 # ──────────────────────────────────────────────────────────────
+# 복수 URL 프롬프트 로드
+# ──────────────────────────────────────────────────────────────
+
+def load_multi_prompt_template(
+    date_str: str,
+    sources: "list[tuple[str, str, str, str]]",  # [(url, title, site_name, content), ...]
+    categories: "list[str]",
+    tags: "list[str]",
+) -> "tuple[str, str]":
+    if not MULTI_PROMPT_TEMPLATE_PATH.exists():
+        raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {MULTI_PROMPT_TEMPLATE_PATH}")
+    template = MULTI_PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+
+    multi_sources_blocks = []
+    for i, (url, title, site_name, content) in enumerate(sources, 1):
+        block = (
+            f"### [출처 {i}] {title}\n"
+            f"- URL: {url}\n"
+            f"- 사이트: {site_name}\n\n"
+            f"{content}"
+        )
+        multi_sources_blocks.append(block)
+    multi_sources_str = "\n\n---\n\n".join(multi_sources_blocks)
+
+    multi_urls_str = "\n".join(f"- {url}" for url, _, _, _ in sources)
+
+    cats_str = ", ".join(categories) if categories else "AI, 교육"
+    tags_str = ", ".join(tags) if tags else "AI, 교육"
+    time_str = datetime.now().strftime("%H:%M:%S")
+    crossover_domain = random.choice(CROSSOVER_DOMAINS)
+
+    template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
+    template = template.replace("{MULTI_SOURCES}", multi_sources_str)
+    template = template.replace("{MULTI_URLS}", multi_urls_str)
+    template = template.replace("{EXISTING_CATEGORIES}", cats_str)
+    template = template.replace("{EXISTING_TAGS}", tags_str)
+    template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
+    return template, crossover_domain
+
+
+# ──────────────────────────────────────────────────────────────
 # Gemini API
 # ──────────────────────────────────────────────────────────────
 
@@ -481,11 +524,12 @@ def main() -> None:
         epilog=(
             "예시:\n"
             "  python scripts/web_to_post.py https://example.com/article\n"
+            "  python scripts/web_to_post.py https://a.com/1 https://b.com/2  # 통합 포스트\n"
             "  python scripts/web_to_post.py https://example.com/article --dry-run\n"
             "  python scripts/web_to_post.py https://example.com/article --no-push"
         ),
     )
-    parser.add_argument("url", help="웹 페이지 URL")
+    parser.add_argument("urls", nargs="+", help="웹 페이지 URL (복수 지정 시 하나의 통합 포스트 생성)")
     parser.add_argument(
         "--date",
         default=datetime.now().strftime("%Y-%m-%d"),
@@ -503,32 +547,65 @@ def main() -> None:
 
     config_modified = ensure_timezone_config()
 
-    # 웹 콘텐츠 가져오기
-    try:
-        title, site_name, content_text = fetch_web_content(args.url)
-    except Exception as e:
-        print(f"[ERROR] 웹 페이지 가져오기 실패: {e}")
-        sys.exit(1)
-
-    if not content_text.strip():
-        print("[ERROR] 본문 텍스트를 추출할 수 없습니다. URL을 확인하세요.")
-        sys.exit(1)
-
     # 기존 카테고리/태그 수집
     print("[INFO] 기존 카테고리/태그 수집 중...")
     existing_cats, existing_tags = get_existing_taxonomy()
     print(f"[INFO] 기존 카테고리 {len(existing_cats)}개, 태그 {len(existing_tags)}개 확인")
 
-    # 프롬프트 로드
-    try:
-        prompt, crossover_domain = load_prompt_template(
-            args.date, args.url, title, site_name, content_text,
-            existing_cats, existing_tags,
-        )
-        print(f"[INFO] 크로스오버 분야: {crossover_domain}")
-    except RuntimeError as e:
-        print(f"[ERROR] {e}")
-        sys.exit(1)
+    is_multi = len(args.urls) > 1
+
+    if is_multi:
+        # ── 복수 URL: 모두 가져와서 통합 포스트 생성 ──
+        print(f"[INFO] 복수 URL 모드 — {len(args.urls)}개 출처를 통합해 포스트 생성")
+        per_url_limit = max(MAX_CONTENT_CHARS_PER_URL, MAX_CONTENT_CHARS // len(args.urls))
+        sources: "list[tuple[str, str, str, str]]" = []
+        for url in args.urls:
+            try:
+                title, site_name, content_text = fetch_web_content(url)
+            except Exception as e:
+                print(f"[ERROR] 웹 페이지 가져오기 실패 ({url}): {e}")
+                sys.exit(1)
+            if not content_text.strip():
+                print(f"[ERROR] 본문 텍스트를 추출할 수 없습니다: {url}")
+                sys.exit(1)
+            sources.append((url, title, site_name, content_text[:per_url_limit]))
+
+        try:
+            prompt, crossover_domain = load_multi_prompt_template(
+                args.date, sources, existing_cats, existing_tags,
+            )
+            print(f"[INFO] 크로스오버 분야: {crossover_domain}")
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+
+        source_label = ", ".join(args.urls)
+        fallback_title = " + ".join(t for _, t, _, _ in sources)
+    else:
+        # ── 단일 URL ──
+        url = args.urls[0]
+        try:
+            title, site_name, content_text = fetch_web_content(url)
+        except Exception as e:
+            print(f"[ERROR] 웹 페이지 가져오기 실패: {e}")
+            sys.exit(1)
+
+        if not content_text.strip():
+            print("[ERROR] 본문 텍스트를 추출할 수 없습니다. URL을 확인하세요.")
+            sys.exit(1)
+
+        try:
+            prompt, crossover_domain = load_prompt_template(
+                args.date, url, title, site_name, content_text,
+                existing_cats, existing_tags,
+            )
+            print(f"[INFO] 크로스오버 분야: {crossover_domain}")
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+
+        source_label = url
+        fallback_title = title
 
     # Gemini API 호출
     try:
@@ -542,16 +619,15 @@ def main() -> None:
     markdown_content = _fix_date(markdown_content, correct_date)
 
     # 슬러그 확정: CLI 옵션 > Gemini front matter > 제목 폴백
-    cli_slug = args.slug
-    if cli_slug:
-        slug = cli_slug
+    if args.slug:
+        slug = args.slug
     else:
         gemini_slug = extract_slug_from_content(markdown_content)
         if gemini_slug:
             slug = gemini_slug
             print(f"[INFO] 슬러그 (Gemini 생성): {slug}")
         else:
-            slug = slugify(title)[:50] or "web-post"
+            slug = slugify(fallback_title)[:50] or "web-post"
             print(f"[INFO] 슬러그 (제목 폴백): {slug}")
 
     markdown_content = remove_slug_field(markdown_content)
@@ -570,11 +646,11 @@ def main() -> None:
 
     if not args.no_push:
         title_match = re.search(r'^title:\s*["\']?(.+?)["\']?\s*$', markdown_content, re.MULTILINE)
-        short_title = title_match.group(1)[:50] if title_match else title[:50]
+        short_title = title_match.group(1)[:50] if title_match else fallback_title[:50]
         commit_msg = (
             f"Add: {short_title}\n\n"
             f"Auto-generated by web_to_post.py\n"
-            f"Source: {args.url}"
+            f"Source: {source_label}"
         )
         all_files = [output_path]
         if config_modified:
