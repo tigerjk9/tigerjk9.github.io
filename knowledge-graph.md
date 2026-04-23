@@ -7,7 +7,7 @@ class: "page--knowledge-graph"
 
 <style>
   html, body.page--knowledge-graph {
-    background-color: #0A192F !important;
+    background-color: #0f0f13 !important;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -21,45 +21,40 @@ class: "page--knowledge-graph"
   }
   .page--knowledge-graph .page__title {
     text-align: center;
-    color: #64FFDA;
-    text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+    color: #a78bfa;
   }
   .page--knowledge-graph #main {
-    margin-left: 320px; 
+    margin-left: 320px;
   }
 
   #info-panel {
     position: absolute;
     top: 20px;
     left: 20px;
-    background: rgba(10, 25, 47, 0.95);
-    border: 2px solid #64FFDA;
-    border-radius: 10px;
-    padding: 15px 20px;
-    color: #CCD6F6;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 14px;
+    background: rgba(18, 18, 26, 0.97);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: #c4c4d4;
+    font-family: -apple-system, 'Inter', 'Segoe UI', sans-serif;
+    font-size: 13px;
     z-index: 100;
-    max-width: 400px;
+    max-width: 320px;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 0 30px rgba(100, 255, 218, 0.5), 0 0 60px rgba(100, 255, 218, 0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
     display: none;
-    backdrop-filter: blur(10px);
-    animation: panelGlow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes panelGlow {
-    from { box-shadow: 0 0 30px rgba(100, 255, 218, 0.5), 0 0 60px rgba(100, 255, 218, 0.2); }
-    to { box-shadow: 0 0 40px rgba(100, 255, 218, 0.7), 0 0 80px rgba(100, 255, 218, 0.3); }
+    backdrop-filter: blur(12px);
   }
 
   #info-panel h3 {
     margin: 0 0 10px 0;
-    color: #64FFDA;
-    font-size: 18px;
-    border-bottom: 1px solid #64FFDA;
-    padding-bottom: 5px;
+    color: #e2e2f0;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.25);
+    padding-bottom: 8px;
+    line-height: 1.4;
   }
 
   #info-panel p {
@@ -69,59 +64,68 @@ class: "page--knowledge-graph"
 
   #info-panel .category {
     display: inline-block;
-    background: rgba(100, 255, 218, 0.2);
+    background: rgba(139, 92, 246, 0.15);
     padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    color: #64FFDA;
-    box-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+    border-radius: 3px;
+    font-size: 11px;
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.3);
   }
 
   #top-connections-list li {
     cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 5px;
+    transition: background 0.15s ease;
+    padding: 4px 6px;
     border-radius: 4px;
+    color: #b0b0c8;
   }
 
   #top-connections-list li:hover {
-    background: rgba(100, 255, 218, 0.1);
-    transform: translateX(5px);
-    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+    background: rgba(139, 92, 246, 0.1);
+    color: #e2e2f0;
   }
 
   #node-link {
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    color: #a78bfa !important;
+    text-decoration: none;
+    font-size: 12px;
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
   }
 
   #node-link:hover {
-    background: rgba(100, 255, 218, 0.2);
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
-    transform: scale(1.05);
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.7);
   }
 
   #controls-panel {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    background: rgba(10, 25, 47, 0.95);
-    border: 2px solid #64FFDA;
-    border-radius: 10px;
-    padding: 15px 20px;
-    color: #CCD6F6;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 13px;
+    background: rgba(18, 18, 26, 0.92);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #888899;
+    font-family: -apple-system, 'Inter', 'Segoe UI', sans-serif;
+    font-size: 12px;
     z-index: 100;
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
   }
 
   #controls-panel h4 {
-    margin: 0 0 10px 0;
-    color: #64FFDA;
-    font-size: 15px;
-    border-bottom: 1px solid #64FFDA;
-    padding-bottom: 5px;
+    margin: 0 0 8px 0;
+    color: #a78bfa;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    padding-bottom: 6px;
   }
 
   #controls-panel ul {
@@ -131,23 +135,23 @@ class: "page--knowledge-graph"
   }
 
   #controls-panel li {
-    margin: 8px 0;
-    color: #CCD6F6;
+    margin: 6px 0;
+    color: #888899;
     line-height: 1.4;
   }
 
   .loader {
-    border: 8px solid #233554;
-    border-top: 8px solid #64FFDA;
+    border: 3px solid rgba(139, 92, 246, 0.15);
+    border-top: 3px solid #a78bfa;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1.5s linear infinite;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -30px;
-    margin-left: -30px;
+    margin-top: -20px;
+    margin-left: -20px;
     z-index: 1000;
   }
 
@@ -170,32 +174,32 @@ class: "page--knowledge-graph"
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
+    gap: 8px;
     z-index: 101;
   }
 
   .nav-btn {
-    background: rgba(10, 25, 47, 0.95);
-    border: 2px solid #64FFDA;
-    color: #64FFDA;
-    padding: 8px 16px;
-    border-radius: 8px;
+    background: rgba(18, 18, 26, 0.92);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: #a78bfa;
+    padding: 7px 14px;
+    border-radius: 6px;
     cursor: pointer;
-    font-family: 'Consolas', 'Monaco', monospace;
+    font-family: -apple-system, 'Inter', 'Segoe UI', sans-serif;
     font-size: 13px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
-    backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+    backdrop-filter: blur(12px);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   .nav-btn:hover {
-    background: rgba(100, 255, 218, 0.2);
-    box-shadow: 0 0 25px rgba(100, 255, 218, 0.6);
-    transform: translateY(-2px);
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.6);
+    color: #c4b5fd;
   }
 </style>
 
@@ -222,12 +226,12 @@ class: "page--knowledge-graph"
     <p><span class="category" id="node-category"></span></p>
     <p id="node-connections"></p>
     <div id="top-connections" style="margin-top: 10px; font-size: 12px;">
-      <strong style="color: #64FFDA;">주요 연결:</strong>
+      <strong style="color: #a78bfa;">주요 연결:</strong>
       <ul id="top-connections-list" style="margin: 5px 0; padding-left: 20px; list-style: none;"></ul>
     </div>
     <p style="margin-top: 10px;">
-      <a id="node-link" href="#" target="_blank" style="color: #64FFDA; text-decoration: none; font-size: 12px; border: 1px solid #64FFDA; padding: 5px 10px; border-radius: 5px; display: inline-block;">
-        🧠 본 게시물로 이동
+      <a id="node-link" href="#" target="_blank">
+        본 게시물로 이동 →
       </a>
     </p>
   </div>
@@ -327,32 +331,34 @@ class: "page--knowledge-graph"
         };
 
         const categoryColors = {
-          'AI': '#A78BFA',
-          'Machine Learning': '#60A5FA',
-          'Deep Learning': '#F472B6',
-          'NLP': '#34D399',
-          'Computer Vision': '#FBBF24',
-          'Robotics': '#FB923C',
-          'default': '#64FFDA'
+          'AI': '#8b5cf6',
+          '교육': '#6366f1',
+          '학습과학': '#3b82f6',
+          '철학': '#ec4899',
+          '코딩': '#10b981',
+          '인지과학': '#f59e0b',
+          '바이브코딩': '#06b6d4',
+          'tag': '#52525b',
+          'default': '#6b6b8a'
         };
 
         const Graph = ForceGraph3D()(elem);
         
         Graph
           .graphData(data)
-          .nodeLabel(node => `<div style="background: rgba(10, 25, 47, 0.95); padding: 8px 12px; border-radius: 6px; border: 2px solid #64FFDA; color: #CCD6F6; font-family: 'Consolas', monospace; font-size: 14px; font-weight: bold; box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);">${node.name}</div>`)
+          .nodeLabel(node => `<div style="background: rgba(15,15,22,0.95); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(139,92,246,0.4); color: #e2e2f0; font-family: -apple-system, sans-serif; font-size: 12px;">${node.name}</div>`)
           .nodeVal(node => Math.pow(node.connections + 1, 0.6) * 5)
           .nodeColor(node => categoryColors[node.group] || categoryColors['default'])
-          .nodeOpacity(0.9)
+          .nodeOpacity(0.85)
           .nodeResolution(16)
-          .linkWidth(link => Math.max(link.value * 1.2, 0.4))
-          .linkColor(() => 'rgba(148, 163, 184, 0.4)')
-          .linkOpacity(0.6)
-          .linkDirectionalParticles(link => Math.min(link.value * 1.5, 6))
-          .linkDirectionalParticleWidth(link => 0.8 + link.value * 0.2)
-          .linkDirectionalParticleSpeed(0.005)
-          .linkDirectionalParticleColor(() => 'rgba(100, 255, 218, 0.6)')
-          .backgroundColor('#0A192F')
+          .linkWidth(link => Math.max(link.value * 0.6, 0.2))
+          .linkColor(() => 'rgba(100, 100, 130, 0.25)')
+          .linkOpacity(0.5)
+          .linkDirectionalParticles(link => Math.min(link.value * 1.5, 4))
+          .linkDirectionalParticleWidth(link => 0.5 + link.value * 0.15)
+          .linkDirectionalParticleSpeed(0.004)
+          .linkDirectionalParticleColor(() => 'rgba(167, 139, 250, 0.7)')
+          .backgroundColor('#0f0f13')
           .showNavInfo(false)
           .enableNodeDrag(true)
           .enableNavigationControls(true)
@@ -427,7 +433,7 @@ class: "page--knowledge-graph"
               const li = document.createElement('li');
               li.style.margin = '3px 0';
               li.style.color = '#CCD6F6';
-              li.innerHTML = `<span style="color: #64FFDA;">[${conn.weight}]</span> ${conn.node.name || conn.node.id}`;
+              li.innerHTML = `<span style="color: #a78bfa; font-size: 10px;">[${conn.weight}]</span> ${conn.node.name || conn.node.id}`;
               li.onclick = () => {
                 if (conn.node.url) {
                   window.open(conn.node.url, '_blank');
