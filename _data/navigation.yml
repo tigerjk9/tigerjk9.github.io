@@ -1,13 +1,9 @@
 # _data/navigation.yml
 
 main:
-  - title: "검색"
-    url: /search/
   - title: "Categories"
     url: /categories/
   - title: "Tags"
     url: /tags/
-  - title: "지식 그래프"
+  - title: "지식그래프"
     url: /knowledge-graph/
-  - title: "방명록"
-    url: /guestbook/

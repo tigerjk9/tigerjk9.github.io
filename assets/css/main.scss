@@ -971,6 +971,69 @@ html[data-theme="light"] .sidebar-mobile-header__title {
 
 
 /* ==========================================================================
+   모바일 네비게이션 최적화
+   ========================================================================== */
+
+@media screen and (max-width: 1023px) {
+
+  /* 터치 타겟 확대 — 최소 44px */
+  .greedy-nav .visible-links a {
+    padding: 12px 10px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* 햄버거 버튼 터치 타겟 */
+  .greedy-nav__toggle {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 돋보기·테마토글 아이콘 터치 타겟 */
+  .search__toggle,
+  .theme-toggle {
+    min-width: 40px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 숨김 드롭다운 — 오른쪽 끝 정렬, 그림자 강화 */
+  .greedy-nav .hidden-links {
+    right: 0;
+    left: auto;
+    min-width: 160px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .greedy-nav .hidden-links a {
+    padding: 12px 18px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    font-size: 0.95em;
+  }
+
+  /* 초소형 화면(≤ 375px): 사이트 제목 줄이기 */
+  @media screen and (max-width: 375px) {
+    .site-title {
+      font-size: 0.85em;
+    }
+  }
+}
+
+html[data-theme="light"] .greedy-nav .hidden-links {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ==========================================================================
    읽기 진행 바
    ========================================================================== */
 
