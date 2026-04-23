@@ -150,6 +150,14 @@ $max-width: 100%;
   transform: scale(1.1);
 }
 
+.tag-cloud__count {
+  font-size: 0.7em;
+  opacity: 0.6;
+  margin-left: 2px;
+  vertical-align: super;
+  line-height: 1;
+}
+
 /* --- 사이드바 섹션 접기/펼치기 --- */
 
 .sidebar-section {

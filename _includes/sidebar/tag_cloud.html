@@ -21,7 +21,7 @@
     {% assign weight = post_count | minus: min_count | times: 1.0 | divided_by: diff | times: 4 | plus: 1 | round %}
 
     <a href="{{ site.baseurl }}/tags/#{{ tag_word | cgi_escape }}" class="tag-weight-{{ weight }}">
-      {{ tag_word }}
+      {{ tag_word }}<span class="tag-cloud__count">{{ post_count }}</span>
     </a>
   {% endfor %}
 </div>
