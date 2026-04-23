@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"I:/내 드라이브/Github Desktop/tigerjk9.github.io\\\" && git pull origin main --rebase && git push origin main\",\"description\":\"Pull with rebase then push to GitHub\"}",
-  "error": "Exit code 128\nerror: cannot pull with rebase: You have unstaged changes.\nerror: please commit or stash them.",
-  "timestamp": "2026-04-21T15:13:05.554Z",
+  "tool_input_preview": "{\"command\":\"cd \\\"I:/내 드라이브/Github Desktop/tigerjk9.github.io\\\" && python scripts/web_to_post.py \\\"https://jake-seo-dev.tistory.com/542\\\" \\\"https://brunch.co.kr/@baram-flowers/312\\\" 2>&1\",\"timeout\":300...",
+  "error": "Exit code 2\nusage: web_to_post.py [-h] [--date DATE] [--slug SLUG] [--no-push] [--dry-run]\r\n                      [--model MODEL]\r\n                      url\r\nweb_to_post.py: error: unrecognized arguments: https://brunch.co.kr/@baram-flowers/312",
+  "timestamp": "2026-04-22T15:49:08.413Z",
   "retry_count": 1
 }

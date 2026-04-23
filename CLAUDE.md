@@ -143,17 +143,65 @@ scripts/
   yt_prompt_template.txt # Gemini 프롬프트 ({CROSSOVER_DOMAIN} 플레이스홀더 포함)
   pdf_to_post.py         # PDF → 포스트 변환 스크립트
   prompt_template.txt    # Gemini 프롬프트 (APA 출처 URL 제외 규칙 포함)
-  requirements.txt       # Python 의존성 (pdf + yt 통합)
-.env                     # GEMINI_API_KEY 저장 (gitignore, 두 스크립트 공통)
+  web_to_post.py         # 웹 아티클 → 포스트 패러프레이즈 변환 스크립트
+  web_prompt_template.txt # Gemini 프롬프트 (패러프레이즈 전용)
+  requirements.txt       # Python 의존성 (pdf + yt + web 통합)
+.env                     # GEMINI_API_KEY 저장 (gitignore, 모든 스크립트 공통)
 .env.example             # 키 형식 예시 (git 추적됨)
 .claude/commands/video.md  # /video 슬래시 커맨드
 .claude/commands/paper.md  # /paper 슬래시 커맨드
+.claude/commands/paraph.md # /paraph 슬래시 커맨드
 ```
 
 ### 알려진 동작 특성
 
 - Gemini가 `date:` 연도를 임의로 바꾸는 버그 있음 → 스크립트가 생성 후 강제 복원
 - 한국어 제목에서 슬러그 직접 추출 불가 → Gemini slug 생성으로 해결
+- 기업 네트워크 SSL 인증서 오류 → `ssl._create_unverified_context` + requests 세션 패치로 우회
+
+---
+
+## 웹 아티클 → 블로그 포스트 자동화 (`/paraph`)
+
+`scripts/web_to_post.py`가 일반 웹 페이지 URL을 한국어 Jekyll 포스트로 자동 변환한다.
+Claude Code에서는 `/paraph <URL>` 슬래시 커맨드로 호출한다 (`.claude/commands/paraph.md`).
+번역이 아닌 **패러프레이즈** — 원본 논지를 이해한 뒤 교육 전문가의 목소리로 재서술한다.
+
+```bash
+python scripts/web_to_post.py <URL>            # 변환 + git push
+python scripts/web_to_post.py <URL> --dry-run  # 출력만
+python scripts/web_to_post.py <URL> --no-push  # 로컬 저장만
+python scripts/web_to_post.py <URL> --slug SLUG  # 슬러그 지정
+```
+
+- **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드 (gitignore 등록됨)
+- **의존성**: `google-generativeai`, `requests`, `beautifulsoup4`
+
+### 콘텐츠 추출 우선순위
+
+1. `requests` + `BeautifulSoup` — 정적 HTML 파싱
+2. `r.jina.ai/{url}` — JS 렌더링 페이지 폴백 (본문 500자 미만 시 자동 전환)
+
+### 포스트 스타일
+
+- **문체**: `~이다`, `~한다` 단정체. 존칭/명사형 어미 금지.
+- **패러프레이즈 원칙**: 원문 이해 후 재서술. 번역 금지. 한국 교육 맥락 예시 추가 허용.
+- **구조**: 도입부 → 본문(재구성 자유) → 크로스오버 섹션 → 출처
+
+### 패러프레이즈 세부 원칙
+
+- 전문 용어는 쉬운 말로 풀어 설명하되 정확성을 잃지 않는다
+- 딱딱한 문장을 교육 전문가의 따뜻하고 친절한 어투로 바꾼다
+- 독자의 이해를 돕는 구체적인 예시·비유를 추가한다
+- 중요한 수치·데이터·사례는 빠짐없이 포함한다
+- 복잡한 구조는 목록·표로 정리한다
+- **크로스오버**: 실행마다 20개 분야 풀에서 `random.choice()`로 선택 → 프롬프트에 주입
+- **슬러그**: Gemini가 front matter의 `slug:` 필드로 영문 생성 → 스크립트가 파일명으로 사용 후 필드 제거
+
+### 알려진 동작 특성
+
+- JS 렌더링 사이트(React/Next.js 등)는 1차 requests 추출 실패 → Jina Reader 자동 폴백
+- Gemini가 `date:` 연도를 임의로 바꾸는 버그 있음 → 스크립트가 생성 후 강제 복원
 - 기업 네트워크 SSL 인증서 오류 → `ssl._create_unverified_context` + requests 세션 패치로 우회
 
 ---
