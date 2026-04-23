@@ -408,10 +408,35 @@ html[data-theme="light"] .hidden-links a:hover {
 html[data-theme="light"] .sidebar {
   background-color: #f5f5f5 !important;
   background: #f5f5f5 !important;
+  color: #252a34;
 }
 
 html[data-theme="light"] .sidebar-overlay {
   background: rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme="light"] .sidebar .nav__title {
+  color: #252a34;
+}
+
+html[data-theme="light"] .sidebar-section__toggle {
+  color: #252a34;
+}
+
+html[data-theme="light"] .sidebar-section__icon {
+  color: #586069;
+}
+
+html[data-theme="light"] .sidebar-section {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="light"] .sidebar-section__content {
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+html[data-theme="light"] .sidebar-section__content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 html[data-theme="light"] .sidebar-toggle {
