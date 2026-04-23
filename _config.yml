@@ -32,7 +32,7 @@ name                      : "김진관(닷커넥터)"
 description               : "닷커넥터의 지식과 경험의 발자국"
 url                       : "https://tigerjk9.github.io"
 baseurl                   : # the subpath of your site, e.g. "/blog"
-repository                : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+repository                : "tigerjk9/tigerjk9.github.io"
 logo                      : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title            : # overrides the website title displayed in the masthead, use " " for no title
 words_per_minute          : 200
@@ -45,7 +45,7 @@ comments:
   giscus:
     repo: "tigerjk9/tigerjk9.github.io"
     repo_id: "R_kgDOPyuEzg"
-    category: "Comments"
+    category_name: "Comments"
     category_id: "DIC_kwDOPyuEzs4CxP6T"
     mapping: "specific-term"
     reactions_enabled: "1"
