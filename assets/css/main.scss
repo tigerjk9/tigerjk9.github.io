@@ -672,6 +672,13 @@ html[data-theme="light"] .page__taxonomy-item:hover {
 }
 
 /* Archive / Post list */
+.archive__item-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 html[data-theme="light"] .archive__item-title a {
   color: #252a34;
 }
