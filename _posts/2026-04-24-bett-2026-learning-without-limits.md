@@ -1,6 +1,6 @@
 ---
 title: "Bett 2026: 한계 없는 학습(Learning without Limits) 현장 리포트"
-date: 2026-04-24 09:00:00 +0900
+date: 2026-04-24 00:00:01 +0900
 categories: [AI, 교육]
 tags: [AI, 에듀테크, Bett2026, 미래교육, 교사역할, AI윤리, 개인맞춤학습, 글로벌교육]
 ---
