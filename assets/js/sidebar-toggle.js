@@ -130,6 +130,40 @@
         }
       }
     });
+
+    // 스와이프 제스처 (모바일)
+    var swipeStartX = 0;
+    var swipeStartY = 0;
+
+    document.addEventListener('touchstart', function(e) {
+      swipeStartX = e.touches[0].clientX;
+      swipeStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', function(e) {
+      if (window.innerWidth >= 1024) return;
+
+      var dx = e.changedTouches[0].clientX - swipeStartX;
+      var dy = e.changedTouches[0].clientY - swipeStartY;
+
+      // 수직 스크롤이 주 방향이면 무시
+      if (Math.abs(dy) > Math.abs(dx)) return;
+
+      var THRESHOLD = 60;
+      var EDGE = 35;
+
+      if (dx > THRESHOLD && swipeStartX < EDGE) {
+        // 왼쪽 엣지에서 오른쪽으로 스와이프 → 열기
+        if (!document.body.classList.contains('sidebar-expanded')) {
+          document.body.classList.add('sidebar-expanded');
+          toggleBtn.innerHTML = '<span>✕</span>';
+        }
+      } else if (dx < -THRESHOLD && document.body.classList.contains('sidebar-expanded')) {
+        // 왼쪽으로 스와이프 → 닫기
+        document.body.classList.remove('sidebar-expanded');
+        toggleBtn.innerHTML = '<span>☰</span>';
+      }
+    }, { passive: true });
   }
 
   // 사이드바 섹션 접기/펼치기

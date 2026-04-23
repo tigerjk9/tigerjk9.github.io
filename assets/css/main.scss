@@ -1130,3 +1130,259 @@ html[data-theme="light"] .recent-posts__list li a {
 html[data-theme="light"] .recent-posts__empty {
   color: #999;
 }
+
+
+/* ==========================================================================
+   맨 위로 버튼
+   ========================================================================== */
+
+#back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 20px;
+  z-index: 890;
+  width: 42px;
+  height: 42px;
+  background: #42a5f5;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(66, 165, 245, 0.4);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+  pointer-events: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+#back-to-top:hover {
+  background: #1e88e5;
+}
+
+html[data-theme="light"] #back-to-top {
+  background: #0078c8;
+  box-shadow: 0 2px 12px rgba(0, 120, 200, 0.3);
+}
+
+html[data-theme="light"] #back-to-top:hover {
+  background: #005a9e;
+}
+
+@media screen and (max-width: 1023px) {
+  #back-to-top {
+    bottom: 80px;
+    right: 16px;
+  }
+}
+
+
+/* ==========================================================================
+   모바일 TOC 플로팅 버튼 & 드로어
+   ========================================================================== */
+
+#mobile-toc-btn {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  z-index: 890;
+  width: 42px;
+  height: 42px;
+  background: #a78bfa;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(167, 139, 250, 0.4);
+  transition: background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#mobile-toc-btn.active,
+#mobile-toc-btn:hover {
+  background: #7c6af7;
+}
+
+html[data-theme="light"] #mobile-toc-btn {
+  background: #0078c8;
+  box-shadow: 0 2px 12px rgba(0, 120, 200, 0.3);
+}
+
+html[data-theme="light"] #mobile-toc-btn.active,
+html[data-theme="light"] #mobile-toc-btn:hover {
+  background: #005a9e;
+}
+
+#mobile-toc-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1100;
+}
+
+#mobile-toc-overlay.open {
+  display: block;
+}
+
+#mobile-toc-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1101;
+  background: #252a34;
+  border-radius: 16px 16px 0 0;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 0 20px 24px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mobile-toc-drawer.open {
+  transform: translateY(0);
+}
+
+.mobile-toc-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 12px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  position: sticky;
+  top: 0;
+  background: #252a34;
+  z-index: 1;
+}
+
+.mobile-toc-drawer__close {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  opacity: 0.6;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-toc-drawer__close:hover {
+  opacity: 1;
+}
+
+#mobile-toc-drawer .toc {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#mobile-toc-drawer .nav__title {
+  display: none;
+}
+
+html[data-theme="light"] #mobile-toc-drawer {
+  background: #fff;
+}
+
+html[data-theme="light"] .mobile-toc-drawer__header {
+  background: #fff;
+  border-bottom-color: #dde1e7;
+  color: #252a34;
+}
+
+html[data-theme="light"] #mobile-toc-drawer .toc li > a {
+  color: #252a34;
+}
+
+html[data-theme="light"] #mobile-toc-drawer .toc li > a:hover {
+  color: #0078c8;
+}
+
+
+/* ==========================================================================
+   포스트 시리즈
+   ========================================================================== */
+
+.post-series {
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+}
+
+.post-series__header {
+  font-weight: 700;
+  font-size: 0.92em;
+  color: #a78bfa;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  letter-spacing: 0.01em;
+}
+
+.post-series__list {
+  margin: 0;
+  padding-left: 1.4em;
+}
+
+.post-series__item {
+  font-size: 0.88em;
+  padding: 3px 0;
+  line-height: 1.55;
+}
+
+.post-series__item a {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.post-series__item a:hover {
+  color: #a78bfa;
+}
+
+.post-series__item--current span {
+  color: #fff;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .post-series {
+  background: rgba(0, 120, 200, 0.05);
+  border-color: rgba(0, 120, 200, 0.22);
+}
+
+html[data-theme="light"] .post-series__header {
+  color: #0078c8;
+}
+
+html[data-theme="light"] .post-series__item a {
+  color: #555;
+}
+
+html[data-theme="light"] .post-series__item a:hover {
+  color: #0078c8;
+}
+
+html[data-theme="light"] .post-series__item--current span {
+  color: #252a34;
+}
