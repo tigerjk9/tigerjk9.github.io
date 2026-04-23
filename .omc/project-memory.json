@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1776869337777,
+  "lastScanned": 1776956758924,
   "projectRoot": "I:\\내 드라이브\\Github Desktop\\tigerjk9.github.io",
   "techStack": {
     "languages": [
@@ -58,7 +58,7 @@
       "path": "_data",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1776869336644,
+      "lastAccessed": 1776956758763,
       "keyFiles": [
         "navigation.yml",
         "ui-text.yml"
@@ -68,7 +68,7 @@
       "path": "_includes",
       "purpose": null,
       "fileCount": 44,
-      "lastAccessed": 1776869336719,
+      "lastAccessed": 1776956758768,
       "keyFiles": [
         "after-content.html",
         "analytics.html",
@@ -81,7 +81,7 @@
       "path": "_layouts",
       "purpose": null,
       "fileCount": 14,
-      "lastAccessed": 1776869336734,
+      "lastAccessed": 1776956758772,
       "keyFiles": [
         "archive-taxonomy.html",
         "archive.html",
@@ -94,14 +94,14 @@
       "path": "_papers",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1776869336760,
+      "lastAccessed": 1776956758776,
       "keyFiles": []
     },
     "_posts": {
       "path": "_posts",
       "purpose": null,
-      "fileCount": 174,
-      "lastAccessed": 1776869336794,
+      "fileCount": 179,
+      "lastAccessed": 1776956758812,
       "keyFiles": [
         "2025-08-20-first.md",
         "2025-08-21-first.md",
@@ -114,7 +114,7 @@
       "path": "_sass",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1776869336821,
+      "lastAccessed": 1776956758821,
       "keyFiles": [
         "minimal-mistakes.scss"
       ]
@@ -122,8 +122,8 @@
     "assets": {
       "path": "assets",
       "purpose": "Static assets",
-      "fileCount": 397,
-      "lastAccessed": 1776869336904,
+      "fileCount": 400,
+      "lastAccessed": 1776956758853,
       "keyFiles": [
         "1.jpg",
         "11.jpg",
@@ -136,7 +136,7 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 8,
-      "lastAccessed": 1776869336925,
+      "lastAccessed": 1776956758860,
       "keyFiles": [
         "Gemfile",
         "Rakefile",
@@ -148,8 +148,8 @@
     "scripts": {
       "path": "scripts",
       "purpose": "Build/utility scripts",
-      "fileCount": 9,
-      "lastAccessed": 1776869336936,
+      "fileCount": 11,
+      "lastAccessed": 1776956758865,
       "keyFiles": [
         "naver_cookies.json",
         "pdf_to_post.py",
@@ -162,7 +162,7 @@
       "path": "test",
       "purpose": "Test files",
       "fileCount": 3,
-      "lastAccessed": 1776869336948,
+      "lastAccessed": 1776956758871,
       "keyFiles": [
         "Gemfile",
         "_config.yml",
@@ -173,15 +173,15 @@
       "path": "test\\assets",
       "purpose": "Static assets",
       "fileCount": 0,
-      "lastAccessed": 1776869337085,
+      "lastAccessed": 1776956758924,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
       "path": "assets\\css\\main.scss",
-      "accessCount": 46,
-      "lastAccessed": 1776175541617,
+      "accessCount": 61,
+      "lastAccessed": 1776958072062,
       "type": "file"
     },
     {
@@ -192,14 +192,26 @@
     },
     {
       "path": "assets\\js\\sidebar-toggle.js",
-      "accessCount": 11,
-      "lastAccessed": 1776174823377,
+      "accessCount": 14,
+      "lastAccessed": 1776957648208,
       "type": "file"
     },
     {
       "path": "_includes\\masthead.html",
+      "accessCount": 10,
+      "lastAccessed": 1776956921986,
+      "type": "file"
+    },
+    {
+      "path": "_config.yml",
       "accessCount": 9,
-      "lastAccessed": 1776175532155,
+      "lastAccessed": 1776956430928,
+      "type": "file"
+    },
+    {
+      "path": "_layouts\\single.html",
+      "accessCount": 9,
+      "lastAccessed": 1776957898165,
       "type": "file"
     },
     {
@@ -210,8 +222,26 @@
     },
     {
       "path": "assets\\js\\theme-toggle.js",
+      "accessCount": 8,
+      "lastAccessed": 1776956765005,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\MEMORY.md",
+      "accessCount": 7,
+      "lastAccessed": 1776958247892,
+      "type": "file"
+    },
+    {
+      "path": "",
       "accessCount": 6,
-      "lastAccessed": 1776175551018,
+      "lastAccessed": 1776957468952,
+      "type": "directory"
+    },
+    {
+      "path": "_includes\\sidebar.html",
+      "accessCount": 6,
+      "lastAccessed": 1776957475005,
       "type": "file"
     },
     {
@@ -221,9 +251,15 @@
       "type": "file"
     },
     {
-      "path": "C:\\Users\\windo\\.claude\\projects\\I---------Github-Desktop-tigerjk9-github-io\\memory\\MEMORY.md",
+      "path": "_includes\\head.html",
       "accessCount": 5,
-      "lastAccessed": 1776784510899,
+      "lastAccessed": 1776956921307,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\scripts.html",
+      "accessCount": 5,
+      "lastAccessed": 1776957654628,
       "type": "file"
     },
     {
@@ -233,21 +269,9 @@
       "type": "file"
     },
     {
-      "path": "_includes\\sidebar.html",
+      "path": "_data\\navigation.yml",
       "accessCount": 4,
-      "lastAccessed": 1776173328201,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 4,
-      "lastAccessed": 1776174638357,
-      "type": "directory"
-    },
-    {
-      "path": "_config.yml",
-      "accessCount": 3,
-      "lastAccessed": 1776088877571,
+      "lastAccessed": 1776956534975,
       "type": "file"
     },
     {
@@ -260,24 +284,6 @@
       "path": "_posts\\2026-03-25-cyberjustice-tutor-agentic-ai-framework.md",
       "accessCount": 3,
       "lastAccessed": 1776089519434,
-      "type": "file"
-    },
-    {
-      "path": "_includes\\scripts.html",
-      "accessCount": 3,
-      "lastAccessed": 1776090276075,
-      "type": "file"
-    },
-    {
-      "path": "_layouts\\single.html",
-      "accessCount": 3,
-      "lastAccessed": 1776173329194,
-      "type": "file"
-    },
-    {
-      "path": "_includes\\head.html",
-      "accessCount": 3,
-      "lastAccessed": 1776173337465,
       "type": "file"
     },
     {
@@ -302,6 +308,18 @@
       "path": ".claude\\commands\\paper.md",
       "accessCount": 3,
       "lastAccessed": 1776863106658,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\sidebar\\categories.html",
+      "accessCount": 3,
+      "lastAccessed": 1776957903903,
+      "type": "file"
+    },
+    {
+      "path": "_includes\\sidebar\\tag_cloud.html",
+      "accessCount": 3,
+      "lastAccessed": 1776958064165,
       "type": "file"
     },
     {
@@ -353,18 +371,6 @@
       "type": "file"
     },
     {
-      "path": "_includes\\sidebar\\categories.html",
-      "accessCount": 1,
-      "lastAccessed": 1776090439740,
-      "type": "file"
-    },
-    {
-      "path": "_includes\\sidebar\\tag_cloud.html",
-      "accessCount": 1,
-      "lastAccessed": 1776090440325,
-      "type": "file"
-    },
-    {
       "path": "_includes\\footer.html",
       "accessCount": 1,
       "lastAccessed": 1776090596741,
@@ -375,12 +381,6 @@
       "accessCount": 1,
       "lastAccessed": 1776091113393,
       "type": "directory"
-    },
-    {
-      "path": "_data\\navigation.yml",
-      "accessCount": 1,
-      "lastAccessed": 1776173606169,
-      "type": "file"
     },
     {
       "path": "assets\\js",
