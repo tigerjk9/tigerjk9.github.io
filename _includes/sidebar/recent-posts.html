@@ -1,0 +1,37 @@
+<ul id="recent-posts-list" class="recent-posts__list"></ul>
+
+<script>
+(function () {
+  var KEY = 'recentPosts';
+  var MAX  = 5;
+
+  function save() {
+    var d = window.__currentPost;
+    if (!d || !d.url || !d.title) return;
+    var list = JSON.parse(localStorage.getItem(KEY) || '[]');
+    list = list.filter(function (p) { return p.url !== d.url; });
+    list.unshift({ title: d.title, url: d.url });
+    if (list.length > MAX) list = list.slice(0, MAX);
+    localStorage.setItem(KEY, JSON.stringify(list));
+  }
+
+  function render() {
+    var el = document.getElementById('recent-posts-list');
+    if (!el) return;
+    var list = JSON.parse(localStorage.getItem(KEY) || '[]');
+    if (list.length === 0) {
+      el.innerHTML = '<li class="recent-posts__empty">아직 방문한 글이 없어요.</li>';
+    } else {
+      el.innerHTML = list.map(function (p) {
+        return '<li><a href="' + p.url + '">' + p.title + '</a></li>';
+      }).join('');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { save(); render(); });
+  } else {
+    save(); render();
+  }
+})();
+</script>

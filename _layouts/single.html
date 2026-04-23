@@ -2,6 +2,8 @@
 layout: default
 ---
 
+<div id="reading-progress-bar"></div>
+
 {% if page.header.overlay_color or page.header.overlay_image or page.header.image %}
   {% include page__hero.html %}
 {% elsif page.header.video.id and page.header.video.provider %}
@@ -91,3 +93,18 @@ layout: default
     {% include page__related.html posts=site.posts %}
   {% endif %}
 </div>
+
+{% if page.title and page.url %}
+<script>
+window.__currentPost = { title: {{ page.title | jsonify }}, url: "{{ page.url | absolute_url }}" };
+</script>
+{% endif %}
+<script src="{{ '/assets/js/reading-progress.js' | relative_url }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof mediumZoom !== 'undefined') {
+      mediumZoom('.page__content img', { margin: 24, background: 'rgba(0,0,0,0.88)' });
+    }
+  });
+</script>

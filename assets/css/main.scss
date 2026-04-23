@@ -968,3 +968,70 @@ html[data-theme="light"] .sidebar-mobile-header {
 html[data-theme="light"] .sidebar-mobile-header__title {
   color: #252a34;
 }
+
+
+/* ==========================================================================
+   읽기 진행 바
+   ========================================================================== */
+
+#reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(to right, #a78bfa, #7c6af7);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+html[data-theme="light"] #reading-progress-bar {
+  background: linear-gradient(to right, #0078c8, #42a5f5);
+}
+
+
+/* ==========================================================================
+   최근 방문 포스트 사이드바 위젯
+   ========================================================================== */
+
+.recent-posts__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    line-height: 1.4;
+
+    &:last-child { border-bottom: none; }
+
+    a {
+      display: block;
+      font-size: 0.8em;
+      color: #aaa;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-decoration: none;
+
+      &:hover { color: #a78bfa; }
+    }
+  }
+}
+
+.recent-posts__empty {
+  font-size: 0.8em;
+  color: #666;
+  font-style: italic;
+}
+
+html[data-theme="light"] .recent-posts__list li a {
+  color: #555;
+  &:hover { color: #0078c8; }
+}
+
+html[data-theme="light"] .recent-posts__empty {
+  color: #999;
+}

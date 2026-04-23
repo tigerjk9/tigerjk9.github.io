@@ -17,6 +17,10 @@ minimal_mistakes_skin     : "dark" # "default" , "air", "aqua", "contrast", "dir
 # Turbolinks 비활성화 (Giscus 충돌 해결)
 turbo: false
 
+# Search (Lunr.js 클라이언트 검색)
+search: true
+search_full_content: true
+
 # 코드 블록 복사 버튼 활성화
 enable_copy_code_button: true
 
@@ -101,6 +105,8 @@ sidebar:
     html: sidebar/categories.html
   - title: "Tag Cloud"
     html: sidebar/tag_cloud.html
+  - title: "최근 방문"
+    html: sidebar/recent-posts.html
 footer:
   links: [] 
 
