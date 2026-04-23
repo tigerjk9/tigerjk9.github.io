@@ -145,6 +145,8 @@ scripts/
   prompt_template.txt    # Gemini 프롬프트 (APA 출처 URL 제외 규칙 포함)
   web_to_post.py         # 웹 아티클 → 포스트 패러프레이즈 변환 스크립트
   web_prompt_template.txt # Gemini 프롬프트 (패러프레이즈 전용)
+  web_multi_prompt_template.txt # Gemini 프롬프트 (복수 URL 통합)
+  web_merge_prompt_template.txt # Gemini 프롬프트 (--into 머지 모드)
   requirements.txt       # Python 의존성 (pdf + yt + web 통합)
 .env                     # GEMINI_API_KEY 저장 (gitignore, 모든 스크립트 공통)
 .env.example             # 키 형식 예시 (git 추적됨)
@@ -172,7 +174,10 @@ python scripts/web_to_post.py <URL>            # 변환 + git push
 python scripts/web_to_post.py <URL> --dry-run  # 출력만
 python scripts/web_to_post.py <URL> --no-push  # 로컬 저장만
 python scripts/web_to_post.py <URL> --slug SLUG  # 슬러그 지정
+python scripts/web_to_post.py <URL> --into _posts/YYYY-MM-DD-slug.md  # 머지 모드
 ```
+
+**머지 모드(`--into`)**: 신규 포스트 생성 대신 기존 포스트에 신규 자료를 녹여 같은 파일을 덮어쓴다. 기존 구조·문체·날짜·크로스오버 섹션을 보존하고, 신규 자료에서 수치·비유·인용·균형 관점·구조적 대안을 채굴해 자연스럽게 통합한다. 프롬프트는 `scripts/web_merge_prompt_template.txt`.
 
 - **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드 (gitignore 등록됨)
 - **의존성**: `google-generativeai`, `requests`, `beautifulsoup4`

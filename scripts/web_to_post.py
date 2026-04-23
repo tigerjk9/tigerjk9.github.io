@@ -43,6 +43,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_prompt_template.txt"
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_multi_prompt_template.txt"
+MERGE_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_merge_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CONTENT_CHARS = 80000
 MAX_CONTENT_CHARS_PER_URL = 40000  # 복수 URL 시 출처당 최대 글자 수
@@ -386,6 +387,53 @@ def load_multi_prompt_template(
 
 
 # ──────────────────────────────────────────────────────────────
+# 머지 프롬프트 로드 (--into 모드)
+# ──────────────────────────────────────────────────────────────
+
+def load_existing_post(path: Path) -> str:
+    """기존 포스트 파일 전체 텍스트를 반환. front matter 검증 포함."""
+    if not path.exists():
+        raise RuntimeError(f"기존 포스트를 찾을 수 없습니다: {path}")
+    text = path.read_text(encoding="utf-8")
+    if not re.match(r"^---\s*\n.*?\n---", text, re.DOTALL):
+        raise RuntimeError(f"front matter를 찾을 수 없습니다: {path}")
+    return text
+
+
+def load_merge_prompt_template(
+    existing_path: Path,
+    existing_full: str,
+    sources: "list[tuple[str, str, str, str]]",  # [(url, title, site_name, content), ...]
+    categories: "list[str]",
+    tags: "list[str]",
+) -> str:
+    if not MERGE_PROMPT_TEMPLATE_PATH.exists():
+        raise RuntimeError(f"머지 프롬프트 템플릿을 찾을 수 없습니다: {MERGE_PROMPT_TEMPLATE_PATH}")
+    template = MERGE_PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+
+    new_sources_blocks = []
+    for i, (url, title, site_name, content) in enumerate(sources, 1):
+        block = (
+            f"### [신규 출처 {i}] {title}\n"
+            f"- URL: {url}\n"
+            f"- 사이트: {site_name}\n\n"
+            f"{content}"
+        )
+        new_sources_blocks.append(block)
+    new_sources_str = "\n\n---\n\n".join(new_sources_blocks)
+
+    cats_str = ", ".join(categories) if categories else "AI, 교육"
+    tags_str = ", ".join(tags) if tags else "AI, 교육"
+
+    template = template.replace("{EXISTING_POST_PATH}", existing_path.name)
+    template = template.replace("{EXISTING_POST}", existing_full)
+    template = template.replace("{NEW_SOURCES}", new_sources_str)
+    template = template.replace("{EXISTING_CATEGORIES}", cats_str)
+    template = template.replace("{EXISTING_TAGS}", tags_str)
+    return template
+
+
+# ──────────────────────────────────────────────────────────────
 # Gemini API
 # ──────────────────────────────────────────────────────────────
 
@@ -536,6 +584,11 @@ def main() -> None:
         help="포스트 날짜 YYYY-MM-DD (기본값: 오늘)",
     )
     parser.add_argument("--slug", default=None, help="파일명 슬러그 (기본값: 제목에서 자동 생성)")
+    parser.add_argument(
+        "--into",
+        default=None,
+        help="기존 포스트 경로 — 지정 시 신규 생성이 아닌 머지 모드. 신규 자료를 기존 포스트에 녹여 같은 파일을 덮어쓴다",
+    )
     parser.add_argument("--no-push", action="store_true", help="로컬 저장만 하고 git push 하지 않음")
     parser.add_argument("--dry-run", action="store_true", help="_posts/ 에 저장하지 않고 터미널에 출력만")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"Gemini 모델 ID (기본값: {DEFAULT_MODEL})")
@@ -551,6 +604,82 @@ def main() -> None:
     print("[INFO] 기존 카테고리/태그 수집 중...")
     existing_cats, existing_tags = get_existing_taxonomy()
     print(f"[INFO] 기존 카테고리 {len(existing_cats)}개, 태그 {len(existing_tags)}개 확인")
+
+    # ──────────────────────────────────────────────
+    # 머지 모드 (--into) — 기존 포스트에 신규 자료 통합
+    # ──────────────────────────────────────────────
+    if args.into:
+        existing_path = Path(args.into)
+        if not existing_path.is_absolute():
+            existing_path = REPO_ROOT / args.into
+        try:
+            existing_full = load_existing_post(existing_path)
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+        print(f"[INFO] 머지 모드 — 대상: {existing_path.relative_to(REPO_ROOT)}")
+        print(f"[INFO] 신규 자료 {len(args.urls)}개 통합")
+
+        per_url_limit = max(MAX_CONTENT_CHARS_PER_URL, MAX_CONTENT_CHARS // max(len(args.urls), 1))
+        sources: "list[tuple[str, str, str, str]]" = []
+        for url in args.urls:
+            try:
+                title, site_name, content_text = fetch_web_content(url)
+            except Exception as e:
+                print(f"[ERROR] 웹 페이지 가져오기 실패 ({url}): {e}")
+                sys.exit(1)
+            if not content_text.strip():
+                print(f"[ERROR] 본문 텍스트를 추출할 수 없습니다: {url}")
+                sys.exit(1)
+            sources.append((url, title, site_name, content_text[:per_url_limit]))
+
+        try:
+            prompt = load_merge_prompt_template(
+                existing_path, existing_full, sources, existing_cats, existing_tags,
+            )
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+
+        try:
+            markdown_content = call_gemini_api(prompt, args.model)
+        except RuntimeError as e:
+            print(f"[ERROR] Gemini API 호출 실패: {e}")
+            sys.exit(1)
+
+        # 머지 모드는 _fix_date·슬러그 로직을 건너뛴다 (프롬프트가 기존 date 보존)
+        markdown_content = remove_slug_field(markdown_content)
+        print("[INFO] 머지 결과 생성 완료")
+
+        if args.dry_run:
+            print("\n" + "=" * 60)
+            print(markdown_content)
+            print("=" * 60)
+            print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
+            return
+
+        save_post(markdown_content, existing_path)
+
+        if not args.no_push:
+            title_match = re.search(r'^title:\s*["\']?(.+?)["\']?\s*$', markdown_content, re.MULTILINE)
+            short_title = title_match.group(1)[:50] if title_match else existing_path.stem[:50]
+            commit_msg = (
+                f"Update: {short_title}\n\n"
+                f"Merged via web_to_post.py --into\n"
+                f"New sources: {', '.join(args.urls)}"
+            )
+            all_files = [existing_path]
+            if config_modified:
+                all_files.append(REPO_ROOT / "_config.yml")
+            try:
+                git_commit_and_push(all_files, commit_msg)
+            except RuntimeError as e:
+                print(f"[ERROR] git 오류: {e}")
+        else:
+            print("[INFO] --no-push 옵션으로 git push를 건너뜁니다.")
+
+        print(f"\n완료! 업그레이드된 포스트: {existing_path}")
+        return
 
     is_multi = len(args.urls) > 1
 
