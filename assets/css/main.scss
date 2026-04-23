@@ -1318,71 +1318,26 @@ html[data-theme="light"] #mobile-toc-drawer .toc li > a:hover {
 
 
 /* ==========================================================================
-   포스트 시리즈
+   사이드바 총 포스트 수
    ========================================================================== */
 
-.post-series {
-  background: rgba(167, 139, 250, 0.08);
-  border: 1px solid rgba(167, 139, 250, 0.3);
-  border-radius: 10px;
-  padding: 16px 20px;
-  margin-bottom: 28px;
-}
-
-.post-series__header {
-  font-weight: 700;
-  font-size: 0.92em;
-  color: #a78bfa;
+.site-post-count {
+  font-size: 0.78em;
+  color: #888;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  letter-spacing: 0.01em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
 }
 
-.post-series__list {
-  margin: 0;
-  padding-left: 1.4em;
-}
-
-.post-series__item {
-  font-size: 0.88em;
-  padding: 3px 0;
-  line-height: 1.55;
-}
-
-.post-series__item a {
-  color: #bbb;
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-
-.post-series__item a:hover {
+.site-post-count strong {
   color: #a78bfa;
 }
 
-.post-series__item--current span {
-  color: #fff;
-  font-weight: 700;
+html[data-theme="light"] .site-post-count {
+  color: #777;
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
-html[data-theme="light"] .post-series {
-  background: rgba(0, 120, 200, 0.05);
-  border-color: rgba(0, 120, 200, 0.22);
-}
-
-html[data-theme="light"] .post-series__header {
+html[data-theme="light"] .site-post-count strong {
   color: #0078c8;
-}
-
-html[data-theme="light"] .post-series__item a {
-  color: #555;
-}
-
-html[data-theme="light"] .post-series__item a:hover {
-  color: #0078c8;
-}
-
-html[data-theme="light"] .post-series__item--current span {
-  color: #252a34;
 }
