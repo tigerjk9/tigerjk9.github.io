@@ -1060,11 +1060,10 @@ html[data-theme="light"] .sidebar-mobile-header__title {
     font-size: 0.95em;
   }
 
-  /* 초소형 화면(≤ 375px): 사이트 제목 줄이기 */
-  @media screen and (max-width: 375px) {
-    .site-title {
-      font-size: 0.85em;
-    }
+  /* 모바일: 사이트 제목 한 줄 고정 */
+  .site-title {
+    white-space: nowrap;
+    font-size: clamp(0.62rem, 3.8vw, 1rem);
   }
 }
 
