@@ -92,6 +92,61 @@ Claude Code에서는 `/video <URL>` 스킬로 호출한다.
 
 ---
 
+### `/lecture-script` — 다양한 입력 → 교사 연수용 강의 스크립트
+
+YouTube URL, 웹 페이지, PDF 논문, 텍스트 파일을 주면 내용을 분석해 교사 연수용 강의 스크립트를 자동 생성한다.
+출력물은 블로그 포스트(`.md`)와 한컴오피스 강의 원고(`.hwpx`) 두 파일이다.
+
+```bash
+python scripts/lecture_script.py <입력>                          # 변환 + git push
+python scripts/lecture_script.py <URL or 파일> --dry-run         # 파일 저장 없이 출력만
+python scripts/lecture_script.py <URL or 파일> --no-push         # 로컬 저장만
+python scripts/lecture_script.py <URL or 파일> --duration 90     # 강의 시간 지정 (기본 120분)
+python scripts/lecture_script.py <URL or 파일> --level 초급      # 수준 지정 (기본 중급)
+```
+
+Claude Code에서는 `/lecture-script <입력>` 스킬로 호출한다. 스킬이 강의 시간과 수준을 먼저 물어본 뒤 실행한다.
+
+**입력 형식**
+
+| 입력 타입 | 감지 조건 | 추출 방법 |
+|-----------|-----------|-----------|
+| YouTube URL | `youtube.com` 또는 `youtu.be` 포함 | youtube-transcript-api → yt-dlp VTT → description |
+| 웹 URL | `http(s)://`로 시작 | requests + BeautifulSoup → Jina Reader 폴백 |
+| PDF | `.pdf` 확장자 | pdfplumber → PyMuPDF |
+| 기타 파일 | 위 외 모든 경로 | python-docx → 텍스트 읽기 |
+
+**동작 순서**
+
+1. `.env`에서 `GEMINI_API_KEY` 자동 로드
+2. 입력 타입 자동 감지 → 콘텐츠 추출
+3. `_posts/` 전체에서 키워드 매칭으로 관련 포스트 최대 3개 탐색 → 프롬프트에 포함
+4. 강의 시간에 맞는 슬라이드 수 자동 계산 (슬라이드당 평균 4분)
+5. Gemini(`gemini-2.5-flash`)로 교사 연수용 강의 스크립트 생성
+6. `_posts/YYYY-MM-DD-{slug}.md` 저장 → git commit + push
+7. 생성된 `.md`를 파싱해 government 템플릿 HWPX 변환 → `_lectures/YYYY-MM-DD-{slug}.hwpx` 저장
+
+**출력 파일**
+
+| 파일 | 위치 | 용도 |
+|------|------|------|
+| `.md` | `_posts/` | 블로그 포스트 (Jekyll) |
+| `.hwpx` | `_lectures/` | 강의 원고 문서 (한컴오피스) |
+
+**포스트 / 강의 원고 구조**
+
+각 슬라이드 섹션(`## [슬라이드 N] 제목`)은 세 파트로 구성된다:
+- **핵심 내용** — 슬라이드에 들어갈 불릿 (HWPX `•` 마커)
+- **강의 원고** — 구어체 대본, 분당 250~300자 (HWPX `▶` 마커)
+- **발문** — 교사 성찰 열린 질문, 전체 3~5개만 (HWPX `Q.` 마커)
+
+**수준별 작성 방식**
+
+- **초급**: 전문 용어를 쉬운 말로 풀어 설명. 비유·실생활 예시 중심. 발문은 경험을 떠올리는 쉬운 질문
+- **중급**: 기본 개념은 알고 있다고 가정. 심화 적용·비판적 시각. 연구 결과·데이터 직접 인용
+
+---
+
 ### `/paper` — PDF 논문 → 블로그 포스트
 
 `_papers/`에 PDF를 넣고 명령어 한 줄로 한국어 포스트를 자동 생성한다.  
@@ -133,7 +188,7 @@ cp .env.example .env
 # .env 파일에 GEMINI_API_KEY=AIza... 입력
 ```
 
-**`.env` 형식** — `/paraph`, `/paper`, `/video` 세 스크립트 모두 이 파일에서 자동 로드
+**`.env` 형식** — `/paraph`, `/paper`, `/video`, `/lecture-script` 네 스크립트 모두 이 파일에서 자동 로드
 
 ```
 GEMINI_API_KEY=AIza...
@@ -155,6 +210,7 @@ bundle exec rake preview        # 테마 테스트 http://localhost:4000/test/
 
 ```
 _posts/          # 블로그 포스트 (YYYY-MM-DD-slug.md)
+_lectures/       # 강의 원고 HWPX (/lecture-script 출력)
 _papers/         # 논문 PDF 원본 (/paper 스크립트 입력)
 assets/          # 이미지 (flat, 서브디렉토리 없음)
 scripts/
@@ -162,16 +218,20 @@ scripts/
   web_prompt_template.txt       # /paraph 단일 URL용 Gemini 프롬프트
   web_multi_prompt_template.txt # /paraph 복수 URL 통합용 Gemini 프롬프트
   web_merge_prompt_template.txt # /paraph --into 머지 모드용 Gemini 프롬프트
-  yt_to_post.py               # /video — YouTube → 포스트 변환
-  yt_prompt_template.txt      # /video Gemini 프롬프트 ({CROSSOVER_DOMAIN} 포함)
-  pdf_to_post.py              # /paper — PDF → 포스트 변환
-  prompt_template.txt         # /paper Gemini 프롬프트 (URL 미포함 규칙 명시)
-  requirements.txt            # Python 의존성 (세 스크립트 공통)
+  yt_to_post.py                 # /video — YouTube → 포스트 변환
+  yt_prompt_template.txt        # /video Gemini 프롬프트 ({CROSSOVER_DOMAIN} 포함)
+  pdf_to_post.py                # /paper — PDF → 포스트 변환
+  prompt_template.txt           # /paper Gemini 프롬프트 (URL 미포함 규칙 명시)
+  lecture_script.py             # /lecture-script — 다양한 입력 → 강의 스크립트 변환
+  lecture_prompt_template.txt   # /lecture-script Gemini 프롬프트 (수준·슬라이드 구조 포함)
+  lecture-script-prd.md         # /lecture-script 설계 PRD
+  requirements.txt              # Python 의존성 (네 스크립트 공통)
 .claude/
   commands/
-    paraph.md    # /paraph 슬래시 커맨드 정의
-    video.md     # /video 슬래시 커맨드 정의
-    paper.md     # /paper 슬래시 커맨드 정의
+    paraph.md          # /paraph 슬래시 커맨드 정의
+    video.md           # /video 슬래시 커맨드 정의
+    paper.md           # /paper 슬래시 커맨드 정의
+    lecture-script.md  # /lecture-script 슬래시 커맨드 정의
 _config.yml      # 사이트 설정 (timezone: Asia/Seoul 필수)
 _data/
   navigation.yml # 상단 메뉴
