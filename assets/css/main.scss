@@ -1060,10 +1060,14 @@ html[data-theme="light"] .sidebar-mobile-header__title {
     font-size: 0.95em;
   }
 
-  /* 모바일: 사이트 제목 한 줄 고정 */
-  .site-title {
-    white-space: nowrap;
-    font-size: clamp(0.62rem, 3.8vw, 1rem);
+}
+
+/* 모바일: 사이트 제목 한 줄 고정 */
+@media screen and (max-width: 1023px) {
+  .greedy-nav a.site-title {
+    white-space: nowrap !important;
+    font-size: clamp(0.6rem, 3.5vw, 1rem) !important;
+    overflow: visible;
   }
 }
 
