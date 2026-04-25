@@ -54,6 +54,23 @@ python scripts/lecture_script.py $ARGUMENTS
 6. Gemini로 교원 연수 교재 생성 (수준·관련 포스트 반영)
 7. `_posts/YYYY-MM-DD-slug.md` 저장 후 git push
 
+## 이미지 삽입 규칙
+
+포스트에 이미지를 삽입할 때는 반드시 `<figure>/<figcaption>` HTML 형식을 사용한다.
+마크다운 `![alt](url)` 형식은 Minimal Mistakes 테마의 `figure { display: flex }` CSS 때문에 캡션이 이미지 옆(인라인)에 붙으므로 **절대 사용하지 않는다**.
+
+```html
+<figure>
+<img src="/assets/이미지파일명.png" alt="한국어 이미지 설명">
+<figcaption>이미지 아래에 표시될 한국어 캡션 문장.</figcaption>
+</figure>
+```
+
+- 이미지 파일: `assets/` 디렉토리에 저장, `/assets/파일명.png`로 참조
+- Naver 블로그 이미지 URL: `mblogthumb-phinf.pstatic.net/...?type=w800` 형태 사용
+- `main.scss`의 `.page__content figure`에 `flex-direction: column; align-items: center` 적용 → 캡션이 항상 이미지 아래 가운데 정렬
+- `figure img`에 `width: auto !important` 적용 → 원본 사이즈 유지 (화질 보존)
+
 ## 출력 파일
 
 | 파일 | 위치 | 용도 |
