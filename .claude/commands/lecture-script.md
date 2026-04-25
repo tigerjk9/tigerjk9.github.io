@@ -149,7 +149,7 @@ subprocess.run([
 subprocess.run(["python", str(SKILL_DIR / "scripts/fix_namespaces.py"), str(OUTPUT)], check=True)
 subprocess.run(["python", str(SKILL_DIR / "scripts/validate.py"), str(OUTPUT)])
 
-print(f"✓ HWPX 저장: {OUTPUT}")
+print(f"[OK] HWPX saved: {OUTPUT}")
 ```
 
 > ⚠️ `fix_namespaces.py`는 반드시 실행. 빠뜨리면 한글에서 빈 페이지로 표시됨.
