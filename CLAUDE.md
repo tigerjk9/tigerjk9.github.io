@@ -225,13 +225,16 @@ Claude Code에서는 `/yeonsu <입력>` 슬래시 커맨드로 호출한다 (`.c
 
 ```bash
 python scripts/lecture_script.py <입력>                        # 변환 + git push
+python scripts/lecture_script.py <입력1> <입력2> ...           # 복수 입력 → 하나의 아티클로 통합
 python scripts/lecture_script.py <입력> --dry-run              # 출력만
 python scripts/lecture_script.py <입력> --no-push              # 로컬 저장만
 python scripts/lecture_script.py <입력> --duration 90          # 강의 시간 지정 (기본 120분)
 python scripts/lecture_script.py <입력> --level 초급           # 수준 지정 (기본 중급)
 ```
 
-입력 형식: YouTube URL, 웹 URL, PDF 경로, 텍스트/docx 파일 경로 모두 지원.
+입력 형식: YouTube URL, 웹 URL, PDF 경로, 텍스트/docx 파일 경로 모두 지원. **복수 입력** 시 공백으로 구분하면 모두 추출해 하나의 포스트로 통합 생성.
+
+**Naver 블로그 URL**: `blog.naver.com` URL을 자동으로 `m.blog.naver.com`으로 변환해 모바일 UA로 스크래핑 → 로그인 없이 본문 추출 가능.
 
 - **환경변수**: `GEMINI_API_KEY` — `.env` 파일에서 자동 로드
 - **의존성**: 기존 `requirements.txt` 공용 (추가 설치 불필요)
