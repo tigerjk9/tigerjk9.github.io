@@ -1354,25 +1354,29 @@ html[data-theme="light"] .site-post-count strong {
 }
 
 /* Figure 이미지 — 원본 사이즈 · 가운데 정렬 */
-figure {
-  text-align: center;
+.page__content figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 1.5em auto;
 }
 
-figure img {
+.page__content figure img {
   max-width: 100%;
-  width: auto;
+  width: auto !important;
   height: auto;
-  display: inline-block;
 }
 
-figcaption {
+.page__content figcaption {
+  display: block;
   font-size: 0.9em;
   color: #bbb;
   margin-top: 0.5em;
   font-style: italic;
+  text-align: center;
+  width: 100%;
 }
 
-html[data-theme="light"] figcaption {
+html[data-theme="light"] .page__content figcaption {
   color: #444;
 }
