@@ -585,6 +585,16 @@ def main() -> None:
     # 날짜 버그 수정
     post_content = fix_date(post_content, args.date)
 
+    # Gemini가 ```markdown...``` 으로 감싸는 경우 제거
+    post_content = post_content.strip()
+    if post_content.startswith("```"):
+        post_content = re.sub(r"^```[^\n]*\n", "", post_content)
+        post_content = re.sub(r"\n```\s*$", "", post_content)
+        post_content = post_content.strip()
+
+    # 구조 레이블 제거 ([인사이트 갈무리] 등 지시 텍스트가 노출되는 경우)
+    post_content = re.sub(r"^\[(?:인사이트 갈무리|케이스 오프너|탐구 에세이 본문)\]\s*\n?", "", post_content, flags=re.MULTILINE)
+
     # slug 필드 추출 후 front matter에서 제거
     slug = args.slug
     slug_match = re.search(r"^slug:\s*['\"]?([^'\"\n]+)['\"]?", post_content, re.MULTILINE)
