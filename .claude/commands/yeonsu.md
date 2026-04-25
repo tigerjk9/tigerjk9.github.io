@@ -1,4 +1,4 @@
-# /lecture-script — 다양한 입력 → 교사 연수용 연수 자료
+# /yeonsu — 다양한 입력 → 교원 연수 자료
 
 이 스킬은 유저 레벨 스킬이므로 어디서든 호출 가능하다.
 모든 작업의 대상은 아래 블로그 프로젝트이다:
@@ -10,7 +10,7 @@ BLOG_ROOT = "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
 ## 사용법
 
 ```
-/lecture-script <입력> [옵션]
+/yeonsu <입력> [옵션]
 ```
 
 입력 가능한 형식:

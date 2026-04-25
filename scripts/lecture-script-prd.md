@@ -25,7 +25,7 @@ HWPX는 `hwpx` 전역 스킬 Workflow A (government 템플릿)로 생성.
 ## 3. 호출 방식
 
 ```
-/lecture-script <입력> [옵션]
+/yeonsu <입력> [옵션]
 ```
 
 슬래시 커맨드가 강의 시간과 수준을 먼저 물어본 뒤 스크립트를 실행한다.
@@ -133,7 +133,7 @@ scripts/
   lecture_prompt_template.txt # Gemini 프롬프트 템플릿
   lecture-script-prd.md       # 이 문서
 .claude/commands/
-  lecture-script.md           # /lecture-script 슬래시 커맨드
+  yeonsu.md                   # /yeonsu 슬래시 커맨드
 _posts/                       # 생성된 연수 자료 마크다운
 _lectures/                    # 생성된 HWPX 파일
 ```
