@@ -18,6 +18,10 @@
     clone.querySelectorAll('[rel="permalink"], .sr-only').forEach(function (el) { el.remove(); });
 
     var text = clone.innerText || clone.textContent || '';
+    // 줄바꿈 정규화 후 3개 이상 연속 빈 줄을 1개로 압축 (번호 항목 사이 빈 줄 1개는 유지)
+    text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    text = text.replace(/\n{3,}/g, '\n\n');
+    text = text.trim();
 
     function onSuccess() {
       btn.innerHTML = '<i class="fas fa-fw fa-check"></i> 복사됨!';
