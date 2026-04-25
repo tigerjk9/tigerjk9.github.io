@@ -506,7 +506,7 @@ def git_push(file_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="교사 연수용 강의 스크립트 생성기")
-    parser.add_argument("input", help="YouTube URL / 웹 URL / PDF 경로 / 파일 경로")
+    parser.add_argument("inputs", nargs="+", help="YouTube URL / 웹 URL / PDF 경로 / 파일 경로 (복수 가능)")
     parser.add_argument("--duration", type=int, default=120, help="강의 시간(분) (기본값: 120)")
     parser.add_argument("--level", default="중급", choices=["초급", "중급"], help="강의 수준 (기본값: 중급)")
     parser.add_argument("--date", default=datetime.now().strftime("%Y-%m-%d"), help="포스트 날짜")
@@ -516,33 +516,41 @@ def main() -> None:
     parser.add_argument("--model", default=DEFAULT_MODEL)
     args = parser.parse_args()
 
-    input_str = args.input
-    input_type = detect_input_type(input_str)
-    print(f"[INFO] 입력 타입: {input_type} | 강의 시간: {args.duration}분")
+    input_list = args.inputs
+    print(f"[INFO] 입력 {len(input_list)}개 | 강의 시간: {args.duration}분 | 수준: {args.level}")
 
-    # 콘텐츠 추출
-    if input_type == "youtube":
-        print("[INFO] YouTube 자막 추출 중...")
-        title, content = extract_youtube(input_str)
-        source_label = f"YouTube: {title} ({input_str})"
-    elif input_type == "web":
-        print("[INFO] 웹 콘텐츠 추출 중...")
-        title, content = extract_web(input_str)
-        source_label = input_str
-    elif input_type == "pdf":
-        print("[INFO] PDF 텍스트 추출 중...")
-        title, content = extract_pdf(input_str)
-        source_label = Path(input_str).name
-    else:
-        print("[INFO] 파일 읽는 중...")
-        title, content = extract_file(input_str)
-        source_label = Path(input_str).name
+    # 콘텐츠 추출 (복수 입력 지원)
+    titles, contents, source_labels = [], [], []
+    for i, input_str in enumerate(input_list, 1):
+        input_type = detect_input_type(input_str)
+        print(f"[INFO] [{i}/{len(input_list)}] {input_type}: {input_str[:80]}")
+        if input_type == "youtube":
+            t, c = extract_youtube(input_str)
+            source_labels.append(f"YouTube: {t} ({input_str})")
+        elif input_type == "web":
+            t, c = extract_web(input_str)
+            source_labels.append(input_str)
+        elif input_type == "pdf":
+            t, c = extract_pdf(input_str)
+            source_labels.append(Path(input_str).name)
+        else:
+            t, c = extract_file(input_str)
+            source_labels.append(Path(input_str).name)
+        if c.strip():
+            titles.append(t)
+            contents.append(c)
+        else:
+            print(f"[WARN] 콘텐츠 추출 실패: {input_str}")
 
-    if not content.strip():
+    if not contents:
         print("[ERROR] 콘텐츠를 추출할 수 없습니다.")
         sys.exit(1)
 
-    print(f"[INFO] 콘텐츠 추출 완료: {len(content):,}자")
+    title = titles[0] if len(titles) == 1 else " / ".join(titles)
+    content = "\n\n---\n\n".join(contents)
+    source_label = "\n".join(source_labels)
+
+    print(f"[INFO] 콘텐츠 추출 완료: {len(content):,}자 ({len(contents)}개 소스)")
 
     # 슬라이드 수 계산
     slide_min, slide_max = calc_slide_range(args.duration)

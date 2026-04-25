@@ -10,7 +10,7 @@ BLOG_ROOT = "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
 ## 사용법
 
 ```
-/yeonsu <입력> [옵션]
+/yeonsu <입력> [입력2 ...] [옵션]
 ```
 
 입력 가능한 형식:
@@ -18,6 +18,7 @@ BLOG_ROOT = "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
 - 웹 URL: `https://example.com/article`
 - PDF 파일 경로: `_papers/paper.pdf` 또는 절대 경로
 - 텍스트·마크다운·docx 파일 경로
+- **복수 입력 지원**: 여러 URL/파일을 공백으로 구분하면 하나의 아티클로 통합 생성
 
 ---
 
@@ -26,19 +27,13 @@ BLOG_ROOT = "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
 **1단계 — 입력 확인**
 `$ARGUMENTS`가 비어 있으면 입력값(URL 또는 파일 경로)을 먼저 물어보세요.
 
-**2단계 — 연수 조건 확인 (반드시)**
-입력값이 확인됐으면, 스크립트 실행 전에 아래 두 가지를 한 번에 물어보세요:
-
-> "강의 시간과 수준을 알려주세요.
-> - 시간: 몇 분? (기본 120분)
-> - 수준: 초급 / 중급?"
-
-**3단계 — 마크다운 연수 교재 생성**
-답변을 확인한 뒤 아래 명령어를 실행하세요:
+**2단계 — 즉시 실행**
+입력값이 확인되면 바로 아래 명령어를 실행하세요. 시간·수준은 묻지 않고 기본값(120분/중급)으로 실행합니다.
+옵션이 `$ARGUMENTS`에 포함된 경우 그대로 전달하세요.
 
 ```bash
 cd "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
-python scripts/lecture_script.py $ARGUMENTS --duration <분> --level <초급|중급>
+python scripts/lecture_script.py $ARGUMENTS
 ```
 
 스크립트가 완료되면 `_posts/YYYY-MM-DD-slug.md` 경로를 확인하세요.
@@ -49,7 +44,7 @@ python scripts/lecture_script.py $ARGUMENTS --duration <분> --level <초급|중
 
 1. `.env`에서 GEMINI_API_KEY 자동 로드
 2. 입력 타입 자동 감지 (YouTube / 웹 URL / PDF / 파일)
-3. 입력 타입에 맞게 콘텐츠 추출
+3. 입력 타입에 맞게 콘텐츠 추출 (복수 입력 시 순서대로 추출 후 통합)
    - YouTube: youtube-transcript-api → yt-dlp VTT → description 순으로 시도
    - 웹 URL: requests + BeautifulSoup → Jina Reader 폴백
    - PDF: pdfplumber → PyMuPDF 순으로 시도
