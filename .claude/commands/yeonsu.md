@@ -33,7 +33,7 @@ BLOG_ROOT = "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
 > - 시간: 몇 분? (기본 120분)
 > - 수준: 초급 / 중급?"
 
-**3단계 — 마크다운 연수 자료 생성**
+**3단계 — 마크다운 연수 교재 생성**
 답변을 확인한 뒤 아래 명령어를 실행하세요:
 
 ```bash
@@ -45,9 +45,6 @@ python scripts/lecture_script.py $ARGUMENTS --duration <분> --level <초급|중
 
 **4단계 — HWPX 변환 (government 템플릿, Workflow A)**
 
-**템플릿 선택 이유**: 섹션 수(10~24개)가 유동적이라 동적 루프 생성이 필요 → government Workflow A 채택.
-컬러 섹션 바가 섹션마다 붙어 읽는 중 즉시 위치 파악 가능. `hwpx_helpers.py`가 XML 생성을 대신해 토큰 절약.
-
 생성된 `.md` 파일을 파싱해 HWPX로 변환합니다.
 저장 위치: `_lectures/YYYY-MM-DD-slug.hwpx` (`_lectures/` 폴더가 없으면 생성)
 
@@ -56,11 +53,13 @@ python scripts/lecture_script.py $ARGUMENTS --duration <분> --level <초급|중
 | 마크다운 요소 | HWPX 변환 |
 |-------------|-----------|
 | `title:` (front matter) | `make_cover_page(title)` + `make_cover_banner(title)` |
-| `## N. 섹션 제목` | `make_section_bar(N, 섹션 제목)` |
-| `**핵심 개념**` 아래 `- ` 불릿 | `make_body_para("•", 내용)` |
+| `## N. 챕터 제목` | `make_section_bar(N, 챕터 제목)` |
+| 에피그래프 `> ` (챕터 상단 첫 인용) | `make_body_para('"', 내용)` |
+| `**교실 이야기**` 아래 단락 | `make_body_para("◇", 내용)` |
 | 일반 본문 텍스트 단락 | `make_body_para("▶", 내용)` |
-| `**현장 적용**` 아래 `- ` 불릿 | `make_body_para("·", 내용)` |
-| `**생각해보기**` 아래 `> ` 블록 | `make_body_para("Q.", 질문)` |
+| `**토의 활동**` 아래 `> ` 블록 | `make_body_para("Q.", 질문)` |
+| `**핵심 정리**` 아래 `> ` 블록 | `make_body_para("■", 정리)` |
+| `## 참고문헌` 아래 `- ` 항목 | `make_body_para("•", 참고문헌)` |
 
 ### HWPX 빌드 스크립트
 
@@ -78,7 +77,7 @@ SKILL_DIR = Path("C:/Users/windo/.claude/skills/hwpx")
 REF_HWPX  = SKILL_DIR / "assets/government-reference.hwpx"
 
 # ── 실제 경로로 교체 ──────────────────────────────
-MD_PATH = BLOG_ROOT / "_posts/YYYY-MM-DD-slug.md"   # 3단계에서 생성된 파일
+MD_PATH = BLOG_ROOT / "_posts/YYYY-MM-DD-slug.md"
 OUTPUT  = BLOG_ROOT / "_lectures/YYYY-MM-DD-slug.hwpx"
 # ─────────────────────────────────────────────────
 
@@ -91,42 +90,54 @@ fm_m = re.search(r'^---\n(.+?)\n---', text, re.DOTALL)
 fm   = fm_m.group(1) if fm_m else ""
 title_m = re.search(r'title:\s*"?(.+?)"?\s*$', fm, re.MULTILINE)
 date_m  = re.search(r'date:\s*(\d{4})-(\d{2})-(\d{2})', fm)
-title   = title_m.group(1).strip() if title_m else "연수 자료"
+title   = title_m.group(1).strip() if title_m else "연수 교재"
 date_display = f"{date_m.group(1)}. {int(date_m.group(2))}. {int(date_m.group(3))}." if date_m else ""
 
-sections = []
+chapters = []
 for block in re.split(r'(?=^## \d+\.)', text, flags=re.MULTILINE):
     m = re.match(r'^## (\d+)\. (.+)', block)
     if not m:
         continue
     num, stitle = m.group(1), m.group(2).strip()
 
-    # 핵심 개념 bullets
-    concept_m = re.search(r'\*\*핵심 개념\*\*\n((?:^- .+\n?)+)', block, re.MULTILINE)
-    key_concepts = re.findall(r'^- (.+)', concept_m.group(1), re.MULTILINE) if concept_m else []
+    # 에피그래프: 챕터 상단의 첫 번째 blockquote (**교실 이야기** 이전)
+    before_story = block.split('**교실 이야기**')[0] if '**교실 이야기**' in block else block
+    epigraph_m = re.search(r'^> (.+)', before_story, re.MULTILINE)
+    epigraph = re.sub(r'\*', '', epigraph_m.group(1)).strip().strip('"') if epigraph_m else ""
+
+    # 교실 이야기 단락
+    story_m = re.search(r'\*\*교실 이야기\*\*\n\n((?:.+\n?)+?)(?=\n\n\*\*|\Z)', block, re.MULTILINE)
+    story_paras = [p.strip() for p in re.split(r'\n{2,}', story_m.group(1)) if p.strip()] if story_m else []
 
     # 본문 텍스트 단락 (특수 섹션 제거 후 남은 텍스트)
     clean = block
-    clean = re.sub(r'\*\*핵심 개념\*\*\n(?:^- .+\n?)+', '', clean, flags=re.MULTILINE)
-    clean = re.sub(r'\*\*현장 적용\*\*\n(?:^- .+\n?)+', '', clean, flags=re.MULTILINE)
-    clean = re.sub(r'\*\*생각해보기\*\*[^\n]*\n(?:^> ?.+\n?)+', '', clean, flags=re.MULTILINE)
+    clean = re.sub(r'\*\*교실 이야기\*\*\n\n(?:.+\n?)+?(?=\n\n\*\*|\Z)', '', clean, flags=re.MULTILINE)
+    clean = re.sub(r'\*\*토의 활동\*\*[^\n]*\n(?:^> ?.+\n?)+', '', clean, flags=re.MULTILINE)
+    clean = re.sub(r'\*\*핵심 정리\*\*[^\n]*\n(?:^> ?.+\n?)+', '', clean, flags=re.MULTILINE)
+    clean = re.sub(r'^> .+\n?', '', clean, flags=re.MULTILINE)
     clean = re.sub(r'^## \d+\. .+\n?', '', clean, flags=re.MULTILINE)
     body_paras = [p.strip() for p in re.split(r'\n{2,}', clean)
-                  if p.strip() and not p.strip().startswith('-') and not p.strip().startswith('>')]
+                  if p.strip() and not p.strip().startswith('**') and not p.strip().startswith('-')]
 
-    # 현장 적용 bullets
-    apply_m = re.search(r'\*\*현장 적용\*\*\n((?:^- .+\n?)+)', block, re.MULTILINE)
-    apply_bullets = re.findall(r'^- (.+)', apply_m.group(1), re.MULTILINE) if apply_m else []
-
-    # 생각해보기
-    q_m = re.search(r'\*\*생각해보기\*\*[^\n]*\n((?:^> ?.+\n?)+)', block, re.MULTILINE)
+    # 토의 활동
+    q_m = re.search(r'\*\*토의 활동\*\*[^\n]*\n((?:^> ?.+\n?)+)', block, re.MULTILINE)
     question = "\n".join(
         re.sub(r'^> ?', '', l) for l in q_m.group(1).splitlines()
     ).strip() if q_m else ""
 
-    sections.append((num, stitle, key_concepts, body_paras, apply_bullets, question))
+    # 핵심 정리
+    summary_m = re.search(r'\*\*핵심 정리\*\*[^\n]*\n((?:^> ?.+\n?)+)', block, re.MULTILINE)
+    summary = "\n".join(
+        re.sub(r'^> ?', '', l) for l in summary_m.group(1).splitlines()
+    ).strip() if summary_m else ""
 
-print(f"섹션 {len(sections)}개 파싱 완료")
+    chapters.append((num, stitle, epigraph, story_paras, body_paras, question, summary))
+
+# 참고문헌 파싱
+ref_m = re.search(r'^## 참고문헌\n((?:.+\n?)+)', text, re.MULTILINE)
+references = re.findall(r'^- (.+)', ref_m.group(1), re.MULTILINE) if ref_m else []
+
+print(f"챕터 {len(chapters)}개 파싱 완료")
 
 # 2. secPr 추출
 secpr, colpr = extract_secpr_and_colpr(REF_HWPX)
@@ -140,17 +151,26 @@ parts = [
     make_cover_banner(title),
     make_empty_line(),
 ]
-for num, stitle, key_concepts, body_paras, apply_bullets, question in sections:
+for num, stitle, epigraph, story_paras, body_paras, question, summary in chapters:
     parts.append(make_section_bar(num, stitle))
-    for c in key_concepts:
-        parts.append(make_body_para("•", c))
+    if epigraph:
+        parts.append(make_body_para('"', epigraph))
+    for s in story_paras:
+        parts.append(make_body_para("◇", s))
     for p in body_paras:
         parts.append(make_body_para("▶", p))
-    for a in apply_bullets:
-        parts.append(make_body_para("·", a))
     if question:
         parts.append(make_body_para("Q.", question))
+    if summary:
+        parts.append(make_body_para("■", summary))
     parts.append(make_empty_line())
+
+if references:
+    parts.append(make_section_bar("ref", "참고문헌"))
+    for ref in references:
+        parts.append(make_body_para("•", ref))
+    parts.append(make_empty_line())
+
 parts.append('</hs:sec>')
 
 # 4. 빌드
@@ -183,8 +203,8 @@ print(f"[OK] HWPX saved: {OUTPUT}")
    - PDF: pdfplumber → PyMuPDF 순으로 시도
    - 파일: docx 또는 텍스트로 읽기
 4. `_posts/` 전체에서 키워드 매칭으로 관련 포스트 최대 3개 자동 탐색 → 프롬프트에 포함
-5. 강의 시간에 맞는 섹션 수 자동 계산
-6. Gemini로 교사 연수용 연수 자료 생성 (수준·관련 포스트 반영)
+5. 강의 시간에 맞는 챕터 수 자동 계산 (45분/챕터 기준)
+6. Gemini로 교원 연수 교재 생성 (수준·관련 포스트 반영)
 7. `_posts/YYYY-MM-DD-slug.md` 저장 후 git push
 8. 생성된 `.md`를 파싱해 HWPX 변환 → `_lectures/YYYY-MM-DD-slug.hwpx` 저장
 
@@ -193,7 +213,7 @@ print(f"[OK] HWPX saved: {OUTPUT}")
 | 파일 | 위치 | 용도 |
 |------|------|------|
 | `.md` | `_posts/` | 블로그 포스트 (Jekyll) |
-| `.hwpx` | `_lectures/` | 연수 자료 문서 (한컴오피스) |
+| `.hwpx` | `_lectures/` | 연수 교재 문서 (한컴오피스) |
 
 ## 옵션
 

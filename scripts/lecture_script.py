@@ -415,13 +415,13 @@ def extract_file(path: str) -> tuple[str, str]:
 # ──────────────────────────────────────────────────────────────
 
 def calc_slide_range(duration_min: int) -> tuple[int, int]:
-    """강의 시간(분) → (최소, 최대) 슬라이드 수 반환.
+    """강의 시간(분) → (최소, 최대) 챕터 수 반환.
 
-    슬라이드당 원고 낭독 + 발문 + 전환 시간을 평균 4분으로 산정.
-    도입 2 + 마무리 1 슬라이드는 고정 포함.
+    챕터당 평균 45분 분량 (이야기 + 이론 서술 + 토의).
+    60분 → 3~4챕터, 120분 → 3~4챕터, 360분 → 7~9챕터.
     """
-    core = max(4, round(duration_min / 4))
-    return max(6, core - 2), core + 2
+    n = max(3, min(10, round(duration_min / 45)))
+    return max(3, n - 1), n + 1
 
 
 # ──────────────────────────────────────────────────────────────
@@ -579,7 +579,7 @@ def main() -> None:
         .replace("{RELATED_POSTS}", related_posts_text)
     )
 
-    print(f"[INFO] Gemini({args.model}) 강의 스크립트 생성 중... ({args.level} / 슬라이드 {slide_min}~{slide_max}개 예상)")
+    print(f"[INFO] Gemini({args.model}) 연수 교재 생성 중... ({args.level} / 챕터 {slide_min}~{slide_max}개 예상)")
     post_content = call_gemini(prompt, args.model)
 
     # 날짜 버그 수정
