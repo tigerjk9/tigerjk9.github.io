@@ -1352,3 +1352,27 @@ html[data-theme="light"] .site-post-count {
 html[data-theme="light"] .site-post-count strong {
   color: #0078c8;
 }
+
+/* Figure 이미지 — 원본 사이즈 · 가운데 정렬 */
+figure {
+  text-align: center;
+  margin: 1.5em auto;
+}
+
+figure img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: inline-block;
+}
+
+figcaption {
+  font-size: 0.8em;
+  color: #aaa;
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+html[data-theme="light"] figcaption {
+  color: #666;
+}

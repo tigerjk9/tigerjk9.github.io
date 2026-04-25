@@ -237,8 +237,11 @@ def build_figure_instructions(figures: list[dict]) -> str:
         )
     lines += [
         "",
-        "  삽입 형식 예:",
-        f"  ![그림 설명]({figures[0]['asset_url']})",
+        "  삽입 형식 예 (반드시 아래 HTML 형식 사용, 마크다운 ![](url) 절대 금지):",
+        "  <figure>",
+        f"  <img src=\"{figures[0]['asset_url']}\" alt=\"한국어 그림 설명\">",
+        "  <figcaption>그림에 대한 한국어 캡션</figcaption>",
+        "  </figure>",
     ]
     return "\n".join(lines)
 
