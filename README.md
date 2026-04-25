@@ -98,20 +98,23 @@ YouTube URL, 웹 페이지, PDF 논문, 텍스트 파일을 주면 내용을 분
 
 ```bash
 python scripts/lecture_script.py <입력>                          # 변환 + git push
+python scripts/lecture_script.py <입력1> <입력2> ...             # 복수 입력 → 하나의 아티클로 통합
 python scripts/lecture_script.py <URL or 파일> --dry-run         # 파일 저장 없이 출력만
 python scripts/lecture_script.py <URL or 파일> --no-push         # 로컬 저장만
 python scripts/lecture_script.py <URL or 파일> --duration 90     # 강의 시간 지정 (기본 120분)
 python scripts/lecture_script.py <URL or 파일> --level 초급      # 수준 지정 (기본 중급)
 ```
 
-Claude Code에서는 `/yeonsu <입력>` 스킬로 호출한다. 스킬이 강의 시간과 수준을 먼저 물어본 뒤 실행한다.
+Claude Code에서는 `/yeonsu <입력>` 스킬로 호출한다. 입력값이 확인되면 시간·수준을 묻지 않고 기본값(120분/중급)으로 즉시 실행한다.
+**복수 입력**: 여러 URL/파일을 공백으로 구분하면 모두 추출해 하나의 포스트로 통합 생성한다.
 
 **입력 형식**
 
 | 입력 타입 | 감지 조건 | 추출 방법 |
 |-----------|-----------|-----------|
 | YouTube URL | `youtube.com` 또는 `youtu.be` 포함 | youtube-transcript-api → yt-dlp VTT → description |
-| 웹 URL | `http(s)://`로 시작 | requests + BeautifulSoup → Jina Reader 폴백 |
+| 웹 URL (일반) | `http(s)://`로 시작 | requests + BeautifulSoup → Jina Reader 폴백 |
+| 웹 URL (Naver 블로그) | `blog.naver.com` 포함 | `m.blog.naver.com`으로 자동 변환 후 모바일 UA 추출 |
 | PDF | `.pdf` 확장자 | pdfplumber → PyMuPDF |
 | 기타 파일 | 위 외 모든 경로 | python-docx → 텍스트 읽기 |
 
