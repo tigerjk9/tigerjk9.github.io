@@ -17,9 +17,6 @@
 | 파일 | 위치 | 용도 |
 |------|------|------|
 | `.md` | `_posts/` | 블로그 포스트 (Jekyll) |
-| `.hwpx` | `_lectures/` | 연수 교재 문서 (한컴오피스) |
-
-HWPX는 `hwpx` 전역 스킬 Workflow A (government 템플릿)로 생성.
 
 ## 3. 호출 방식
 
