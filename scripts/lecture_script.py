@@ -303,31 +303,79 @@ def _extract_video_id(url: str) -> str:
 # 웹 콘텐츠 추출
 # ──────────────────────────────────────────────────────────────
 
+def _get_naver_cookies():
+    """Chrome/Edge의 Naver 로그인 쿠키를 읽어 반환. 실패 시 None."""
+    try:
+        import browser_cookie3
+        for loader in (browser_cookie3.chrome, browser_cookie3.edge):
+            try:
+                jar = loader(domain_name=".naver.com")
+                if any(True for _ in jar):
+                    print("[INFO] browser_cookie3: Naver 쿠키 로드 성공")
+                    return jar
+            except Exception:
+                continue
+    except ImportError:
+        pass
+    naver_cookie = os.environ.get("NAVER_COOKIE", "")
+    if naver_cookie:
+        import requests
+        jar = requests.cookies.RequestsCookieJar()
+        for pair in naver_cookie.split(";"):
+            pair = pair.strip()
+            if "=" in pair:
+                k, v = pair.split("=", 1)
+                jar.set(k.strip(), v.strip(), domain=".naver.com")
+        print("[INFO] env NAVER_COOKIE 사용")
+        return jar
+    return None
+
+
+def _naver_mobile_url(url: str) -> str:
+    """blog.naver.com → m.blog.naver.com 변환."""
+    return url.replace("://blog.naver.com/", "://m.blog.naver.com/", 1)
+
+
 def extract_web(url: str) -> tuple[str, str]:
     """(title, content) 반환. 본문 부족 시 Jina Reader 폴백."""
-    title, content = _fetch_via_requests(url)
+    is_naver_blog = "blog.naver.com" in url
+    fetch_url = _naver_mobile_url(url) if is_naver_blog else url
+    if is_naver_blog and fetch_url != url:
+        print(f"[INFO] Naver 모바일 URL로 변환: {fetch_url}")
+
+    is_naver = "naver.com" in url
+    cookies = _get_naver_cookies() if is_naver else None
+    title, content = _fetch_via_requests(fetch_url, cookies=cookies, mobile=is_naver_blog)
     if len(content) < 500:
         print("[INFO] 본문 부족 — Jina Reader 폴백 시도")
-        title2, content2 = _fetch_via_jina(url)
+        title2, content2 = _fetch_via_jina(url, cookies=cookies if is_naver else None)
         if len(content2) > len(content):
             title = title2 or title
             content = content2
     return title, content[:MAX_CONTENT_CHARS]
 
 
-def _fetch_via_requests(url: str) -> tuple[str, str]:
+def _fetch_via_requests(url: str, cookies=None, mobile: bool = False) -> tuple[str, str]:
     try:
         import requests
         from bs4 import BeautifulSoup
-        headers = {
-            "User-Agent": (
+        if mobile:
+            ua = (
+                "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) "
+                "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                "Version/16.0 Mobile/15E148 Safari/604.1"
+            )
+        else:
+            ua = (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
                 "Chrome/120.0.0.0 Safari/537.36"
-            ),
+            )
+        headers = {
+            "User-Agent": ua,
             "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
         }
-        resp = requests.get(url, headers=headers, timeout=30)
+        resp = requests.get(url, headers=headers, cookies=cookies, timeout=30)
         resp.encoding = resp.apparent_encoding or "utf-8"
         soup = BeautifulSoup(resp.text, "html.parser")
         title = ""
@@ -345,10 +393,10 @@ def _fetch_via_requests(url: str) -> tuple[str, str]:
         return "", ""
 
 
-def _fetch_via_jina(url: str) -> tuple[str, str]:
+def _fetch_via_jina(url: str, cookies=None) -> tuple[str, str]:
     try:
         import requests
-        resp = requests.get(f"https://r.jina.ai/{url}", timeout=60)
+        resp = requests.get(f"https://r.jina.ai/{url}", cookies=cookies, timeout=60)
         text = resp.text
         title_match = re.search(r"^Title:\s*(.+)$", text, re.MULTILINE)
         title = title_match.group(1).strip() if title_match else ""
