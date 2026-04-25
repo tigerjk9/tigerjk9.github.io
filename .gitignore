@@ -31,9 +31,15 @@ codekit-config.json
 # (pdf_to_post.py가 처리 후 자동 삭제)
 _papers/*.pdf
 
-# oh-my-claudecode 세션 상태 파일 (로컬 전용)
-.omc/state/
-.omc/project-memory.json
+# oh-my-claudecode / bkit 로컬 상태 파일 (커밋 불필요)
+.omc/
+docs/.pdca-snapshots/
+docs/.pdca-status.json
+docs/.bkit-memory.json
+
+# Python 캐시
+scripts/__pycache__/
+*.pyc
 
 # Jekyll generated files
 .jekyll-cache
