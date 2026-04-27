@@ -147,8 +147,10 @@ scripts/
   web_prompt_template.txt # Gemini 프롬프트 (패러프레이즈 전용)
   web_multi_prompt_template.txt # Gemini 프롬프트 (복수 URL 통합)
   web_merge_prompt_template.txt # Gemini 프롬프트 (--into 머지 모드)
+  lecture_script.py      # 교원 연수용 강의 스크립트 생성
+  image_fetcher.py       # Pexels 이미지 검색·삽입 공용 모듈 (4개 스크립트 공유)
   requirements.txt       # Python 의존성 (pdf + yt + web 통합)
-.env                     # GEMINI_API_KEY 저장 (gitignore, 모든 스크립트 공통)
+.env                     # GEMINI_API_KEY + PEXELS_API_KEY 저장 (gitignore)
 .env.example             # 키 형식 예시 (git 추적됨)
 .claude/commands/video.md  # /video 슬래시 커맨드
 .claude/commands/paper.md  # /paper 슬래시 커맨드
@@ -290,6 +292,17 @@ scripts/
 **S2 (3회 이상 반복 시 교체)**: `또한/따라서/즉` 문두 남발, `~할 수 있다` 반복 종결, `~것이다` 종결 반복, 볼드 남용
 
 > 출처: [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) — Humanize KR v1.3.1
+
+## 공통: Pexels 이미지 자동 삽입
+
+`scripts/image_fetcher.py`가 4개 자동화 스크립트(`/paper`, `/video`, `/paraph`, `/yeonsu`) 공용 모듈로 동작한다.
+
+- **동작 조건**: `.env`에 `PEXELS_API_KEY=` 설정 시 자동 활성화. 키 없으면 조용히 건너뜀.
+- **검색 쿼리**: front matter `title:` 앞 3단어 + `tags:` 앞 2개 조합
+- **저장 위치**: `assets/{slug}-thumb.jpg`
+- **삽입 위치**: front matter `header.teaser` + 본문 첫 `##` 앞 `<figure>` 블록
+- **리스트 뷰 썸네일**: `_includes/archive-single.html` + `assets/css/main.scss` — 이미지 없는 포스트와 혼재해도 레이아웃 일관성 유지를 위해 이미지는 오른쪽 배치 (변경 금지)
+- **Windows cp949 주의**: `image_fetcher.py` print 문에 em dash(`—`) 사용 금지 → 하이픈(`-`)으로 대체
 
 ## 공통: git push 주의사항
 
