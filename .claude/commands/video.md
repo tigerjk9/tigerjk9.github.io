@@ -1,11 +1,14 @@
 # /video — YouTube 영상 → 블로그 포스트 자동 변환
 
 ## 사용법
-/video <YouTube_URL> [옵션]
+/video <YouTube_URL> [URL2 URL3 ...] [옵션]
 
 ## 설명
 YouTube URL을 받아 영상 내용을 분석하고 Jekyll 블로그 포스트(`_posts/`)로 자동 변환합니다.
 GEMINI_API_KEY는 프로젝트 루트의 `.env` 파일에서 자동으로 읽습니다.
+
+**URL을 여러 개 전달하면 하나의 통합 포스트로 종합합니다.**
+각 영상을 순서대로 나열하지 않고, 공통 주제·대비 관점·보완 논점을 하나의 흐름으로 재구성합니다.
 
 ## 실행
 
@@ -17,12 +20,20 @@ GEMINI_API_KEY는 프로젝트 루트의 `.env` 파일에서 자동으로 읽습
 python scripts/yt_to_post.py $ARGUMENTS
 ```
 
+**복수 URL 예시**:
+```bash
+python scripts/yt_to_post.py https://youtu.be/A https://youtu.be/B
+```
+→ 두 영상을 하나의 포스트로 통합 생성
+
 ## 동작 순서
 1. `.env`에서 GEMINI_API_KEY 자동 로드
-2. 영상 메타데이터 수집 (제목·채널·날짜)
+2. 각 영상 메타데이터 수집 (제목·채널·날짜)
 3. 자막 다운로드 시도 (한국어 → 영어 → yt-dlp 자동자막)
 4. 자막 없으면 영상 설명(description)으로 대체
 5. Gemini로 한국어 블로그 포스트 생성
+   - URL 1개: 단일 영상 포스트
+   - URL 2개 이상: 복수 영상 통합·종합 포스트
 6. `_posts/`에 저장 후 git push
 
 ## 옵션
@@ -30,6 +41,8 @@ python scripts/yt_to_post.py $ARGUMENTS
 - `--no-push` : git push 없이 로컬 저장만
 - `--lang en` : 영어 자막 우선
 - `--slug SLUG` : 파일명 슬러그 직접 지정
+- `--date YYYY-MM-DD` : 포스트 날짜 지정
+- `--model MODEL` : Gemini 모델 ID (기본값: gemini-2.0-flash)
 
 ## .env 설정
 프로젝트 루트에 `.env` 파일 생성:

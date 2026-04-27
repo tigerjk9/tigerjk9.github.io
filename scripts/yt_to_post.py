@@ -43,8 +43,10 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_prompt_template.txt"
+MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_multi_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.0-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
+MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
 
 # 크로스오버 분야 풀 — 매 실행마다 랜덤 선택
 CROSSOVER_DOMAINS = [
@@ -429,6 +431,51 @@ def load_prompt_template(
 
 
 # ──────────────────────────────────────────────────────────────
+# 복수 영상 프롬프트 로드
+# ──────────────────────────────────────────────────────────────
+
+def load_multi_prompt_template(
+    date_str: str,
+    sources: "list[tuple[str, dict, str]]",  # [(url, metadata, transcript), ...]
+    categories: "list[str]",
+    tags: "list[str]",
+) -> "tuple[str, str]":
+    if not MULTI_PROMPT_TEMPLATE_PATH.exists():
+        raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {MULTI_PROMPT_TEMPLATE_PATH}")
+    template = MULTI_PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+
+    multi_videos_blocks = []
+    for i, (url, metadata, transcript) in enumerate(sources, 1):
+        upload_date_formatted = format_upload_date(metadata.get("upload_date", ""))
+        transcript_section = transcript if transcript else metadata.get("description", "(자막 없음)")
+        block = (
+            f"### [영상 {i}] {metadata.get('title', '')}\n"
+            f"- 채널: {metadata.get('channel', '')}\n"
+            f"- 업로드 날짜: {upload_date_formatted}\n"
+            f"- URL: {url}\n"
+            f"- 설명: {metadata.get('description', '')[:500]}\n\n"
+            f"**자막/스크립트:**\n{transcript_section}"
+        )
+        multi_videos_blocks.append(block)
+    multi_videos_str = "\n\n---\n\n".join(multi_videos_blocks)
+
+    multi_urls_str = "\n".join(f"- {url}" for url, _, _ in sources)
+
+    cats_str = ", ".join(categories) if categories else "AI, 교육"
+    tags_str = ", ".join(tags) if tags else "AI, 영상, 교육"
+    time_str = datetime.now().strftime("%H:%M:%S")
+    crossover_domain = random.choice(CROSSOVER_DOMAINS)
+
+    template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
+    template = template.replace("{MULTI_VIDEOS}", multi_videos_str)
+    template = template.replace("{MULTI_URLS}", multi_urls_str)
+    template = template.replace("{EXISTING_CATEGORIES}", cats_str)
+    template = template.replace("{EXISTING_TAGS}", tags_str)
+    template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
+    return template, crossover_domain
+
+
+# ──────────────────────────────────────────────────────────────
 # Gemini API
 # ──────────────────────────────────────────────────────────────
 
@@ -601,12 +648,13 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "예시:\n"
-            "  python scripts/yt_to_post.py https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
-            "  python scripts/yt_to_post.py https://youtu.be/dQw4w9WgXcQ --dry-run\n"
-            "  python scripts/yt_to_post.py https://youtu.be/dQw4w9WgXcQ --no-push --lang en"
+            "  python scripts/yt_to_post.py https://youtu.be/VIDEO_ID\n"
+            "  python scripts/yt_to_post.py https://youtu.be/A https://youtu.be/B  # 통합 포스트\n"
+            "  python scripts/yt_to_post.py https://youtu.be/VIDEO_ID --dry-run\n"
+            "  python scripts/yt_to_post.py https://youtu.be/VIDEO_ID --no-push --lang en"
         ),
     )
-    parser.add_argument("url", help="YouTube 영상 URL")
+    parser.add_argument("urls", nargs="+", help="YouTube 영상 URL (복수 지정 시 하나의 통합 포스트 생성)")
     parser.add_argument(
         "--date",
         default=datetime.now().strftime("%Y-%m-%d"),
@@ -639,7 +687,6 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # ── 환경변수 확인 ──
     if not os.environ.get("GEMINI_API_KEY"):
         print(
             "[ERROR] GEMINI_API_KEY 환경변수가 설정되지 않았습니다.\n"
@@ -647,54 +694,92 @@ def main() -> None:
         )
         sys.exit(1)
 
-    # ── video ID 추출 ──
-    try:
-        video_id = extract_video_id(args.url)
-    except ValueError as e:
-        print(f"[ERROR] {e}")
-        sys.exit(1)
-    print(f"[INFO] Video ID: {video_id}")
-
-    # ── timezone 설정 확인 및 자동 수정 ──
     config_modified = ensure_timezone_config()
 
-    # ── 메타데이터 가져오기 ──
-    print(f"[INFO] 영상 메타데이터 가져오는 중: {args.url}")
-    try:
-        metadata = fetch_video_metadata(args.url)
-    except RuntimeError as e:
-        print(f"[ERROR] {e}")
-        sys.exit(1)
-    print(f"[INFO] 제목: {metadata['title']}")
-    print(f"[INFO] 채널: {metadata['channel']}")
-    print(f"[INFO] 업로드 날짜: {format_upload_date(metadata['upload_date'])}")
-
-    # ── 슬러그 결정 (임시값 — Gemini 생성 후 front matter에서 덮어씀) ──
-    cli_slug = args.slug  # --slug 옵션이 있으면 최우선
-
-    # ── 자막 가져오기 ──
-    print(f"[INFO] 자막 가져오는 중 (우선 언어: {args.lang}) ...")
-    transcript = fetch_transcript(video_id, lang_pref=args.lang)
-    if not transcript:
-        print("[INFO] youtube-transcript-api 자막 없음 - yt-dlp 자동자막 시도 중...")
-        transcript = fetch_auto_captions_via_ytdlp(args.url, lang_pref=args.lang)
-    if not transcript:
-        print("[INFO] 자막 없음 - 영상 설명(description)으로 포스트를 생성합니다.")
-
-    # ── 기존 카테고리/태그 수집 ──
     print("[INFO] 기존 카테고리/태그 수집 중...")
     existing_cats, existing_tags = get_existing_taxonomy()
     print(f"[INFO] 기존 카테고리 {len(existing_cats)}개, 태그 {len(existing_tags)}개 확인")
 
-    # ── 프롬프트 로드 (크로스오버 분야 랜덤 선택) ──
-    try:
-        prompt, crossover_domain = load_prompt_template(
-            args.date, metadata, transcript, existing_cats, existing_tags
-        )
-        print(f"[INFO] 크로스오버 분야: {crossover_domain}")
-    except RuntimeError as e:
-        print(f"[ERROR] {e}")
-        sys.exit(1)
+    cli_slug = args.slug
+    is_multi = len(args.urls) > 1
+
+    if is_multi:
+        # ── 복수 URL: 통합 포스트 생성 ──
+        print(f"[INFO] 복수 URL 모드 — {len(args.urls)}개 영상을 통합해 포스트 생성")
+        per_url_limit = max(MAX_TRANSCRIPT_CHARS_PER_URL, MAX_TRANSCRIPT_CHARS // len(args.urls))
+        sources: "list[tuple[str, dict, str]]" = []
+        for url in args.urls:
+            try:
+                video_id = extract_video_id(url)
+            except ValueError as e:
+                print(f"[ERROR] {e}")
+                sys.exit(1)
+            print(f"[INFO] 메타데이터 가져오는 중: {url}")
+            try:
+                metadata = fetch_video_metadata(url)
+            except RuntimeError as e:
+                print(f"[ERROR] {e}")
+                sys.exit(1)
+            print(f"[INFO] 제목: {metadata['title']}")
+            transcript = fetch_transcript(video_id, lang_pref=args.lang)
+            if not transcript:
+                print("[INFO] youtube-transcript-api 자막 없음 - yt-dlp 자동자막 시도 중...")
+                transcript = fetch_auto_captions_via_ytdlp(url, lang_pref=args.lang)
+            if not transcript:
+                print("[INFO] 자막 없음 — description으로 대체")
+            sources.append((url, metadata, transcript[:per_url_limit] if transcript else ""))
+
+        try:
+            prompt, crossover_domain = load_multi_prompt_template(
+                args.date, sources, existing_cats, existing_tags,
+            )
+            print(f"[INFO] 크로스오버 분야: {crossover_domain}")
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+
+        fallback_title = " ".join(m["title"][:15] for _, m, _ in sources)
+        source_label = ", ".join(url for url, _, _ in sources)
+
+    else:
+        # ── 단일 URL ──
+        url = args.urls[0]
+        try:
+            video_id = extract_video_id(url)
+        except ValueError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+        print(f"[INFO] Video ID: {video_id}")
+
+        print(f"[INFO] 영상 메타데이터 가져오는 중: {url}")
+        try:
+            metadata = fetch_video_metadata(url)
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+        print(f"[INFO] 제목: {metadata['title']}")
+        print(f"[INFO] 채널: {metadata['channel']}")
+        print(f"[INFO] 업로드 날짜: {format_upload_date(metadata['upload_date'])}")
+
+        print(f"[INFO] 자막 가져오는 중 (우선 언어: {args.lang}) ...")
+        transcript = fetch_transcript(video_id, lang_pref=args.lang)
+        if not transcript:
+            print("[INFO] youtube-transcript-api 자막 없음 - yt-dlp 자동자막 시도 중...")
+            transcript = fetch_auto_captions_via_ytdlp(url, lang_pref=args.lang)
+        if not transcript:
+            print("[INFO] 자막 없음 - 영상 설명(description)으로 포스트를 생성합니다.")
+
+        try:
+            prompt, crossover_domain = load_prompt_template(
+                args.date, metadata, transcript, existing_cats, existing_tags
+            )
+            print(f"[INFO] 크로스오버 분야: {crossover_domain}")
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+
+        fallback_title = metadata["title"]
+        source_label = metadata["webpage_url"]
 
     # ── Gemini API 호출 ──
     try:
@@ -703,11 +788,10 @@ def main() -> None:
         print(f"[ERROR] Gemini API 호출 실패: {e}")
         sys.exit(1)
 
-    # Gemini가 date를 임의로 바꾸는 경우 복원
     correct_date = f"{args.date} {datetime.now().strftime('%H:%M:%S')}"
     markdown_content = _fix_date(markdown_content, correct_date)
 
-    # ── 슬러그 확정: CLI 옵션 > Gemini front matter > video ID 폴백 ──
+    # ── 슬러그 확정: CLI 옵션 > Gemini front matter > 폴백 ──
     if cli_slug:
         slug = cli_slug
     else:
@@ -716,15 +800,12 @@ def main() -> None:
             slug = gemini_slug
             print(f"[INFO] 슬러그 (Gemini 생성): {slug}")
         else:
-            slug = f"yt-{video_id}"
-            print(f"[INFO] 슬러그 (video ID 폴백): {slug}")
+            slug = slugify(fallback_title)[:50] or (f"yt-{video_id}" if not is_multi else "yt-multi")
+            print(f"[INFO] 슬러그 (폴백): {slug}")
 
-    # front matter에서 slug: 줄 제거 (Jekyll 불필요 필드)
     markdown_content = remove_slug_field(markdown_content)
-
     print("[INFO] 포스트 생성 완료")
 
-    # ── dry-run: 출력만 ──
     if args.dry_run:
         print("\n" + "=" * 60)
         print(markdown_content)
@@ -732,19 +813,17 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
-    # ── 파일 저장 ──
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
     save_post(markdown_content, output_path)
 
-    # ── git commit + push ──
     if not args.no_push:
         title_match = re.search(r'^title:\s*["\']?(.+?)["\']?\s*$', markdown_content, re.MULTILINE)
-        short_title = title_match.group(1)[:50] if title_match else metadata["title"][:50]
+        short_title = title_match.group(1)[:50] if title_match else fallback_title[:50]
         commit_msg = (
             f"Add: {short_title}\n\n"
             f"Auto-generated by yt_to_post.py\n"
-            f"Source: {metadata['webpage_url']}"
+            f"Source: {source_label}"
         )
         all_files = [output_path]
         if config_modified:
