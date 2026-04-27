@@ -301,7 +301,7 @@ scripts/
 - **검색 쿼리**: front matter `title:` 앞 3단어 + `tags:` 앞 2개 조합
 - **저장 위치**: `assets/{slug}-thumb.jpg`
 - **삽입 위치**: front matter `header.teaser` + 본문 첫 `##` 앞 `<figure>` 블록
-- **리스트 뷰 썸네일**: `_includes/archive-single.html` + `assets/css/main.scss` — 이미지 없는 포스트와 혼재해도 레이아웃 일관성 유지를 위해 이미지는 오른쪽 배치 (변경 금지)
+- **노출 범위**: 본문 `<figure>`로 표시 + `_includes/seo.html`에서 `header.teaser`를 OG 이미지로 송출. 리스트/프리뷰에는 노출하지 않음 (`_includes/archive-single.html`에서 teaser 블록 제거됨)
 - **Windows cp949 주의**: `image_fetcher.py` print 문에 em dash(`—`) 사용 금지 → 하이픈(`-`)으로 대체
 
 ## 공통: git push 주의사항
