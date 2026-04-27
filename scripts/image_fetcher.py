@@ -80,7 +80,7 @@ def fetch_and_inject_image(
     """
     api_key = os.getenv("PEXELS_API_KEY", "").strip()
     if not api_key:
-        print("[INFO] PEXELS_API_KEY 없음 — 이미지 삽입 건너뜀")
+        print("[INFO] PEXELS_API_KEY 없음 - 이미지 삽입 건너뜀")
         return markdown_content, None
 
     query = _extract_query(markdown_content)

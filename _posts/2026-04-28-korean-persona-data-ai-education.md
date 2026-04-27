@@ -3,8 +3,14 @@ title: "한국인 페르소나 데이터, AI 교육의 새로운 지평"
 date: 2026-04-28 00:34:28 +0900
 categories: [AI, 교육]
 tags: [AI, 데이터셋, 페르소나, 한국교육, LLM, 생성형AI, AI윤리, 인공지능]
+header:
+  teaser: /assets/korean-persona-data-ai-education-thumb.jpg
 ---
 AI가 우리의 삶을 바꾼다고 말한다. 하지만 그 AI가 정말 한국인의 삶을, 우리의 교육 현장을, 그리고 우리 학생들의 마음을 이해하는지 생각해 본 적이 있는가. 단지 기술이 아니라 '사람'을 닮아가는 AI의 새로운 시도에 주목한다.
+
+<figure>
+<img src="/assets/korean-persona-data-ai-education-thumb.jpg" alt="">
+</figure>
 
 ## AI, 사람을 만나다
 
