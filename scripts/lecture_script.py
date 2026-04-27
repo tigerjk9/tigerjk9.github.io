@@ -43,6 +43,10 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 # ──────────────────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
+
+import sys as _sys
+_sys.path.insert(0, str(SCRIPT_DIR))
+from image_fetcher import fetch_and_inject_image  # noqa: E402
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "lecture_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
@@ -530,12 +534,14 @@ def fix_date(content: str, expected_date: str) -> str:
 # git push
 # ──────────────────────────────────────────────────────────────
 
-def git_push(file_path: Path) -> None:
+def git_push(file_path: Path, extra_files: "list[Path] | None" = None) -> None:
     try:
         subprocess.run(["git", "stash"], cwd=REPO_ROOT, check=False)
         subprocess.run(["git", "pull", "origin", "main", "--rebase"], cwd=REPO_ROOT, check=False)
         subprocess.run(["git", "stash", "pop"], cwd=REPO_ROOT, check=False)
         subprocess.run(["git", "add", str(file_path)], cwd=REPO_ROOT, check=True)
+        for extra in (extra_files or []):
+            subprocess.run(["git", "add", str(extra)], cwd=REPO_ROOT, check=False)
         date_str = datetime.now().strftime("%Y%m%d%H%M")
         subprocess.run(
             ["git", "commit", "-m", f"Add: 강의 스크립트 {date_str}"],
@@ -673,11 +679,12 @@ def main() -> None:
         return
 
     out_path = POSTS_DIR / filename
+    post_content, thumb_path = fetch_and_inject_image(post_content, slug)
     out_path.write_text(post_content, encoding="utf-8")
     print(f"[OK] 저장 완료: {out_path}")
 
     if not args.no_push:
-        git_push(out_path)
+        git_push(out_path, extra_files=[thumb_path] if thumb_path else None)
 
 
 if __name__ == "__main__":

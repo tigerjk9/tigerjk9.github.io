@@ -36,6 +36,10 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 
+import sys as _sys
+_sys.path.insert(0, str(SCRIPT_DIR))
+from image_fetcher import fetch_and_inject_image  # noqa: E402
+
 
 # ──────────────────────────────────────────────────────────────
 # .env 자동 로드 (python-dotenv 없이 직접 파싱)
@@ -617,6 +621,7 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
+    markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
     # ── 파일 저장 ──
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
@@ -633,6 +638,8 @@ def main() -> None:
             f"Source: {pdf_path.name}"
         )
         all_files = [output_path] + [fig["local_path"] for fig in figures]
+        if thumb_path:
+            all_files.append(thumb_path)
         if config_modified:
             all_files.append(REPO_ROOT / "_config.yml")
         try:

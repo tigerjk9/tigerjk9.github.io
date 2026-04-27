@@ -42,6 +42,10 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_prompt_template.txt"
+
+import sys as _sys
+_sys.path.insert(0, str(SCRIPT_DIR))
+from image_fetcher import fetch_and_inject_image  # noqa: E402
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_multi_prompt_template.txt"
 MERGE_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_merge_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
@@ -769,6 +773,7 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
+    markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
     save_post(markdown_content, output_path)
@@ -782,6 +787,8 @@ def main() -> None:
             f"Source: {source_label}"
         )
         all_files = [output_path]
+        if thumb_path:
+            all_files.append(thumb_path)
         if config_modified:
             all_files.append(REPO_ROOT / "_config.yml")
         try:

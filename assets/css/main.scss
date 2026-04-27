@@ -1380,3 +1380,45 @@ html[data-theme="light"] .site-post-count strong {
 html[data-theme="light"] .page__content figcaption {
   color: #444;
 }
+
+/* 리스트 뷰 썸네일 — 텍스트 왼쪽, 이미지 오른쪽 */
+.list__item .archive__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.list__item .archive__item-teaser {
+  flex: 0 0 180px;
+  max-width: 180px;
+  order: 2;
+}
+
+.list__item .archive__item-teaser img {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.list__item .archive__item-body {
+  flex: 1;
+  min-width: 0;
+  order: 1;
+}
+
+@media (max-width: 600px) {
+  .list__item .archive__item {
+    flex-direction: column;
+  }
+  .list__item .archive__item-teaser {
+    order: -1;
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+  }
+  .list__item .archive__item-teaser img {
+    width: 100%;
+    height: 180px;
+  }
+}

@@ -44,6 +44,10 @@ REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_prompt_template.txt"
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_multi_prompt_template.txt"
+
+import sys as _sys
+_sys.path.insert(0, str(SCRIPT_DIR))
+from image_fetcher import fetch_and_inject_image  # noqa: E402
 DEFAULT_MODEL = "gemini-2.0-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
 MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
@@ -813,6 +817,7 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
+    markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
     save_post(markdown_content, output_path)
@@ -826,6 +831,8 @@ def main() -> None:
             f"Source: {source_label}"
         )
         all_files = [output_path]
+        if thumb_path:
+            all_files.append(thumb_path)
         if config_modified:
             all_files.append(REPO_ROOT / "_config.yml")
         try:
