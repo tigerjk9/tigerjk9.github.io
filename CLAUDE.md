@@ -163,7 +163,7 @@ scripts/
   web_multi_prompt_template.txt # Gemini 프롬프트 (복수 URL 통합)
   web_merge_prompt_template.txt # Gemini 프롬프트 (--into 머지 모드)
   lecture_script.py      # 교원 연수용 강의 스크립트 생성
-  image_fetcher.py       # Pexels 이미지 검색·삽입 공용 모듈 (4개 스크립트 공유)
+  image_fetcher.py       # 이미지 검색·삽입 공용 모듈 (OG→DDG→Pexels 순서, 4개 스크립트 공유)
   requirements.txt       # Python 의존성 (pdf + yt + web 통합)
 .env                     # GEMINI_API_KEY + PEXELS_API_KEY 저장 (gitignore)
 .env.example             # 키 형식 예시 (git 추적됨)
@@ -308,16 +308,21 @@ scripts/
 
 > 출처: [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) — Humanize KR v1.3.1
 
-## 공통: Pexels 이미지 자동 삽입
+## 공통: 이미지 자동 삽입
 
 `scripts/image_fetcher.py`가 4개 자동화 스크립트(`/paper`, `/video`, `/paraph`, `/yeonsu`) 공용 모듈로 동작한다.
 
-- **동작 조건**: `.env`에 `PEXELS_API_KEY=` 설정 시 자동 활성화. 키 없으면 조용히 건너뜀.
-- **검색 쿼리**: front matter `title:` 앞 3단어 + `tags:` 앞 2개 조합
-- **저장 위치**: `assets/{slug}-thumb.jpg`
-- **삽입 위치**: front matter `header.teaser` + 본문 첫 `##` 앞 `<figure>` 블록
-- **노출 범위**: 본문 `<figure>`로 표시 + `_includes/seo.html`에서 `header.teaser`를 OG 이미지로 송출. 리스트/프리뷰에는 노출하지 않음 (`_includes/archive-single.html`에서 teaser 블록 제거됨)
-- **Windows cp949 주의**: `image_fetcher.py` print 문에 em dash(`—`) 사용 금지 → 하이픈(`-`)으로 대체
+**이미지 소스 우선순위:**
+1. **OG 이미지** — `## 출처` 섹션의 URL에서 `og:image` / `twitter:image` 추출 (가장 관련도 높음)
+2. **DuckDuckGo 이미지 검색** — `duckduckgo-search` 패키지, API 키 불필요. 400×200px 이상 가로형 필터
+3. **Pexels 폴백** — `PEXELS_API_KEY` 필요. 기존 동작과 동일
+
+- **검색 쿼리**: front matter `title:` 앞 3단어 + `tags:` 앞 2개 조합 (DDG·Pexels 공통)
+- **저장 위치**: `assets/{slug}-thumb.{ext}` (jpg/png/webp content-type 자동 판별)
+- **삽입 위치**: front matter `header.teaser` + 본문 첫 `##` 앞 `<figure>` 블록 (alt= 포스트 title 자동 주입)
+- **노출 범위**: 본문 `<figure>`로 표시 + `_includes/seo.html`에서 OG 이미지로 송출. 리스트/프리뷰 노출 없음
+- **Windows cp949 주의**: `image_fetcher.py` print 문에 em dash(`-`) 사용 (em dash `—` 금지)
+- **기업 SSL 우회**: requests 세션 `verify=False`, DDG는 `DDGS(verify=False)` 사용
 
 ## 공통: git push 주의사항
 
