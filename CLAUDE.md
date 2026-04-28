@@ -314,8 +314,8 @@ scripts/
 
 **이미지 소스 우선순위:**
 1. **OG 이미지** — `## 출처` 섹션의 URL에서 `og:image` / `twitter:image` 추출 (가장 관련도 높음)
-2. **DuckDuckGo 이미지 검색** — `duckduckgo-search` 패키지, API 키 불필요. 400×200px 이상 가로형 필터
-3. **Pexels 폴백** — `PEXELS_API_KEY` 필요. 기존 동작과 동일
+2. **Pexels** — `PEXELS_API_KEY` 필요. 사용자가 API키를 직접 등록한 고품질 큐레이션 이미지
+3. **DuckDuckGo 최후 폴백** — `duckduckgo-search` 패키지, API 키 불필요. 400×200px 이상 가로형 필터
 
 - **검색 쿼리**: front matter `title:` 앞 3단어 + `tags:` 앞 2개 조합 (DDG·Pexels 공통)
 - **저장 위치**: `assets/{slug}-thumb.{ext}` (jpg/png/webp content-type 자동 판별)

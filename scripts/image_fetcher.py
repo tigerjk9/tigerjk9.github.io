@@ -4,8 +4,8 @@ image_fetcher.py — 이미지 검색·삽입 공용 모듈
 
 우선순위:
   1. ## 출처 URL에서 OG/트위터 이미지 추출
-  2. DuckDuckGo 이미지 웹서치 (API 키 불필요)
-  3. Pexels API 폴백 (PEXELS_API_KEY 필요)
+  2. Pexels API (PEXELS_API_KEY 필요, 고품질 큐레이션)
+  3. DuckDuckGo 이미지 웹서치 (API 키 불필요, 최후 폴백)
 
 4개 자동화 스크립트 공유.
 """
@@ -121,7 +121,7 @@ def _try_og_image(markdown_content: str, slug: str) -> Optional[Path]:
 
 
 # ---------------------------------------------------------------------------
-# 2순위: DuckDuckGo 이미지 검색
+# 3순위: DuckDuckGo 이미지 검색 (최후 폴백)
 # ---------------------------------------------------------------------------
 
 def _try_ddg_image(query: str, slug: str) -> Optional[Path]:
@@ -164,16 +164,16 @@ def _try_ddg_image(query: str, slug: str) -> Optional[Path]:
 
 
 # ---------------------------------------------------------------------------
-# 3순위: Pexels 폴백
+# 2순위: Pexels (API 키 지정 고품질 이미지)
 # ---------------------------------------------------------------------------
 
 def _try_pexels_image(query: str, slug: str) -> Optional[Path]:
-    """Pexels에서 이미지를 검색한다 (폴백)."""
+    """Pexels에서 이미지를 검색한다 (API 키 필요, DDG 이전 2순위)."""
     api_key = os.getenv("PEXELS_API_KEY", "").strip()
     if not api_key:
         return None
 
-    print(f"[INFO] Pexels 폴백: {query!r}")
+    print(f"[INFO] Pexels 검색: {query!r}")
     try:
         resp = _session().get(
             "https://api.pexels.com/v1/search",
@@ -293,22 +293,22 @@ def fetch_and_inject_image(
 
     우선순위:
       1. ## 출처 URL에서 OG 이미지
-      2. DuckDuckGo 이미지 웹서치
-      3. Pexels API (PEXELS_API_KEY 필요)
+      2. Pexels API (PEXELS_API_KEY 필요, 고품질 큐레이션 이미지)
+      3. DuckDuckGo 이미지 웹서치 (API 키 불필요, 최후 폴백)
     """
     query = _extract_query(markdown_content)
     alt = _extract_title(markdown_content)
 
-    # 1순위
+    # 1순위: 출처 URL OG 이미지
     img_path = _try_og_image(markdown_content, slug)
 
-    # 2순위
-    if img_path is None:
-        img_path = _try_ddg_image(query, slug)
-
-    # 3순위
+    # 2순위: Pexels (API 키 지정 고품질)
     if img_path is None:
         img_path = _try_pexels_image(query, slug)
+
+    # 3순위: DuckDuckGo 폴백
+    if img_path is None:
+        img_path = _try_ddg_image(query, slug)
 
     if img_path is None:
         print("[INFO] 이미지 삽입 건너뜀 - 모든 소스 실패")
