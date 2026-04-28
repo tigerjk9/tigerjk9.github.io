@@ -65,7 +65,6 @@ tags: [논문리뷰, AI, 교육, 생성형AI, 학습과학, LLM]
 
 ---
 
-<출처>
+## 출처
 
 - Friedman, N., Nyanyo, A., Weatherwax, K., Wang, L., Zhu, C., Zhu, Z., & Mountford, S. J. (2026). Not Too Short, Not Too Long: How LLM Response Length Shapes People’s Critical Thinking in Error Detection. *In IUI MIRAGE 2026 workshop held at 31st International Conference on Intelligent User Interfaces*. ACM.
-</출처>

@@ -85,8 +85,7 @@ tags: [논문리뷰, AI, 교육, 자기조절학습, 에듀테크, 교육공학,
 
 ---
 
-<출처>
+## 출처
 
 - Lan, M., & Zhou, X. (2025). A qualitative systematic review on AI empowered self-regulated learning in higher education. *npj Science of Learning, 10*(21). [https://doi.org/10.1038/s41539-025-00319-0](https://doi.org/10.1038/s41539-025-00319-0)
 
-</출처>

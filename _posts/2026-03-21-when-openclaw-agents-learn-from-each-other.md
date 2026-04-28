@@ -70,8 +70,7 @@ tags: [논문리뷰, AI, 교육, 학습과학, AI협업, 미래교육]
 
 ---
 
-<출처>
+## 출처
 
 - Chen, E., Guan, C., Elshafiey, A., Zhao, Z., Zekeri, J., Shaibu, A. E., Prince, E. O., & Wu, C.-J. (2026). When Openclaw Agents Learn from Each Other: Insights from Emergent AI Agent Communities for Human-AI Partnership in Education. *arXiv preprint* arXiv:2602.13666v2. [https://doi.org/10.48550/arXiv.2602.13666](https://doi.org/10.48550/arXiv.2602.13666)
 
-</출처>

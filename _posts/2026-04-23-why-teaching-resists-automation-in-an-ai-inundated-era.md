@@ -74,8 +74,7 @@ tags: [논문리뷰, AI, 교육, AI윤리, 인간중심AI, 교육공학]
 
 (3) AI가 교사의 보조적인 역할에서 벗어나 특정 상황에서 교육적 판단의 **최종 책임**을 지게 될 경우, 발생할 수 있는 **윤리적 문제**와 **책임 소재**는 어떻게 설정해야 하는가?
 
-<출처>
+## 출처
 
 - Han, S. (2025). Why teaching resists automation in an AI-inundated era: Human judgment, non-modular work, and the limits of delegation. *Educational Technology Research and Development*.
 
-</출처>

@@ -70,8 +70,7 @@ tags: [논문리뷰, AI, 교육, 생성형AI, 학습과학, 교육공학, 자기
 
 ---
 
-<출처>
+## 출처
 
 - Wang, J., Xiao, R., Hou, X., & Stamper, J. (2025). Enabling Multi-Agent Systems as Learning Designers: Applying Learning Sciences to AI Instructional Design. *arXiv preprint* arXiv:2508.16659v1. [https://doi.org/10.48550/arXiv.2508.16659](https://doi.org/10.48550/arXiv.2508.16659)
 
-</출처>

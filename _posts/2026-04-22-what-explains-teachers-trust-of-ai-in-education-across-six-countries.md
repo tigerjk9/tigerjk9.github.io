@@ -66,8 +66,7 @@ tags: [논문리뷰, AI, 교육, 교사신뢰, 문화적가치, AI이해]
 
 (3) AI-EdTech의 '설명 가능성(Explainable AI, XAI)'을 높이려는 기술적 노력이 교사들의 '불확실성 회피' 성향과 '신뢰' 간의 관계를 긍정적으로 조절하는 데 얼마나 효과적인가? 이를 위한 기술적 구현 방법과 함께, 교사가 AI의 설명을 어떻게 받아들이고 해석하는지에 대한 교육철학적, 인지과학적 측면에서의 심층적 연구는 무엇이 필요한가?
 
-<출처>
+## 출처
 
 - Viberg, O., Cukurova, M., Feldman-Maggor, Y., Alexandron, G., Shirai, S., Kanemune, S., Wasson, B., Tømte, C., Spikol, D., Milrad, M., Coelho, R., & Kizilcec, R. F. (2024). What Explains Teachers’ Trust of AI in Education across Six Countries?. *arXiv preprint arXiv:2402.16272*.
 
-</출처>

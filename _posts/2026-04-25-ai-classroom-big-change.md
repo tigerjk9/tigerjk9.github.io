@@ -95,6 +95,5 @@ AI가 교사의 특정 업무를 대체한다고 가정할 때, 교사로서 당
 - METR. "Tracking AI's Progress on Real-World Tasks".
 - Amodei, D. (Anthropic CEO) (2024). Interview with Lex Fridman.
 
-<출처>
+## 출처
 https://blog.naver.com/dot_connector/224188715128
-</출처>

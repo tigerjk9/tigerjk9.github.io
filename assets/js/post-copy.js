@@ -55,11 +55,13 @@
       text = text.replace(/\n{3,}/g, '\n\n');
       text = text.trim();
 
-      // 원문링크를 <출처> 앞에 삽입, 없으면 맨 끝에 추가
+      // 원문링크를 출처 섹션 앞에 삽입, 없으면 맨 끝에 추가
+      // innerText에서 ## 출처 heading은 독립 줄 "출처"로 렌더링됨
       var urlLine = '원문링크: ' + getDecodedUrl();
-      var sourceIdx = text.indexOf('<출처>');
-      if (sourceIdx !== -1) {
-        text = text.slice(0, sourceIdx).trimEnd() + '\n\n' + urlLine + '\n\n' + text.slice(sourceIdx);
+      var sourceMatch = text.match(/\n(출처)\n/);
+      if (sourceMatch) {
+        var sourceIdx = sourceMatch.index;
+        text = text.slice(0, sourceIdx).trimEnd() + '\n\n' + urlLine + '\n\n' + text.slice(sourceIdx + 1);
       } else {
         text = text + '\n\n' + urlLine;
       }

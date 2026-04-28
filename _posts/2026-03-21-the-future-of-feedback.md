@@ -70,8 +70,7 @@ tags: [논문리뷰, AI, 교육, 학습과학, 교육공학, 피드백]
 
 ---
 
-<출처>
+## 출처
 
 - Meyer, J., Köller, O., Jansen, T., Fleckenstein, J., Asher, M. W., Bichler, S., Brandl, L., Breitwieser, J., Cortina, K. S., Cukurova, M., Daumiller, M., Deininger, H., Fischer, F., Gašević, D., Grütter, J., Hilz, A., Jivet, I., Jovanović, J., Kizilcec, R. F., Kuklick, L., ... Winstone, N. (2025). The Future of Feedback: How Can AI Help Transform Feedback to Be More Engaging, Effective, and Scalable? *arXiv preprint* arXiv:2508.16659v1. [https://doi.org/10.48550/arXiv.2508.16659](https://doi.org/10.48550/arXiv.2508.16659)
 
-</출처>

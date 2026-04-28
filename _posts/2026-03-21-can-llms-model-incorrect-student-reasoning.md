@@ -77,8 +77,7 @@ tags: [논문리뷰, AI, 교육, LLM, 학습과학]
 
 ---
 
-<출처>
+## 출처
 
 - Zengaffinen, Y., Opedal, A., Rooein, D., Srivatsa, K. A., Sonkar, S., & Sachan, M. (2025). Can LLMs Model Incorrect Student Reasoning? A Case Study on Distractor Generation. *arXiv preprint* arXiv:2602.06202v1. [https://doi.org/10.48550/arXiv.2602.06202](https://doi.org/10.48550/arXiv.2602.06202)
 
-</출처>

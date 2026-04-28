@@ -84,9 +84,8 @@ SNS 공유 미리보기가 될 문장 — 클릭하고 싶은 첫인상.
 ### 출처
 
 ```
-<출처>
+## 출처
 - {CHANNEL_NAME}. ({UPLOAD_DATE}). [{VIDEO_TITLE}]({VIDEO_URL}). YouTube.
-</출처>
 ```
 
 ---

@@ -136,10 +136,9 @@ IB 교육은 이러한 CBI를 핵심 교수법으로 채택하며, CSL이 제안
 - YouTube. (2023, May 10). Introduction to compassionate systems & CEL's relevant work in education [Video]. YouTube. https://www.youtube.com/watch?v=xJH2_mLbaNE
 - prezi.com. (n.d.). Compassionate systems leadership. https://prezi.com/p/_zdp3npvekzu/compassionate-systems-leadership/
 
-<출처>
+## 출처
 https://blog.naver.com/dot_connector/223892777494
 https://blog.naver.com/dot_connector/223892772351
 https://blog.naver.com/dot_connector/223892732081
 https://blog.naver.com/dot_connector/223892762866
 https://blog.naver.com/dot_connector/223892792237
-</출처>

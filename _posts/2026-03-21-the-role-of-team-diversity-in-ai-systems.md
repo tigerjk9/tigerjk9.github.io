@@ -73,8 +73,7 @@ tags: [논문리뷰, AI, AI윤리, AI협업, 다양성, 편향]
 
 ---
 
-<출처>
+## 출처
 
 - de Souza Santos, R., Baldassarre, M. T., & Magalhaes, C. (2024). The Role of Team Diversity in AI Systems Development. *arXiv preprint* arXiv:2601.01019v1. [https://doi.org/10.48550/arXiv.2601.01019](https://doi.org/10.48550/arXiv.2601.01019)
 
-</출처>

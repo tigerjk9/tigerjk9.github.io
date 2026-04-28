@@ -77,6 +77,5 @@ Llama-Polya는 규칙 기반 튜터링 시스템이나 일반 instruction tuning
 
 ---
 
-<출처>
+## 출처
 Lee, U., Jeong, Y., Lee, C., Byun, G., Lee, Y., Kang, M., & Jeon, M. (2025). Llama-Polya: Instruction Tuning for Large Language Model based on Polya’s Problem-solving. *arXiv preprint arXiv:2110.14168*. [https://doi.org/10.48550/arXiv.2402.06264](https://doi.org/10.48550/arXiv.2402.06264)
-</출처>

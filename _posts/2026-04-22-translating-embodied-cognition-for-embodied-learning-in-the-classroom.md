@@ -92,8 +92,7 @@ tags: [논문리뷰, 교육, 학습과학, 교육공학, 몸기반학습, 미래
 
 (3) 몸 기반 학습 환경에서 학습자의 움직임이나 생체 데이터를 추적하는 기술적, 윤리적 고려 사항은 무엇인가? 이러한 데이터의 수집, 저장 및 사용에 대한 명확한 지침과 보호 장치는 어떻게 마련해야 하는가?
 
-<출처>
+## 출처
 
 - Macrine, S. L., & Fugate, J. M. B. (2021). Translating Embodied Cognition for Embodied Learning in the Classroom. *Frontiers in Education*.
 
-</출처>

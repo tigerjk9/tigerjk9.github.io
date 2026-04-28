@@ -70,8 +70,7 @@ tags: [논문리뷰, AI, LLM, 에이전트AI, 비계설정, 교육공학]
 
 ---
 
-<출처>
+## 출처
 
 - Wang, B., Bai, Y., & Li, J. (2026). CyberJustice Tutor: An Agentic AI Framework for Cybersecurity Learning via Think-Plan-Act Reasoning and Pedagogical Scaffolding. *arXiv preprint* arXiv:2603.18470v1. [https://doi.org/10.48550/arXiv.2603.18470](https://doi.org/10.48550/arXiv.2603.18470)
 
-</출처>

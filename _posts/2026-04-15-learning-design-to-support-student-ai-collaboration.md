@@ -76,8 +76,7 @@ tags: [논문리뷰, AI, 교육, 에듀테크, 교육공학, 미래교육, AI협
 
 ---
 
-<출처>
+## 출처
 
 - Kim, J., Lee, H., & Cho, Y. H. (2022). Learning design to support student-AI collaboration: perspectives of leading teachers for AI in education. *Education and Information Technologies*, *27*, 6069-6104.
 
-</출처>

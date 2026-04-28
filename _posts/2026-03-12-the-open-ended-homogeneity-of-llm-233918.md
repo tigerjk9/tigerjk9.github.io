@@ -75,8 +75,7 @@ tags: [논문리뷰, AI, LLM, 교육, 생성형AI]
 
 ---
 
-<출처>
+## 출처
 
 - Jiang, L., Chai, Y., Li, M., Liu, M., Fok, R., Dziri, N., Tsvetkov, Y., Sap, M., Albalak, A., & Choi, Y. (2025). Artificial Hivemind: The Open-Ended Homogeneity of Language Models (and Beyond). *NeurIPS 2025*. [https://github.com/liweijiang/artificial-hivemind](https://github.com/liweijiang/artificial-hivemind)
 
-</출처>

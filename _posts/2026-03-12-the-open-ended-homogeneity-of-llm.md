@@ -75,8 +75,7 @@ tags: [논문리뷰, AI, 생성형AI, LLM, 에듀테크, 교육공학, AI윤리,
 
 ---
 
-<출처>
+## 출처
 
 - Jiang, L., Chai, Y., Li, M., Liu, M., Fok, R., Dziri, N., Tsvetkov, Y., Sap, M., Albalak, A., & Choi, Y. (2025). Artificial Hivemind: The Open-Ended Homogeneity of Language Models (and Beyond). *arXiv preprint* arXiv:2501.12277v1. [https://doi.org/10.48550/arXiv.2501.12277](https://doi.org/10.48550/arXiv.2501.12277)
 
-</출처>

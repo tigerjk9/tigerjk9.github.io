@@ -87,6 +87,5 @@ AI 챗봇의 활용은 윤리적인 문제를 야기할 수 있습니다. 따라
 
 ---
 
-<출처>
+## 출처
 Chang, D. H., Lin, M. P.-C., Hajian, S., & Wang, Q. Q. (2023). Educational Design Principles of Using AI Chatbot That Supports Self-Regulated Learning in Education: Goal Setting, Feedback, and Personalization. *Sustainability*, *15*(17), 12921. [https://doi.org/10.3390/su151712921](https://doi.org/10.3390/su151712921)
-</출처>

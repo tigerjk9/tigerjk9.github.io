@@ -81,6 +81,6 @@ tags: [논문리뷰, AI, LLM, 감정, 인간중심AI, 프롬프트, 교육]
 
 ---
 
-<출처>
+## 출처
 
 - Sofroniew, N., Kauvar, I., Saunders, W., Chen, R., Henighan, T., Hydrie, S., Citro, C., Pearce, A., Tarng, J., Gurnee, W., Batson, J., Zimmerman, S., Rivoire, K., Fish, K., Olah, C., & Lindsey, J. (2026). Emotion Concepts and their Func in a Large Language Model.

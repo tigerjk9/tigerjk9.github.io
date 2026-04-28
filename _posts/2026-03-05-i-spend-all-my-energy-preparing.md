@@ -72,7 +72,6 @@ tags: [논문리뷰, AI, 교육, 생성형AI, 메타인지, 교육공학, 자기
 
 ---
 
-<출처>
+## 출처
 
 - Li, H., Esmaeiligoujar, S., Adham, N., Li, H., & Huang, R. (2026). ‘I Spend All My Energy Preparing’: Balancing AI Automation and Agency for Self-Regulated Learning in SmartFlash. *International Society of the Learning Sciences (ISLS) Annual Meeting 2026*.
-</출처>
