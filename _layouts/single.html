@@ -43,9 +43,14 @@ layout: default
 
       <a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/{{ page.url | absolute_url | url_encode }}?color=yellow&label=hits&size=medium&base_count=0" alt="hits" /></a>
 
-      <button class="post-copy-btn" id="post-copy-btn" type="button">
-        <i class="fas fa-fw fa-copy"></i> 본문 복사
-      </button>
+      <div class="post-copy-wrap">
+        <button class="post-copy-btn" id="post-copy-btn" type="button">
+          <i class="fas fa-fw fa-copy"></i> 본문 복사
+        </button>
+        <button class="post-copy-btn post-url-btn" id="post-url-btn" type="button">
+          <i class="fas fa-fw fa-link"></i> 링크 복사
+        </button>
+      </div>
 
       <section class="page__content" itemprop="text">
         {% if page.toc %}

@@ -250,11 +250,18 @@ $max-width: 100%;
    포스트 본문 복사 버튼
    ========================================================================== */
 
+.post-copy-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 14px;
+}
+
 .post-copy-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin: 8px 0 14px;
+  margin: 0;
   padding: 8px 18px;
   background: #42a5f5;
   border: none;
@@ -298,6 +305,27 @@ html[data-theme="light"] .post-copy-btn:hover {
 html[data-theme="light"] .post-copy-btn--done {
   background: #2e7d32 !important;
   color: #fff !important;
+}
+
+.post-url-btn {
+  background: #7e57c2;
+}
+
+.post-url-btn:hover {
+  background: #5e35b1;
+}
+
+.post-url-btn:active,
+.post-url-btn:focus {
+  background: #4527a0;
+}
+
+html[data-theme="light"] .post-url-btn {
+  background: #6a1b9a;
+}
+
+html[data-theme="light"] .post-url-btn:hover {
+  background: #4a148c;
 }
 
 
@@ -980,6 +1008,10 @@ html[data-theme="light"] .clipboard-copy-button:active {
   }
 
   /* --- 본문 복사 버튼 — 모바일 전체 너비 --- */
+  .post-copy-wrap {
+    flex-direction: column;
+  }
+
   .post-copy-btn {
     width: 100%;
     justify-content: center;
