@@ -13,6 +13,11 @@ bundle exec rake js             # JS 번들 빌드
 bundle exec rake version        # 버전 일괄 업데이트
 ```
 
+### 마무리 커맨드
+
+`/wrap` — 작업 세션 마무리 전역 슬래시 커맨드 (`~/.claude/commands/wrap.md`).
+메모리 저장 → CLAUDE.md 정리 → PRD 정리 → git commit & push 4단계를 순서대로 실행한다.
+
 ## Architecture
 
 이 저장소는 **Minimal Mistakes Jekyll 테마 소스**(v4.27.3)이자 **개인 블로그** https://tigerjk9.github.io 이다.
