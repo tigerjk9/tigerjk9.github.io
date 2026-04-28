@@ -1022,6 +1022,34 @@ html[data-theme="light"] .clipboard-copy-button:active {
     padding: 6px 14px;
     font-size: 13px;
   }
+
+  /* --- 테이블 가로 스크롤 --- */
+  .page__content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  /* --- 코드 블록 가로 스크롤 보장 --- */
+  .page__content pre,
+  .page__content .highlight {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  /* --- 본문 이미지 뷰포트 이탈 방지 --- */
+  .page__content img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* --- 좁은 화면 본문 수평 패딩 확보 --- */
+  .page__content {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
 }
 
 /* 데스크톱에서 사이드바 모바일 헤더 숨김 */
@@ -1098,8 +1126,12 @@ html[data-theme="light"] .sidebar-mobile-header__title {
 @media screen and (max-width: 1023px) {
   .greedy-nav a.site-title {
     white-space: nowrap !important;
-    font-size: clamp(0.6rem, 3.5vw, 1rem) !important;
-    overflow: visible;
+    /* 우측 버튼 영역(테마토글+검색+햄버거+패딩 ≈ 155px) 을 제외한 최대 폭 */
+    max-width: calc(100vw - 155px) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex-shrink: 1 !important;
+    font-size: clamp(0.55rem, 3.2vw, 0.95rem) !important;
   }
 }
 
