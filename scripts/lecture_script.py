@@ -568,6 +568,7 @@ def main() -> None:
     parser.add_argument("--no-push", action="store_true", dest="no_push")
     parser.add_argument("--dry-run", action="store_true", dest="dry_run")
     parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--extra", default="", help="Gemini에 추가 지시 (프롬프트 끝에 삽입)")
     args = parser.parse_args()
 
     input_list = args.inputs
@@ -640,6 +641,9 @@ def main() -> None:
         .replace("{EXISTING_TAGS}", ", ".join(existing_tags))
         .replace("{RELATED_POSTS}", related_posts_text)
     )
+
+    if args.extra:
+        prompt += f"\n\n---\n\n## 추가 작성 지시\n\n{args.extra}"
 
     print(f"[INFO] Gemini({args.model}) 연수 교재 생성 중... ({args.level} / 챕터 {slide_min}~{slide_max}개 예상)")
     post_content = call_gemini(prompt, args.model)
