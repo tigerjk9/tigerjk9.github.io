@@ -1,5 +1,5 @@
 ---
-title: AI 챗봇 사용 유형에 따른 뇌 활동 및 학업 정신 건강 영향
+title: AI 챗봇 사용 유형은 뇌 활동 및 학업 정신 건강에 어떤 영향을 미칠까?
 date: 2026-04-28 23:10:12 +0900
 categories: [AI, 학습과학]
 tags: [논문리뷰, AI, 에듀테크, 학습과학, LLM, 인간중심AI, 자기조절학습, AI윤리]
@@ -110,4 +110,5 @@ header:
 ## 출처
 
 - Wang, J., Gan, X., Liu, D., He, J., Ferraro, S., Kendrick, K. M., Zhao, W., Yao, S., Montag, C., & Becker, B. (2026). Mapping generative AI use in the human brain: divergent neural, academic, and mental-health profiles of functional versus socio-emotional AI use. *Neuroimage*.
+  
 ---
