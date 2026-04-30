@@ -1,16 +1,12 @@
 ---
-title: "집중력 도둑맞은 시대, 우리는 어떻게 배울까"
+title: "주의력 분산의 시대, 우리는 어떻게 배워야 할까"
 date: 2026-05-01 07:55:14 +0900
 categories: [교육, AI]
-tags: [집중력, AI, 교육혁신, 미래교육, 학습과학, 인지과학, 책리뷰, 교사전문성]
+tags: [집중력, AI, 교육혁신, 미래교육, 학습과학, 인지과학, 교사전문성]
 header:
   teaser: /assets/stolen-focus-learning-thumb.png
 ---
 우리는 왜 자꾸만 스마트폰을 켜보게 될까? 뇌는 쉴 새 없이 멀티태스킹을 지시받는다. 과연 이 모든 것이 우리 개인의 나약함 때문일까? 집중력 저하는 개인의 문제라는 통념에 의문을 던지는 이야기를 나눈다.
-
-<figure>
-<img src="/assets/stolen-focus-learning-thumb.png" alt="집중력 도둑맞은 시대, 우리는 어떻게 배울까">
-</figure>
 
 ## 왜 자꾸만 주의가 분산될까
 
