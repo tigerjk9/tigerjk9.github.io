@@ -4,12 +4,12 @@ date: 2026-05-01 09:00:00 +0900
 categories: [교육, AI디지털기반교육혁신]
 tags: [AI, 교육정책, 교사전문성, 미래교육, 수능, STEM교육, 비판적사고, 딥러닝]
 header:
-  teaser: /assets/ai-education-policy-dilemma-thumb.png
+  teaser: /assets/ai-education-policy-dilemma-thumb.jpg
 ---
 급변하는 AI 시대는 우리 교육 현장에 새로운 질문을 던진다. 교사들은 매일 교실에서 학생들과 만나며 미래 역량을 길러주려 노력한다. 그러나 정책과 현실 사이의 미묘한 긴장은 때로는 방향을 모호하게 만든다. 우리는 과연 AI 시대가 요구하는 인재를 키우고 있는가, 아니면 오히려 그 길에서 멀어지고 있는가.
 
 <figure>
-<img src="/assets/ai-education-policy-dilemma-thumb.png" alt="AI 시대, 교실은 왜 깊은 질문을 외면하는가">
+<img src="/assets/ai-education-policy-dilemma-thumb.jpg" alt="AI 시대, 교실은 왜 깊은 질문을 외면하는가">
 </figure>
 
 ## 1. AI 강국이라는 목표와 교육 현장의 현실
