@@ -90,4 +90,3 @@ AI는 우리에게 도구이자 도전이다. AI를 효과적으로 활용하고
 
 ## 출처
 https://www.joongang.co.kr/article/25425030
----
