@@ -519,7 +519,7 @@ def generate_slug(title: str, model: str) -> str:
 
 def fix_date(content: str, expected_date: str) -> str:
     def _replace(m: re.Match) -> str:
-        suffix = m.group(2)[10:] if len(m.group(2)) > 10 else " 09:00:00 +0900"
+        suffix = m.group(2)[10:] if len(m.group(2)) > 10 else f" {datetime.now().strftime('%H:%M:%S')} +0900"
         return m.group(1) + expected_date + suffix
 
     return re.sub(
@@ -626,7 +626,8 @@ def main() -> None:
 
     # 프롬프트 구성
     template = PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
-    date_with_time = f"{args.date} 09:00:00 +0900"
+    current_time = datetime.now().strftime("%H:%M:%S")
+    date_with_time = f"{args.date} {current_time} +0900"
     prompt = (
         template
         .replace("{SOURCE_TITLE}", title)

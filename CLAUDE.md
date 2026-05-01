@@ -296,6 +296,13 @@ scripts/
   yeonsu.md                   # /yeonsu 슬래시 커맨드
 ```
 
+### 알려진 동작 특성
+
+- **날짜 시각 자동 사용**: `date_with_time`을 `datetime.now().strftime("%H:%M:%S")`로 생성. 과거에는 `09:00:00` 고정이라 자정 직후 실행 시 Jekyll `future: false` 정책에 걸려 포스트가 숨겨졌음 → 현재 시각으로 수정 완료 (2026-05-02)
+- Gemini가 `date:` 연도를 임의로 바꾸는 버그 있음 → `fix_date()`가 생성 후 강제 복원
+- 한국어 제목에서 슬러그 직접 추출 불가 → Gemini slug 생성으로 해결
+- 기업 네트워크 SSL 인증서 오류 → `ssl._create_unverified_context` + requests 세션 패치로 우회
+
 ---
 
 ## 공통: AI 티 금지 표현 (4개 자동화 스크립트 전체 적용)
