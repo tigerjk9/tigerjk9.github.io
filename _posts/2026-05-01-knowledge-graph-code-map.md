@@ -1,5 +1,5 @@
 ---
-title: "지식 그래프: 코드 복잡성을 넘어서는 지도"
+title: "코드 복잡성을 넘어서는 지도, 지식 그래프"
 date: 2026-05-01 18:41:19 +0900
 categories: [AI, 지식관리]
 tags: [AI, 지식그래프, 코드이해, 교육공학, 학습과학, LLM, 개발자도구, 지식추출]
@@ -35,4 +35,3 @@ header:
 
 ## 출처
 - https://github.com/safishamsi/graphify
----
