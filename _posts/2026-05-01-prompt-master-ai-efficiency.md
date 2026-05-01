@@ -44,4 +44,3 @@ AI 시대의 교실에서 우리는 종종 기술의 막대한 잠재력과 그 
 
 ## 출처
 - https://github.com/tigerjk9/prompt-master
-- https://share.google/8HekJ9imjOxVEXgPZ
