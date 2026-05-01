@@ -294,14 +294,20 @@ def fetch_web_content(url: str) -> "tuple[str, str, str]":
     except ImportError:
         raise RuntimeError("beautifulsoup4가 설치되지 않았습니다.\npip install beautifulsoup4")
 
+    # Naver 블로그: 모바일 URL로 변환해야 본문 추출 가능
+    fetch_url = url
+    if "blog.naver.com" in url and "m.blog.naver.com" not in url:
+        fetch_url = url.replace("://blog.naver.com/", "://m.blog.naver.com/", 1)
+        print(f"[INFO] Naver 블로그 -> 모바일 URL 변환: {fetch_url}")
+
     print(f"[INFO] 웹 페이지 가져오는 중: {url}")
-    title, site_name, content_text = _fetch_via_requests(url)
+    title, site_name, content_text = _fetch_via_requests(fetch_url)
     print(f"[INFO] 1차 추출 — 제목: {title}, 본문: {len(content_text):,}자")
 
     if len(content_text) < MIN_CONTENT_CHARS:
         print(f"[WARN] 본문이 {MIN_CONTENT_CHARS}자 미만 — JS 렌더링 페이지로 추정")
         try:
-            jina_title, jina_site, jina_content = _fetch_via_jina(url)
+            jina_title, jina_site, jina_content = _fetch_via_jina(fetch_url)
             if len(jina_content) > len(content_text):
                 title = jina_title or title
                 site_name = jina_site or site_name
