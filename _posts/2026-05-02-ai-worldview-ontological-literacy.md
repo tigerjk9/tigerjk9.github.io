@@ -1,5 +1,5 @@
 ---
-title: "AI의 숨겨진 세계관: 교사의 존재론적 문해력"
+title: "AI의 숨겨진 세계관에 대응하는 교사의 존재론적 문해력"
 date: 2026-05-02 20:05:14 +0900
 categories: [AI, 교육]
 tags: [AI, 교육, AI윤리, 교사전문성, 디지털교육, 철학, 학습과학, 생성형AI]
@@ -149,7 +149,3 @@ AI가 **다자인**의 모의물이 아닌 **즈한덴**(Zuhanden, 도구적 존
 - Vaswani, Ashish et al. (2017). "Attention is all you need". In: *Advances in neural information processing systems* 30.
 - Wilson, Andrew G and Pavel Izmailov (2020). "Bayesian Deep Learning and a Probabilistic Perspective of Generalization". In: *Advances in Neural Information Processing Systems*. Vol. 33, pp. 4697–4708.
 - Winograd, Terry and Fernando Flores (1986). *Understanding Computers and Cognition: A New Foundation for Design*. Ablex Publishing Corporation.
-
-## 출처
-2602.19028v2.pdf
----
