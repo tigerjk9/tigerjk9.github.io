@@ -536,9 +536,6 @@ def fix_date(content: str, expected_date: str) -> str:
 
 def git_push(file_path: Path, extra_files: "list[Path] | None" = None) -> None:
     try:
-        subprocess.run(["git", "stash"], cwd=REPO_ROOT, check=False)
-        subprocess.run(["git", "pull", "origin", "main", "--rebase"], cwd=REPO_ROOT, check=False)
-        subprocess.run(["git", "stash", "pop"], cwd=REPO_ROOT, check=False)
         subprocess.run(["git", "add", str(file_path)], cwd=REPO_ROOT, check=True)
         for extra in (extra_files or []):
             subprocess.run(["git", "add", str(extra)], cwd=REPO_ROOT, check=False)
@@ -548,6 +545,9 @@ def git_push(file_path: Path, extra_files: "list[Path] | None" = None) -> None:
             cwd=REPO_ROOT,
             check=True,
         )
+        # 원격 최신 커밋 가져온 뒤 rebase. --autostash가 unstaged 변경사항을 자동 처리
+        subprocess.run(["git", "fetch", "origin"], cwd=REPO_ROOT, check=False)
+        subprocess.run(["git", "rebase", "origin/main", "--autostash"], cwd=REPO_ROOT, check=False)
         subprocess.run(["git", "push", "origin", "main"], cwd=REPO_ROOT, check=True)
         print("[OK] git push 완료")
     except subprocess.CalledProcessError as e:

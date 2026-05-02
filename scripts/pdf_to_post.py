@@ -440,12 +440,18 @@ def _git(args: list[str], check: bool = True) -> subprocess.CompletedProcess:
 
 
 def git_commit_and_push(file_paths: list[Path], commit_msg: str) -> None:
-    """git add → commit → push origin main."""
+    """git add → commit → fetch → rebase(--autostash) → push origin main."""
     _git(["add", "--", *[str(fp) for fp in file_paths]])
     print(f"[OK] git add 완료 ({len(file_paths)}개 파일)")
 
     _git(["commit", "-m", commit_msg])
     print("[OK] git commit 완료")
+
+    # 원격 최신 커밋 가져온 뒤 rebase. --autostash가 unstaged 변경사항을 자동 처리
+    _git(["fetch", "origin"], check=False)
+    rebase = _git(["rebase", "origin/main", "--autostash"], check=False)
+    if rebase.returncode != 0:
+        print(f"[WARN] rebase 실패 (계속 push 시도): {rebase.stderr.strip()}")
 
     result = _git(["push", "origin", "main"], check=False)
     if result.returncode != 0:
