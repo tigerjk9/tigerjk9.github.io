@@ -6,7 +6,6 @@ tags: [클로드코드, 토큰절약, 하네스엔지니어링, SerenaMCP, AI, L
 header:
   teaser: /assets/claude-code-token-harness-thumb.jpg
 ---
-```
 
 클로드 코드, 쓰면 쓸수록 토큰이 녹는다고? 걱정은 끝이다. **앤스로픽** 공식 플러그인 4가지로 토큰 절약과 **하네스 엔지니어링**을 동시에 잡는 방법을 소개한다. 실무 적용 데모까지 한 번에 확인한다.
 
