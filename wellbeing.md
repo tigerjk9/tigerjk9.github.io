@@ -5,48 +5,43 @@ permalink: /wellbeing/
 ---
 
 <style>
-.wb-hub{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin:1.5rem 0}
-.wb-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1.5rem}
-.wb-card--wide{grid-column:span 2}
-.wb-card-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
-.wb-card-emoji{font-size:1.3em}
-.wb-card-title{font-size:1em;font-weight:600;margin:0;border:none;padding:0}
-.wb-card-desc{font-size:.83em;opacity:.6;margin-bottom:1rem}
-.wb-card-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
-.wb-timer-display{font-size:2.5rem;font-weight:300;letter-spacing:.05em;color:#82c8a0;margin:.8rem 0;font-variant-numeric:tabular-nums}
-.wb-btn{padding:.4rem .9rem;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:inherit;cursor:pointer;font-size:.88em}
-.wb-btn:hover{background:rgba(255,255,255,.12)}
-.wb-btn:disabled{opacity:.4;cursor:not-allowed}
-.wb-btn-primary{background:rgba(130,200,160,.2);border-color:rgba(130,200,160,.5);color:#82c8a0}
-.wb-btn-sm{padding:.25rem .6rem;font-size:.82em}
-.wb-btn.active{background:rgba(130,200,160,.2);border-color:rgba(130,200,160,.5)}
-.wb-sound-channels{display:flex;flex-direction:column;gap:.6rem;margin:.8rem 0}
-.wb-sound-channel{display:flex;align-items:center;gap:.7rem}
-.wb-sound-label{font-size:.85em;min-width:80px}
-.wb-volume-slider{flex:1;accent-color:#82c8a0;cursor:pointer}
-.wb-sound-footer{margin-top:.8rem;display:flex;gap:.5rem;align-items:center}
-.wb-sound-footer select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:inherit;padding:.3rem .5rem;border-radius:6px;font-size:.85em}
-.wb-energy-buttons{display:flex;gap:.5rem;justify-content:space-between;margin:.8rem 0}
-.wb-energy-btn{flex:1;background:none;border:1px solid rgba(255,255,255,.12);border-radius:10px;cursor:pointer;padding:.5rem .2rem;font-size:1.4em;text-align:center}
-.wb-energy-tip{font-size:.85em;color:#82c8a0;min-height:1.2em;margin:.5rem 0}
-.wb-chart-container{margin-top:1rem;max-height:180px}
-.wb-gratitude-inputs{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem}
-.wb-gratitude-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:inherit;padding:.5rem .7rem;font-size:.88em;resize:vertical;font-family:inherit}
-.wb-break-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin:.8rem 0}
-.wb-break-result{margin:.8rem 0;padding:.8rem;background:rgba(255,255,255,.04);border-radius:8px;min-height:3em}
-.wb-break-text{font-size:.9em;margin:0}
-.wb-break-type{font-size:.75em;opacity:.6}
-.wb-pomo-settings{display:flex;gap:1rem;margin-bottom:.5rem}
-.wb-pomo-settings label{font-size:.85em;display:flex;align-items:center;gap:.3rem}
-.wb-pomo-settings input[type=number]{width:52px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:inherit;padding:.2rem .4rem;border-radius:6px;font-size:.88em;text-align:center}
-.wb-pomo-status{font-size:.85em;opacity:.7;margin:.3rem 0}
-.wb-emotion-row{display:flex;gap:.3rem;flex-wrap:wrap}
-.wb-emotion-btn{background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;cursor:pointer;font-size:1.3em;padding:.2rem .3rem}
-.wb-prescription{font-size:.82em;color:#82c8a0;min-height:1.2em;margin-top:.5rem;opacity:0;transition:opacity .4s}
-.wb-prescription--show{opacity:1}
-.wb-affirmation-text{font-size:.9em;font-style:italic;line-height:1.6;margin-bottom:.8rem;min-height:2em}
-.wb-sound-select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:inherit;padding:.3rem .5rem;border-radius:6px;font-size:.85em}
-@media(max-width:768px){.wb-card--wide{grid-column:span 1}}
+.page__content .wb-hub{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin:1.5rem 0}
+.page__content .wb-card{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.15)!important;border-radius:14px!important;padding:1.5rem!important;box-sizing:border-box}
+.page__content .wb-card--wide{grid-column:span 2}
+.page__content .wb-card-header{display:flex!important;align-items:center;gap:.5rem;margin-bottom:.5rem;border:none!important;padding:0!important;background:none!important}
+.page__content .wb-card-emoji{font-size:1.3em;line-height:1}
+.page__content h3.wb-card-title{font-size:1em!important;font-weight:600!important;margin:0!important;border:none!important;padding:0!important;background:none!important}
+.page__content .wb-card-desc{font-size:.83em;opacity:.6;margin-bottom:1rem}
+.page__content .wb-card-actions{display:flex!important;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+.page__content .wb-timer-display{font-size:2.5rem!important;font-weight:300;letter-spacing:.05em;color:#82c8a0;margin:.8rem 0;font-variant-numeric:tabular-nums;display:block!important}
+.page__content .wb-btn{padding:.4rem .9rem;border-radius:8px;border:1px solid rgba(255,255,255,.2)!important;background:rgba(255,255,255,.06)!important;color:inherit!important;cursor:pointer;font-size:.88em;display:inline-block}
+.page__content .wb-btn:hover{background:rgba(255,255,255,.12)!important}
+.page__content .wb-btn:disabled{opacity:.4;cursor:not-allowed}
+.page__content .wb-btn-primary{background:rgba(130,200,160,.2)!important;border-color:rgba(130,200,160,.5)!important;color:#82c8a0!important}
+.page__content .wb-btn-sm{padding:.25rem .6rem;font-size:.82em}
+.page__content .wb-btn.active{background:rgba(130,200,160,.2)!important;border-color:rgba(130,200,160,.5)!important}
+.page__content .wb-sound-channels{display:flex!important;flex-direction:column;gap:.6rem;margin:.8rem 0}
+.page__content .wb-sound-channel{display:flex!important;align-items:center;gap:.7rem}
+.page__content .wb-sound-label{font-size:.85em;min-width:80px}
+.page__content .wb-volume-slider{flex:1;accent-color:#82c8a0;cursor:pointer}
+.page__content .wb-sound-footer{margin-top:.8rem;display:flex!important;gap:.5rem;align-items:center}
+.page__content .wb-sound-footer select,.page__content .wb-sound-select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:inherit;padding:.3rem .5rem;border-radius:6px;font-size:.85em}
+.page__content .wb-energy-buttons{display:flex!important;gap:.5rem;justify-content:space-between;margin:.8rem 0}
+.page__content .wb-energy-btn{flex:1;background:none!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:10px;cursor:pointer;padding:.5rem .2rem;font-size:1.4em;text-align:center}
+.page__content .wb-energy-tip{font-size:.85em;color:#82c8a0;min-height:1.2em;margin:.5rem 0}
+.page__content .wb-chart-container{margin-top:1rem;max-height:180px}
+.page__content .wb-gratitude-inputs{display:flex!important;flex-direction:column;gap:.5rem;margin-bottom:.8rem}
+.page__content .wb-gratitude-input{width:100%;background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.15)!important;border-radius:8px;color:inherit;padding:.5rem .7rem;font-size:.88em;resize:vertical;font-family:inherit}
+.page__content .wb-break-filters{display:flex!important;gap:.4rem;flex-wrap:wrap;margin:.8rem 0}
+.page__content .wb-break-result{margin:.8rem 0;padding:.8rem;background:rgba(255,255,255,.04)!important;border-radius:8px;min-height:3em}
+.page__content .wb-pomo-settings{display:flex!important;gap:1rem;margin-bottom:.5rem}
+.page__content .wb-pomo-settings input[type=number]{width:52px;background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.2)!important;color:inherit;padding:.2rem .4rem;border-radius:6px;font-size:.88em;text-align:center}
+.page__content .wb-emotion-row{display:flex!important;gap:.3rem;flex-wrap:wrap}
+.page__content .wb-emotion-btn{background:none!important;border:1px solid rgba(255,255,255,.15)!important;border-radius:8px;cursor:pointer;font-size:1.3em;padding:.2rem .3rem}
+.page__content .wb-prescription{font-size:.82em;color:#82c8a0;min-height:1.2em;margin-top:.5rem;opacity:0;transition:opacity .4s}
+.page__content .wb-prescription--show{opacity:1!important}
+.page__content .wb-affirmation-text{font-size:.9em;font-style:italic;line-height:1.6;margin-bottom:.8rem;min-height:2em}
+@media(max-width:768px){.page__content .wb-card--wide{grid-column:span 1}}
 </style>
 
 <div class="wb-hub">

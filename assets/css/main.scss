@@ -1350,24 +1350,24 @@ html[data-theme="light"] {
 html[data-theme="light"] .wb-timer-display { color: #2e7d52; }
 
 // 웰빙 허브 페이지
-.wb-hub {
-  display: grid;
+.page__content .wb-hub, .wb-hub {
+  display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   margin: 1.5rem 0;
 }
 
-.wb-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 14px;
-  padding: 1.5rem;
+.page__content .wb-card, .wb-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 14px !important;
+  padding: 1.5rem !important;
 
   &.wb-card--wide { grid-column: span 2; }
+}
 
-  @media (max-width: 768px) {
-    &.wb-card--wide { grid-column: span 1; }
-  }
+@media (max-width: 768px) {
+  .wb-card.wb-card--wide { grid-column: span 1; }
 }
 
 html[data-theme="light"] .wb-card {
@@ -1861,8 +1861,8 @@ html[data-theme="light"] .page__content figcaption {
 // ──────────────────────────────────────────────────────────────
 
 .wb-footer-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
+  display: grid !important;
+  grid-template-columns: 1.2fr 1fr 1fr !important;
   gap: 2.5rem;
   padding: 2rem 0 1rem;
   border-top: 1px solid rgba(255,255,255,0.08);
@@ -1909,27 +1909,27 @@ html[data-theme="light"] .wb-footer-grid {
   display: block;
   text-decoration: none;
   color: inherit;
+}
 
-  &__img {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    opacity: 0.85;
-    transition: opacity 0.2s;
-  }
+.wb-footer-post-card__img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
 
-  &:hover &__img { opacity: 1; }
+.wb-footer-post-card:hover .wb-footer-post-card__img { opacity: 1; }
 
-  &__title {
-    font-size: 0.85em;
-    line-height: 1.4;
-    opacity: 0.85;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+.wb-footer-post-card__title {
+  font-size: 0.85em;
+  line-height: 1.4;
+  opacity: 0.85;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 

@@ -777,30 +777,35 @@
     if (!container) return;
     var posts = window.__allPosts || [];
     if (posts.length === 0) {
-      container.innerHTML = '';
+      container.innerHTML = '<p style="font-size:.82em;opacity:.5">추천 글 준비 중</p>';
       return;
     }
-    var post = posts[Math.floor(Math.random() * posts.length)];
-    container.innerHTML =
-      '<a class="wb-footer-post-card" href="' + post.url + '">' +
-        '<img class="wb-footer-post-card__img" src="' + post.teaser + '" alt="' + post.title + '" loading="lazy">' +
-        '<span class="wb-footer-post-card__title">' + post.title + '</span>' +
-      '</a>';
+    try {
+      var post = posts[Math.floor(Math.random() * posts.length)];
+      var title = post.title.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      container.innerHTML =
+        '<a class="wb-footer-post-card" href="' + post.url + '">' +
+          '<img class="wb-footer-post-card__img" src="' + post.teaser + '" alt="' + title + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+          '<span class="wb-footer-post-card__title">' + title + '</span>' +
+        '</a>';
+    } catch(e) {
+      container.innerHTML = '';
+    }
   };
 
   // ===== 자동 초기화 =====
   W.init = function() {
-    W.greeting.init();
-    W.affirmation.init();
-    W.emotion.init();
-    W.breath.init('wb-post-breath');
-    W.breath.init('wb-hub-breath');
-    if ($('wb-hub-meditation')) W.meditation.init();
-    if ($('wb-hub-sound'))      W.sound.init();
-    if ($('wb-hub-gratitude'))  W.gratitude.init();
-    if ($('wb-hub-energy'))     W.energy.init();
-    if ($('wb-hub-pomodoro'))   W.pomodoro.init();
-    if ($('wb-hub-break'))      W.breakActivity.init();
+    try { W.greeting.init(); } catch(e) { /* no greeting el */ }
+    try { W.affirmation.init(); } catch(e) { /* no affirmation el */ }
+    try { W.emotion.init(); } catch(e) { /* no emotion el */ }
+    try { W.breath.init('wb-post-breath'); } catch(e) {}
+    try { W.breath.init('wb-hub-breath'); } catch(e) {}
+    if ($('wb-hub-meditation')) try { W.meditation.init(); } catch(e) {}
+    if ($('wb-hub-sound'))      try { W.sound.init(); } catch(e) {}
+    if ($('wb-hub-gratitude'))  try { W.gratitude.init(); } catch(e) {}
+    if ($('wb-hub-energy'))     try { W.energy.init(); } catch(e) {}
+    if ($('wb-hub-pomodoro'))   try { W.pomodoro.init(); } catch(e) {}
+    if ($('wb-hub-break'))      try { W.breakActivity.init(); } catch(e) {}
     W.randomPost();
   };
 
