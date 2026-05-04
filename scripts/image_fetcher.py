@@ -319,3 +319,25 @@ def fetch_and_inject_image(
     markdown_content = _inject_figure(markdown_content, rel_path, alt=alt)
 
     return markdown_content, img_path
+
+
+def inject_permalink(markdown_content: str, slug: str) -> str:
+    """
+    front matter에 permalink: /post/<slug>/ 자동 삽입.
+
+    Jekyll 기본 slugify가 한글 카테고리(AI디지털기반교육혁신 등)를
+    'aidigital기반교육혁신' 같은 한영 혼재 슬러그로 변환해 URL이 추하게 깨지는 문제를
+    회피한다. 영문 slug 기반 permalink를 직접 지정해 깔끔한 URL을 보장한다.
+
+    이미 permalink:가 있으면 변경하지 않는다.
+    """
+    if re.search(r"^permalink:", markdown_content, re.MULTILINE):
+        return markdown_content
+
+    parts = markdown_content.split("---", 2)
+    if len(parts) < 3:
+        return markdown_content
+
+    fm_body = parts[1].rstrip()
+    new_fm = f"{fm_body}\npermalink: /post/{slug}/\n"
+    return f"---{new_fm}---{parts[2]}"

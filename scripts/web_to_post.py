@@ -45,7 +45,7 @@ PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_prompt_template.txt"
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink  # noqa: E402
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_multi_prompt_template.txt"
 MERGE_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_merge_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
@@ -780,6 +780,7 @@ def main() -> None:
         return
 
     markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+    markdown_content = inject_permalink(markdown_content, slug)
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
     save_post(markdown_content, output_path)

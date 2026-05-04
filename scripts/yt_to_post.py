@@ -47,7 +47,7 @@ MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_multi_prompt_template.txt"
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink  # noqa: E402
 DEFAULT_MODEL = "gemini-2.0-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
 MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
@@ -818,6 +818,7 @@ def main() -> None:
         return
 
     markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+    markdown_content = inject_permalink(markdown_content, slug)
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
     save_post(markdown_content, output_path)

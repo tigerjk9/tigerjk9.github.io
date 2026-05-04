@@ -46,7 +46,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink  # noqa: E402
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "lecture_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
@@ -685,6 +685,7 @@ def main() -> None:
 
     out_path = POSTS_DIR / filename
     post_content, thumb_path = fetch_and_inject_image(post_content, slug)
+    post_content = inject_permalink(post_content, slug)
     out_path.write_text(post_content, encoding="utf-8")
     print(f"[OK] 저장 완료: {out_path}")
 

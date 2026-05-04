@@ -38,7 +38,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink  # noqa: E402
 
 
 # ──────────────────────────────────────────────────────────────
@@ -628,6 +628,7 @@ def main() -> None:
         return
 
     markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+    markdown_content = inject_permalink(markdown_content, slug)
     # ── 파일 저장 ──
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename

@@ -71,7 +71,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 
 **출처 섹션**: 모든 자동화 포스트의 출처는 `## 출처` 헤딩으로 통일 (기존 `<출처>` 태그 폐기). 프롬프트 템플릿 7개 + 기존 포스트 54개 일괄 변환 완료 (2026-04-28).
 
-**링크 복사**: 포스트 URL만 단독 복사. 한글 경로도 디코딩된 상태로 복사. 버튼은 `.post-copy-wrap` flex 컨테이너에 본문 복사 버튼과 나란히 배치 (모바일에서는 세로 스택).
+**링크 복사**: 포스트 URL만 단독 복사. raw `window.location.href` 사용 (NFC 인코딩 형태). iOS Safari는 한글을 NFD로 클립보드에 저장해 카카오톡·메모앱 등 NFC 기대 환경에서 깨지므로 디코딩된 한글 URL은 모바일에서 위험. 본문 복사 안의 "원문링크:" 표시는 사람이 읽는 텍스트라 디코딩 유지. 버튼은 `.post-copy-wrap` flex 컨테이너에 본문 복사 버튼과 나란히 배치 (모바일에서는 세로 스택).
 
 **사이드바 섹션 높이**: 데스크톱 `max-height: calc(50vh - 175px) !important` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남. 내부 스크롤(얇은 4px 스크롤바) 유지.
 
@@ -332,6 +332,17 @@ scripts/
 - **노출 범위**: 본문 `<figure>`로 표시 + `_includes/seo.html`에서 OG 이미지로 송출. 리스트/프리뷰 노출 없음
 - **Windows cp949 주의**: `image_fetcher.py` print 문에 em dash(`-`) 사용 (em dash `—` 금지)
 - **기업 SSL 우회**: requests 세션 `verify=False`, DDG는 `DDGS(verify=False)` 사용
+
+## 공통: 영문 permalink 자동 삽입
+
+`image_fetcher.inject_permalink(content, slug)` 공용 함수가 4개 자동화 스크립트(`/paper`, `/video`, `/paraph`, `/yeonsu`) 저장 직전 호출되어 front matter에 `permalink: /post/<slug>/`를 자동 삽입한다.
+
+**왜**: Jekyll 기본 slugify가 한글 카테고리(`AI디지털기반교육혁신`)를 `aidigital기반교육혁신` 같은 한영 혼재 슬러그로 변환해 URL이 추하게 깨짐. 영문 slug 기반 permalink를 직접 지정해 깔끔한 URL 보장.
+
+**규칙**:
+- 이미 front matter에 `permalink:`가 있으면 변경하지 않음
+- 카테고리 분류는 그대로 보존 (사이드바·카테고리 페이지에서 정상 동작)
+- 기존 포스트 URL은 영향 없음 (수동으로 `permalink:`를 추가한 경우만 변경됨)
 
 ## 공통: git push 주의사항
 
