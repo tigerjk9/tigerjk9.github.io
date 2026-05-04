@@ -46,9 +46,10 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers  # noqa: E402
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "lecture_prompt_template.txt"
+EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_lecture_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CONTENT_CHARS = 80000
 
@@ -532,6 +533,7 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true", dest="dry_run")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--extra", default="", help="Gemini에 추가 지시 (프롬프트 끝에 삽입)")
+    parser.add_argument("--edit", action="store_true", help="edit 모드: 블로그 주인장 목소리 강화 프롬프트 사용")
     args = parser.parse_args()
 
     input_list = args.inputs
@@ -588,7 +590,8 @@ def main() -> None:
     existing_cats, existing_tags = get_existing_taxonomy()
 
     # 프롬프트 구성
-    template = PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+    active_template_path = EDIT_PROMPT_TEMPLATE_PATH if args.edit else PROMPT_TEMPLATE_PATH
+    template = active_template_path.read_text(encoding="utf-8")
     current_time = datetime.now().strftime("%H:%M:%S")
     date_with_time = f"{args.date} {current_time} +0900"
     prompt = (
@@ -647,13 +650,18 @@ def main() -> None:
         return
 
     out_path = POSTS_DIR / filename
-    post_content, thumb_path = fetch_and_inject_image(post_content, slug)
+    if args.edit:
+        post_content, img_paths = replace_image_markers(post_content, slug)
+        thumb_path = img_paths[0] if img_paths else None
+    else:
+        post_content, thumb_path = fetch_and_inject_image(post_content, slug)
+        img_paths = [thumb_path] if thumb_path else []
     post_content = inject_permalink(post_content, slug)
     out_path.write_text(post_content, encoding="utf-8")
     print(f"[OK] 저장 완료: {out_path}")
 
     if not args.no_push:
-        git_push(out_path, extra_files=[thumb_path] if thumb_path else None)
+        git_push(out_path, extra_files=img_paths if img_paths else None)
 
 
 if __name__ == "__main__":

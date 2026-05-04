@@ -43,11 +43,12 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_prompt_template.txt"
+EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_yt_prompt_template.txt"
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_multi_prompt_template.txt"
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers  # noqa: E402
 DEFAULT_MODEL = "gemini-2.0-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
 MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
@@ -329,15 +330,17 @@ def load_prompt_template(
     transcript: str,
     categories: "list[str]",
     tags: "list[str]",
+    edit: bool = False,
 ) -> "tuple[str, str]":
     """yt_prompt_template.txt 읽기 + 플레이스홀더 치환.
 
     Returns:
         (완성된 프롬프트 문자열, 선택된 크로스오버 분야 이름)
     """
-    if not PROMPT_TEMPLATE_PATH.exists():
-        raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {PROMPT_TEMPLATE_PATH}")
-    template = PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+    template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else PROMPT_TEMPLATE_PATH
+    if not template_path.exists():
+        raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
+    template = template_path.read_text(encoding="utf-8")
 
     cats_str = ", ".join(categories) if categories else "AI, 교육"
     tags_str = ", ".join(tags) if tags else "AI, 영상, 교육"
@@ -617,6 +620,11 @@ def main() -> None:
         default=DEFAULT_MODEL,
         help=f"Gemini 모델 ID (기본값: {DEFAULT_MODEL})",
     )
+    parser.add_argument(
+        "--edit",
+        action="store_true",
+        help="edit 모드: 블로그 주인장 목소리 강화 프롬프트 사용",
+    )
     args = parser.parse_args()
 
     if not os.environ.get("GEMINI_API_KEY"):
@@ -703,7 +711,8 @@ def main() -> None:
 
         try:
             prompt, crossover_domain = load_prompt_template(
-                args.date, metadata, transcript, existing_cats, existing_tags
+                args.date, metadata, transcript, existing_cats, existing_tags,
+                edit=args.edit,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:
@@ -745,7 +754,12 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
-    markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+    if args.edit:
+        markdown_content, img_paths = replace_image_markers(markdown_content, slug)
+        thumb_path = img_paths[0] if img_paths else None
+    else:
+        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+        img_paths = [thumb_path] if thumb_path else []
     markdown_content = inject_permalink(markdown_content, slug)
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
@@ -760,8 +774,7 @@ def main() -> None:
             f"Source: {source_label}"
         )
         all_files = [output_path]
-        if thumb_path:
-            all_files.append(thumb_path)
+        all_files.extend(img_paths)
         if config_modified:
             all_files.append(REPO_ROOT / "_config.yml")
         try:

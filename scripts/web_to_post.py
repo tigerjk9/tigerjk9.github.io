@@ -42,10 +42,11 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_prompt_template.txt"
+EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_web_prompt_template.txt"
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers  # noqa: E402
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_multi_prompt_template.txt"
 MERGE_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_merge_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
@@ -273,10 +274,12 @@ def load_prompt_template(
     content: str,
     categories: "list[str]",
     tags: "list[str]",
+    edit: bool = False,
 ) -> "tuple[str, str]":
-    if not PROMPT_TEMPLATE_PATH.exists():
-        raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {PROMPT_TEMPLATE_PATH}")
-    template = PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+    template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else PROMPT_TEMPLATE_PATH
+    if not template_path.exists():
+        raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
+    template = template_path.read_text(encoding="utf-8")
 
     cats_str = ", ".join(categories) if categories else "AI, 교육"
     tags_str = ", ".join(tags) if tags else "AI, 교육"
@@ -303,10 +306,13 @@ def load_multi_prompt_template(
     sources: "list[tuple[str, str, str, str]]",  # [(url, title, site_name, content), ...]
     categories: "list[str]",
     tags: "list[str]",
+    edit: bool = False,
 ) -> "tuple[str, str]":
-    if not MULTI_PROMPT_TEMPLATE_PATH.exists():
-        raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {MULTI_PROMPT_TEMPLATE_PATH}")
-    template = MULTI_PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+    # edit 모드 multi는 edit_web_prompt_template.txt 사용 (나중 확장을 위해 파라미터만 받아 놓음)
+    template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else MULTI_PROMPT_TEMPLATE_PATH
+    if not template_path.exists():
+        raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
+    template = template_path.read_text(encoding="utf-8")
 
     multi_sources_blocks = []
     for i, (url, title, site_name, content) in enumerate(sources, 1):
@@ -541,6 +547,7 @@ def main() -> None:
     parser.add_argument("--no-push", action="store_true", help="로컬 저장만 하고 git push 하지 않음")
     parser.add_argument("--dry-run", action="store_true", help="_posts/ 에 저장하지 않고 터미널에 출력만")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"Gemini 모델 ID (기본값: {DEFAULT_MODEL})")
+    parser.add_argument("--edit", action="store_true", help="edit 모드: 블로그 주인장 목소리 강화 프롬프트 사용")
     args = parser.parse_args()
 
     if not os.environ.get("GEMINI_API_KEY"):
@@ -651,6 +658,7 @@ def main() -> None:
         try:
             prompt, crossover_domain = load_multi_prompt_template(
                 args.date, sources, existing_cats, existing_tags,
+                edit=args.edit,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:
@@ -676,6 +684,7 @@ def main() -> None:
             prompt, crossover_domain = load_prompt_template(
                 args.date, url, title, site_name, content_text,
                 existing_cats, existing_tags,
+                edit=args.edit,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:
@@ -718,7 +727,12 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
-    markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+    if args.edit:
+        markdown_content, img_paths = replace_image_markers(markdown_content, slug)
+        thumb_path = img_paths[0] if img_paths else None
+    else:
+        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+        img_paths = [thumb_path] if thumb_path else []
     markdown_content = inject_permalink(markdown_content, slug)
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
@@ -733,8 +747,7 @@ def main() -> None:
             f"Source: {source_label}"
         )
         all_files = [output_path]
-        if thumb_path:
-            all_files.append(thumb_path)
+        all_files.extend(img_paths)
         if config_modified:
             all_files.append(REPO_ROOT / "_config.yml")
         try:

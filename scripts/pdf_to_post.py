@@ -38,7 +38,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers  # noqa: E402
 
 
 # ──────────────────────────────────────────────────────────────
@@ -65,6 +65,7 @@ _load_dotenv()
 POSTS_DIR = REPO_ROOT / "_posts"
 ASSETS_DIR = REPO_ROOT / "assets"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "prompt_template.txt"
+EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_paper_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CHARS = 100000  # Gemini 컨텍스트 한도 초과 방지
 
@@ -263,11 +264,13 @@ def load_prompt_template(
     categories: list[str],
     tags: list[str],
     figures: list[dict],
+    edit: bool = False,
 ) -> str:
     """prompt_template.txt 읽기 + 플레이스홀더 치환."""
-    if not PROMPT_TEMPLATE_PATH.exists():
-        raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {PROMPT_TEMPLATE_PATH}")
-    template = PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+    template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else PROMPT_TEMPLATE_PATH
+    if not template_path.exists():
+        raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
+    template = template_path.read_text(encoding="utf-8")
 
     cats_str = ", ".join(categories) if categories else "AI, 교육"
     tags_str = ", ".join(tags) if tags else "논문리뷰, AI, 교육"
@@ -493,6 +496,11 @@ def main() -> None:
         action="store_true",
         help="처리 후 원본 PDF를 삭제하지 않음 (기본: 삭제하여 로컬 용량 절약)",
     )
+    parser.add_argument(
+        "--edit",
+        action="store_true",
+        help="edit 모드: 블로그 주인장 목소리 강화 프롬프트 사용",
+    )
     args = parser.parse_args()
 
     # ── 환경변수 확인 ──
@@ -548,7 +556,7 @@ def main() -> None:
     # ── 프롬프트 로드 ──
     try:
         system_prompt = load_prompt_template(
-            args.date, existing_cats, existing_tags, figures
+            args.date, existing_cats, existing_tags, figures, edit=args.edit
         )
     except RuntimeError as e:
         print(f"[ERROR] {e}")
@@ -574,7 +582,12 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
-    markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+    if args.edit:
+        markdown_content, img_paths = replace_image_markers(markdown_content, slug)
+        thumb_path = img_paths[0] if img_paths else None
+    else:
+        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+        img_paths = [thumb_path] if thumb_path else []
     markdown_content = inject_permalink(markdown_content, slug)
     # ── 파일 저장 ──
     filename = build_filename(args.date, slug)
@@ -592,8 +605,7 @@ def main() -> None:
             f"Source: {pdf_path.name}"
         )
         all_files = [output_path] + [fig["local_path"] for fig in figures]
-        if thumb_path:
-            all_files.append(thumb_path)
+        all_files.extend(img_paths)
         if config_modified:
             all_files.append(REPO_ROOT / "_config.yml")
         try:

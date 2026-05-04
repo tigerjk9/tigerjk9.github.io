@@ -286,6 +286,52 @@ def _extract_title(markdown_content: str) -> str:
 # 공개 진입점
 # ---------------------------------------------------------------------------
 
+def replace_image_markers(
+    markdown_content: str,
+    slug: str,
+) -> tuple[str, list[Path]]:
+    """
+    Gemini가 본문에 삽입한 [IMAGE: query] 마커를 실제 이미지로 교체한다.
+
+    - 마커 형식: [IMAGE: english search query]
+    - 각 마커를 <figure> 블록으로 교체
+    - 첫 번째 이미지는 header.teaser에도 삽입
+    - 이미지 파일명: {slug}-img1.jpg, {slug}-img2.jpg ...
+    - 이미지 소스: Pexels(1순위) -> DuckDuckGo(2순위), OG 이미지 미사용
+    """
+    pattern = re.compile(r'\[IMAGE:\s*([^\]]+?)\s*\]')
+    markers = pattern.findall(markdown_content)
+
+    if not markers:
+        print("[INFO] [IMAGE:] 마커 없음 - 이미지 삽입 건너뜀")
+        return markdown_content, []
+
+    print(f"[INFO] [IMAGE:] 마커 {len(markers)}개 발견 - 이미지 검색 시작")
+    alt = _extract_title(markdown_content)
+    downloaded_paths: list[Path] = []
+
+    for i, query in enumerate(markers):
+        img_num = i + 1
+        img_slug = f"{slug}-img{img_num}"
+        print(f"[INFO] 이미지 {img_num}/{len(markers)} 검색: {query!r}")
+
+        img_path = _try_pexels_image(query, img_slug) or _try_ddg_image(query, img_slug)
+
+        if img_path:
+            rel_path = f"/assets/{img_path.name}"
+            figure_html = f'\n<figure>\n<img src="{rel_path}" alt="{alt}">\n</figure>\n'
+            markdown_content = pattern.sub(figure_html, markdown_content, count=1)
+            downloaded_paths.append(img_path)
+            if i == 0:
+                markdown_content = _inject_teaser(markdown_content, rel_path)
+            print(f"[OK] 이미지 {img_num} 삽입 완료: /assets/{img_path.name}")
+        else:
+            markdown_content = pattern.sub("", markdown_content, count=1)
+            print(f"[WARN] 이미지 {img_num} 검색 실패 - 마커 제거")
+
+    return markdown_content, downloaded_paths
+
+
 def fetch_and_inject_image(
     markdown_content: str,
     slug: str,
