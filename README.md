@@ -203,6 +203,23 @@ python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 - **APA 출처**: URL/DOI 미포함 — LLM이 생성하는 링크는 신뢰할 수 없으므로 텍스트만 기재
 - **Figure**: 논문 이미지가 본문 적절한 위치에 자동 삽입됨
 
+### `/edit-*` — 블로그 주인장 목소리 강화 편집 커맨드
+
+기존 자동화 커맨드의 **강화 버전**. 필자의 직접 판단·절제된 비관론을 살린 포스트를 생성한다.
+
+| 커맨드 | 기반 스크립트 | 특징 |
+|--------|-------------|------|
+| `/edit-paraph` | `web_to_post.py --edit` | 주인장 목소리 + 다중 이미지 자동 삽입 |
+| `/edit-video` | `yt_to_post.py --edit` | 주인장 목소리 강화 영상 분석 포스트 |
+| `/edit-paper` | `pdf_to_post.py --edit` | 주인장 목소리 강화 논문 리뷰 |
+| `/edit-yeonsu` | `lecture_script.py --edit` | 주인장 목소리 강화 교원 연수 에세이 |
+
+**스타일 차이점 (`/edit-*` vs 기본)**:
+- 필자의 직접 판단과 절제된 비관론이 최소 2곳 드러남
+- 도입부가 질문에 국한되지 않음 — 선언·탄식·일화·역설 등 다양한 첫 문장
+- 크로스오버 섹션이 억지 연결이면 본문에 통합하거나 생략
+- 본문 내 `[IMAGE: query]` 마커로 다중 이미지 자동 삽입 (`/edit-paraph`)
+
 ---
 
 ## 환경 설정
@@ -265,6 +282,10 @@ scripts/
     video.md           # /video 슬래시 커맨드 정의
     paper.md           # /paper 슬래시 커맨드 정의
     yeonsu.md          # /yeonsu 슬래시 커맨드 정의
+    edit-paraph.md     # /edit-paraph 슬래시 커맨드 (주인장 목소리 강화 버전)
+    edit-video.md      # /edit-video 슬래시 커맨드 (주인장 목소리 강화 버전)
+    edit-paper.md      # /edit-paper 슬래시 커맨드 (주인장 목소리 강화 버전)
+    edit-yeonsu.md     # /edit-yeonsu 슬래시 커맨드 (주인장 목소리 강화 버전)
 _config.yml      # 사이트 설정 (timezone: Asia/Seoul 필수)
 _data/
   navigation.yml # 상단 메뉴
@@ -320,6 +341,39 @@ Categories / Tag Cloud 섹션 헤더를 클릭해 접기/펼치기 가능.
 
 - 구현: `_includes/footer.html` (인라인 style 직접 지정 — CSS 클래스가 인라인 style에 특이성이 밀려 무효화되므로)
 
+### 읽기 진행 표시줄
+
+포스트 페이지 최상단에 가로 진행 표시줄이 나타나 스크롤 위치를 실시간으로 표시한다.
+
+- 구현: `assets/js/reading-progress.js`, `_layouts/single.html`
+
+### 모바일 TOC 드로어
+
+모바일에서 포스트 목차(TOC)를 하단에서 올라오는 드로어 형태로 표시한다.
+
+- 구현: `assets/js/mobile-toc.js`
+
+### 맨 위로 버튼
+
+스크롤을 내리면 우측 하단에 페이지 최상단 이동 버튼이 나타난다.
+
+- 구현: `assets/js/back-to-top.js`
+
+### 조회수 카운터
+
+포스트마다 `myhits.vercel.app` 기반 배지 형태로 조회수를 표시한다.
+
+- 구현: `_layouts/single.html` (포스트 본문 위 `<img>` 배지)
+
+### 3D 지식 그래프 (`/knowledge-graph/`)
+
+포스트·태그 관계를 인터랙티브 3D 그래프로 시각화하는 전용 페이지.
+
+- **노드**: 포스트, 태그 (크기·색으로 구분)
+- **엣지**: 포스트-태그 연결
+- **데이터**: 빌드 시 Liquid 템플릿이 포스트 태그를 집계해 JSON으로 출력
+- 구현: `knowledge-graph.md` (layout `wide`), Three.js + D3 + 3d-force-graph (CDN)
+
 ---
 
 ## 주요 설정값
@@ -332,6 +386,9 @@ Categories / Tag Cloud 섹션 헤더를 클릭해 접기/펼치기 가능.
 | 댓글 | Giscus (기본 비활성) |
 | 분석 | Google Analytics `G-Y8TNBPZQEZ` |
 | 검색 | Lunr.js |
+| head_scripts | `<head>`에 추가 스크립트 삽입 지원 |
+| turbo | `false` — Turbo 비활성화 |
+| enable_copy_code_button | `true` — 코드 블록 복사 버튼 활성화 |
 
 ---
 
