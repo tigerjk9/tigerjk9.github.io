@@ -35,6 +35,15 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
+# Python 3.9 호환: importlib.metadata.packages_distributions은 3.11에서 추가됨
+# google-generativeai가 이 속성을 사용하므로 없으면 빈 dict 반환 shim 삽입
+try:
+    import importlib.metadata as _im
+    if not hasattr(_im, "packages_distributions"):
+        _im.packages_distributions = lambda: {}
+except Exception:
+    pass
+
 # ──────────────────────────────────────────────────────────────
 # 상수
 # ──────────────────────────────────────────────────────────────
@@ -474,7 +483,7 @@ def save_post(content: str, output_path: Path) -> None:
 def _git(args: "list[str]", check: bool = True) -> subprocess.CompletedProcess:
     result = subprocess.run(
         ["git", *args],
-        capture_output=True, text=True, cwd=str(REPO_ROOT),
+        capture_output=True, text=True, encoding="utf-8", cwd=str(REPO_ROOT),
     )
     if check and result.returncode != 0:
         raise RuntimeError(f"git {args[0]} 실패:\n{result.stderr.strip()}")
