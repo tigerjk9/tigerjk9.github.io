@@ -1862,17 +1862,18 @@ html[data-theme="light"] .page__content figcaption {
 
 .wb-footer-grid {
   display: grid !important;
-  grid-template-columns: 1.2fr 1fr 1fr !important;
-  gap: 2.5rem;
+  grid-template-columns: 1.2fr 1.3fr 0.9fr !important;
+  gap: 2rem;
   padding: 2rem 0 1rem;
   border-top: 1px solid rgba(255,255,255,0.08);
   margin-top: 1rem;
+  align-items: start;
 
   @media (max-width: 900px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr !important;
   }
   @media (max-width: 600px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 }
 
@@ -1893,6 +1894,15 @@ html[data-theme="light"] .wb-footer-grid {
 
 .wb-footer-affirmation {
   margin-bottom: 1rem;
+
+  .wb-affirmation-text {
+    font-size: 0.88em;
+    font-style: italic;
+    line-height: 1.55;
+    opacity: 0.88;
+    margin-bottom: 0.6rem;
+    min-height: 1.8em;
+  }
 }
 
 .wb-footer-emotion__label {
@@ -1913,7 +1923,7 @@ html[data-theme="light"] .wb-footer-grid {
 
 .wb-footer-post-card__img {
   width: 100%;
-  aspect-ratio: 16/9;
+  height: 110px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 0.5rem;
