@@ -1,5 +1,5 @@
 ---
-title: 클로드 Live Artifact로 자동 루틴 만들기
+title: 클로드 Live Artifact로 자동 루틴 만들기 
 date: 2026-05-03 23:56:37 +0900
 categories: [AI, 교육공학]
 tags: [클로드, LiveArtifact, 업무자동화, AI생산성, AI협업, 프롬프트엔지니어링, 디지털교육, AI리터러시]
