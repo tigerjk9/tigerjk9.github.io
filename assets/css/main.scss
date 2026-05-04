@@ -632,6 +632,19 @@ html[data-theme="light"] .page__footer-copyright {
   color: #8a9bb0;
 }
 
+/* 푸터 로고 + 저작권 크기 */
+.footer-logo {
+  margin-bottom: 0.8rem;
+
+  img { max-width: 200px; width: 100%; display: block; }
+}
+
+.page__footer-copyright {
+  font-size: 0.82em !important;
+  line-height: 1.6;
+  opacity: 0.75;
+}
+
 html[data-theme="light"] .page__footer-wrapper {
   background-color: #1e2d3d;
 }
