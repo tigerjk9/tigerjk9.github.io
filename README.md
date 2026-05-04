@@ -302,6 +302,24 @@ Categories / Tag Cloud 섹션 헤더를 클릭해 접기/펼치기 가능.
 - 구현: `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html`
 - 각 섹션 콘텐츠 높이: `calc(50vh - 175px)` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남
 
+### 상단 네비게이션 외부 서비스
+
+`_data/navigation.yml`에서 외부 사이트를 직접 연결한다.
+
+| 메뉴 | 링크 |
+|------|------|
+| 쉼표 | https://comma-for-wellbeing.vercel.app/ |
+| 기록 대화 | https://dotconnector-log.vercel.app/ |
+| 말씀의 길 | https://malsseum-ui.vercel.app/ |
+
+`/wellbeing/` 경로는 meta refresh + JS로 쉼표 사이트로 즉시 리디렉트된다.
+
+### 푸터
+
+로고 이미지 + 저작권 텍스트만 표시. `max-width:400px; margin:0 auto; text-align:center` 인라인 style 컨테이너로 가운데 정렬.
+
+- 구현: `_includes/footer.html` (인라인 style 직접 지정 — CSS 클래스가 인라인 style에 특이성이 밀려 무효화되므로)
+
 ---
 
 ## 주요 설정값
