@@ -297,7 +297,7 @@ def replace_image_markers(
     - 각 마커를 <figure> 블록으로 교체
     - 첫 번째 이미지는 header.teaser에도 삽입
     - 이미지 파일명: {slug}-img1.jpg, {slug}-img2.jpg ...
-    - 이미지 소스: Pexels(1순위) -> DuckDuckGo(2순위), OG 이미지 미사용
+    - 우선순위: 출처 URL OG 이미지(첫 번째 마커만) → Pexels → DuckDuckGo
     """
     pattern = re.compile(r'\[IMAGE:\s*([^\]]+?)\s*\]')
     markers = pattern.findall(markdown_content)
@@ -315,7 +315,15 @@ def replace_image_markers(
         img_slug = f"{slug}-img{img_num}"
         print(f"[INFO] 이미지 {img_num}/{len(markers)} 검색: {query!r}")
 
-        img_path = _try_pexels_image(query, img_slug) or _try_ddg_image(query, img_slug)
+        img_path: Optional[Path] = None
+
+        # 첫 번째 마커: 출처 URL OG 이미지 우선
+        if i == 0:
+            img_path = _try_og_image(markdown_content, img_slug)
+
+        # OG 실패(또는 2번째 이후 마커): Pexels → DDG
+        if img_path is None:
+            img_path = _try_pexels_image(query, img_slug) or _try_ddg_image(query, img_slug)
 
         if img_path:
             rel_path = f"/assets/{img_path.name}"
