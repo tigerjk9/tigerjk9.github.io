@@ -640,9 +640,10 @@ html[data-theme="light"] .page__footer-copyright {
 }
 
 .page__footer-copyright {
-  font-size: 0.82em !important;
+  font-size: 0.9em !important;
   line-height: 1.6;
-  opacity: 0.75;
+  opacity: 0.8;
+  max-width: 400px;
 }
 
 html[data-theme="light"] .page__footer-wrapper {
