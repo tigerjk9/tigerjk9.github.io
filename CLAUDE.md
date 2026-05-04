@@ -77,9 +77,9 @@ bundle exec rake version        # 버전 일괄 업데이트
 **사이드바 섹션 높이**: 데스크톱 `max-height: calc(50vh - 175px) !important` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남. 내부 스크롤(얇은 4px 스크롤바) 유지.
 
 **웰빙 코너**: `assets/js/wellbeing.js`가 IIFE `(function(W){...})(window.WB = window.WB || {})`로 실행됨. 내부 `$` 헬퍼는 `id => document.getElementById(id)` (jQuery 아님). `W.init()`에서 각 모듈 호출을 개별 `try/catch`로 래핑해 한 모듈 오류가 나머지에 영향 없음.
-- **허브 페이지** (`/wellbeing/`): `wellbeing.md`에 인라인 `<style>` 블록 포함 — MM 테마 `.page__content div` 특이성(0-2-0) 극복을 위해 `.page__content .wb-*` 접두사 + `!important` 필수
-- **푸터 위치**: `_includes/footer.html` 3열 그리드 (로고 | 웰빙 | 랜덤포스트). `window.__allPosts`는 Liquid `where_exp`로 teaser 있는 포스트만 사전 필터링해 trailing comma 버그 방지
-- **CSS**: `main.scss` `.wb-footer-grid { align-items: start; grid-template-columns: 1.2fr 1.3fr 0.9fr }` — 이미지 열은 `height:110px` 고정 (aspect-ratio 금지, 컬럼 너비 비례로 과도하게 세로가 늘어남)
+- **`/wellbeing/` 페이지**: `wellbeing.md` — meta refresh + JS로 `https://comma-for-wellbeing.vercel.app/` 즉시 리디렉트. 상단 네비게이션 "쉼표" 메뉴도 동일 외부 URL 직접 연결
+- **푸터**: `_includes/footer.html` — 로고+저작권만. `max-width:400px; margin:0 auto; text-align:center` 인라인 style 컨테이너로 중앙 정렬. CSS 클래스 방식은 인라인 style에 특이성이 져서 HTML 인라인으로 직접 지정
+- **네비게이션** (`_data/navigation.yml`): 쉼표(comma-for-wellbeing.vercel.app), 기록 대화(dotconnector-log.vercel.app), 말씀의 길(malsseum-ui.vercel.app) 외부 링크 포함
 
 **모바일 최적화** (`assets/css/main.scss` `@media (max-width: 1023px)` 블록):
 - 사이트 제목 한 줄 고정: `max-width: calc(100vw - 155px)` + `overflow: hidden` + `text-overflow: ellipsis` + `flex-shrink: 1` (이전 `overflow: visible` 방식 폐기)
