@@ -5,6 +5,7 @@ categories: [AI, 교육공학]
 tags: [논문리뷰, AI, 교육, AI리터러시, 인간중심AI]
 header:
   teaser: /assets/community-based-ai-learning-thumb.jpg
+permalink: /post/community-based-ai-learning/
 ---
 
 <figure>

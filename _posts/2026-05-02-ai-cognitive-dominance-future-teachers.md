@@ -5,6 +5,7 @@ categories: [교육, AI디지털기반교육혁신]
 tags: [AI, AI윤리, 미래교육, 교사전문성, 학습과학, 프롬프트엔지니어링, 인공지능, 교육혁신]
 header:
   teaser: /assets/ai-cognitive-dominance-future-teachers-thumb.jpg
+permalink: /post/ai-cognitive-dominance-future-teachers/
 ---
 
 오늘날 인공지능은 기술의 발전을 넘어 인간의 지능, 학습, 그리고 존재의 의미에 대한 근본적인 질문을 던진다. 교실의 풍경이 빠르게 변하는 지금, 우리는 단순히 AI 도구를 활용하는 것을 넘어 이 거대한 변화의 철학적, 윤리적 맥락을 깊이 탐구해야 한다. 이 글은 닉 보스트롬의 심오한 통찰을 바탕으로 AI가 가져올 미래를 조망하고, 교육이 나아가야 할 방향을 탐색한다.

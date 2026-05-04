@@ -5,6 +5,7 @@ categories: [교육, AI디지털기반교육혁신]
 tags: [AI, LLM, 교육혁신, 교사전문성, 미래교육, AI윤리, 학습과학, 인공지능]
 header:
   teaser: /assets/ai-forgetting-teaching-memory-thumb.jpg
+permalink: /post/ai-forgetting-teaching-memory/
 ---
 
 인공지능의 발전은 끊임없이 새로운 질문을 던지고 있다. AI가 무엇을 기억하고 무엇을 잊을 수 있는가에 대한 기술적 논의는 인간의 기억, 지식, 그리고 교육의 본질에 대한 근원적인 탐구로 확장된다. 우리는 AI의 '선택적 망각'이 교육 현장에 어떤 의미를 지니는지 깊이 사유한다.

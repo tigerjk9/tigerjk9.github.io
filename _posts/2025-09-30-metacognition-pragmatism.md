@@ -3,6 +3,7 @@ title: "AI 시대의 메타인지와 실용주의: 위협과 기회"
 date: 2025-09-30 02:00:00 +0900
 categories: [교육, 철학, AI]
 tags: [메타인지, 실용주의, AI윤리, 자기조절학습, HCI]
+permalink: /post/metacognition-pragmatism/
 ---
 
 > AI 시대, 우리는 어디에서 **메타인지**와 **실용주의** 철학의 가치를 찾아볼 수 있을까요?

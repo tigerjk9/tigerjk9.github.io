@@ -5,6 +5,7 @@ categories: [AI, 교육공학]
 tags: [클로드, LiveArtifact, 업무자동화, AI생산성, AI협업, 프롬프트엔지니어링, 디지털교육, AI리터러시]
 header:
   teaser: /assets/claude-live-artifact-automation-thumb.jpg
+permalink: /post/claude-live-artifact-automation/
 ---
 
 반복적인 업무에 지쳐 있지는 않은가? 클로드 **Live Artifact**는 단 한 번의 설정으로 매일 아침의 루틴을 자동화하는 강력한 도구이다. 팀 리더에게 특히 유용한 이 기능은 업무 효율성을 극적으로 향상시킨다.

@@ -3,6 +3,7 @@ title: "고도화된 인공지능 시스템은 민주주의에 어떤 영향을 
 date: 2025-10-10 00:24:19 +0900
 categories: [AI]
 tags: [논문리뷰, AI, 민주주의, AI윤리]
+permalink: /post/democracy/
 ---
 
 ## 고도화된 인공지능 시스템은 민주주의에 어떤 영향을 미칠까?

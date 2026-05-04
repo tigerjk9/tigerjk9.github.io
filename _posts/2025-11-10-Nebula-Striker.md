@@ -3,6 +3,7 @@ title: "NEBULA STRIKER 개발"
 date: 2025-11-10 10:24:00 +0900
 categories: [AI, 게임]
 tags: [AI, 게임]
+permalink: /post/Nebula-Striker/
 ---
 
 ## NEBULA STRIKER 개발

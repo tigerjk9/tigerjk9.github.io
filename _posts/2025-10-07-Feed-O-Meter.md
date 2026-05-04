@@ -3,6 +3,7 @@ title: "AI 멘티(Feed-O-Meter)와의 역할극 상호작용을 통해 디자인
 date: 2025-10-09 01:10:00 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, 디자인교육, AI멘티, 피드백, HCI, FeedOMeter]
+permalink: /post/Feed-O-Meter/
 ---
 
 ## AI 멘티(Feed-O-Meter)와의 역할극 상호작용을 통해 디자인 피드백 역량 기르기

@@ -3,6 +3,7 @@ title: "AI의 기본 문화와 우리 교실의 문화적 거리"
 date: 2025-10-06 14:52:00 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, 문화적거리, AI편향, 교육형평성, 글로벌교육, GenAI]
+permalink: /post/cultural-distance/
 ---
 
 ## AI의 기본 문화와 우리 교실의 문화적 거리

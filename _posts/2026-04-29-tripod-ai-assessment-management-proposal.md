@@ -5,6 +5,7 @@ categories: [교육, AI디지털기반교육혁신]
 tags: [AI, 수행평가, AI활용평가, 교육정책, 교사전문성, 평가혁신, 생성형AI, 에듀테크]
 header:
   teaser: /assets/tripod-ai-assessment-thumb.webp
+permalink: /post/tripod-ai-assessment-management-proposal/
 ---
 
 <figure>

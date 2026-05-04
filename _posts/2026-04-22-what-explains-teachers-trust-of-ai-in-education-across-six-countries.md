@@ -3,6 +3,7 @@ title: "AI 교육 기술에 대한 교사의 신뢰는 무엇으로 설명되는
 date: 2026-04-22 21:52:34 +0900
 categories: [AI, 교육공학]
 tags: [논문리뷰, AI, 교육, 교사신뢰, 문화적가치, AI이해]
+permalink: /post/what-explains-teachers-trust-of-ai-in-education-across-six-countries/
 ---
 
 ## 1. 연구의 목적

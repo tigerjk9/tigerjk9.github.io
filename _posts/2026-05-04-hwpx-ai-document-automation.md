@@ -5,6 +5,7 @@ categories: [AI, 교육공학]
 tags: [HWPX, AI, 문서자동화, 에듀테크, LLM, 파이썬, 교육혁신, AI에이전트]
 header:
   teaser: /assets/hwpx-ai-document-automation-thumb.png
+permalink: /post/hwpx-ai-document-automation/
 ---
 AI는 이제 우리 학교의 주요 행정 문서를 스스로 작성하고 처리할 수 있을까? 한글(HWPX) 문서 자동화 기술은 이 질문에 강력한 답을 제시한다. 번거로운 서류 작업에 시달리던 교사들에게 희망을 주는 기술의 현주소이다.
 

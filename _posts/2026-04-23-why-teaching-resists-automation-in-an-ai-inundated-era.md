@@ -3,6 +3,7 @@ title: "AI 시대에도 교사는 왜 자동화에 저항하는가?"
 date: 2026-04-23 21:37:39 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, AI윤리, 인간중심AI, 교육공학]
+permalink: /post/why-teaching-resists-automation-in-an-ai-inundated-era/
 ---
 
 ## 1. 연구의 목적

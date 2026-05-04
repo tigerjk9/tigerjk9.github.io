@@ -3,6 +3,7 @@ title: "인과관계를 진정으로 이해하는 기계 VS 진정한 이해 없
 date: 2025-10-24 23:52:00 +0900
 categories: [AI, 인지과학]
 tags: [논문리뷰, LLM, 인과추론, 인지편향, 인과성의환상]
+permalink: /post/contingency-judgment/
 ---
 
 ## 인과관계를 진정으로 이해하는 기계 VS 진정한 이해 없이 인과적 언어를 단순히 재현하는 기계

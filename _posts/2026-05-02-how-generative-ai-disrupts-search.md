@@ -3,6 +3,7 @@ title: "생성형 AI는 웹 검색을 어떻게 변화시키는가"
 date: 2026-05-02 14:12:42 +0900
 categories: [AI, 교육공학]
 tags: [논문리뷰, AI, 에듀테크, LLM, 학습과학, 생성형AI]
+permalink: /post/how-generative-ai-disrupts-search/
 ---
 
 ## 1. 연구의 목적

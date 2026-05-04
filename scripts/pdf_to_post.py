@@ -38,7 +38,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy  # noqa: E402
 
 
 # ──────────────────────────────────────────────────────────────
@@ -74,59 +74,6 @@ FIG_MIN_HEIGHT = 200
 FIG_MAX_COUNT = 6
 
 
-# ──────────────────────────────────────────────────────────────
-# 기존 카테고리/태그 수집
-# ──────────────────────────────────────────────────────────────
-
-def get_existing_taxonomy() -> tuple[list[str], list[str]]:
-    """_posts/*.md 전체에서 기존 categories와 tags를 빈도순으로 반환."""
-    cat_counter: Counter = Counter()
-    tag_counter: Counter = Counter()
-
-    for md_file in POSTS_DIR.glob("*.md"):
-        try:
-            content = md_file.read_text(encoding="utf-8", errors="ignore")
-        except Exception:
-            continue
-
-        # YAML front matter 추출 (--- ... --- 사이)
-        fm_match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
-        if not fm_match:
-            continue
-        fm = fm_match.group(1)
-
-        # categories 파싱: [A, B] 또는 멀티라인
-        cats = _parse_yaml_list(fm, "categories")
-        tags = _parse_yaml_list(fm, "tags")
-        cat_counter.update(cats)
-        tag_counter.update(tags)
-
-    sorted_cats = [c for c, _ in cat_counter.most_common()]
-    sorted_tags = [t for t, _ in tag_counter.most_common(40)]
-    return sorted_cats, sorted_tags
-
-
-def _parse_yaml_list(front_matter: str, key: str) -> list[str]:
-    """YAML front matter에서 단일 라인 [a, b] 또는 멀티라인 - item 형식 파싱."""
-    items: list[str] = []
-
-    # 단일 라인: key: [a, b, c]
-    inline = re.search(rf"^{key}:\s*\[(.+?)\]", front_matter, re.MULTILINE)
-    if inline:
-        for item in inline.group(1).split(","):
-            val = item.strip().strip("'\"")
-            if val:
-                items.append(val)
-        return items
-
-    # 멀티라인: key:\n  - a\n  - b
-    block = re.search(rf"^{key}:\s*\n((?:\s*-\s*.+\n?)+)", front_matter, re.MULTILINE)
-    if block:
-        for line in block.group(1).splitlines():
-            m = re.match(r"\s*-\s*(.+)", line)
-            if m:
-                items.append(m.group(1).strip().strip("'\""))
-    return items
 
 
 # ──────────────────────────────────────────────────────────────

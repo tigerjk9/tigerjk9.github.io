@@ -3,6 +3,7 @@ title: "LLM, 교실의 질을 측정하다: 전문가를 넘어 학생 성과까
 date: 2025-11-24 16:05:42 +0900
 categories: [AI, 교육]
 tags: [LLM, 에듀테크, 교육평가, 논문리뷰]
+permalink: /post/Measuring-Teaching-with-LLMs/
 ---
 
 #  LLM, 교실의 질을 측정하다: 전문가를 넘어 학생 성과까지 예측할까?

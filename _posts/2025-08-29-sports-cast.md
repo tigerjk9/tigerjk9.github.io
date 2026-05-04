@@ -3,6 +3,7 @@ title: "스포츠 중계로 보는 2025 AI 하이프 사이클"
 date: 2025-08-23 22:33:00 +0900
 categories: [AI]
 tags: [기술트렌드, LLM, AI, 생성형 AI]
+permalink: /post/sports-cast/
 ---
 
 ## 스포츠 중계로 보는 2025 AI 하이프 사이클

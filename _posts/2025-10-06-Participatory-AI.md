@@ -3,6 +3,7 @@ title: "AI 개발, 소수 기업의 독점에서 시민의 참여로"
 date: 2025-10-06 14:36:00 +0900
 categories: [AI, 사회]
 tags: [논문리뷰, 참여형AI, 인간중심AI, AI윤리, 민주주의, 스칸디나비아디자인]
+permalink: /post/Participatory-AI/
 ---
 
 ## AI 개발, 소수 기업의 독점에서 시민 참여로

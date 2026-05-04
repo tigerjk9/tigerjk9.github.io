@@ -3,6 +3,7 @@ title: "학습과학 77 핵심 전략 가이드"
 date: 2025-09-02 01:00:00 +0900
 categories: [학습과학]
 tags: [학습과학, 공부법, 메타인지, 뇌기반학습, 책리뷰]
+permalink: /post/science-learning-77/
 ---
 
 ## 학습과학 77 핵심 전략 가이드

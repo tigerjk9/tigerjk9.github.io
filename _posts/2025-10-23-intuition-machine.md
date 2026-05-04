@@ -3,6 +3,7 @@ title: "직관 기계가 촉발하는 이해의 환상"
 date: 2025-10-23 17:17:00 +0900
 categories: [AI, 인지과학]
 tags: [논문리뷰, LLM, 환각, 이해의환상, 이중처리이론, 로즈프레임]
+permalink: /post/intuition-machine/
 ---
 
 ## 직관 기계가 촉발하는 이해의 환상

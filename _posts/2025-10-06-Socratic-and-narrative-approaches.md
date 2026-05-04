@@ -3,6 +3,7 @@ title: "AI 튜터의 두 얼굴: 소크라테스식 질문 vs. 서사적 제안"
 date: 2025-10-06 14:46:00 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, 교육용LLM, 대화설계, 소크라테스식대화법, HCI, 교수법]
+permalink: /post/Socratic-and-narrative-approaches/
 ---
 
 ## AI 튜터의 두 얼굴: 소크라테스식 질문 vs. 서사적 제안

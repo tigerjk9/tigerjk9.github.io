@@ -5,6 +5,7 @@ categories: [교육, AI디지털기반교육혁신]
 tags: [교사전문성, 책리뷰, 집중력, 미래교육, AI, 학습과학, 교육혁신, 인지과학]
 header:
   teaser: /assets/stolen-focus-education-direction-thumb.png
+permalink: /post/stolen-focus-education-direction/
 ---
 
 현대 사회에서 집중력 저하는 흔한 현상이 된다. 이는 개인의 의지 박약이나 노력 부족으로 치부하기 어려운 복잡한 시스템의 문제이다. 지금 우리는 교사와 학습자 모두에게 영향을 미치는 이 거대한 변화의 흐름을 어떻게 이해하고 교육 현장에서 어떤 방향으로 나아가야 하는가?

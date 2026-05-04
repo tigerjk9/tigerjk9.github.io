@@ -3,6 +3,7 @@ title: "LLM은 어떻게 획일적인 사고방식을 조장하는가?"
 date: 2026-03-12 23:19:40 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 생성형AI, LLM, 에듀테크, 교육공학, AI윤리, 자기조절학습, 프롬프트엔지니어링, 인간중심AI, 미래교육, 교육혁신, AI리터러시]
+permalink: /post/the-open-ended-homogeneity-of-llm/
 ---
 
 ## 1. 연구의 목적

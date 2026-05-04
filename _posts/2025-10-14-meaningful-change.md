@@ -3,6 +3,7 @@ title: "의미있는 변화를 만들어가려면"
 date: 2025-10-14 10:35:00 +0900
 categories: [교육, 철학, AI디지털기반교육혁신]
 tags: [교육, 철학, AI디지털기반교육혁신]
+permalink: /post/meaningful-change/
 ---
 
 ## 의미있는 변화를 만들어가려면

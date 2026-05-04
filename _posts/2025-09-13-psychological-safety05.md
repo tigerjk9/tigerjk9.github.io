@@ -3,6 +3,7 @@ title: "[심리적 안전감 시리즈 5] 심리적 안전감 4단계 모델(Tim
 date: 2025-09-13 01:15:49 +0900
 categories: [교육]
 tags: [심리적안전감, 조직문화, 리더십]
+permalink: /post/psychological-safety05/
 ---
 
 ## [심리적 안전감 시리즈 5] 심리적 안전감 4단계 모델(Timothy R. Clark)

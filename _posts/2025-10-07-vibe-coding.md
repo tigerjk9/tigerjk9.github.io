@@ -3,6 +3,7 @@ title: "AI와 대화하고, AI를 활용하며, AI에 대해 이야기하는 역
 date: 2025-10-07 13:00:00 +0900
 categories: [AI, 교육]
 tags: [바이브코딩, AILiteracy, EFL, 영어교육, 프롬프트엔지니어링]
+permalink: /post/vibe-coding/
 ---
 
 > 이 논문은 자연어를 사용하여 AI와 함께 소프트웨어를 만드는 **'바이브 코딩(vibe coding)'**이라는 혁신적인 실천을 영어 교육(EFL) 환경에 적용한 파일럿 연구입니다. 특히, AI와의 상호작용을 **'AI에게 말 걸기(Talking to AI)', 'AI를 통해 말하기(Talking through AI)', 'AI에 대해 말하기(Talking about AI)'**라는 독창적인 프레임워크로 분석하여 심도 있는 교육적 통찰을 제공합니다.

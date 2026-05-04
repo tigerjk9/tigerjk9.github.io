@@ -5,6 +5,7 @@ categories: [교육, AI디지털기반교육혁신]
 tags: [AI, 미래교육, 교육혁신, 교사전문성, 열린사고, 비판적사고, 협력학습, 에듀테크]
 header:
   teaser: /assets/ai-education-paradox-thumb.png
+permalink: /post/ai-education-paradox/
 ---
 
 급변하는 인공지능 기술은 교육 현장의 오랜 믿음을 뒤흔든다. 과거의 학습 방식과 미래의 필요 사이에서 교사들은 새로운 방향을 탐색한다. 이 글은 인공지능의 진화가 던지는 도전에 직면하여, 교사에게 요구되는 태도와 역량이 무엇인지 깊이 성찰한다.

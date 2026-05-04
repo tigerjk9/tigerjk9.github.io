@@ -3,6 +3,7 @@ title: "AI 음악의 인지된 인간성에 대한 탐구"
 date: 2025-10-06 13:29:00 +0900
 categories: [AI, 음악]
 tags: [논문리뷰, AI음악, Suno, 생성형AI, HCI, 디지털리터러시]
+permalink: /post/Echoes-of-humanity/
 ---
 
 ## AI 음악 속 '인간성의 메아리'를 찾아서

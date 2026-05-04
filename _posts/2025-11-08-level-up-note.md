@@ -3,6 +3,7 @@ title: "메타인지 학습과 포인트 시스템이 결합된 성장 플랫폼
 date: 2025-11-08 10:24:00 +0900
 categories: [AI, 교육]
 tags: [AI, 교육, 웹앱, 교육공학, 에듀테크]
+permalink: /post/level-up-note/
 ---
 
 ## 레벨업 노트 Beta 개발

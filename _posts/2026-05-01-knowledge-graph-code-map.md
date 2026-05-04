@@ -5,6 +5,7 @@ categories: [AI, 지식관리]
 tags: [AI, 지식그래프, 코드이해, 교육공학, 학습과학, LLM, 개발자도구, 지식추출]
 header:
   teaser: /assets/knowledge-graph-code-map-thumb.png
+permalink: /post/knowledge-graph-code-map/
 ---
 광활한 대지에 나침반 없이 서 있다면 어떤 기분일까? 복잡한 코드베이스나 방대한 연구 자료 앞에서 우리는 자주 그런 막막함을 느낀다. 과연 이 모든 정보의 본질을 꿰뚫는 지도를 그릴 수 있을까.
 

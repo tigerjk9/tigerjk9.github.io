@@ -5,6 +5,7 @@ categories: [AI, 교육]
 tags: [컴퓨팅사고력, 인공지능사고력, AI교육, 소프트웨어교육, 딥러닝, 머신러닝, 추상화, 에듀테크]
 toc: true
 toc_sticky: true
+permalink: /post/is-the-goal-of-ai-education-computational-thinking/
 ---
 
 이번 학위 논문을 발표하면서 심사 교수님께 이런 질문을 받았습니다.

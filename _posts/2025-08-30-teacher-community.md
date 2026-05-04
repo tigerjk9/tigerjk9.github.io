@@ -3,6 +3,7 @@ title: "살아 숨 쉬는 교사 커뮤니티의 구체적인 6가지 특징들"
 date: 2025-08-30 16:02:00 +0900
 categories: [AI디지털기반교육혁신]
 tags: [전문적학습공동체, PLC, 교사커뮤니티, 교육혁신]
+permalink: /post/teacher-community/
 ---
 
 ## 살아 숨 쉬는 교사 커뮤니티의 구체적인 6가지 특징들

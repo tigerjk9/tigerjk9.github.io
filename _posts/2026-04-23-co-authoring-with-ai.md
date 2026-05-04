@@ -3,6 +3,7 @@ title: "AI와의 협업 시대, 과학적 저술의 책임은 누가 지는가?"
 date: 2026-04-23 21:46:08 +0900
 categories: [AI, 교육공학]
 tags: [논문리뷰, AI, 교육, LLM, 인간중심AI]
+permalink: /post/co-authoring-with-ai/
 ---
 
 ## 1. 연구의 목적

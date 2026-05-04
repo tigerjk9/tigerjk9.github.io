@@ -5,6 +5,7 @@ categories: [교육, 학습과학]
 tags: [교육혁신, 미래교육, 창의성, 문제해결, 본질탐구, 사고법, 메타인지, 문제해결, 자기이해]
 header:
   teaser: /assets/musk-first-principles-education-thumb.jpg
+permalink: /post/musk-first-principles-education/
 ---
 교육 현장에서 우리는 종종 '원래 그렇게 해왔으니까'라는 이유로 익숙한 방식을 고수한다. 이처럼 관성적으로 사고하는 태도는 과연 교육의 본질에 다가서는 길일까. 세상의 난제를 혁신적으로 해결하는 **일론 머스크**의 사고법에서 그 답을 찾아본다. 그는 세상을 바꾸는 발상을 어떻게 시작하는가.
 

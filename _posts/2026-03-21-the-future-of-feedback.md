@@ -3,6 +3,7 @@ title: "AI는 피드백을 어떻게 더 효과적이고 확장 가능하게 만
 date: 2026-03-21 00:16:55 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, 학습과학, 교육공학, 피드백]
+permalink: /post/the-future-of-feedback/
 ---
 
 ## 1. 연구의 목적

@@ -5,6 +5,7 @@ categories: [AI, 교육]
 tags: [LLM, 프롬프트엔지니어링, 생성형AI, 교육공학, 학습과학, AI협업, 미래교육]
 header:
   teaser: /assets/ai-prompt-strategy-thumb.png
+permalink: /post/ai-prompt-strategy/
 ---
 
 AI는 이제 우리 삶에 깊숙이 들어왔다. 특히 교육 현장에서 AI를 활용하는 방식은 무궁무진하다. 그런데 '똑똑한 AI'에게 '똑똑하게' 일을 시키는 방법은 끊임없이 진화한다. 단순히 길게 설명한다고 AI가 더 잘 이해할까? 최신 AI 모델인 **GPT-5.5**는 우리가 예상하는 것 이상으로 변화된 프롬프트 전략을 요구한다. 과연 어떤 방식으로 AI와 대화해야 최상의 교육적 결과물을 얻을 수 있을까?

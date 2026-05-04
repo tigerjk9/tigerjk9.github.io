@@ -3,6 +3,7 @@ title: "메타인지 피드백은 느린 학습자에게도 효과적일까?"
 date: 2025-11-11 13:35:00 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, 생성형AI, 피드백, 메타인지]
+permalink: /post/AI-GENERATED-FEEDBACK-TYPES/
 ---
 
 ## 초인지적 피드백은 느린 학습자에게도 효과적일까? 

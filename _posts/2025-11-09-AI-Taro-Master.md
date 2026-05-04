@@ -3,6 +3,7 @@ title: "AI 타로 마스터 개발"
 date: 2025-11-09 10:24:00 +0900
 categories: [AI, 교육]
 tags: [AI, 교육, 웰빙, 윕앱]
+permalink: /post/AI-Taro-Master/
 ---
 
 ## AI 타로 마스터 개발

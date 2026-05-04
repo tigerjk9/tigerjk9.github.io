@@ -15,14 +15,17 @@ from __future__ import annotations
 import os
 import re
 import ssl
+import random
 import requests
 import urllib3
+from collections import Counter
 from pathlib import Path
 from typing import Optional
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 ASSETS_DIR = Path(__file__).parent.parent / "assets"
+POSTS_DIR = Path(__file__).parent.parent / "_posts"
 
 _SESSION: Optional[requests.Session] = None
 
@@ -341,3 +344,68 @@ def inject_permalink(markdown_content: str, slug: str) -> str:
     fm_body = parts[1].rstrip()
     new_fm = f"{fm_body}\npermalink: /post/{slug}/\n"
     return f"---{new_fm}---{parts[2]}"
+
+
+# ---------------------------------------------------------------------------
+# 공유 상수·유틸 (4개 자동화 스크립트 공통)
+# ---------------------------------------------------------------------------
+
+CROSSOVER_DOMAINS = [
+    "신경과학",
+    "행동경제학",
+    "생태학·먹이그물 이론",
+    "언어학·인지언어학",
+    "음악이론·즉흥연주",
+    "요리과학·발효학",
+    "스포츠과학·운동학습",
+    "도시계획·공간행동학",
+    "연극학·서사이론",
+    "진화생물학·공진화",
+    "철학·인식론",
+    "인류학·문화진화론",
+    "물리학·복잡계 이론",
+    "면역학·항상성",
+    "경제사·제도경제학",
+    "게임이론·협력의 진화",
+    "수면과학·기억 공고화",
+    "동물행동학·각인 이론",
+    "기상학·카오스 이론",
+    "정보이론·엔트로피",
+]
+
+
+def _parse_yaml_list(front_matter: str, key: str) -> list[str]:
+    """YAML front matter에서 단일 라인 [a, b] 또는 멀티라인 - item 형식 파싱."""
+    items: list[str] = []
+    inline = re.search(rf"^{key}:\s*\[(.+?)\]", front_matter, re.MULTILINE)
+    if inline:
+        for item in inline.group(1).split(","):
+            val = item.strip().strip("'\"")
+            if val:
+                items.append(val)
+        return items
+    block = re.search(rf"^{key}:\s*\n((?:\s*-\s*.+\n?)+)", front_matter, re.MULTILINE)
+    if block:
+        for line in block.group(1).splitlines():
+            m = re.match(r"\s*-\s*(.+)", line)
+            if m:
+                items.append(m.group(1).strip().strip("'\""))
+    return items
+
+
+def get_existing_taxonomy() -> tuple[list[str], list[str]]:
+    """_posts/*.md 전체에서 기존 categories와 tags를 빈도순으로 반환."""
+    cat_counter: Counter = Counter()
+    tag_counter: Counter = Counter()
+    for md_file in POSTS_DIR.glob("*.md"):
+        try:
+            content = md_file.read_text(encoding="utf-8", errors="ignore")
+        except Exception:
+            continue
+        fm_match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
+        if not fm_match:
+            continue
+        fm = fm_match.group(1)
+        cat_counter.update(_parse_yaml_list(fm, "categories"))
+        tag_counter.update(_parse_yaml_list(fm, "tags"))
+    return [c for c, _ in cat_counter.most_common()], [t for t, _ in tag_counter.most_common(40)]

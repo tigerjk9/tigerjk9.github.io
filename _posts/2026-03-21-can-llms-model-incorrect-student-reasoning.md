@@ -3,6 +3,7 @@ title: "LLM은 학생들의 오개념 추론을 모방할 수 있을까? 오답 
 date: 2026-03-21 00:14:22 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, LLM, 학습과학]
+permalink: /post/can-llms-model-incorrect-student-reasoning/
 ---
 
 ## 1. 연구의 목적

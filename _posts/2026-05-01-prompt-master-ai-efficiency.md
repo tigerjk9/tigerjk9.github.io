@@ -5,6 +5,7 @@ categories: [AI, 교육]
 tags: [LLM, 프롬프트엔지니어링, 에듀테크, 생성형AI, AI협업, 교사전문성, 미래교육]
 header:
   teaser: /assets/prompt-master-ai-efficiency-thumb.png
+permalink: /post/prompt-master-ai-efficiency/
 ---
 AI 시대의 교실에서 우리는 종종 기술의 막대한 잠재력과 그 활용의 어려움 사이에서 갈팡질팡한다. AI에게 아무리 열심히 지시해도 엉뚱한 답만 내놓는다면, 과연 AI는 우리를 돕는 도구가 되는가 아니면 또 하나의 번거로움에 불과한가? 답은 우리 질문의 깊이에 있다.
 

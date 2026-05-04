@@ -3,6 +3,7 @@ title: "LLM은 어떻게 감정 개념을 이해하고 활용하는가?"
 date: 2026-04-14 13:40:39 +0900
 categories: [AI, 교육] 
 tags: [논문리뷰, AI, LLM, 감정, 인간중심AI, 프롬프트, 교육]
+permalink: /post/emotion-concepts-and-their-function-in-a-large-language-model/
 ---
 
 ## 1. 연구의 목적

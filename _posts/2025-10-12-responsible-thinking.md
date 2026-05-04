@@ -3,6 +3,7 @@ title: "교육에서 생성형 AI가 사유에 미치는 영향"
 date: 2025-10-12 09:32:00 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, 교육철학, 생성형AI, 한나아렌트, 파울루프레이리]
+permalink: /post/responsible-thinking/
 ---
 
 ## 교육에서 생성형 AI가 사유에 미치는 영향

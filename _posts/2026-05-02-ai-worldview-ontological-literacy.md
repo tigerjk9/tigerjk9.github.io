@@ -5,6 +5,7 @@ categories: [AI, 교육]
 tags: [AI, 교육, AI윤리, 교사전문성, 디지털교육, 철학, 학습과학, 생성형AI]
 header:
   teaser: /assets/ai-worldview-ontological-literacy-thumb.jpg
+permalink: /post/ai-worldview-ontological-literacy/
 ---
 우리가 교실에서 인공지능 도구를 활용할 때, 그 도구는 단순히 데이터를 처리하는 중립적인 기술에 머무르지 않는다. AI는 특정한 세계관을 내재하며, 이 세계관은 우리가 가르치고 배우는 방식에 깊은 영향을 미친다. 이 글은 AI 시스템의 내면에 감춰진 철학적 틀을 탐구하고, 현직 교사에게 요구되는 새로운 역량, 즉 **존재론적 문해력**에 대해 논한다.
 

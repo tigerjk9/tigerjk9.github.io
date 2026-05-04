@@ -3,6 +3,7 @@ title: "더 많이 계획하고, 덜 디버깅하라: AI와 메타인지 교육"
 date: 2025-10-29 09:22:00 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, 프로그래밍교육, 메타인지, AI보조학습, 에듀테크]
+permalink: /post/Plan-more-debug-less/
 ---
 
 ## 더 많이 계획하고, 덜 디버깅하라

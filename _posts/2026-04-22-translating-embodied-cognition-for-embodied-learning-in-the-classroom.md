@@ -3,6 +3,7 @@ title: "몸 기반 인지 원리가 교실 학습에 어떻게 적용될 수 있
 date: 2026-04-22 00:11:58 +0900
 categories: [교육공학, 학습과학]
 tags: [논문리뷰, 교육, 학습과학, 교육공학, 몸기반학습, 미래교육]
+permalink: /post/translating-embodied-cognition-for-embodied-learning-in-the-classroom/
 ---
 
 ## 1. 연구의 목적

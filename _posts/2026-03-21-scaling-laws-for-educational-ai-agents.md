@@ -3,6 +3,7 @@ title: "교육용 AI 에이전트의 능력은 모델 크기가 아닌 프로필
 date: 2026-03-21 00:15:57 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, 에듀테크, 생성형AI, LLM]
+permalink: /post/scaling-laws-for-educational-ai-agents/
 ---
 
 ## 1. 연구의 목적

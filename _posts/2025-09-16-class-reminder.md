@@ -3,6 +3,7 @@ title: "수업 초점 리마인더로서의 칠판"
 date: 2025-09-16 10:00:00 +0900
 categories: [교육]
 tags: [수업철학, pedagogy_in_the_loop, 디지털기반아날로그수업]
+permalink: /post/class-reminder/
 ---
 
 ## 수업 초점 리마인더로서의 칠판

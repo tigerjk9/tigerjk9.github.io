@@ -3,6 +3,7 @@ title: "AI 챗봇이 프로그래밍 학습자의 인지적 노력을 어떻게 
 date: 2026-04-22 00:19:57 +0900
 categories: [AI, 교육공학, 학습과학]
 tags: [논문리뷰, AI, 교육, 프로그래밍교육, LLM, 인간중심AI, 자기조절학습]
+permalink: /post/tracing-prompt-level-trajectories-to-understand-student-learning-with-ai-in-programming-education/
 ---
 
 ## 1. 연구의 목적

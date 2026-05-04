@@ -3,6 +3,7 @@ title: "LLM 응답 길이는 오류 감지에 대한 비판적 사고에 어떤 
 date: 2026-03-21 00:15:02 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, 생성형AI, 학습과학, LLM]
+permalink: /post/not-too-short-not-too-long/
 ---
 
 ## 1. 연구의 목적

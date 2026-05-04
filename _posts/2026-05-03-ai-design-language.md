@@ -5,6 +5,7 @@ categories: [AI, 교육공학]
 tags: [AI, LLM, 디자인시스템, 교육혁신, 프롬프트엔지니어링, UX, 개발자도구, 생성형AI]
 header:
   teaser: /assets/ai-design-language-thumb.png
+permalink: /post/ai-design-language/
 ---
 AI가 우리 삶의 곳곳에 깊이 스며든다. 특히 디지털 콘텐츠 제작 분야에서는 AI의 역할이 더욱 커진다. 디자인 작업에 AI를 활용하는 새로운 방식이 등장했는데, 이것이 바로 **DESIGN.md** 개념이다.
 

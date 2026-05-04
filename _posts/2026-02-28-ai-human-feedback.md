@@ -3,6 +3,7 @@ title: "AI 피드백과 인간 피드백은 학습 참여도에 어떤 차이를
 date: 2026-02-28 09:00:00 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, 피드백, 에듀테크, HCI, 교육공학]
+permalink: /post/ai-human-feedback/
 ---
 
 # AI 피드백과 인간 피드백은 학습 참여도에 어떤 차이를 가져올까?

@@ -3,6 +3,7 @@ title: "AI 에이전트 간의 상호 학습은 교육적 인간-AI 파트너십
 date: 2026-03-21 00:18:09 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, 학습과학, AI협업, 미래교육]
+permalink: /post/when-openclaw-agents-learn-from-each-other/
 ---
 
 ## 1. 연구의 목적

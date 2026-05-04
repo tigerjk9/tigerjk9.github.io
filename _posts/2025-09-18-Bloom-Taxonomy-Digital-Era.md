@@ -3,6 +3,7 @@ title: "디지털 시대의 Bloom의 분류법"
 date: 2025-09-19 14:50:42 +0900
 categories: [AI, 교육]
 tags: [블룸 분류법, 마르자노, AI, 교육, 학습과학]
+permalink: /post/Bloom-Taxonomy-Digital-Era/
 ---
 
 ## 1. Bloom의 분류법의 효용

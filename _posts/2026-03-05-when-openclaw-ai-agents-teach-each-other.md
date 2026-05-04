@@ -3,6 +3,7 @@ title: "AI 에이전트들은 어떻게 서로 가르치고 배우는가?"
 date: 2026-03-05 23:49:59 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, 자기조절학습, AI협업, 상호작용주의]
+permalink: /post/when-openclaw-ai-agents-teach-each-other/
 ---
 
 ## 1. 연구의 목적

@@ -5,6 +5,7 @@ categories: [AI, 교육공학]
 tags: [LLM, AI, 프롬프트엔지니어링, AI협업, 교육혁신, 메타인지, 자기조절학습, 피드백]
 header:
   teaser: /assets/llm-coding-guidelines-thumb.jpg
+permalink: /post/llm-coding-guidelines/
 ---
 AI에게 코딩을 시켜본 경험이 있는가? 시키는 대로 했을 뿐인데, 왜 항상 만족스러운 결과가 나오지 않을까? 마치 학생이 질문의 요지를 파악하지 못하고 엉뚱한 답을 늘어놓는 상황과 놀랍도록 닮았다.
 

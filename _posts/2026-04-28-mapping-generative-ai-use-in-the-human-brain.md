@@ -5,6 +5,7 @@ categories: [AI, 학습과학]
 tags: [논문리뷰, AI, 에듀테크, 학습과학, LLM, 인간중심AI, 자기조절학습, AI윤리]
 header:
   teaser: /assets/mapping-generative-ai-use-in-the-human-brain-thumb.jpg
+permalink: /post/mapping-generative-ai-use-in-the-human-brain/
 ---
 
 <figure>

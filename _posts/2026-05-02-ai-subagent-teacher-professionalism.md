@@ -5,6 +5,7 @@ categories: [AI, 교육]
 tags: [AI, 에듀테크, 교사전문성, AI협업, 프롬프트엔지니어링, 교육혁신, 인공지능, 디지털교육]
 header:
   teaser: /assets/ai-subagent-teacher-professionalism-thumb.jpg
+permalink: /post/ai-subagent-teacher-professionalism/
 ---
 
 오늘날 교실은 단순히 지식을 전달하는 공간을 넘어선다. 교사는 학습자 개개인의 성장을 돕는 동시에, 교육 과정 설계, 평가, 행정 등 다양한 역할을 수행한다. 이처럼 복잡한 교육 환경 속에서 교사는 어떻게 효율성을 높이고 자신의 전문성을 심화할 수 있을까.

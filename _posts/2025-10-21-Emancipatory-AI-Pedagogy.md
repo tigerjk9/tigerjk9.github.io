@@ -3,6 +3,7 @@ title: "AI의 가장 큰 교육적 위험은 할루시네이션이 아니다"
 date: 2025-10-21 03:10:00 +0900
 categories: [AI, 교육, 철학]
 tags: [논문리뷰, 비판적이론, 랑시에르, 지적자율성, AI리터러시, 해방적AI교육학]
+permalink: /post/Emancipatory-AI-Pedagogy/
 ---
 
 ## AI의 가장 큰 교육적 위험은 할루시네이션이 아니다

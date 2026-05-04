@@ -3,6 +3,7 @@ title: "AI는 어떤 세계관을 학습하고 우리에게 강요하는가"
 date: 2026-05-02 14:23:59 +0900
 categories: [AI, 교육공학, 학습과학, 철학]
 tags: [논문리뷰, AI, 교육공학, 학습과학, 생성형AI, AI윤리, 인간중심AI]
+permalink: /post/a-heideggerian-reading-of-machine-learning/
 ---
 
 ## 1. 연구의 목적

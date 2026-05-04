@@ -7,6 +7,7 @@ header:
   teaser: /assets/teacher-compass-future-learning-thumb.jpg
 toc: true
 toc_sticky: true
+permalink: /post/teacher-compass-future-learning/
 ---
 
 ## OECD 티칭 컴퍼스: 교육과정 변화의 주체로서 교사 재조명

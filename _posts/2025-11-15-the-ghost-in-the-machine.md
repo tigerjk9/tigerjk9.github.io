@@ -3,6 +3,7 @@ title: "바이브 코딩의 관점에서 던진 질문: 인간 본성은 과연 
 date: 2025-11-21 13:33:00 +0900
 categories: [AI, 철학, 코딩]
 tags: [논문리뷰, 생성형AI, 기만행위, 바이브코딩, AI윤리]
+permalink: /post/the-ghost-in-the-machine/
 ---
 
 ## 바이브 코딩의 관점에서 던진 질문: 인간 본성은 과연 기계 속 유령인가?

@@ -5,6 +5,7 @@ categories: [AI, 학습과학]
 tags: [논문리뷰, AI, 교육, 에듀테크, LLM, 자기조절학습]
 header:
   teaser: /assets/your-students-don-t-use-llms-like-you-wish-they-did-thumb.jpg
+permalink: /post/your-students-don-t-use-llms-like-you-wish-they-did/
 ---
 
 <figure>

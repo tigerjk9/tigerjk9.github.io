@@ -5,6 +5,7 @@ categories: [AI]
 tags: [클로드, AI, 업무자동화, 생산성향상, 코워크, Skills, 커넥터]
 header:
   teaser: /assets/claude-300-percent-utilization-thumb.jpg
+permalink: /post/claude-300-percent-utilization/
 ---
 
 AI 비서, 얼마나 똑똑하게 쓰고 있는가? 챗GPT만으로는 부족함을 느꼈다면, 클로드의 숨겨진 기능들을 파헤쳐 생산성을 극대화할 시간이다. 2026년 최신 클로드 활용법을 A부터 Z까지 완벽하게 안내한다.

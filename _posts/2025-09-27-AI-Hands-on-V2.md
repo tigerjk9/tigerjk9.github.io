@@ -3,6 +3,7 @@ title: "즐거운 AI Hands-On 체험 웹앱 V2, 온라인 교무실 배포"
 date: 2025-09-27 00:32:00 +0900
 categories: [AI, 교육]
 tags: [AI, 교육, 인공지능, 웹앱, 디지털도구, 바이브코딩]
+permalink: /post/AI-Hands-on-V2/
 ---
 
 ## 🚀 즐거운 AI Hands-On 체험 웹앱 V2 온라인 배포 안내

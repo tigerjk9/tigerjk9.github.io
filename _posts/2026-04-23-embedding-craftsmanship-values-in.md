@@ -3,6 +3,7 @@ title: "AI 교육 도구에 장인정신 가치를 어떻게 담아낼까?"
 date: 2026-04-23 21:54:04 +0900
 categories: [AI, 교육공학]
 tags: [논문리뷰, AI, 교육공학, 학습과학, 에듀테크, 인간중심AI, 장인정신]
+permalink: /post/embedding-craftsmanship-values-in/
 ---
 
 ## 1. 연구의 목적

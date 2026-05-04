@@ -3,6 +3,7 @@ title: "포토 랜드마크 탐험가 프로토타입"
 date: 2025-10-27 11:51:00 +0900
 categories: [AI, 교육]
 tags: [바이브코딩]
+permalink: /post/manage-coding/
 ---
 
 ## 포토 랜드마크 탐험가 프로토타입

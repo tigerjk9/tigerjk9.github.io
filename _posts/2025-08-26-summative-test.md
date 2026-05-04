@@ -3,6 +3,7 @@ title: "총괄평가 폐지, 그 너머"
 date: 2025-08-26 10:33:00 +0900
 categories: [AI디지털기반교육혁신]
 tags: [학습과학, 총괄평가, 교육변화]
+permalink: /post/summative-test/
 ---
 
 

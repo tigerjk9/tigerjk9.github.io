@@ -3,6 +3,7 @@ title: "디지털 시대 온라인 교수 학습법으로서 연결주의 기반
 date: 2025-09-29 16:18:00 +0900
 categories: [교육, 학습과학, AI디지털기반교육혁신]
 tags: [연결주의, 디지털교육, 미래교육, 교육설계]
+permalink: /post/Connectivism/
 ---
 
 ![장면](/assets/Paper_image.png)

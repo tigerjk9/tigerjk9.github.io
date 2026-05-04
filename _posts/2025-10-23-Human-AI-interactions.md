@@ -3,6 +3,7 @@ title: "인간-AI 상호작용: 인지적, 행동적, 정서적 영향"
 date: 2025-10-23 08:47:00 +0900
 categories: [AI]
 tags: [논문리뷰, 인간-AI상호작용, HCI, AI유도인지위축, AI죄책감]
+permalink: /post/Human-AI-interactions/
 ---
 
 ## 인간-AI 상호작용: 인지적, 행동적, 정서적 영향

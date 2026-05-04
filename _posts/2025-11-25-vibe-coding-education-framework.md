@@ -3,6 +3,7 @@ title: "바이브 코딩(Vibe Coding) 실전형 교육 프레임워크(안)"
 date: 2025-11-26 16:09:01 +0900
 categories: [교육, AI, 바이브코딩]
 tags: [바이브코딩, 교육프레임워크, T자형인재]
+permalink: /post/vibe-coding-education-framework/
 ---
 
 #  AI 시대의 실전형 교육 프레임워크: 바이브 코딩(Vibe Coding)

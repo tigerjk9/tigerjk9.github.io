@@ -3,6 +3,7 @@ title: "피상적인 산출에서 피상적인 학습으로: 교육에서 대형
 date: 2025-10-09 00:03:07 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, LLM, AI윤리, 교육공학]
+permalink: /post/superficial/
 ---
 
 ## 피상적인 산출에서 피상적인 학습으로: 교육에서 대형 언어 모델의 위험성

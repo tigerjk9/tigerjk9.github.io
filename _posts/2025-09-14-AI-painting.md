@@ -3,6 +3,7 @@ title: "AI 프롬프트의 기본 원리는 예나 지금이나 동일하다: Ch
 date: 2025-09-14 09:28:00 +0900
 categories: [AI]
 tags: [프롬프트, 이미지생성, ChatGPT, 제미나이]
+permalink: /post/AI-painting/
 ---
 
 ## AI에게 묘사하는 프롬프트의 기본 원리는 예나 지금이나 동일하다

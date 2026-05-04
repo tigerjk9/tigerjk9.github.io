@@ -3,6 +3,7 @@ title: "고등 교육에서 AI는 자기조절학습(SRL)을 어떻게 지원하
 date: 2026-03-05 00:47:14 +0900
 categories: [AI, 교육]
 tags: [논문리뷰, AI, 교육, 자기조절학습, 에듀테크, 교육공학, 메타인지, LLM]
+permalink: /post/ai-empowered-self-regulated-learning/
 ---
 
 ## 1. 연구의 목적

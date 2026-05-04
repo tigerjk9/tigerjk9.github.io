@@ -3,6 +3,7 @@ title: "AI 학습 환경에서 학습 Agency는 누구에게 있는가?"
 date: 2026-04-16 16:09:35 +0900
 categories: [AI, 교육공학]
 tags: [논문리뷰, AI, 교육공학, 자기조절학습, 에듀테크, 학습과학]
+permalink: /post/who-decides-in-ai-mediated-learning/
 ---
 
 ## 1. 연구의 목적

@@ -5,6 +5,7 @@ categories: [AI, 교육공학]
 tags: [AI, LLM, 바이브코딩, 에이전트엔지니어링, 소프트웨어3.0, 프롬프트엔지니어링, 인공지능, 미래교육]
 header:
   teaser: /assets/software-3-agent-engineering-thumb.jpg
+permalink: /post/software-3-agent-engineering/
 ---
 
 소프트웨어 개발, 이제 코딩은 뒷전인가? AI 에이전트가 등장하면서 개발 패러다임 자체가 바뀌고, 인간은 '이해'에 집중해야 한다는 주장이 나온다.

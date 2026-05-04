@@ -45,35 +45,13 @@ PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_prompt_template.txt"
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS  # noqa: E402
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_multi_prompt_template.txt"
 MERGE_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_merge_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CONTENT_CHARS = 80000
 MAX_CONTENT_CHARS_PER_URL = 40000  # 복수 URL 시 출처당 최대 글자 수
 
-CROSSOVER_DOMAINS = [
-    "신경과학",
-    "행동경제학",
-    "생태학·먹이그물 이론",
-    "언어학·인지언어학",
-    "음악이론·즉흥연주",
-    "요리과학·발효학",
-    "스포츠과학·운동학습",
-    "도시계획·공간행동학",
-    "연극학·서사이론",
-    "진화생물학·공진화",
-    "철학·인식론",
-    "인류학·문화진화론",
-    "물리학·복잡계 이론",
-    "면역학·항상성",
-    "경제사·제도경제학",
-    "게임이론·협력의 진화",
-    "수면과학·기억 공고화",
-    "동물행동학·각인 이론",
-    "기상학·카오스 이론",
-    "정보이론·엔트로피",
-]
 
 
 # ──────────────────────────────────────────────────────────────
@@ -126,45 +104,6 @@ except Exception:
     pass
 
 
-# ──────────────────────────────────────────────────────────────
-# 기존 카테고리/태그 수집
-# ──────────────────────────────────────────────────────────────
-
-def get_existing_taxonomy() -> "tuple[list[str], list[str]]":
-    cat_counter: Counter = Counter()
-    tag_counter: Counter = Counter()
-    for md_file in POSTS_DIR.glob("*.md"):
-        try:
-            content = md_file.read_text(encoding="utf-8", errors="ignore")
-        except Exception:
-            continue
-        fm_match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
-        if not fm_match:
-            continue
-        fm = fm_match.group(1)
-        cat_counter.update(_parse_yaml_list(fm, "categories"))
-        tag_counter.update(_parse_yaml_list(fm, "tags"))
-    sorted_cats = [c for c, _ in cat_counter.most_common()]
-    sorted_tags = [t for t, _ in tag_counter.most_common(40)]
-    return sorted_cats, sorted_tags
-
-
-def _parse_yaml_list(front_matter: str, key: str) -> "list[str]":
-    items: "list[str]" = []
-    inline = re.search(rf"^{key}:\s*\[(.+?)\]", front_matter, re.MULTILINE)
-    if inline:
-        for item in inline.group(1).split(","):
-            val = item.strip().strip("'\"")
-            if val:
-                items.append(val)
-        return items
-    block = re.search(rf"^{key}:\s*\n((?:\s*-\s*.+\n?)+)", front_matter, re.MULTILINE)
-    if block:
-        for line in block.group(1).splitlines():
-            m = re.match(r"\s*-\s*(.+)", line)
-            if m:
-                items.append(m.group(1).strip().strip("'\""))
-    return items
 
 
 # ──────────────────────────────────────────────────────────────

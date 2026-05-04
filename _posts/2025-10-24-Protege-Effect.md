@@ -7,6 +7,7 @@ tags:
   - 논문리뷰
   - 프로테제효과
   - 디지털스트레스
+permalink: /post/Protege-Effect/
 ---
 
 ## 프로테제 효과는 자기 자신의 변화를 담보하는가?

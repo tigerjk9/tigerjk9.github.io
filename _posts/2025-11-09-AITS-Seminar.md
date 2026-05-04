@@ -3,6 +3,7 @@ title: "2025 AITS 오프라인 세미나 후기"
 date: 2025-11-09 10:24:00 +0900
 categories: [AI, 교육]
 tags: [AI, 교육, 웰빙, 교사효능감]
+permalink: /post/AITS-Seminar/
 ---
 
 ## 2025 AITS 오프라인 세미나 후기
