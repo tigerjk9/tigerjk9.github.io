@@ -62,6 +62,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 모바일 사이드바 테마 토글 | `assets/js/sidebar-toggle.js` (`injectMobileSidebarHeader`) |
 | 본문 복사 + 링크 복사 버튼 | `assets/js/post-copy.js`, `_layouts/single.html` |
 | 사이드바 섹션 접기/펼치기 | `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html` |
+| 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
 
 **다크/라이트 모드**: `html[data-theme="light"]` CSS 레이어 방식. 컴파일된 dark skin 위에 light 오버라이드 덮기. anti-FOUC 인라인 스크립트를 `_includes/head.html` CSS `<link>` 이전에 삽입. `theme-toggle.js`는 이벤트 위임 방식 — masthead와 모바일 사이드바의 `.theme-toggle` 버튼 모두 처리.
 
@@ -74,6 +75,11 @@ bundle exec rake version        # 버전 일괄 업데이트
 **링크 복사**: 포스트 URL만 단독 복사. raw `window.location.href` 사용 (NFC 인코딩 형태). iOS Safari는 한글을 NFD로 클립보드에 저장해 카카오톡·메모앱 등 NFC 기대 환경에서 깨지므로 디코딩된 한글 URL은 모바일에서 위험. 본문 복사 안의 "원문링크:" 표시는 사람이 읽는 텍스트라 디코딩 유지. 버튼은 `.post-copy-wrap` flex 컨테이너에 본문 복사 버튼과 나란히 배치 (모바일에서는 세로 스택).
 
 **사이드바 섹션 높이**: 데스크톱 `max-height: calc(50vh - 175px) !important` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남. 내부 스크롤(얇은 4px 스크롤바) 유지.
+
+**웰빙 코너**: `assets/js/wellbeing.js`가 IIFE `(function(W){...})(window.WB = window.WB || {})`로 실행됨. 내부 `$` 헬퍼는 `id => document.getElementById(id)` (jQuery 아님). `W.init()`에서 각 모듈 호출을 개별 `try/catch`로 래핑해 한 모듈 오류가 나머지에 영향 없음.
+- **허브 페이지** (`/wellbeing/`): `wellbeing.md`에 인라인 `<style>` 블록 포함 — MM 테마 `.page__content div` 특이성(0-2-0) 극복을 위해 `.page__content .wb-*` 접두사 + `!important` 필수
+- **푸터 위치**: `_includes/footer.html` 3열 그리드 (로고 | 웰빙 | 랜덤포스트). `window.__allPosts`는 Liquid `where_exp`로 teaser 있는 포스트만 사전 필터링해 trailing comma 버그 방지
+- **CSS**: `main.scss` `.wb-footer-grid { align-items: start; grid-template-columns: 1.2fr 1.3fr 0.9fr }` — 이미지 열은 `height:110px` 고정 (aspect-ratio 금지, 컬럼 너비 비례로 과도하게 세로가 늘어남)
 
 **모바일 최적화** (`assets/css/main.scss` `@media (max-width: 1023px)` 블록):
 - 사이트 제목 한 줄 고정: `max-width: calc(100vw - 155px)` + `overflow: hidden` + `text-overflow: ellipsis` + `flex-shrink: 1` (이전 `overflow: visible` 방식 폐기)
