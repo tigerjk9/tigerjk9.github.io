@@ -107,6 +107,11 @@ sidebar:
     html: sidebar/tag_cloud.html
   - title: "최근 방문"
     html: sidebar/recent-posts.html
+  - title: "웰빙 코너"
+    html: sidebar/wellbeing.html
+
+head_scripts:
+  - /assets/js/wellbeing.js
 footer:
   links: [] 
 

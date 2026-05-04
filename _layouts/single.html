@@ -76,6 +76,15 @@ layout: default
       {% if page.share %}{% include social-share.html %}{% endif %}
 
       {% include post_pagination.html %}
+
+      <div id="wb-post-breath" class="wb-post-breath">
+        <p class="wb-post-breath__label">잠깐, 숨 고를까요?</p>
+        <div id="wb-timer-display" class="wb-timer-display">01:00</div>
+        <div class="wb-post-breath__actions">
+          <button class="wb-btn wb-btn-primary wb-breath-start" type="button">1분 호흡 시작</button>
+          <button class="wb-btn wb-breath-reset" type="button">리셋</button>
+        </div>
+      </div>
     </div>
 
     {% if site.comments.provider and page.comments %}

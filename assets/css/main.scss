@@ -1206,6 +1206,416 @@ html[data-theme="light"] .recent-posts__empty {
   color: #999;
 }
 
+// ──────────────────────────────────────────────────────────────
+// Wellbeing 기능 스타일
+// ──────────────────────────────────────────────────────────────
+
+// 마스트헤드 인사말
+.wb-greeting {
+  display: block;
+  font-size: 0.7em;
+  opacity: 0.6;
+  padding-left: 0.5rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+// 사이드바 웰빙 코너
+.wb-sidebar-affirmation {
+  padding: 0.5rem 0;
+  .wb-affirmation-text {
+    font-size: 0.85em;
+    line-height: 1.5;
+    font-style: italic;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+    min-height: 2.5em;
+  }
+}
+
+.wb-sidebar-emotion__label {
+  font-size: 0.8em;
+  opacity: 0.7;
+  margin-bottom: 0.4rem;
+}
+
+.wb-emotion-row {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.wb-emotion-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.3em;
+  padding: 0.2rem 0.3rem;
+  transition: transform 0.15s, border-color 0.15s;
+  &:hover { transform: scale(1.2); border-color: rgba(255,255,255,0.4); }
+}
+
+html[data-theme="light"] .wb-emotion-btn {
+  border-color: rgba(0,0,0,0.15);
+  &:hover { border-color: rgba(0,0,0,0.4); }
+}
+
+.wb-prescription {
+  font-size: 0.82em;
+  color: #82c8a0;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+  min-height: 1.2em;
+  opacity: 0;
+  transition: opacity 0.4s;
+  &.wb-prescription--show { opacity: 1; }
+}
+
+html[data-theme="light"] .wb-prescription { color: #2e7d52; }
+
+// 포스트 하단 호흡 컴포넌트
+.wb-post-breath {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 1px solid rgba(130, 200, 160, 0.25);
+  border-radius: 12px;
+  text-align: center;
+  background: rgba(130, 200, 160, 0.04);
+
+  .wb-post-breath__label {
+    font-size: 0.9em;
+    opacity: 0.7;
+    margin-bottom: 0.8rem;
+  }
+
+  .wb-post-breath__actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.8rem;
+  }
+}
+
+// 공통 버튼
+.wb-btn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.88em;
+  transition: background 0.2s, border-color 0.2s;
+  &:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.35); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  &.wb-btn-primary {
+    background: rgba(130, 200, 160, 0.2);
+    border-color: rgba(130, 200, 160, 0.5);
+    color: #82c8a0;
+    &:hover { background: rgba(130, 200, 160, 0.3); }
+  }
+
+  &.wb-btn-sm { padding: 0.25rem 0.6rem; font-size: 0.82em; }
+
+  &.active {
+    background: rgba(130, 200, 160, 0.2);
+    border-color: rgba(130, 200, 160, 0.5);
+  }
+}
+
+html[data-theme="light"] {
+  .wb-btn {
+    border-color: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.04);
+    &:hover { background: rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.3); }
+    &.wb-btn-primary { background: rgba(46,125,82,0.1); border-color: rgba(46,125,82,0.4); color: #2e7d52; }
+  }
+}
+
+// 타이머 디스플레이
+.wb-timer-display {
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: #82c8a0;
+  margin: 0.8rem 0;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-theme="light"] .wb-timer-display { color: #2e7d52; }
+
+// 웰빙 허브 페이지
+.wb-hub {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.wb-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 1.5rem;
+
+  &.wb-card--wide { grid-column: span 2; }
+
+  @media (max-width: 768px) {
+    &.wb-card--wide { grid-column: span 1; }
+  }
+}
+
+html[data-theme="light"] .wb-card {
+  background: rgba(0,0,0,0.02);
+  border-color: rgba(0,0,0,0.1);
+}
+
+.wb-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.wb-card-emoji { font-size: 1.3em; }
+
+.wb-card-title {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.wb-card-desc {
+  font-size: 0.83em;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.wb-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+
+// 소리 풍경 채널
+.wb-sound-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+}
+
+.wb-sound-channel {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.wb-sound-label { font-size: 0.85em; min-width: 80px; }
+
+.wb-volume-slider {
+  flex: 1;
+  accent-color: #82c8a0;
+  height: 4px;
+  cursor: pointer;
+}
+
+.wb-sound-footer {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  select {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: inherit;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.85em;
+  }
+}
+
+html[data-theme="light"] .wb-sound-footer select {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.2);
+}
+
+// 에너지 버튼
+.wb-energy-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin: 0.8rem 0;
+}
+
+.wb-energy-btn {
+  flex: 1;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0.5rem 0.2rem;
+  font-size: 1.4em;
+  text-align: center;
+  transition: transform 0.15s, border-color 0.2s, background 0.2s;
+  small { font-size: 0.45em; display: block; opacity: 0.7; }
+  &:hover { transform: scale(1.1); border-color: rgba(130,200,160,0.5); }
+  &.active { background: rgba(130,200,160,0.15); border-color: rgba(130,200,160,0.5); }
+}
+
+html[data-theme="light"] .wb-energy-btn { border-color: rgba(0,0,0,0.12); }
+
+.wb-energy-tip {
+  font-size: 0.85em;
+  color: #82c8a0;
+  min-height: 1.2em;
+  margin: 0.5rem 0;
+}
+
+html[data-theme="light"] .wb-energy-tip { color: #2e7d52; }
+
+.wb-chart-container {
+  margin-top: 1rem;
+  max-height: 180px;
+}
+
+// 감사 일기
+.wb-gratitude-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.wb-gratitude-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: inherit;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.88em;
+  resize: vertical;
+  font-family: inherit;
+  &:focus { outline: none; border-color: rgba(130,200,160,0.5); }
+}
+
+html[data-theme="light"] .wb-gratitude-input {
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.15);
+}
+
+.wb-gratitude-history {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.wb-gratitude-day {
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.82em;
+  .wb-gratitude-day__date { opacity: 0.5; margin-bottom: 0.3rem; }
+  .wb-gratitude-day__items { line-height: 1.7; }
+}
+
+// 뽀모도로
+.wb-pomo-settings {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  label { font-size: 0.85em; display: flex; align-items: center; gap: 0.3rem; }
+  input[type="number"] {
+    width: 52px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: inherit;
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
+    font-size: 0.88em;
+    text-align: center;
+  }
+}
+
+html[data-theme="light"] .wb-pomo-settings input[type="number"] {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.2);
+}
+
+.wb-pomo-status {
+  font-size: 0.82em;
+  opacity: 0.6;
+  margin: 0.2rem 0 0.6rem;
+}
+
+// 쉬는 시간 활동
+.wb-break-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.wb-break-result {
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+  min-height: 3em;
+}
+
+.wb-break-text { font-size: 0.9em; margin: 0 0 0.3rem; }
+
+.wb-break-type {
+  font-size: 0.75em;
+  background: rgba(130,200,160,0.15);
+  color: #82c8a0;
+  padding: 0.1rem 0.5rem;
+  border-radius: 20px;
+}
+
+html[data-theme="light"] .wb-break-type { background: rgba(46,125,82,0.1); color: #2e7d52; }
+
+// select 공통
+.wb-sound-select, .wb-sound-timer {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: inherit;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+html[data-theme="light"] .wb-sound-select,
+html[data-theme="light"] .wb-sound-timer {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.2);
+}
+
+// 다독임 허브
+#wb-hub-affirmation .wb-affirmation-text {
+  font-size: 0.95em;
+  font-style: italic;
+  line-height: 1.6;
+  color: #aaa;
+  min-height: 3em;
+  margin-bottom: 0.8rem;
+}
+
+html[data-theme="light"] #wb-hub-affirmation .wb-affirmation-text { color: #555; }
+
 
 /* ==========================================================================
    맨 위로 버튼
