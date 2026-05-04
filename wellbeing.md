@@ -4,11 +4,56 @@ layout: wide
 permalink: /wellbeing/
 ---
 
+<style>
+.wb-hub{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin:1.5rem 0}
+.wb-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1.5rem}
+.wb-card--wide{grid-column:span 2}
+.wb-card-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.wb-card-emoji{font-size:1.3em}
+.wb-card-title{font-size:1em;font-weight:600;margin:0;border:none;padding:0}
+.wb-card-desc{font-size:.83em;opacity:.6;margin-bottom:1rem}
+.wb-card-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+.wb-timer-display{font-size:2.5rem;font-weight:300;letter-spacing:.05em;color:#82c8a0;margin:.8rem 0;font-variant-numeric:tabular-nums}
+.wb-btn{padding:.4rem .9rem;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:inherit;cursor:pointer;font-size:.88em}
+.wb-btn:hover{background:rgba(255,255,255,.12)}
+.wb-btn:disabled{opacity:.4;cursor:not-allowed}
+.wb-btn-primary{background:rgba(130,200,160,.2);border-color:rgba(130,200,160,.5);color:#82c8a0}
+.wb-btn-sm{padding:.25rem .6rem;font-size:.82em}
+.wb-btn.active{background:rgba(130,200,160,.2);border-color:rgba(130,200,160,.5)}
+.wb-sound-channels{display:flex;flex-direction:column;gap:.6rem;margin:.8rem 0}
+.wb-sound-channel{display:flex;align-items:center;gap:.7rem}
+.wb-sound-label{font-size:.85em;min-width:80px}
+.wb-volume-slider{flex:1;accent-color:#82c8a0;cursor:pointer}
+.wb-sound-footer{margin-top:.8rem;display:flex;gap:.5rem;align-items:center}
+.wb-sound-footer select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:inherit;padding:.3rem .5rem;border-radius:6px;font-size:.85em}
+.wb-energy-buttons{display:flex;gap:.5rem;justify-content:space-between;margin:.8rem 0}
+.wb-energy-btn{flex:1;background:none;border:1px solid rgba(255,255,255,.12);border-radius:10px;cursor:pointer;padding:.5rem .2rem;font-size:1.4em;text-align:center}
+.wb-energy-tip{font-size:.85em;color:#82c8a0;min-height:1.2em;margin:.5rem 0}
+.wb-chart-container{margin-top:1rem;max-height:180px}
+.wb-gratitude-inputs{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem}
+.wb-gratitude-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:inherit;padding:.5rem .7rem;font-size:.88em;resize:vertical;font-family:inherit}
+.wb-break-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin:.8rem 0}
+.wb-break-result{margin:.8rem 0;padding:.8rem;background:rgba(255,255,255,.04);border-radius:8px;min-height:3em}
+.wb-break-text{font-size:.9em;margin:0}
+.wb-break-type{font-size:.75em;opacity:.6}
+.wb-pomo-settings{display:flex;gap:1rem;margin-bottom:.5rem}
+.wb-pomo-settings label{font-size:.85em;display:flex;align-items:center;gap:.3rem}
+.wb-pomo-settings input[type=number]{width:52px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:inherit;padding:.2rem .4rem;border-radius:6px;font-size:.88em;text-align:center}
+.wb-pomo-status{font-size:.85em;opacity:.7;margin:.3rem 0}
+.wb-emotion-row{display:flex;gap:.3rem;flex-wrap:wrap}
+.wb-emotion-btn{background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;cursor:pointer;font-size:1.3em;padding:.2rem .3rem}
+.wb-prescription{font-size:.82em;color:#82c8a0;min-height:1.2em;margin-top:.5rem;opacity:0;transition:opacity .4s}
+.wb-prescription--show{opacity:1}
+.wb-affirmation-text{font-size:.9em;font-style:italic;line-height:1.6;margin-bottom:.8rem;min-height:2em}
+.wb-sound-select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:inherit;padding:.3rem .5rem;border-radius:6px;font-size:.85em}
+@media(max-width:768px){.wb-card--wide{grid-column:span 1}}
+</style>
+
 <div class="wb-hub">
 
   <!-- 1. 1분 고요 호흡 -->
   <div class="wb-card" id="wb-hub-breath">
-    <div class="wb-card-header"><span class="wb-card-emoji">🫁</span><h3 class="wb-card-title">1분 고요 호흡</h3></div>
+    <div class="wb-card-header"><span class="wb-card-emoji">💨</span><h3 class="wb-card-title">1분 고요 호흡</h3></div>
     <p class="wb-card-desc">잠깐 멈추고 숨 한 번 고르세요.</p>
     <div class="wb-timer-display">01:00</div>
     <div class="wb-card-actions">

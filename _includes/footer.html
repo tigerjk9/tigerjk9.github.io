@@ -1,39 +1,53 @@
 <div class="page__footer-wrapper">
   <footer class="page__footer">
-    {% unless site.atom_feed.hide %}
-      {% assign show_atom = true %}
-    {% endunless %}
-    {% if site.footer.links or show_atom %}
-      {% comment %}
-        '팔로우: 피드' 섹션을 화면에 표시하지 않기 위해 주석 처리합니다.
-        <div class="page__footer-follow">
-          <ul class="social-icons">
-            {% if site.data.ui-text[site.locale].follow_label %}
-              <li><strong>{{ site.data.ui-text[site.locale].follow_label }}</strong></li>
-            {% endif %}
 
-            {% if site.footer.links %}
-              {% for link in site.footer.links %}
-                {% if link.label and link.url %}
-                  <li><a href="{{ link.url }}" rel="nofollow noopener noreferrer"><i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label | escape_once | strip }}</a></li>
-                {% endif %}
-              {% endfor %}
-            {% endif %}
+    <div class="wb-footer-grid">
 
-            {% unless site.atom_feed.hide %}
-              <li><a href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].feed_label | default: "Feed" }}</a></li>
-            {% endunless %}
-          </ul>
+      <!-- 열 1: 로고 + 저작권 -->
+      <div class="wb-footer-col wb-footer-col--logo">
+        <div class="footer-logo">
+          <a href="{{ '/' | relative_url }}" aria-label="블로그 홈으로 이동">
+            <img src="/assets/logo.jpg" alt="{{ site.name }} 로고" style="max-width:240px;width:100%;">
+          </a>
         </div>
-      {% endcomment %}
-    {% endif %}
+        <p class="page__footer-copyright">&copy; {% assign site_time = site.time | date: '%Y' %}{% if site.footer.since and site_time != site.footer.since %}{{ site.footer.since }} - {% endif %}{{ site_time }} <a href="{{ site.copyright_url | default: site.url }}">{{ site.copyright | default: site.title | escape_once | strip }}</a>.<br>Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</p>
+      </div>
 
-    <div class="footer-logo" style="text-align: left; margin-bottom: 1.5rem;">
-      <a href="{{ '/' | relative_url }}" aria-label="블로그 홈으로 이동">
-        <img src="/assets/logo.jpg" alt="{{ site.name }} 로고" style="width: 450px;">
-      </a>
+      <!-- 열 2: 웰빙 코너 -->
+      <div class="wb-footer-col wb-footer-col--wellbeing">
+        <h4 class="wb-footer-heading">웰빙 코너</h4>
+        <div class="wb-footer-affirmation">
+          <p id="wb-affirmation-text" class="wb-affirmation-text"></p>
+          <button id="wb-affirmation-btn" class="wb-btn wb-btn-sm" type="button">새 다독임</button>
+        </div>
+        <div class="wb-footer-emotion">
+          <p class="wb-footer-emotion__label">지금 어떤 날씨예요?</p>
+          <div class="wb-emotion-row">
+            <button class="wb-emotion-btn" data-emotion="sunny"        type="button" title="맑음">☀️</button>
+            <button class="wb-emotion-btn" data-emotion="cloudy_light" type="button" title="구름조금">⛅</button>
+            <button class="wb-emotion-btn" data-emotion="cloudy"       type="button" title="흐림">☁️</button>
+            <button class="wb-emotion-btn" data-emotion="rainy"        type="button" title="비">🌧️</button>
+            <button class="wb-emotion-btn" data-emotion="storm"        type="button" title="폭풍">⛈️</button>
+          </div>
+          <p class="wb-prescription"></p>
+        </div>
+      </div>
+
+      <!-- 열 3: 랜덤 포스트 이미지 -->
+      <div class="wb-footer-col wb-footer-col--random">
+        <h4 class="wb-footer-heading">오늘의 랜덤 글</h4>
+        <div id="wb-footer-post" class="wb-footer-post">
+          <p class="wb-footer-post__loading">글을 불러오는 중...</p>
+        </div>
+      </div>
+
     </div>
-    <div class="page__footer-copyright">&copy; {% assign site_time = site.time | date: '%Y' %}{% if site.footer.since and site_time != site.footer.since %}{{ site.footer.since }} - {% endif %}{{ site_time }} <a href="{{ site.copyright_url | default: site.url }}">{{ site.copyright | default: site.title | escape_once | strip }}</a>. {{ site.data.ui-text[site.locale].powered_by | default: "Powered by" }} <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
 
   </footer>
 </div>
+
+<!-- 랜덤 포스트용 데이터 -->
+<script>
+{% assign posts_with_teaser = site.posts | where_exp: "post", "post.header.teaser" %}
+window.__allPosts = [{% for post in posts_with_teaser %}{"title":{{ post.title | jsonify }},"url":"{{ post.url | relative_url }}","teaser":"{{ post.header.teaser }}"}{% unless forloop.last %},{% endunless %}{% endfor %}];
+</script>

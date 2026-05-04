@@ -771,6 +771,23 @@
     }
   };
 
+  // ===== 랜덤 포스트 (푸터) =====
+  W.randomPost = function () {
+    var container = document.getElementById('wb-footer-post');
+    if (!container) return;
+    var posts = window.__allPosts || [];
+    if (posts.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+    var post = posts[Math.floor(Math.random() * posts.length)];
+    container.innerHTML =
+      '<a class="wb-footer-post-card" href="' + post.url + '">' +
+        '<img class="wb-footer-post-card__img" src="' + post.teaser + '" alt="' + post.title + '" loading="lazy">' +
+        '<span class="wb-footer-post-card__title">' + post.title + '</span>' +
+      '</a>';
+  };
+
   // ===== 자동 초기화 =====
   W.init = function() {
     W.greeting.init();
@@ -784,6 +801,7 @@
     if ($('wb-hub-energy'))     W.energy.init();
     if ($('wb-hub-pomodoro'))   W.pomodoro.init();
     if ($('wb-hub-break'))      W.breakActivity.init();
+    W.randomPost();
   };
 
   if (document.readyState === 'loading') {
