@@ -77,11 +77,13 @@
     });
   }
 
-  // 링크 복사 버튼
+  // 링크 복사 버튼 — raw window.location.href 사용 (NFC 인코딩 형태)
+  // iOS Safari는 한글을 NFD로 클립보드에 저장하므로 디코딩된 한글 URL을 복사하면
+  // 카카오톡·메모앱 등에서 깨져 보임. 인코딩된 % 시퀀스는 모든 환경에서 안전.
   var urlBtn = document.getElementById('post-url-btn');
   if (urlBtn) {
     urlBtn.addEventListener('click', function () {
-      copyToClipboard(getDecodedUrl(), function () {
+      copyToClipboard(window.location.href, function () {
         urlBtn.innerHTML = '<i class="fas fa-fw fa-check"></i> 복사됨!';
         urlBtn.classList.add('post-copy-btn--done');
         setTimeout(function () {
