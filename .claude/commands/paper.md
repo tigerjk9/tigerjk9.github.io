@@ -1,17 +1,14 @@
 # /paper — PDF 논문 → 블로그 포스트 자동 변환
 
 ## 사용법
-/paper <PDF_경로> [PDF_경로2 ...] [옵션]
-
-**복수 PDF 예시**:
-```bash
-python scripts/pdf_to_post.py _papers/a.pdf _papers/b.pdf
-```
+/paper <PDF_경로> [옵션]
 
 ## 설명
-PDF 논문 파일을 받아 내용을 분석하고 Jekyll 블로그 포스트(`_posts/`)로 자동 변환합니다.
-**복수 PDF 지원**: 여러 논문을 공백으로 구분해 전달하면 하나의 통합 포스트로 생성합니다.
+PDF 논문 파일 하나를 받아 내용을 분석하고 Jekyll 블로그 포스트(`_posts/`)로 자동 변환합니다.
+고정 6섹션 구조로 일관된 품질의 논문 리뷰를 생성합니다.
 GEMINI_API_KEY는 프로젝트 루트의 `.env` 파일에서 자동으로 읽습니다.
+
+> 복수 PDF를 하나의 포스트로 통합하려면 `/edit-paper`를 사용하세요.
 
 ## 실행
 
@@ -26,9 +23,8 @@ python scripts/pdf_to_post.py $ARGUMENTS
 ## 동작 순서
 1. `.env`에서 GEMINI_API_KEY 자동 로드
 2. PDF에서 텍스트 추출 (pdfplumber)
-3. **단일 PDF**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장
-   **복수 PDF**: Figure 추출 생략, 각 논문 텍스트 합쳐 단일 Gemini 호출
-4. Gemini로 한국어 블로그 포스트 생성 (단일: 6개 고정 섹션, 복수: 통합 6개 섹션)
+3. PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장
+4. Gemini로 한국어 블로그 포스트 생성 (고정 6섹션)
 5. `_posts/`에 저장 후 git push
 
 ## 포스트 구조 (고정 6섹션)

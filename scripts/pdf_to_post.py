@@ -569,6 +569,12 @@ def main() -> None:
 
     is_multi = len(pdf_path_list) > 1
 
+    # /paper (--edit 없음)는 단일 PDF만 허용. 복수 PDF는 /edit-paper를 사용.
+    if is_multi and not args.edit:
+        print("[ERROR] /paper 스킬은 PDF 한 개만 지원합니다.")
+        print("        복수 PDF를 하나의 포스트로 통합하려면 /edit-paper 를 사용하세요.")
+        sys.exit(1)
+
     # ── timezone 설정 확인 및 자동 수정 ──
     config_modified = ensure_timezone_config()
 
