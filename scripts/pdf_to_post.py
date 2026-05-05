@@ -24,6 +24,7 @@ import base64
 import hashlib
 import io
 import os
+import random
 import re
 import subprocess
 import sys
@@ -52,7 +53,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers, CROSSOVER_DOMAINS  # noqa: E402
 
 
 # ──────────────────────────────────────────────────────────────
@@ -80,6 +81,8 @@ POSTS_DIR = REPO_ROOT / "_posts"
 ASSETS_DIR = REPO_ROOT / "assets"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_paper_prompt_template.txt"
+MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "paper_multi_prompt_template.txt"
+EDIT_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_paper_multi_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CHARS = 100000  # Gemini 컨텍스트 한도 초과 방지
 
@@ -294,7 +297,34 @@ def load_prompt_template(
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
     template = template.replace("{FIGURE_INSTRUCTIONS}", build_figure_instructions(figures))
+    if edit:
+        crossover_domain = random.choice(CROSSOVER_DOMAINS)
+        template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
     return template
+
+
+def load_multi_prompt_template(
+    date_str: str,
+    categories: list[str],
+    tags: list[str],
+    edit: bool = False,
+) -> "tuple[str, str]":
+    """복수 PDF용 프롬프트 템플릿 읽기 + 플레이스홀더 치환."""
+    template_path = EDIT_MULTI_PROMPT_TEMPLATE_PATH if edit else MULTI_PROMPT_TEMPLATE_PATH
+    if not template_path.exists():
+        raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
+    template = template_path.read_text(encoding="utf-8")
+
+    cats_str = ", ".join(categories) if categories else "AI, 교육"
+    tags_str = ", ".join(tags) if tags else "논문리뷰, AI, 교육"
+    time_str = datetime.now().strftime("%H:%M:%S")
+    crossover_domain = random.choice(CROSSOVER_DOMAINS)
+
+    template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
+    template = template.replace("{EXISTING_CATEGORIES}", cats_str)
+    template = template.replace("{EXISTING_TAGS}", tags_str)
+    template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
+    return template, crossover_domain
 
 
 def call_gemini_api(
@@ -302,6 +332,7 @@ def call_gemini_api(
     system_prompt: str,
     model: str,
     figures: list[dict] | None = None,
+    preamble: str = "다음은 분석할 연구 논문 전문입니다:\n\n",
 ) -> str:
     """Google Gemini SDK 호출 → 마크다운 문자열 반환. figures가 있으면 멀티모달."""
     try:
@@ -328,7 +359,7 @@ def call_gemini_api(
     )
 
     # 멀티모달 파트 구성
-    parts: list = [f"다음은 분석할 연구 논문 전문입니다:\n\n{paper_text}"]
+    parts: list = [f"{preamble}{paper_text}"]
 
     if figures:
         parts.append(
@@ -479,7 +510,11 @@ def main() -> None:
             "  python scripts/pdf_to_post.py _papers/selwyn-2025.pdf --dry-run"
         ),
     )
-    parser.add_argument("pdf_path", help="변환할 PDF 파일 경로 (예: _papers/paper.pdf)")
+    parser.add_argument(
+        "pdf_paths",
+        nargs="+",
+        help="변환할 PDF 파일 경로 (복수 가능: _papers/a.pdf _papers/b.pdf)",
+    )
     parser.add_argument(
         "--date",
         default=datetime.now().strftime("%Y-%m-%d"),
@@ -526,65 +561,116 @@ def main() -> None:
         sys.exit(1)
 
     # ── PDF 경로 확인 ──
-    pdf_path = Path(args.pdf_path)
-    if not pdf_path.exists():
-        print(f"[ERROR] 파일을 찾을 수 없습니다: {pdf_path}")
-        sys.exit(1)
+    pdf_path_list = [Path(p) for p in args.pdf_paths]
+    for p in pdf_path_list:
+        if not p.exists():
+            print(f"[ERROR] 파일을 찾을 수 없습니다: {p}")
+            sys.exit(1)
+
+    is_multi = len(pdf_path_list) > 1
 
     # ── timezone 설정 확인 및 자동 수정 ──
     config_modified = ensure_timezone_config()
 
     # ── 슬러그 결정 ──
-    slug = args.slug if args.slug else slugify(pdf_path.stem)
+    if args.slug:
+        slug = args.slug
+    elif is_multi:
+        slug = slugify("-".join(p.stem[:20] for p in pdf_path_list[:2]))
+    else:
+        slug = slugify(pdf_path_list[0].stem)
 
     # ── 기존 카테고리/태그 수집 ──
     print("[INFO] 기존 카테고리/태그 수집 중...")
     existing_cats, existing_tags = get_existing_taxonomy()
     print(f"[INFO] 기존 카테고리 {len(existing_cats)}개, 태그 {len(existing_tags)}개 확인")
 
-    # ── Figure 추출 (dry-run 시 건너뜀) ──
-    if args.dry_run:
+    if is_multi:
+        # ── 복수 PDF 모드 ──
         figures = []
-        print("[INFO] dry-run 모드: Figure 추출을 건너뜁니다.")
+        papers_texts = []
+        for pdf_path in pdf_path_list:
+            print(f"[INFO] PDF 텍스트 추출 중: {pdf_path}")
+            try:
+                raw = extract_text_from_pdf(str(pdf_path))
+            except RuntimeError as e:
+                print(f"[ERROR] {e}")
+                sys.exit(1)
+            truncated = truncate_text(raw, max_chars=MAX_CHARS // len(pdf_path_list))
+            print(f"[INFO] 추출 완료 ({len(truncated):,}자): {pdf_path.name}")
+            papers_texts.append((pdf_path.name, truncated))
+
+        combined_papers = "\n\n---\n\n".join(
+            f"### [논문 {i}] {name}\n\n{text}"
+            for i, (name, text) in enumerate(papers_texts, 1)
+        )
+
+        try:
+            system_prompt, crossover_domain = load_multi_prompt_template(
+                args.date, existing_cats, existing_tags, edit=args.edit
+            )
+            print(f"[INFO] 크로스오버 분야: {crossover_domain}")
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
+
+        try:
+            markdown_content = call_gemini_api(
+                combined_papers, system_prompt, args.model,
+                preamble="다음은 분석할 복수의 연구 논문들입니다:\n\n",
+            )
+        except RuntimeError as e:
+            print(f"[ERROR] Gemini API 호출 실패: {e}")
+            sys.exit(1)
+
+        source_label = ", ".join(p.name for p in pdf_path_list)
+
     else:
-        print(f"[INFO] PDF Figure 추출 중: {pdf_path}")
-        figures = extract_figures_from_pdf(str(pdf_path), slug)
-        if figures:
-            print(f"[INFO] {len(figures)}개 Figure 추출 완료:")
-            for fig in figures:
-                print(f"       {fig['asset_url']} (p.{fig['page']}, {fig['w']}×{fig['h']}px)")
+        # ── 단일 PDF 모드 ──
+        pdf_path = pdf_path_list[0]
+
+        # Figure 추출 (dry-run 시 건너뜀)
+        if args.dry_run:
+            figures = []
+            print("[INFO] dry-run 모드: Figure 추출을 건너뜁니다.")
         else:
-            print("[INFO] 추출된 Figure 없음 (텍스트 전용 모드)")
+            print(f"[INFO] PDF Figure 추출 중: {pdf_path}")
+            figures = extract_figures_from_pdf(str(pdf_path), slug)
+            if figures:
+                print(f"[INFO] {len(figures)}개 Figure 추출 완료:")
+                for fig in figures:
+                    print(f"       {fig['asset_url']} (p.{fig['page']}, {fig['w']}×{fig['h']}px)")
+            else:
+                print("[INFO] 추출된 Figure 없음 (텍스트 전용 모드)")
 
-    # ── PDF 텍스트 추출 ──
-    print(f"[INFO] PDF 텍스트 추출 중: {pdf_path}")
-    try:
-        raw_text = extract_text_from_pdf(str(pdf_path))
-    except RuntimeError as e:
-        print(f"[ERROR] {e}")
-        sys.exit(1)
+        print(f"[INFO] PDF 텍스트 추출 중: {pdf_path}")
+        try:
+            raw_text = extract_text_from_pdf(str(pdf_path))
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
 
-    paper_text = truncate_text(raw_text)
-    print(f"[INFO] 추출 완료 ({len(paper_text):,}자)")
+        paper_text = truncate_text(raw_text)
+        print(f"[INFO] 추출 완료 ({len(paper_text):,}자)")
 
-    # ── 프롬프트 로드 ──
-    try:
-        system_prompt = load_prompt_template(
-            args.date, existing_cats, existing_tags, figures, edit=args.edit
-        )
-    except RuntimeError as e:
-        print(f"[ERROR] {e}")
-        sys.exit(1)
+        try:
+            system_prompt = load_prompt_template(
+                args.date, existing_cats, existing_tags, figures, edit=args.edit
+            )
+        except RuntimeError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(1)
 
-    # ── Gemini API 호출 ──
-    try:
-        markdown_content = call_gemini_api(
-            paper_text, system_prompt, args.model,
-            figures=figures or None,
-        )
-    except RuntimeError as e:
-        print(f"[ERROR] Gemini API 호출 실패: {e}")
-        sys.exit(1)
+        try:
+            markdown_content = call_gemini_api(
+                paper_text, system_prompt, args.model,
+                figures=figures or None,
+            )
+        except RuntimeError as e:
+            print(f"[ERROR] Gemini API 호출 실패: {e}")
+            sys.exit(1)
+
+        source_label = pdf_path.name
 
     print("[INFO] 요약 생성 완료")
 
@@ -603,6 +689,7 @@ def main() -> None:
         markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
         img_paths = [thumb_path] if thumb_path else []
     markdown_content = inject_permalink(markdown_content, slug)
+
     # ── 파일 저장 ──
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename
@@ -610,13 +697,12 @@ def main() -> None:
 
     # ── git commit + push ──
     if not args.no_push:
-        # YAML front matter에서 title 추출
         title_match = re.search(r'^title:\s*["\']?(.+?)["\']?\s*$', markdown_content, re.MULTILINE)
         short_title = title_match.group(1)[:50] if title_match else slug
         commit_msg = (
             f"Add: {short_title}\n\n"
             f"Auto-generated by pdf_to_post.py\n"
-            f"Source: {pdf_path.name}"
+            f"Source: {source_label}"
         )
         all_files = [output_path] + [fig["local_path"] for fig in figures]
         all_files.extend(img_paths)
@@ -635,13 +721,15 @@ def main() -> None:
 
     # ── 원본 PDF 자동 삭제 (기본 동작; --keep-pdf 로 보존) ──
     if args.keep_pdf:
-        print(f"[INFO] --keep-pdf 옵션으로 원본 PDF를 보존합니다: {pdf_path}")
+        for pdf_path in pdf_path_list:
+            print(f"[INFO] --keep-pdf 옵션으로 원본 PDF를 보존합니다: {pdf_path}")
     else:
-        try:
-            pdf_path.unlink()
-            print(f"[OK] 원본 PDF 삭제 완료: {pdf_path}")
-        except Exception as e:
-            print(f"[WARN] 원본 PDF 삭제 실패: {e}")
+        for pdf_path in pdf_path_list:
+            try:
+                pdf_path.unlink()
+                print(f"[OK] 원본 PDF 삭제 완료: {pdf_path}")
+            except Exception as e:
+                print(f"[WARN] 원본 PDF 삭제 실패: {e}")
 
     print(f"\n완료! 생성된 포스트: {output_path}")
 

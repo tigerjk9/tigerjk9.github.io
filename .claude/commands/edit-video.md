@@ -36,7 +36,7 @@ python scripts/yt_to_post.py https://youtu.be/A https://youtu.be/B --edit
 2. 각 영상 메타데이터 수집 (제목·채널·날짜)
 3. 자막 다운로드 시도 (한국어 → 영어 → yt-dlp 자동자막)
 4. 자막 없으면 영상 설명(description)으로 대체
-5. Gemini로 블로그 주인장 목소리 포스트 생성 (`edit_yt_prompt_template.txt` 사용)
+5. Gemini로 블로그 주인장 목소리 포스트 생성 (단일: `edit_yt_prompt_template.txt`, 복수: `edit_yt_multi_prompt_template.txt` 사용)
 6. [IMAGE: query] 마커를 Pexels/DDG 이미지로 교체 (다중 이미지)
 7. `_posts/`에 저장 후 git push
 

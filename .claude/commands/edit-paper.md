@@ -1,10 +1,16 @@
 # /edit-paper — PDF 논문 → 블로그 포스트 (블로그 주인장 목소리 강화 버전)
 
 ## 사용법
-/edit-paper <PDF_경로> [옵션]
+/edit-paper <PDF_경로> [PDF_경로2 ...] [옵션]
+
+**복수 PDF 예시**:
+```bash
+python scripts/pdf_to_post.py _papers/a.pdf _papers/b.pdf --edit
+```
 
 ## 설명
 PDF 논문 파일을 받아 내용을 분석하고 Jekyll 블로그 포스트(`_posts/`)로 자동 변환합니다.
+**복수 PDF 지원**: 여러 논문을 공백으로 구분해 전달하면 하나의 통합 포스트로 생성합니다.
 기존 `/paper`와 달리 **블로그 주인장 목소리 강화** 프롬프트를 사용합니다.
 GEMINI_API_KEY는 프로젝트 루트의 `.env` 파일에서 자동으로 읽습니다.
 
@@ -29,8 +35,11 @@ python scripts/pdf_to_post.py $ARGUMENTS --edit
 ## 동작 순서
 1. `.env`에서 GEMINI_API_KEY 자동 로드
 2. PDF에서 텍스트 추출 (pdfplumber)
-3. PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장
-4. Gemini로 블로그 주인장 목소리 포스트 생성 (`edit_paper_prompt_template.txt` 사용)
+3. **단일 PDF**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장
+   **복수 PDF**: Figure 추출 생략, 각 논문 텍스트를 합쳐 단일 Gemini 호출
+4. Gemini로 블로그 주인장 목소리 포스트 생성
+   - 단일: `edit_paper_prompt_template.txt`
+   - 복수: `edit_paper_multi_prompt_template.txt` (논문 종합 + IMAGE 마커 + 필자 관점)
 5. [IMAGE: query] 마커를 Pexels/DDG 이미지로 교체 (다중 이미지)
 6. `_posts/`에 저장 후 git push
 
@@ -46,6 +55,9 @@ python scripts/pdf_to_post.py $ARGUMENTS --edit
 - `--dry-run` : 파일 저장 없이 출력만 (테스트용)
 - `--no-push` : git push 없이 로컬 저장만
 - `--keep-pdf`: 처리 후 원본 PDF 보존 (기본은 자동 삭제)
+- `--slug SLUG` : 파일명 슬러그 직접 지정
+- `--date YYYY-MM-DD` : 포스트 날짜 지정
+- `--model MODEL` : Gemini 모델 ID (기본값: gemini-2.5-flash)
 
 ## .env 설정
 프로젝트 루트에 `.env` 파일 생성:

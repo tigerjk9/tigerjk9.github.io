@@ -53,6 +53,7 @@ POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_yt_prompt_template.txt"
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_multi_prompt_template.txt"
+EDIT_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_yt_multi_prompt_template.txt"
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
@@ -382,10 +383,12 @@ def load_multi_prompt_template(
     sources: "list[tuple[str, dict, str]]",  # [(url, metadata, transcript), ...]
     categories: "list[str]",
     tags: "list[str]",
+    edit: bool = False,
 ) -> "tuple[str, str]":
-    if not MULTI_PROMPT_TEMPLATE_PATH.exists():
-        raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {MULTI_PROMPT_TEMPLATE_PATH}")
-    template = MULTI_PROMPT_TEMPLATE_PATH.read_text(encoding="utf-8")
+    template_path = EDIT_MULTI_PROMPT_TEMPLATE_PATH if edit else MULTI_PROMPT_TEMPLATE_PATH
+    if not template_path.exists():
+        raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
+    template = template_path.read_text(encoding="utf-8")
 
     multi_videos_blocks = []
     for i, (url, metadata, transcript) in enumerate(sources, 1):
@@ -679,7 +682,7 @@ def main() -> None:
 
         try:
             prompt, crossover_domain = load_multi_prompt_template(
-                args.date, sources, existing_cats, existing_tags,
+                args.date, sources, existing_cats, existing_tags, edit=args.edit,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:
