@@ -57,7 +57,7 @@ EDIT_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_yt_multi_prompt_template.tx
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers, download_image  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers, replace_frame_markers, download_image  # noqa: E402
 DEFAULT_MODEL = "gemini-2.0-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
 MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
@@ -251,6 +251,132 @@ def fetch_auto_captions_via_ytdlp(url: str, lang_pref: str = "ko") -> str:
         return ""
 
 
+def extract_video_frames(url: str, slug: str, n_frames: int = 4) -> "list[tuple[Path, float]]":
+    """YouTube 영상을 최저화질로 다운로드해 n_frames개 프레임을 assets/에 저장한다.
+
+    인트로(앞 10%)·아웃트로(뒤 10%)를 제외한 구간에서 균등 분포.
+    Returns: [(frame_path, timestamp_seconds), ...]
+    """
+    try:
+        import cv2
+    except ImportError:
+        print("[WARN] opencv-python-headless 미설치 - 프레임 추출 건너뜀")
+        print("       pip install opencv-python-headless")
+        return []
+
+    import tempfile as _tempfile
+
+    assets_dir = REPO_ROOT / "assets"
+    results: "list[tuple[Path, float]]" = []
+
+    print(f"[INFO] 영상 프레임 추출 중 ({n_frames}개 목표, 최저화질 다운로드)...")
+    with _tempfile.TemporaryDirectory() as tmpdir:
+        ydl_opts = {
+            "quiet": True,
+            "no_warnings": True,
+            "format": "bestvideo[height<=360][ext=mp4]/bestvideo[height<=480][ext=mp4]/worst[ext=mp4]/worst",
+            "outtmpl": str(Path(tmpdir) / "video.%(ext)s"),
+            "nocheckcertificate": True,
+        }
+        try:
+            import yt_dlp as _yt_dlp
+            with _yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+        except Exception as e:
+            print(f"[WARN] 영상 다운로드 실패: {e}")
+            return []
+
+        video_files = [
+            f for f in Path(tmpdir).iterdir()
+            if f.suffix.lower() in (".mp4", ".webm", ".mkv", ".avi")
+        ]
+        if not video_files:
+            print("[WARN] 다운로드된 영상 파일 없음 - 프레임 추출 건너뜀")
+            return []
+
+        cap = cv2.VideoCapture(str(video_files[0]))
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+        duration = total_frames / fps if fps > 0 else 0
+
+        if total_frames < 1 or duration < 15:
+            cap.release()
+            print(f"[WARN] 영상 길이 부족 ({duration:.0f}s) - 프레임 추출 건너뜀")
+            return []
+
+        timestamps = [
+            duration * (0.1 + 0.8 * i / max(n_frames - 1, 1))
+            for i in range(n_frames)
+        ]
+
+        assets_dir.mkdir(exist_ok=True)
+        for i, ts in enumerate(timestamps, 1):
+            frame_idx = min(int(ts * fps), total_frames - 1)
+            cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
+            ret, frame = cap.read()
+            if not ret:
+                print(f"[WARN] 프레임 {i} 읽기 실패 (ts={ts:.0f}s)")
+                continue
+            frame_path = assets_dir / f"{slug}-frame{i}.jpg"
+            cv2.imwrite(str(frame_path), frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
+            results.append((frame_path, ts))
+            mins, secs = divmod(int(ts), 60)
+            print(f"[OK] 프레임 {i}/{n_frames}: /assets/{frame_path.name} ({mins}:{secs:02d})")
+
+        cap.release()
+
+    return results
+
+
+def call_gemini_api_multimodal(prompt: str, model: str, image_paths: "list[Path]") -> str:
+    """Gemini 멀티모달 API 호출 (이미지 파일 + 텍스트).
+
+    이미지는 [Frame N] 레이블과 함께 프롬프트 앞에 배치된다.
+    PIL 미설치 시 genai.protos.Blob 방식으로 폴백.
+    """
+    try:
+        import google.generativeai as genai
+    except ImportError:
+        raise RuntimeError("google-generativeai 패키지가 설치되어 있지 않습니다.")
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY 환경변수가 설정되지 않았습니다.")
+    genai.configure(api_key=api_key)
+
+    try:
+        from PIL import Image as _PILImage
+        _use_pil = True
+    except ImportError:
+        _use_pil = False
+
+    parts: list = []
+    loaded = 0
+    for i, img_path in enumerate(image_paths, 1):
+        if not img_path.exists():
+            continue
+        parts.append(f"[Frame {i}]")
+        if _use_pil:
+            parts.append(_PILImage.open(str(img_path)))
+        else:
+            img_bytes = img_path.read_bytes()
+            parts.append(genai.protos.Part(
+                inline_data=genai.protos.Blob(mime_type="image/jpeg", data=img_bytes)
+            ))
+        loaded += 1
+
+    parts.append(prompt)
+
+    if loaded == 0:
+        print("[WARN] 유효한 프레임 이미지 없음 - 텍스트 전용 모드로 전환")
+        return call_gemini_api(prompt, model)
+
+    print(f"[INFO] Gemini 멀티모달 API 호출 중 ({loaded}개 프레임 + 텍스트, 모델: {model}) ...")
+    gemini_model = genai.GenerativeModel(model_name=model)
+    response = gemini_model.generate_content(parts)
+    return _strip_code_fence(response.text)
+
+
 def format_upload_date(upload_date: str) -> str:
     """YYYYMMDD → YYYY-MM-DD 변환. 변환 실패 시 원본 반환."""
     if len(upload_date) == 8 and upload_date.isdigit():
@@ -340,6 +466,7 @@ def load_prompt_template(
     categories: "list[str]",
     tags: "list[str]",
     edit: bool = False,
+    frame_info: str = "",
 ) -> "tuple[str, str]":
     """yt_prompt_template.txt 읽기 + 플레이스홀더 치환.
 
@@ -358,8 +485,13 @@ def load_prompt_template(
     upload_date_formatted = format_upload_date(metadata.get("upload_date", ""))
     transcript_section = transcript if transcript else metadata.get("description", "(자막 없음)")
 
-    # 크로스오버 분야 랜덤 선택
     crossover_domain = random.choice(CROSSOVER_DOMAINS)
+
+    # {FRAME_INFO}: 프레임이 있으면 섹션 블록 삽입, 없으면 빈 문자열
+    if frame_info:
+        frame_block = f"## 영상 프레임 (실제 캡쳐)\n\n{frame_info}\n\n---\n\n"
+    else:
+        frame_block = ""
 
     template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
     template = template.replace("{VIDEO_TITLE}", metadata.get("title", ""))
@@ -371,6 +503,7 @@ def load_prompt_template(
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
     template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
+    template = template.replace("{FRAME_INFO}", frame_block)
     return template, crossover_domain
 
 
@@ -653,6 +786,8 @@ def main() -> None:
 
     cli_slug = args.slug
     is_multi = len(args.urls) > 1
+    raw_frames: "list[tuple[Path, float]]" = []
+    frame_info = ""
 
     if is_multi:
         # ── 복수 URL: 통합 포스트 생성 ──
@@ -720,10 +855,19 @@ def main() -> None:
         if not transcript:
             print("[INFO] 자막 없음 - 영상 설명(description)으로 포스트를 생성합니다.")
 
+        if args.edit:
+            raw_frames = extract_video_frames(url, video_id, n_frames=4)
+            if raw_frames:
+                _flines = ["아래 프레임들이 영상에서 직접 캡쳐되어 첨부되어 있다:"]
+                for _fi, (_, _ts) in enumerate(raw_frames, 1):
+                    _m, _s = divmod(int(_ts), 60)
+                    _flines.append(f"- [FRAME:{_fi}] - {_m}분 {_s:02d}초 지점")
+                frame_info = "\n".join(_flines)
+
         try:
             prompt, crossover_domain = load_prompt_template(
                 args.date, metadata, transcript, existing_cats, existing_tags,
-                edit=args.edit,
+                edit=args.edit, frame_info=frame_info,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:
@@ -735,7 +879,12 @@ def main() -> None:
 
     # ── Gemini API 호출 ──
     try:
-        markdown_content = call_gemini_api(prompt, args.model)
+        if raw_frames:
+            markdown_content = call_gemini_api_multimodal(
+                prompt, args.model, [fp for fp, _ in raw_frames]
+            )
+        else:
+            markdown_content = call_gemini_api(prompt, args.model)
     except RuntimeError as e:
         print(f"[ERROR] Gemini API 호출 실패: {e}")
         sys.exit(1)
@@ -758,6 +907,15 @@ def main() -> None:
     markdown_content = remove_slug_field(markdown_content)
     print("[INFO] 포스트 생성 완료")
 
+    # 영상 프레임 파일을 최종 슬러그명으로 재명명
+    frame_results: "list[tuple[Path, float]]" = []
+    for _fi, (_old_fp, _ts) in enumerate(raw_frames, 1):
+        _new_fp = REPO_ROOT / "assets" / f"{slug}-frame{_fi}.jpg"
+        if _old_fp.exists() and _old_fp != _new_fp:
+            _old_fp.rename(_new_fp)
+        if _new_fp.exists():
+            frame_results.append((_new_fp, _ts))
+
     if args.dry_run:
         print("\n" + "=" * 60)
         print(markdown_content)
@@ -765,28 +923,34 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
-    # YouTube 썸네일 사전 수집
-    _video_ids = [m.get("id", "") for _, m, _ in sources] if is_multi else [video_id]
-    _source_images: list[Path] = []
-    print("[INFO] YouTube 썸네일 사전 수집 중...")
-    for _i, _vid in enumerate(_video_ids):
-        if not _vid:
-            continue
-        for _res in ("maxresdefault", "hqdefault"):
-            _turl = f"https://img.youtube.com/vi/{_vid}/{_res}.jpg"
-            _p = download_image(_turl, f"{slug}-src{_i + 1}", "YT-thumb")
-            if _p:
-                _source_images.append(_p)
-                break
-    if _source_images:
-        print(f"[INFO] 썸네일 {len(_source_images)}개 수집 완료")
-
-    if args.edit:
-        markdown_content, img_paths = replace_image_markers(markdown_content, slug, source_images=_source_images or None)
-        thumb_path = img_paths[0] if img_paths else None
+    if args.edit and frame_results:
+        # 영상 프레임 우선: [FRAME:N] → 실제 캡쳐, 남은 [IMAGE:] → Pexels/DDG
+        _frame_paths = [fp for fp, _ in frame_results]
+        markdown_content, frame_img_paths = replace_frame_markers(markdown_content, _frame_paths, slug)
+        markdown_content, ext_img_paths = replace_image_markers(markdown_content, slug)
+        img_paths = frame_img_paths + ext_img_paths
     else:
-        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images or None)
-        img_paths = [thumb_path] if thumb_path else []
+        # 썸네일 수집 후 기존 처리
+        _video_ids = [m.get("id", "") for _, m, _ in sources] if is_multi else [video_id]
+        _source_images: list[Path] = []
+        print("[INFO] YouTube 썸네일 사전 수집 중...")
+        for _i, _vid in enumerate(_video_ids):
+            if not _vid:
+                continue
+            for _res in ("maxresdefault", "hqdefault"):
+                _turl = f"https://img.youtube.com/vi/{_vid}/{_res}.jpg"
+                _p = download_image(_turl, f"{slug}-src{_i + 1}", "YT-thumb")
+                if _p:
+                    _source_images.append(_p)
+                    break
+        if _source_images:
+            print(f"[INFO] 썸네일 {len(_source_images)}개 수집 완료")
+
+        if args.edit:
+            markdown_content, img_paths = replace_image_markers(markdown_content, slug, source_images=_source_images or None)
+        else:
+            markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images or None)
+            img_paths = [thumb_path] if thumb_path else []
     markdown_content = inject_permalink(markdown_content, slug)
     filename = build_filename(args.date, slug)
     output_path = POSTS_DIR / filename

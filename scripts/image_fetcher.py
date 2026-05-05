@@ -420,6 +420,48 @@ def fetch_and_inject_image(
     return markdown_content, img_path
 
 
+def replace_frame_markers(
+    markdown_content: str,
+    frame_paths: "list[Path]",
+    slug: str,
+) -> "tuple[str, list[Path]]":
+    """
+    [FRAME:N] 마커를 실제 영상 캡쳐 프레임 <figure> 블록으로 교체한다.
+
+    - 마커 형식: [FRAME:N] (1-indexed)
+    - 첫 번째 사용된 프레임을 header.teaser에도 삽입
+    """
+    pattern = re.compile(r'\[FRAME:(\d+)\]')
+    markers = pattern.findall(markdown_content)
+
+    if not markers:
+        print("[INFO] [FRAME:] 마커 없음 - 프레임 삽입 건너뜀")
+        return markdown_content, []
+
+    print(f"[INFO] [FRAME:] 마커 {len(markers)}개 발견 - 프레임 교체 시작")
+    alt = _extract_title(markdown_content)
+    used_paths: list[Path] = []
+
+    def replacer(m: "re.Match[str]") -> str:
+        n = int(m.group(1)) - 1  # 0-indexed
+        if 0 <= n < len(frame_paths):
+            fp = frame_paths[n]
+            if fp.exists():
+                rel_path = f"/assets/{fp.name}"
+                used_paths.append(fp)
+                print(f"[OK] [FRAME:{n + 1}] 삽입: {rel_path}")
+                return f'\n<figure>\n<img src="{rel_path}" alt="{alt}">\n</figure>\n'
+        print(f"[WARN] [FRAME:{n + 1}] 프레임 파일 없음 - 마커 제거")
+        return ""
+
+    markdown_content = pattern.sub(replacer, markdown_content)
+
+    if used_paths:
+        markdown_content = _inject_teaser(markdown_content, f"/assets/{used_paths[0].name}")
+
+    return markdown_content, used_paths
+
+
 def inject_permalink(markdown_content: str, slug: str) -> str:
     """
     front matter에 permalink: /post/<slug>/ 자동 삽입.
