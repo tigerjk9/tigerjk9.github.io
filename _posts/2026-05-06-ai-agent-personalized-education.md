@@ -4,7 +4,14 @@ date: 2026-05-06 00:11:47 +0900
 categories: [AI, 교육공학]
 tags: [AI, 에듀테크, 미래교육, 교육공학, AI협업, 자기조절학습, AI리터러시]
 permalink: /post/ai-agent-personalized-education/
+header:
+  teaser: /assets/ai-agent-personalized-education-src1-thumb.jpg
 ---
+
+<figure>
+<img src="/assets/ai-agent-personalized-education-src1-thumb.jpg" alt="AI 에이전트, 개인 맞춤형 교육 혁신의 열쇠">
+<figcaption>Sundar Pichai Reveals What AI Will Do Next — TIME</figcaption>
+</figure>
 
 AI는 교사를 대체하는 것이 아니라, 교사를 초월하게 만든다. 2026년, **AI 에이전트**는 개인 맞춤형 학습 경험을 디자인하는 데 핵심적인 역할을 수행한다. 이 영상은 **AI 에이전트**가 교육 현장에 가져올 변화를 예측하고, 우리가 준비해야 할 윤리적·실질적 과제를 제시한다.
 
