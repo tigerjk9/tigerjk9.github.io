@@ -682,11 +682,14 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
+    # PDF figure를 소스 이미지로 전달 (단일 PDF만; 복수 모드는 figure 미추출)
+    _source_images = [fig["local_path"] for fig in figures] if not is_multi else []
+
     if args.edit:
-        markdown_content, img_paths = replace_image_markers(markdown_content, slug)
+        markdown_content, img_paths = replace_image_markers(markdown_content, slug, source_images=_source_images or None)
         thumb_path = img_paths[0] if img_paths else None
     else:
-        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images or None)
         img_paths = [thumb_path] if thumb_path else []
     markdown_content = inject_permalink(markdown_content, slug)
 

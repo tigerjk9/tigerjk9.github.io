@@ -3,9 +3,10 @@
 image_fetcher.py — 이미지 검색·삽입 공용 모듈
 
 우선순위:
-  1. ## 출처 URL에서 OG/트위터 이미지 추출
-  2. Pexels API (PEXELS_API_KEY 필요, 고품질 큐레이션)
-  3. DuckDuckGo 이미지 웹서치 (API 키 불필요, 최후 폴백)
+  1. 사용자 제공 소스 이미지 (YouTube 썸네일, PDF figure, 웹 OG 이미지)
+  2. ## 출처 URL에서 OG/트위터 이미지 추출 (source_images 미제공 시 첫 마커만)
+  3. Pexels API (PEXELS_API_KEY 필요, 고품질 큐레이션)
+  4. DuckDuckGo 이미지 웹서치 (API 키 불필요, 최후 폴백)
 
 4개 자동화 스크립트 공유.
 """
@@ -235,6 +236,13 @@ def _download_image(img_url: str, slug: str, source_label: str = "") -> Optional
         return None
 
 
+def _use_source_image(source: "Path | str", img_slug: str) -> "Optional[Path]":
+    """소스 이미지 준비. Path이면 파일 존재 확인 후 그대로 반환, URL 문자열이면 다운로드."""
+    if isinstance(source, Path):
+        return source if source.exists() else None
+    return _download_image(str(source), img_slug, source_label="source")
+
+
 # ---------------------------------------------------------------------------
 # front matter / 본문 삽입
 # ---------------------------------------------------------------------------
@@ -283,13 +291,28 @@ def _extract_title(markdown_content: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# 소스 이미지 공개 유틸
+# ---------------------------------------------------------------------------
+
+def fetch_og_image_url(page_url: str) -> "Optional[str]":
+    """HTML 페이지에서 og:image / twitter:image URL을 추출한다 (공개 인터페이스)."""
+    return _fetch_og_image_url(page_url)
+
+
+def download_image(img_url: str, slug: str, source_label: str = "") -> "Optional[Path]":
+    """이미지 URL을 다운로드해 assets/{slug}-thumb.{ext}에 저장한다 (공개 인터페이스)."""
+    return _download_image(img_url, slug, source_label)
+
+
+# ---------------------------------------------------------------------------
 # 공개 진입점
 # ---------------------------------------------------------------------------
 
 def replace_image_markers(
     markdown_content: str,
     slug: str,
-) -> tuple[str, list[Path]]:
+    source_images: "list[Path | str] | None" = None,
+) -> "tuple[str, list[Path]]":
     """
     Gemini가 본문에 삽입한 [IMAGE: query] 마커를 실제 이미지로 교체한다.
 
@@ -297,7 +320,7 @@ def replace_image_markers(
     - 각 마커를 <figure> 블록으로 교체
     - 첫 번째 이미지는 header.teaser에도 삽입
     - 이미지 파일명: {slug}-img1.jpg, {slug}-img2.jpg ...
-    - 우선순위: 출처 URL OG 이미지(첫 번째 마커만) → Pexels → DuckDuckGo
+    - 우선순위: source_images[i] → (i==0이고 source_images 없을 때) 출처 OG → Pexels → DDG
     """
     pattern = re.compile(r'\[IMAGE:\s*([^\]]+?)\s*\]')
     markers = pattern.findall(markdown_content)
@@ -307,21 +330,29 @@ def replace_image_markers(
         return markdown_content, []
 
     print(f"[INFO] [IMAGE:] 마커 {len(markers)}개 발견 - 이미지 검색 시작")
+    if source_images:
+        print(f"[INFO] 소스 이미지 {len(source_images)}개 우선 사용")
     alt = _extract_title(markdown_content)
     downloaded_paths: list[Path] = []
 
     for i, query in enumerate(markers):
         img_num = i + 1
         img_slug = f"{slug}-img{img_num}"
-        print(f"[INFO] 이미지 {img_num}/{len(markers)} 검색: {query!r}")
+        print(f"[INFO] 이미지 {img_num}/{len(markers)} 처리: {query!r}")
 
         img_path: Optional[Path] = None
 
-        # 첫 번째 마커: 출처 URL OG 이미지 우선
-        if i == 0:
+        # 1순위: 소스 이미지 (사용자 제공 URL/PDF figure/YT 썸네일)
+        if source_images and i < len(source_images):
+            img_path = _use_source_image(source_images[i], img_slug)
+            if img_path:
+                print(f"[OK] 소스 이미지 사용: /assets/{img_path.name}")
+
+        # 2순위: 출처 URL OG 이미지 (첫 마커, source_images 미제공 시에만)
+        if img_path is None and i == 0 and not source_images:
             img_path = _try_og_image(markdown_content, img_slug)
 
-        # OG 실패(또는 2번째 이후 마커): Pexels → DDG
+        # 3순위: Pexels → DDG
         if img_path is None:
             img_path = _try_pexels_image(query, img_slug) or _try_ddg_image(query, img_slug)
 
@@ -335,7 +366,7 @@ def replace_image_markers(
             print(f"[OK] 이미지 {img_num} 삽입 완료: /assets/{img_path.name}")
         else:
             markdown_content = pattern.sub("", markdown_content, count=1)
-            print(f"[WARN] 이미지 {img_num} 검색 실패 - 마커 제거")
+            print(f"[WARN] 이미지 {img_num} 처리 실패 - 마커 제거")
 
     return markdown_content, downloaded_paths
 
@@ -343,27 +374,38 @@ def replace_image_markers(
 def fetch_and_inject_image(
     markdown_content: str,
     slug: str,
-) -> tuple[str, Optional[Path]]:
+    source_images: "list[Path | str] | None" = None,
+) -> "tuple[str, Optional[Path]]":
     """
     이미지를 우선순위대로 검색해 assets/{slug}-thumb.{ext}에 저장하고
     front matter(header.teaser)와 본문(<figure>)에 삽입한다.
 
     우선순위:
-      1. ## 출처 URL에서 OG 이미지
-      2. Pexels API (PEXELS_API_KEY 필요, 고품질 큐레이션 이미지)
-      3. DuckDuckGo 이미지 웹서치 (API 키 불필요, 최후 폴백)
+      1. source_images[0] (사용자 제공 소스에서 추출한 이미지)
+      2. ## 출처 URL에서 OG 이미지
+      3. Pexels API (PEXELS_API_KEY 필요, 고품질 큐레이션 이미지)
+      4. DuckDuckGo 이미지 웹서치 (API 키 불필요, 최후 폴백)
     """
     query = _extract_query(markdown_content)
     alt = _extract_title(markdown_content)
 
-    # 1순위: 출처 URL OG 이미지
+    # 1순위: 소스 이미지 (사용자 제공)
+    if source_images:
+        img_path = _use_source_image(source_images[0], slug)
+        if img_path:
+            rel_path = f"/assets/{img_path.name}"
+            markdown_content = _inject_teaser(markdown_content, rel_path)
+            markdown_content = _inject_figure(markdown_content, rel_path, alt=alt)
+            return markdown_content, img_path
+
+    # 2순위: 출처 URL OG 이미지
     img_path = _try_og_image(markdown_content, slug)
 
-    # 2순위: Pexels (API 키 지정 고품질)
+    # 3순위: Pexels (API 키 지정 고품질)
     if img_path is None:
         img_path = _try_pexels_image(query, slug)
 
-    # 3순위: DuckDuckGo 폴백
+    # 4순위: DuckDuckGo 폴백
     if img_path is None:
         img_path = _try_ddg_image(query, slug)
 

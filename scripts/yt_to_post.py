@@ -57,7 +57,7 @@ EDIT_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_yt_multi_prompt_template.tx
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers, download_image  # noqa: E402
 DEFAULT_MODEL = "gemini-2.0-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
 MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
@@ -765,11 +765,27 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
+    # YouTube 썸네일 사전 수집
+    _video_ids = [m.get("id", "") for _, m, _ in sources] if is_multi else [video_id]
+    _source_images: list[Path] = []
+    print("[INFO] YouTube 썸네일 사전 수집 중...")
+    for _i, _vid in enumerate(_video_ids):
+        if not _vid:
+            continue
+        for _res in ("maxresdefault", "hqdefault"):
+            _turl = f"https://img.youtube.com/vi/{_vid}/{_res}.jpg"
+            _p = download_image(_turl, f"{slug}-src{_i + 1}", "YT-thumb")
+            if _p:
+                _source_images.append(_p)
+                break
+    if _source_images:
+        print(f"[INFO] 썸네일 {len(_source_images)}개 수집 완료")
+
     if args.edit:
-        markdown_content, img_paths = replace_image_markers(markdown_content, slug)
+        markdown_content, img_paths = replace_image_markers(markdown_content, slug, source_images=_source_images or None)
         thumb_path = img_paths[0] if img_paths else None
     else:
-        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug)
+        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images or None)
         img_paths = [thumb_path] if thumb_path else []
     markdown_content = inject_permalink(markdown_content, slug)
     filename = build_filename(args.date, slug)

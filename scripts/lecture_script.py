@@ -54,7 +54,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers, fetch_og_image_url, download_image  # noqa: E402
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "lecture_prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_lecture_prompt_template.txt"
@@ -658,11 +658,36 @@ def main() -> None:
         return
 
     out_path = POSTS_DIR / filename
+    # 소스 이미지 사전 수집 (YouTube 썸네일, 웹 OG 이미지)
+    _source_images: list[Path] = []
+    print("[INFO] 소스 이미지 사전 수집 중...")
+    for _i, _inp in enumerate(input_list):
+        _itype = detect_input_type(_inp)
+        if _itype == "youtube":
+            try:
+                _vid = _extract_video_id(_inp)
+                for _res in ("maxresdefault", "hqdefault"):
+                    _turl = f"https://img.youtube.com/vi/{_vid}/{_res}.jpg"
+                    _p = download_image(_turl, f"{slug}-src{_i + 1}", "YT-thumb")
+                    if _p:
+                        _source_images.append(_p)
+                        break
+            except Exception:
+                pass
+        elif _itype == "web":
+            _og_url = fetch_og_image_url(_inp)
+            if _og_url:
+                _p = download_image(_og_url, f"{slug}-src{_i + 1}", "source-OG")
+                if _p:
+                    _source_images.append(_p)
+    if _source_images:
+        print(f"[INFO] 소스 이미지 {len(_source_images)}개 수집 완료")
+
     if args.edit:
-        post_content, img_paths = replace_image_markers(post_content, slug)
+        post_content, img_paths = replace_image_markers(post_content, slug, source_images=_source_images or None)
         thumb_path = img_paths[0] if img_paths else None
     else:
-        post_content, thumb_path = fetch_and_inject_image(post_content, slug)
+        post_content, thumb_path = fetch_and_inject_image(post_content, slug, source_images=_source_images or None)
         img_paths = [thumb_path] if thumb_path else []
     post_content = inject_permalink(post_content, slug)
     out_path.write_text(post_content, encoding="utf-8")
