@@ -178,6 +178,23 @@ scripts/
 .claude/commands/paraph.md # /paraph 슬래시 커맨드
 ```
 
+### `--edit` 모드 — 영상 프레임 추출 (단일 URL 전용)
+
+`/edit-video` 스킬이 `yt_to_post.py <URL> --edit`으로 실행될 때 추가 동작:
+
+1. yt-dlp로 360p 이하 최저화질 비디오 임시 다운로드
+2. OpenCV(`cv2`)로 인트로(10%)·아웃트로(10%) 제외 구간에서 4개 프레임 균등 추출
+3. `{video_id}-frame{N}.jpg`로 임시 저장 → slug 확정 후 `{slug}-frame{N}.jpg`로 재명명
+4. 프레임 이미지를 Gemini 멀티모달 API에 전달 → `{FRAME_INFO}` 플레이스홀더에 타임스탬프 주입
+5. Gemini가 `[FRAME:N]` 마커를 본문에 삽입 → `replace_frame_markers()`가 `<figure>` 블록으로 교체
+6. 남은 `[IMAGE:]` 마커는 Pexels/DDG로 처리 (프레임이 있으면 거의 없음)
+
+**관련 함수**: `yt_to_post.py`: `extract_video_frames()`, `call_gemini_api_multimodal()`  
+**관련 함수**: `image_fetcher.py`: `replace_frame_markers()`  
+**프롬프트**: `edit_yt_prompt_template.txt` (`{FRAME_INFO}` 플레이스홀더, `[FRAME:N]` 지침 포함)  
+**새 의존성**: `opencv-python-headless>=4.8.0`, `Pillow>=10.0.0` (`requirements.txt` 추가됨)  
+**멀티 URL**: `--edit` 복수 URL 모드는 프레임 추출 없이 기존 썸네일 방식 유지
+
 ### 알려진 동작 특성
 
 - Gemini가 `date:` 연도를 임의로 바꾸는 버그 있음 → 스크립트가 생성 후 강제 복원
