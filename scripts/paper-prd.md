@@ -75,6 +75,17 @@ scripts/
 
 ---
 
+## 스킬 분리 원칙
+
+| 스킬 | PDF 입력 | 포스트 형식 |
+|------|---------|------------|
+| `/paper` | **단일 PDF 전용** | 고정 6섹션 |
+| `/edit-paper` | 단일 또는 복수 PDF | 자유 형식 (3~5섹션) |
+
+복수 PDF를 넣으면 `pdf_to_post.py`가 `is_multi and not args.edit` 조건으로 즉시 에러를 내고 `/edit-paper` 사용을 안내한다.
+
+---
+
 ## CLI 옵션
 
 ```bash
