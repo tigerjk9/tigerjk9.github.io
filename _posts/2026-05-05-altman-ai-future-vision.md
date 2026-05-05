@@ -4,7 +4,14 @@ date: 2026-05-05 23:57:39 +0900
 categories: [AI, 교육]
 tags: [AI, 논문리뷰, 미래교육, 교육혁신, 기업가정신, AI협업, 자기주도학습, 창의성]
 permalink: /post/altman-ai-future-vision/
+header:
+  teaser: /assets/altman-ai-future-vision-src1-thumb.jpg
 ---
+
+<figure>
+<img src="/assets/altman-ai-future-vision-src1-thumb.jpg" alt="AI, 인간 잠재력의 새로운 지평을 열다">
+<figcaption>Sam Altman's Vision For the Future — NothingButTech</figcaption>
+</figure>
 
 AI는 단순한 도구를 넘어 인간 잠재력을 확장하는 촉매제가 될 수 있을까? 샘 올트먼의 비전은 기술 낙관론에 기반하지만, 그 이면에는 우리가 간과해선 안 될 윤리적, 사회적 질문들이 숨어 있다. 이제 우리는 AI가 가져올 미래를 맹목적으로 수용하기보다, 그 가능성과 위험을 냉철하게 분석하고 교육 현장에 적용할 방법을 모색해야 한다.
 
