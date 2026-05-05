@@ -4,7 +4,7 @@
 모든 작업의 대상은 아래 블로그 프로젝트이다:
 
 ```
-BLOG_ROOT = "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
+BLOG_ROOT = "C:/Users/windo/Desktop/03_코딩·개발/Github Desktop/tigerjk9.github.io"
 ```
 
 ## 사용법
@@ -28,7 +28,7 @@ BLOG_ROOT = "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
 아래 명령어를 실행하세요:
 
 ```bash
-cd "I:/내 드라이브/Github Desktop/tigerjk9.github.io"
+cd "C:/Users/windo/Desktop/03_코딩·개발/Github Desktop/tigerjk9.github.io"
 python scripts/web_to_post.py $ARGUMENTS --edit
 ```
 
