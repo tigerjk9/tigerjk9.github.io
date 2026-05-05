@@ -487,11 +487,11 @@ def load_prompt_template(
 
     crossover_domain = random.choice(CROSSOVER_DOMAINS)
 
-    # {FRAME_INFO}: 프레임이 있으면 섹션 블록 삽입, 없으면 빈 문자열
+    # {FRAME_INFO}: 프레임이 있으면 섹션 블록 삽입, 없으면 [IMAGE:] 삽입 명령 주입
     if frame_info:
         frame_block = f"## 영상 프레임 (실제 캡쳐)\n\n{frame_info}\n\n---\n\n"
     else:
-        frame_block = ""
+        frame_block = "**[이미지 지침 — 프레임 없음]**: 본문 내 섹션 2~3곳의 적절한 위치에 `[IMAGE: english search query]` 마커를 삽입하라. 검색어는 구체적 영문으로 (예: `[IMAGE: AI agent classroom education]`). 한국어 검색어 금지."
 
     template = template.replace("{DATE_PLACEHOLDER}", f"{date_str} {time_str}")
     template = template.replace("{VIDEO_TITLE}", metadata.get("title", ""))
@@ -916,17 +916,17 @@ def main() -> None:
         if _new_fp.exists():
             frame_results.append((_new_fp, _ts))
 
+    # --edit 모드에서 프레임 추출 실패 시 Gemini가 삽입한 [FRAME:N] 마커 제거
+    if args.edit and not frame_results:
+        markdown_content = re.sub(r'^\[FRAME:\d+\]\s*$\n?', '', markdown_content, flags=re.MULTILINE)
+        markdown_content = re.sub(r'\n{3,}', '\n\n', markdown_content)
+
     if args.dry_run:
         print("\n" + "=" * 60)
         print(markdown_content)
         print("=" * 60)
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
-
-    # --edit 모드에서 프레임 추출 실패 시 Gemini가 삽입한 [FRAME:N] 마커 제거
-    if args.edit and not frame_results:
-        markdown_content = re.sub(r'^\[FRAME:\d+\]\s*$\n?', '', markdown_content, flags=re.MULTILINE)
-        markdown_content = re.sub(r'\n{3,}', '\n\n', markdown_content)
 
     if args.edit and frame_results:
         # 영상 프레임 우선: [FRAME:N] → 실제 캡쳐, 남은 [IMAGE:] → Pexels/DDG
@@ -953,6 +953,10 @@ def main() -> None:
 
         if args.edit:
             markdown_content, img_paths = replace_image_markers(markdown_content, slug, source_images=_source_images or None)
+            # [IMAGE:] 마커 없어 이미지 미삽입 시 → 썸네일 figure 블록 추가
+            if not img_paths and _source_images:
+                markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images)
+                img_paths = [thumb_path] if thumb_path else []
         else:
             markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images or None)
             img_paths = [thumb_path] if thumb_path else []
