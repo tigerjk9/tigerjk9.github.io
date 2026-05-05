@@ -923,6 +923,11 @@ def main() -> None:
         print("\n[dry-run] 파일 저장 및 git push를 건너뜁니다.")
         return
 
+    # --edit 모드에서 프레임 추출 실패 시 Gemini가 삽입한 [FRAME:N] 마커 제거
+    if args.edit and not frame_results:
+        markdown_content = re.sub(r'^\[FRAME:\d+\]\s*$\n?', '', markdown_content, flags=re.MULTILINE)
+        markdown_content = re.sub(r'\n{3,}', '\n\n', markdown_content)
+
     if args.edit and frame_results:
         # 영상 프레임 우선: [FRAME:N] → 실제 캡쳐, 남은 [IMAGE:] → Pexels/DDG
         _frame_paths = [fp for fp, _ in frame_results]
