@@ -200,7 +200,6 @@ def _fetch_via_jina(url: str) -> "tuple[str, str, str]":
     jina_url = f"https://r.jina.ai/{url}"
     headers = {
         "Accept": "text/plain",
-        "X-Return-Format": "text",
     }
     print("[INFO] Jina Reader로 재시도 중 (JS 렌더링 페이지 대응)...")
     resp = requests.get(jina_url, headers=headers, timeout=60)
