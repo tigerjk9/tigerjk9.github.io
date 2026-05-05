@@ -57,6 +57,7 @@ import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
 from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers  # noqa: E402
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_multi_prompt_template.txt"
+EDIT_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_web_multi_prompt_template.txt"
 MERGE_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "web_merge_prompt_template.txt"
 DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_CONTENT_CHARS = 80000
@@ -316,8 +317,7 @@ def load_multi_prompt_template(
     tags: "list[str]",
     edit: bool = False,
 ) -> "tuple[str, str]":
-    # edit 모드 multi는 edit_web_prompt_template.txt 사용 (나중 확장을 위해 파라미터만 받아 놓음)
-    template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else MULTI_PROMPT_TEMPLATE_PATH
+    template_path = EDIT_MULTI_PROMPT_TEMPLATE_PATH if edit else MULTI_PROMPT_TEMPLATE_PATH
     if not template_path.exists():
         raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
     template = template_path.read_text(encoding="utf-8")
