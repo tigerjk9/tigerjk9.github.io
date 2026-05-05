@@ -200,7 +200,8 @@ scripts/
 - Gemini가 `date:` 연도를 임의로 바꾸는 버그 있음 → 스크립트가 생성 후 강제 복원
 - 한국어 제목에서 슬러그 직접 추출 불가 → Gemini slug 생성으로 해결
 - 기업 네트워크 SSL 인증서 오류 → `ssl._create_unverified_context` + requests 세션 패치로 우회
-- **`--edit` 프레임 추출 실패 시 `[FRAME:N]` 마커 자동 제거**: 403 등으로 영상 다운로드 실패 → `frame_results` 비어 있음 → `yt_to_post.py`가 저장 전 regex로 마커 일괄 제거 (2026-05-05 추가)
+- **`--edit` 프레임 추출 실패 시 `[FRAME:N]` 마커 자동 제거**: 403 등으로 영상 다운로드 실패 → `frame_results` 비어 있음 → dry-run 이전에 regex로 마커 일괄 제거 (2026-05-05 추가)
+- **`--edit` 프레임 없을 때 다중 이미지 자동 삽입**: `{FRAME_INFO}` 비어있으면 "[이미지 지침 — 프레임 없음]" 텍스트를 프롬프트에 주입 → Gemini가 `[IMAGE:]` 마커 2~3개 생성 → Pexels/DDG 이미지로 자동 교체. `[IMAGE:]` 마커도 없으면 썸네일 `<figure>` 블록 자동 삽입 폴백 (2026-05-06 추가)
 
 ---
 
