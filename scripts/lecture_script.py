@@ -54,7 +54,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers, fetch_og_image_url, download_image  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers, fetch_og_image_url, download_image, _parse_yaml_list  # noqa: E402
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "lecture_prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_lecture_prompt_template.txt"

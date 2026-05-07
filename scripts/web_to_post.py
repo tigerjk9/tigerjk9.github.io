@@ -271,6 +271,18 @@ def fetch_web_content(url: str) -> "tuple[str, str, str]":
     return title, site_name, content_text
 
 
+def fetch_content(url_or_path: str) -> "tuple[str, str, str]":
+    """URL 또는 로컬 파일 경로에서 (title, site_name, content) 반환."""
+    p = Path(url_or_path)
+    if p.exists() and p.is_file():
+        text = p.read_text(encoding="utf-8", errors="ignore")
+        lines = text.splitlines()
+        title = lines[0].lstrip("# ").strip() if lines else p.stem
+        print(f"[INFO] 로컬 파일 읽기: {url_or_path} ({len(text):,}자)")
+        return title, p.name, text
+    return fetch_web_content(url_or_path)
+
+
 # ──────────────────────────────────────────────────────────────
 # 프롬프트 로드
 # ──────────────────────────────────────────────────────────────
@@ -588,7 +600,7 @@ def main() -> None:
         sources: "list[tuple[str, str, str, str]]" = []
         for url in args.urls:
             try:
-                title, site_name, content_text = fetch_web_content(url)
+                title, site_name, content_text = fetch_content(url)
             except Exception as e:
                 print(f"[ERROR] 웹 페이지 가져오기 실패 ({url}): {e}")
                 sys.exit(1)
@@ -654,7 +666,7 @@ def main() -> None:
         sources: "list[tuple[str, str, str, str]]" = []
         for url in args.urls:
             try:
-                title, site_name, content_text = fetch_web_content(url)
+                title, site_name, content_text = fetch_content(url)
             except Exception as e:
                 print(f"[ERROR] 웹 페이지 가져오기 실패 ({url}): {e}")
                 sys.exit(1)
@@ -679,7 +691,7 @@ def main() -> None:
         # ── 단일 URL ──
         url = args.urls[0]
         try:
-            title, site_name, content_text = fetch_web_content(url)
+            title, site_name, content_text = fetch_content(url)
         except Exception as e:
             print(f"[ERROR] 웹 페이지 가져오기 실패: {e}")
             sys.exit(1)
