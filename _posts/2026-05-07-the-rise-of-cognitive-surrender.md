@@ -8,10 +8,6 @@ header:
 permalink: /post/the-rise-of-cognitive-surrender/
 ---
 
-<figure>
-<img src="/assets/the-rise-of-cognitive-surrender-fig-1.jpg" alt="AI와 협업, 인간은 왜 '인지적 항복'을 하는가?">
-</figure>
-
 ## 1. 연구의 목적
 
 (1) 이 연구가 해결하려는 문제는 AI가 일상적인 사고 과정에 깊숙이 스며들면서 인간의 판단과 인지 과정이 어떻게 변화하는가임. 기존의 이원 시스템(System 1: 직관, System 2: 숙고) 인지 이론은 모든 인지가 뇌 내부에서 발생함을 전제함. 하지만 생성형 AI 같은 외부 인지 시스템의 등장으로 이러한 전제가 더 이상 유효하지 않게 됨. AI가 단순히 보조 도구를 넘어 능동적인 '인지 주체'가 됨에 따라, 인간의 사고 체계를 재정의할 필요성이 커짐.
