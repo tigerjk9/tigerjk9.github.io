@@ -84,6 +84,24 @@ def _load_dotenv() -> None:
 _load_dotenv()
 
 
+def _sanitize_content(content: str) -> str:
+    content = re.sub(r"\n[-]{3,}\s*$", "", content.rstrip()) + "\n"
+    lines = content.split("\n")
+    in_source = False
+    result = []
+    for line in lines:
+        if line.strip() == "## 출처":
+            in_source = True
+            result.append(line)
+            continue
+        if in_source and line.startswith("## "):
+            in_source = False
+        if in_source and re.match(r"^- https?://", line) and "<" not in line:
+            line = re.sub(r"^(- )(https?://\S+)", r"\1<\2>", line)
+        result.append(line)
+    return "\n".join(result)
+
+
 # ──────────────────────────────────────────────────────────────
 # SSL 인증서 검증 우회 (기업 네트워크 대응)
 # ──────────────────────────────────────────────────────────────
@@ -689,6 +707,7 @@ def main() -> None:
     else:
         post_content, thumb_path = fetch_and_inject_image(post_content, slug, source_images=_source_images or None)
         img_paths = [thumb_path] if thumb_path else []
+    post_content = _sanitize_content(post_content)
     post_content = inject_permalink(post_content, slug)
     out_path.write_text(post_content, encoding="utf-8")
     print(f"[OK] 저장 완료: {out_path}")

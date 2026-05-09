@@ -222,6 +222,24 @@ python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 
 ---
 
+### 클로드 AI PPT 자동화 (별도 워크플로우)
+
+Python 스크립트 없이 Claude의 Projects 기능과 디자인 시스템 파일(`getdesign.md`)을 활용해 발표 자료를 자동 생성하는 워크플로우. 위 4개 스크립트와 달리 **Claude 웹/앱 인터페이스 내에서 대화형으로 진행**한다.
+
+**준비 사항**
+
+1. Claude Project 생성 → Project Instructions에 PPT 제작 역할 및 출력 형식 지정
+2. `getdesign.md` (디자인 시스템: 색상 팔레트·타이포그래피·레이아웃 규칙) Project 파일로 업로드
+3. 원하는 주제·대상·분량 프롬프트 입력
+
+**핵심 원칙**
+
+- 모든 슬라이드 구조는 `getdesign.md` 기준을 따른다 (컬러·폰트 일관성 보장)
+- 커스터마이징 프롬프트 예시를 Project Instructions에 누적 저장해 재사용
+- Claude Artifacts로 HTML/CSS 슬라이드 초안 → 복사·수정 워크플로우
+
+---
+
 ## 환경 설정
 
 ```bash

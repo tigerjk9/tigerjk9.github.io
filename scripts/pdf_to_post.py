@@ -77,6 +77,26 @@ def _load_dotenv() -> None:
 
 
 _load_dotenv()
+
+
+def _sanitize_content(content: str) -> str:
+    content = re.sub(r"\n[-]{3,}\s*$", "", content.rstrip()) + "\n"
+    lines = content.split("\n")
+    in_source = False
+    result = []
+    for line in lines:
+        if line.strip() == "## 출처":
+            in_source = True
+            result.append(line)
+            continue
+        if in_source and line.startswith("## "):
+            in_source = False
+        if in_source and re.match(r"^- https?://", line) and "<" not in line:
+            line = re.sub(r"^(- )(https?://\S+)", r"\1<\2>", line)
+        result.append(line)
+    return "\n".join(result)
+
+
 POSTS_DIR = REPO_ROOT / "_posts"
 ASSETS_DIR = REPO_ROOT / "assets"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "prompt_template.txt"
@@ -697,6 +717,7 @@ def main() -> None:
     else:
         markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images or None)
         img_paths = [thumb_path] if thumb_path else []
+    markdown_content = _sanitize_content(markdown_content)
     markdown_content = inject_permalink(markdown_content, slug)
 
     # ── 파일 저장 ──
