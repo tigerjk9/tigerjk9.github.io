@@ -296,6 +296,7 @@ def load_prompt_template(
     categories: "list[str]",
     tags: "list[str]",
     edit: bool = False,
+    notes: str = "",
 ) -> "tuple[str, str]":
     template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else PROMPT_TEMPLATE_PATH
     if not template_path.exists():
@@ -315,6 +316,10 @@ def load_prompt_template(
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
     template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
+    if notes:
+        template = template.replace("{OWNER_NOTES}", f"\n## 블로그 주인장 메모\n\n{notes}\n")
+    else:
+        template = template.replace("{OWNER_NOTES}", "")
     return template, crossover_domain
 
 
@@ -568,6 +573,7 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true", help="_posts/ 에 저장하지 않고 터미널에 출력만")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"Gemini 모델 ID (기본값: {DEFAULT_MODEL})")
     parser.add_argument("--edit", action="store_true", help="edit 모드: 블로그 주인장 목소리 강화 프롬프트 사용")
+    parser.add_argument("--notes", default="", help="블로그 주인장 메모 — Gemini 프롬프트에 추가 맥락으로 전달")
     args = parser.parse_args()
 
     if not os.environ.get("GEMINI_API_KEY"):
@@ -705,6 +711,7 @@ def main() -> None:
                 args.date, url, title, site_name, content_text,
                 existing_cats, existing_tags,
                 edit=args.edit,
+                notes=args.notes,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:

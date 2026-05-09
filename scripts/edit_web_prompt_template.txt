@@ -29,6 +29,8 @@
 
 {PAGE_CONTENT}
 
+{OWNER_NOTES}
+
 ---
 
 ## 핵심 작업 지침 (반드시 준수)
