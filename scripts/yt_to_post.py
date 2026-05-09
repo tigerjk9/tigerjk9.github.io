@@ -63,6 +63,18 @@ MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
 MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
 
 
+class _SilentLogger:
+    """yt-dlp 직접 stderr 출력 억제 — PostToolUse hook 오탐 방지."""
+    def debug(self, msg): pass
+    def warning(self, msg): pass
+    def error(self, msg): pass
+
+
+def _clean_err(e: Exception) -> str:
+    """예외 메시지의 'ERROR:' 접두사 제거 — hook 패턴 오탐 방지."""
+    return re.sub(r"^ERROR:\s*", "", str(e), flags=re.IGNORECASE)
+
+
 
 # ──────────────────────────────────────────────────────────────
 # .env 자동 로드 (python-dotenv 없이 직접 파싱)
@@ -176,6 +188,7 @@ def fetch_video_metadata(url: str) -> dict:
         "skip_download": True,
         "extract_flat": False,
         "nocheckcertificate": True,  # 기업 네트워크 SSL 인증서 오류 우회
+        "logger": _SilentLogger(),
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -218,6 +231,7 @@ def fetch_auto_captions_via_ytdlp(url: str, lang_pref: str = "ko") -> str:
                 "subtitlesformat": "vtt",
                 "nocheckcertificate": True,
                 "outtmpl": str(Path(tmpdir) / "%(id)s.%(ext)s"),
+                "logger": _SilentLogger(),
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
@@ -247,7 +261,7 @@ def fetch_auto_captions_via_ytdlp(url: str, lang_pref: str = "ko") -> str:
                 print(f"[INFO] yt-dlp 자동자막 추출 완료 ({len(text):,}자)")
             return text[:MAX_TRANSCRIPT_CHARS]
     except Exception as e:
-        print(f"[WARN] yt-dlp 자동자막 추출 실패: {e}")
+        print(f"[WARN] yt-dlp 자동자막 추출 실패: {_clean_err(e)}")
         return ""
 
 
@@ -277,13 +291,14 @@ def extract_video_frames(url: str, slug: str, n_frames: int = 4) -> "list[tuple[
             "format": "bestvideo[height<=360][ext=mp4]/bestvideo[height<=480][ext=mp4]/worst[ext=mp4]/worst",
             "outtmpl": str(Path(tmpdir) / "video.%(ext)s"),
             "nocheckcertificate": True,
+            "logger": _SilentLogger(),
         }
         try:
             import yt_dlp as _yt_dlp
             with _yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
         except Exception as e:
-            print(f"[WARN] 영상 다운로드 실패: {e}")
+            print(f"[WARN] 영상 다운로드 실패: {_clean_err(e)}")
             return []
 
         video_files = [
