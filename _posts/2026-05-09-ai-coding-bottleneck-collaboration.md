@@ -81,5 +81,4 @@ AI는 결국 조직의 가치와 문화를 투사하는 거울이다. 투명한 
 **오늘 당장, 당신의 팀(학급, 교과 협의회)에서 가장 중요한 결정 하나를 두고 '왜 그렇게 결정했는지'를 명확하게 문서화하는 짧은 시간을 가져보라.** 이는 AI 시대 협업과 지식 관리의 첫걸음이다.
 
 ## 출처
-- https://news.hada.io/topic?id=29238&shem=dsdf,sharefoc,agadiscoversdl,,sh/x/discover/m1/4
----
+- <https://news.hada.io/topic?id=29238&shem=dsdf,sharefoc,agadiscoversdl,,sh/x/discover/m1/4>

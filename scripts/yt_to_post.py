@@ -620,6 +620,34 @@ def _fix_date(text: str, correct_date_str: str) -> str:
     )
 
 
+def _sanitize_content(content: str) -> str:
+    """출처 URL 마크다운 안전 처리 + 말미 수평선 제거.
+
+    1. 문서 말미 ---/---- 수평선 제거: Gemini가 자주 추가하는 closing separator가
+       바로 위 줄을 setext H2 헤딩으로 만드는 문제 방지.
+    2. ## 출처 섹션 bare URL을 <URL>로 감싸기: &, , 등 특수문자가 MD 파서를
+       혼란시키는 것을 방지하고 명시적 autolink로 변환.
+    """
+    # 1. 말미 수평선 제거
+    content = re.sub(r"\n[-]{3,}\s*$", "", content.rstrip()) + "\n"
+
+    # 2. ## 출처 섹션 URL 안전 처리
+    lines = content.split("\n")
+    in_source = False
+    result = []
+    for line in lines:
+        if line.strip() == "## 출처":
+            in_source = True
+            result.append(line)
+            continue
+        if in_source and line.startswith("## "):
+            in_source = False
+        if in_source and re.match(r"^- https?://", line) and "<" not in line:
+            line = re.sub(r"^(- )(https?://\S+)", r"\1<\2>", line)
+        result.append(line)
+    return "\n".join(result)
+
+
 # ──────────────────────────────────────────────────────────────
 # 포스트 생성 유틸리티
 # ──────────────────────────────────────────────────────────────
@@ -920,6 +948,7 @@ def main() -> None:
             print(f"[INFO] 슬러그 (폴백): {slug}")
 
     markdown_content = remove_slug_field(markdown_content)
+    markdown_content = _sanitize_content(markdown_content)
     print("[INFO] 포스트 생성 완료")
 
     # 영상 프레임 파일을 최종 슬러그명으로 재명명

@@ -455,6 +455,34 @@ def _fix_date(text: str, correct_date_str: str) -> str:
     )
 
 
+def _sanitize_content(content: str) -> str:
+    """출처 URL 마크다운 안전 처리 + 말미 수평선 제거.
+
+    1. 문서 말미 ---/---- 수평선 제거: Gemini가 자주 추가하는 closing separator가
+       바로 위 줄을 setext H2 헤딩으로 만드는 문제 방지.
+    2. ## 출처 섹션 bare URL을 <URL>로 감싸기: &, , 등 특수문자가 MD 파서를
+       혼란시키는 것을 방지하고 명시적 autolink로 변환.
+    """
+    # 1. 말미 수평선 제거
+    content = re.sub(r"\n[-]{3,}\s*$", "", content.rstrip()) + "\n"
+
+    # 2. ## 출처 섹션 URL 안전 처리
+    lines = content.split("\n")
+    in_source = False
+    result = []
+    for line in lines:
+        if line.strip() == "## 출처":
+            in_source = True
+            result.append(line)
+            continue
+        if in_source and line.startswith("## "):
+            in_source = False
+        if in_source and re.match(r"^- https?://", line) and "<" not in line:
+            line = re.sub(r"^(- )(https?://\S+)", r"\1<\2>", line)
+        result.append(line)
+    return "\n".join(result)
+
+
 # ──────────────────────────────────────────────────────────────
 # 포스트 생성 유틸리티
 # ──────────────────────────────────────────────────────────────
@@ -631,6 +659,7 @@ def main() -> None:
 
         # 머지 모드는 _fix_date·슬러그 로직을 건너뛴다 (프롬프트가 기존 date 보존)
         markdown_content = remove_slug_field(markdown_content)
+        markdown_content = _sanitize_content(markdown_content)
         print("[INFO] 머지 결과 생성 완료")
 
         if args.dry_run:
@@ -731,6 +760,7 @@ def main() -> None:
     # 날짜 복원
     correct_date = f"{args.date} {datetime.now().strftime('%H:%M:%S')}"
     markdown_content = _fix_date(markdown_content, correct_date)
+    markdown_content = _sanitize_content(markdown_content)
 
     # 슬러그 확정: CLI 옵션 > Gemini front matter > 제목 폴백
     if args.slug:
