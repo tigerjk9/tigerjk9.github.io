@@ -7,9 +7,5 @@ main:
     url: /tags/
   - title: "지식그래프"
     url: /knowledge-graph/
-  - title: "쉼표"
-    url: https://comma-for-wellbeing.vercel.app/
-  - title: "기록 대화"
-    url: https://dotconnector-log.vercel.app/
-  - title: "말씀의 길"
-    url: https://malsseum-ui.vercel.app/
+  - title: "바이브코딩 콜렉션"
+    url: https://vibe-project-collection.vercel.app/
