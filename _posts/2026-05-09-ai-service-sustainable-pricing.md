@@ -7,7 +7,6 @@ header:
   teaser: /assets/ai-service-sustainable-pricing-src1-thumb.jpg
 permalink: /post/ai-service-sustainable-pricing/
 ---
-```
 
 AI가 세상을 바꿀 것처럼 요란하게 등장했지만, 정작 서비스 제공자들은 '지속 가능한' 수익 모델을 찾지 못해 전전긍긍하는 모습이다. 마치 화려한 쇼핑몰에 입점했지만, 임대료를 감당하지 못해 폐업을 고민하는 상인과 같다. 이 영상은 AI 경제의 불안정한 토대를 짚으며, 그 이면에 숨겨진 기술, 윤리, 교육적 함의를 탐색한다.
 
