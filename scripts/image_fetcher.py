@@ -13,6 +13,7 @@ image_fetcher.py — 이미지 검색·삽입 공용 모듈
 
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import ssl
@@ -29,6 +30,7 @@ ASSETS_DIR = Path(__file__).parent.parent / "assets"
 POSTS_DIR = Path(__file__).parent.parent / "_posts"
 
 _SESSION: Optional[requests.Session] = None
+_USED_OG_URLS: set[str] = set()  # 세션 내 사용한 OG URL 캐시 (같은 도메인 기본값 감지)
 
 
 def _session() -> requests.Session:
@@ -105,11 +107,34 @@ def _fetch_og_image_url(page_url: str) -> Optional[str]:
     return None
 
 
+def _get_existing_src_hashes() -> set[str]:
+    """assets/ 내 기존 *-src*-thumb.* 파일의 MD5 해시 집합을 반환한다.
+    site-wide 기본 OG 이미지 감지에 사용한다."""
+    hashes: set[str] = set()
+    for f in ASSETS_DIR.glob("*-src*-thumb.*"):
+        try:
+            hashes.add(hashlib.md5(f.read_bytes()).hexdigest())
+        except Exception:
+            pass
+    return hashes
+
+
+def _is_duplicate_src_image(img_path: Path, existing_hashes: set[str]) -> bool:
+    """다운로드한 이미지가 기존 src 이미지와 동일한지 확인한다.
+    True이면 site-wide 기본값으로 간주해 폴백 처리한다."""
+    try:
+        return hashlib.md5(img_path.read_bytes()).hexdigest() in existing_hashes
+    except Exception:
+        return False
+
+
 def _try_og_image(markdown_content: str, slug: str) -> Optional[Path]:
-    """## 출처 URL들에서 OG 이미지를 시도한다."""
+    """## 출처 URL들에서 OG 이미지를 시도한다. site-wide 기본값이면 None 반환."""
     urls = _extract_source_urls(markdown_content)
     if not urls:
         return None
+
+    existing_hashes = _get_existing_src_hashes()
 
     for url in urls[:3]:
         print(f"[INFO] OG 이미지 시도: {url[:70]}...")
@@ -117,9 +142,23 @@ def _try_og_image(markdown_content: str, slug: str) -> Optional[Path]:
         if not img_url:
             continue
 
+        # 세션 내 URL 중복 → site-wide 기본값으로 추정
+        if img_url in _USED_OG_URLS:
+            print(f"[WARN] OG URL 중복 감지 - site-wide 기본값으로 추정, Pexels/DDG 폴백")
+            continue
+
         result = _download_image(img_url, slug, source_label="OG")
-        if result:
-            return result
+        if not result:
+            continue
+
+        # 파일 해시 중복 → 기존 포스트와 동일 이미지 → site-wide 기본값
+        if existing_hashes and _is_duplicate_src_image(result, existing_hashes):
+            print(f"[WARN] OG 이미지 중복 감지 (기존 포스트와 동일) - Pexels/DDG 폴백")
+            result.unlink(missing_ok=True)
+            continue
+
+        _USED_OG_URLS.add(img_url)
+        return result
 
     return None
 
@@ -300,7 +339,26 @@ def fetch_og_image_url(page_url: str) -> "Optional[str]":
 
 
 def download_image(img_url: str, slug: str, source_label: str = "") -> "Optional[Path]":
-    """이미지 URL을 다운로드해 assets/{slug}-thumb.{ext}에 저장한다 (공개 인터페이스)."""
+    """이미지 URL을 다운로드해 assets/{slug}-thumb.{ext}에 저장한다 (공개 인터페이스).
+
+    source_label에 'OG'가 포함되면 site-wide 기본값 감지를 수행한다:
+    - 세션 내 URL 중복 체크
+    - 기존 *-src*-thumb.* 파일과 MD5 해시 비교
+    중복 감지 시 파일 삭제 후 None 반환 → 호출자가 Pexels/DDG로 폴백.
+    """
+    if "OG" in source_label:
+        if img_url in _USED_OG_URLS:
+            print(f"[WARN] OG URL 중복 감지 - site-wide 기본값으로 추정, Pexels/DDG 폴백")
+            return None
+        existing_hashes = _get_existing_src_hashes()
+        result = _download_image(img_url, slug, source_label)
+        if result and existing_hashes and _is_duplicate_src_image(result, existing_hashes):
+            print(f"[WARN] OG 이미지 중복 감지 (기존 포스트와 동일) - Pexels/DDG 폴백")
+            result.unlink(missing_ok=True)
+            return None
+        if result:
+            _USED_OG_URLS.add(img_url)
+        return result
     return _download_image(img_url, slug, source_label)
 
 
