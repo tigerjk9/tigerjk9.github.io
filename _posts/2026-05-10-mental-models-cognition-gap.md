@@ -4,15 +4,9 @@ date: 2026-05-10 15:25:36 +0900
 categories: [교육, 학습과학]
 tags: [인지모형, 학습과학, 교사전문성, AI윤리, 메타인지, 학습메커니즘, 교육혁신]
 header:
-  teaser: /assets/mental-models-cognition-gap-src1-thumb.png
 permalink: /post/mental-models-cognition-gap/
 ---
 우리의 머릿속 지도는 생각보다 불완전하다. 단순히 정보를 아는 것만으로는 충분하지 않다. 복잡한 현실에서 문제를 해결하고 새로운 아이디어를 만들어내는 힘은, 지식이 어떤 구조로 조직되는지에 달렸다. 오늘 우리는 그 보이지 않는 지도를 탐구한다.
-
-
-<figure>
-<img src="/assets/mental-models-cognition-gap-src1-thumb.png" alt="알고 있다고 착각하는 당신의 뇌, 인지모형이 그 차이를 만든다">
-</figure>
 
 
 ## 1. 지식의 환상, 깊은 이해의 본질

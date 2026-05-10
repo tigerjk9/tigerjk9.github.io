@@ -4,15 +4,9 @@ date: 2026-05-10 15:20:57 +0900
 categories: [교육, 학습과학]
 tags: [학습과학, 교육혁신, 에듀테크, 교사전문성, 인지과학, AI수업, 미래교육, 교육변화]
 header:
-  teaser: /assets/learning-brain-design-src1-thumb.png
 permalink: /post/learning-brain-design/
 ---
 교실에서 우리는 종종 기이한 순간을 경험한다. 학생들은 분명 우리를 바라보고, 고개를 끄덕이며, 심지어 질문에 답한다. 그러나 잠시 후, 그들이 방금 배운 것을 완전히 잊었음을 발견한다. 우리는 기술이 이 간극을 메워줄 것이라 기대하지만, 단순히 화면을 늘린다고 학습이 깊어지는 것은 아니다. 오히려 새로운 기술은 학습의 본질에 대한 더 근본적인 질문을 던진다.
-
-
-<figure>
-<img src="/assets/learning-brain-design-src1-thumb.png" alt="보는 것과 배우는 것 사이: 뇌 과학이 이끄는 교실 혁신의 설계">
-</figure>
 
 
 ## 1. 눈과 귀가 배움을 만드는가

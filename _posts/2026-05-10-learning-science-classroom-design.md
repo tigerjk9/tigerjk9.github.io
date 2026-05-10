@@ -4,15 +4,9 @@ date: 2026-05-10 15:19:42 +0900
 categories: [교육, 학습과학]
 tags: [학습과학, 교육혁신, 교사전문성, 에듀테크, AI윤리, 전문적학습공동체, 메타인지, 피드백]
 header:
-  teaser: /assets/learning-science-classroom-design-src1-thumb.png
 permalink: /post/learning-science-classroom-design/
 ---
 때로 가장 익숙한 길이 가장 비효율적인 길임이 드러난다. 교육 현장 역시 다르지 않다. 우리는 수십 년간 쌓인 경험과 직관으로 가르치지만, 학습은 생각보다 훨씬 더 복잡하고 비선형적 과정이다.
-
-
-<figure>
-<img src="/assets/learning-science-classroom-design-src1-thumb.png" alt="교실 속 학습의 과학: 직관을 넘어 실질적 가치를 설계하는 길">
-</figure>
 
 
 ## 1. 우리는 학습의 원리를 얼마나 알고 가르치는가
