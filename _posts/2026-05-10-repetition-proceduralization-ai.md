@@ -3,16 +3,9 @@ title: "반복은 구식? AI 시대, 개념 성장의 비밀 절차화"
 date: 2026-05-10 21:49:54 +0900
 categories: [교육, AI디지털기반교육혁신]
 tags: [학습과학, 교육혁신, AI협업, 교사전문성, 인지과학, AI리터러시, 미래교육, 교육공학]
-header:
-  teaser: /assets/repetition-proceduralization-ai-src1-thumb.png
 permalink: /post/repetition-proceduralization-ai/
 ---
 ‘반복 학습’이라는 말에 불편함을 느끼는 동료들이 적지 않다. 주입식 교육의 상징처럼 여겨지기도 하고, 창의적 사고를 저해한다는 비판에 시달리기도 한다. 그러나 실질적 가치를 설계하는 전문가라면, 이 익숙한 단어 뒤에 숨은 강력한 **학습 원리**와 그 복잡한 현실을 직시해야 한다.
-
-
-<figure>
-<img src="/assets/repetition-proceduralization-ai-src1-thumb.png" alt="반복은 구식? AI 시대, 개념 성장의 비밀 절차화">
-</figure>
 
 
 ## 1. 반복, 오해를 넘어선 개념 성장의 본질
