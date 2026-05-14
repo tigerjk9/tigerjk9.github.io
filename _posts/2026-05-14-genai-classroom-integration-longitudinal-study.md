@@ -4,12 +4,12 @@ date: 2026-05-14 16:22:22 +0900
 categories: [AI, 교육공학]
 tags: [AI, 논문리뷰, 생성형AI, SAMR프레임워크, 교사전문성, 미래교육]
 header:
-  teaser: /assets/education-16-00744-fig-1.jpg
-permalink: /post/education-16-00744/
+  teaser: /assets/genai-classroom-integration-longitudinal-study-fig-1.jpg
+permalink: /post/genai-classroom-integration-longitudinal-study/
 ---
 
 <figure>
-<img src="/assets/education-16-00744-fig-1.jpg" alt="생성형 AI, 교육의 판도를 바꾸는가? 교실 통합의 종단 연구">
+<img src="/assets/genai-classroom-integration-longitudinal-study-fig-1.jpg" alt="생성형 AI, 교육의 판도를 바꾸는가? 교실 통합의 종단 연구">
 </figure>
 
 ## 1. 연구의 목적
@@ -42,7 +42,7 @@ SAMR 프레임워크는 기술이 교수학습 활동에 통합되는 정도를 
 *   **재정의(Redefinition)**: 기술 없이는 불가능했던 완전히 새로운 교수학습 활동의 창조를 가능하게 함. GenAI가 적응형 개인화 학습 환경을 제공하거나, 실시간 맞춤 피드백을 동적으로 생성하여 이전에는 상상하기 어려웠던 학습 경험을 구현하는 경우임.
 
 <figure>
-<img src="/assets/education-16-00744-fig-1.jpg" alt="SAMR 프레임워크에 따른 생성형 AI 교육 활동 분류 매트릭스">
+<img src="/assets/genai-classroom-integration-longitudinal-study-fig-1.jpg" alt="SAMR 프레임워크에 따른 생성형 AI 교육 활동 분류 매트릭스">
 <figcaption>생성형 AI의 SAMR 프레임워크 적용 (교수 및 학습 활동별)</figcaption>
 </figure>
 
@@ -80,11 +80,11 @@ GenAI 통합의 발전 궤적은 교수 활동과 학습 활동 간에 명확한
 아래는 GenAI를 활용한 SAMR 확대(Augmentation) 수준의 학습 활동 예시로, 학생들이 Ideogram을 활용하여 '성공을 돕는 신발' 이미지를 생성하는 활동임. 이는 프롬프트 작성 연습을 통해 시각적 결과물을 만들고, 학습 목표에 대한 토론의 기반을 마련함.
 
 <figure>
-<img src="/assets/education-16-00744-fig-2.jpg" alt="학생들이 Ideogram을 활용하여 자신을 돕는 신발 이미지를 생성하고 공유하는 활동 예시">
+<img src="/assets/genai-classroom-integration-longitudinal-study-fig-2.jpg" alt="학생들이 Ideogram을 활용하여 자신을 돕는 신발 이미지를 생성하고 공유하는 활동 예시">
 <figcaption>확대(Augmentation) 수준의 학습 활동 예시: AI 이미지 생성으로 목표 시각화</figcaption>
 </figure>
 <figure>
-<img src="/assets/education-16-00744-fig-3.jpg" alt="학생들이 Ideogram을 활용하여 자신을 돕는 신발 이미지 생성 및 공유 활동의 연속">
+<img src="/assets/genai-classroom-integration-longitudinal-study-fig-3.jpg" alt="학생들이 Ideogram을 활용하여 자신을 돕는 신발 이미지 생성 및 공유 활동의 연속">
 <figcaption>AI를 통한 시각적 표현으로 학습 참여 증진</figcaption>
 </figure>
 
