@@ -121,8 +121,9 @@ python scripts/pdf_to_post.py _papers/paper.pdf --keep-pdf # 원본 PDF 보존
   - 섹션 5(리뷰어 ADD One): 3항목 — 주목할 지점 / 인접 분야 연결 / 발전 아이디어
 - **형식 규칙**: 번호 체계 `(1)(2)...`는 최상위만. 하위 목록은 `-` 불릿(2칸 들여쓰기). 중첩 번호 금지
 - **문체**: 단정체(`~함·~됨·~임`). 존칭 어미(`~합니다·~됩니다`) 금지. 따옴표(' ") 금지
-- **Figure 자동 추출**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장 → 멀티모달 삽입
-- **APA 출처**: URL/DOI 미포함. Gemini가 생성하는 링크는 신뢰할 수 없으므로 텍스트 출처만 기재한다
+- **Figure 자동 추출**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장 → Gemini가 본문에 배치. `fetch_and_inject_image`는 `inject_body=False`로 호출해 본문 중복 삽입 방지 (teaser만 주입)
+- **arXiv ID / DOI 자동 추출**: `extract_paper_metadata()`가 PDF 첫 2페이지에서 `arXiv:XXXX.XXXXX` 및 `10.XXXX/...` 패턴을 추출 → `{PAPER_METADATA}` 블록으로 프롬프트에 주입 → Gemini는 이 값만 그대로 사용 (추측 금지). 추출 실패 시 생성 금지 지시 주입
+- **APA 출처**: arXiv 논문이면 추출된 ID로 `*arXiv preprint arXiv:XXXX.XXXXX*` 형식 포함. DOI도 추출 성공 시 `https://doi.org/...` 추가. 추출 실패 시 ID 완전 생략
 
 ---
 
@@ -382,7 +383,7 @@ scripts/
 
 - **검색 쿼리**: front matter `title:` 앞 3단어 + `tags:` 앞 2개 조합 (DDG·Pexels 공통)
 - **저장 위치**: `assets/{slug}-thumb.{ext}` (jpg/png/webp content-type 자동 판별)
-- **삽입 위치**: front matter `header.teaser` + 본문 첫 `##` 앞 `<figure>` 블록 (alt= 포스트 title 자동 주입)
+- **삽입 위치**: front matter `header.teaser` + 본문 첫 `##` 앞 `<figure>` 블록 (alt= 포스트 title 자동 주입). `/paper` 스킬에서 PDF figure가 추출된 경우 Gemini가 본문에 직접 배치하므로 `inject_body=False`로 teaser만 삽입
 - **노출 범위**: 본문 `<figure>`로 표시 + `_includes/seo.html`에서 OG 이미지로 송출. 리스트/프리뷰 노출 없음
 - **Windows cp949 주의**: `image_fetcher.py` print 문에 em dash(`-`) 사용 (em dash `—` 금지)
 - **기업 SSL 우회**: requests 세션 `verify=False`, DDG는 `DDGS(verify=False)` 사용
