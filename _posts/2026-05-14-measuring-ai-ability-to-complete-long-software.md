@@ -8,10 +8,6 @@ header:
 permalink: /post/measuring-ai-ability-to-complete-long-software/
 ---
 
-<figure>
-<img src="/assets/measuring-ai-ability-to-complete-long-software-fig-1.png" alt="AI 에이전트는 장기 소프트웨어 작업을 얼마나 수행하는가?">
-</figure>
-
 ## 1. 연구의 목적
 
 (1) 현재 AI 벤치마크는 실제 세상에서의 AI 능력치를 명확히 보여주지 못함. 기존 벤치마크는 인위적인 작업 위주임. 모델 역량이 급증함에도, 다른 벤치마크 간의 성능 비교가 어려워 AI 발전 현황을 직관적으로 이해하기 어려운 한계가 있음.
@@ -92,4 +88,4 @@ permalink: /post/measuring-ai-ability-to-complete-long-software/
 
 ## 출처
 
-- Kwa, T., West, B., Becker, J., Deng, A., Garcia, K., Hasin, M., ... & Ziegler, D. M. (2025). Measuring AI Ability to Complete Long Software Tasks. *arXiv preprint arXiv:2502.04499*.
+- Kwa, T., West, B., Becker, J., Deng, A., Garcia, K., Hasin, M., ... & Ziegler, D. M. (2025). Measuring AI Ability to Complete Long Software Tasks. *arXiv preprint arXiv:2503.14499*. https://arxiv.org/abs/2503.14499

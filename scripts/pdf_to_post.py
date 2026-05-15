@@ -270,6 +270,69 @@ def truncate_text(text: str, max_chars: int = MAX_CHARS) -> str:
     return text[:max_chars]
 
 
+def extract_paper_metadata(pdf_path: str) -> dict:
+    """PDF 첫 2페이지에서 arXiv ID와 DOI를 추출한다.
+
+    arXiv 워터마크는 첫 페이지 좌상단에 나타나므로 첫 2페이지만 검색한다.
+    references 섹션의 다른 논문 ID와 혼동하는 것을 방지하기 위한 범위 제한이다.
+    """
+    try:
+        import pdfplumber
+    except ImportError:
+        return {}
+
+    try:
+        with pdfplumber.open(pdf_path) as pdf:
+            first_pages = "\n".join(
+                page.extract_text() or "" for page in pdf.pages[:2]
+            )
+    except Exception:
+        return {}
+
+    metadata: dict = {}
+
+    # arXiv ID: "arXiv:2503.14499v1" 또는 "arxiv.org/abs/2503.14499"
+    arxiv_match = re.search(
+        r'arXiv[:\s]+(\d{4}\.\d{4,5})(?:v\d+)?|arxiv\.org/abs/(\d{4}\.\d{4,5})',
+        first_pages, re.IGNORECASE,
+    )
+    if arxiv_match:
+        metadata["arxiv_id"] = arxiv_match.group(1) or arxiv_match.group(2)
+
+    # DOI: "doi.org/10.xxxx/..." 또는 "DOI: 10.xxxx/..."
+    doi_match = re.search(
+        r'(?:doi\.org/|DOI:?\s*)(10\.\d{4,}/[^\s\)\]\,]+)',
+        first_pages, re.IGNORECASE,
+    )
+    if doi_match:
+        metadata["doi"] = doi_match.group(1).rstrip(".")
+
+    return metadata
+
+
+def build_metadata_instructions(metadata: dict) -> str:
+    """추출된 논문 메타데이터를 Gemini 프롬프트 지시문으로 변환한다."""
+    if not metadata:
+        return (
+            "[논문 식별자 — 자동 추출 실패]\n"
+            "이 논문의 arXiv ID와 DOI가 확인되지 않았다.\n"
+            "출처 섹션에서 arXiv ID나 DOI를 추측하거나 생성하지 않는다.\n"
+            "확인된 식별자가 없으면 venue 필드에 저널명·학술대회명만 적는다."
+        )
+
+    lines = ["[논문 식별자 — 출처 섹션에 그대로 사용, 절대 변경 금지]"]
+    if "arxiv_id" in metadata:
+        lines.append(f"arXiv ID: {metadata['arxiv_id']}")
+    if "doi" in metadata:
+        lines.append(f"DOI: {metadata['doi']}")
+    lines.append(
+        "위 식별자를 출처 APA 인용에 정확히 그대로 사용한다. "
+        "단 한 글자도 수정하지 않는다. "
+        "위에 없는 식별자(arXiv ID, DOI)는 절대 추측하거나 생성하지 않는다."
+    )
+    return "\n".join(lines)
+
+
 GITHUB_REPO_BASE = "https://github.com/tigerjk9/tigerjk9.github.io/blob/main"
 
 
@@ -302,6 +365,7 @@ def load_prompt_template(
     tags: list[str],
     figures: list[dict],
     edit: bool = False,
+    metadata: dict | None = None,
 ) -> str:
     """prompt_template.txt 읽기 + 플레이스홀더 치환."""
     template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else PROMPT_TEMPLATE_PATH
@@ -317,6 +381,7 @@ def load_prompt_template(
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
     template = template.replace("{FIGURE_INSTRUCTIONS}", build_figure_instructions(figures))
+    template = template.replace("{PAPER_METADATA}", build_metadata_instructions(metadata or {}))
     if edit:
         crossover_domain = random.choice(CROSSOVER_DOMAINS)
         template = template.replace("{CROSSOVER_DOMAIN}", crossover_domain)
@@ -669,6 +734,14 @@ def main() -> None:
             else:
                 print("[INFO] 추출된 Figure 없음 (텍스트 전용 모드)")
 
+        # ── 논문 메타데이터 추출 (arXiv ID, DOI) ─ Gemini 환각 방지 ──
+        print(f"[INFO] 논문 메타데이터 추출 중: {pdf_path}")
+        metadata = extract_paper_metadata(str(pdf_path))
+        if metadata:
+            print(f"[INFO] 메타데이터 추출 완료: {metadata}")
+        else:
+            print("[INFO] arXiv ID/DOI 미확인 — 출처 ID 생성 금지 지시 적용")
+
         print(f"[INFO] PDF 텍스트 추출 중: {pdf_path}")
         try:
             raw_text = extract_text_from_pdf(str(pdf_path))
@@ -681,7 +754,7 @@ def main() -> None:
 
         try:
             system_prompt = load_prompt_template(
-                args.date, existing_cats, existing_tags, figures, edit=args.edit
+                args.date, existing_cats, existing_tags, figures, edit=args.edit, metadata=metadata
             )
         except RuntimeError as e:
             print(f"[ERROR] {e}")
@@ -715,7 +788,12 @@ def main() -> None:
         markdown_content, img_paths = replace_image_markers(markdown_content, slug, source_images=_source_images or None)
         thumb_path = img_paths[0] if img_paths else None
     else:
-        markdown_content, thumb_path = fetch_and_inject_image(markdown_content, slug, source_images=_source_images or None)
+        # PDF figure가 추출된 경우 Gemini가 이미 본문에 배치했으므로 body 삽입 생략
+        markdown_content, thumb_path = fetch_and_inject_image(
+            markdown_content, slug,
+            source_images=_source_images or None,
+            inject_body=not bool(figures),
+        )
         img_paths = [thumb_path] if thumb_path else []
     markdown_content = _sanitize_content(markdown_content)
     markdown_content = inject_permalink(markdown_content, slug)

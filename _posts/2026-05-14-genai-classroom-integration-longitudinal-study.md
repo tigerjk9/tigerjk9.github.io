@@ -8,10 +8,6 @@ header:
 permalink: /post/genai-classroom-integration-longitudinal-study/
 ---
 
-<figure>
-<img src="/assets/genai-classroom-integration-longitudinal-study-fig-1.jpg" alt="생성형 AI, 교육의 판도를 바꾸는가? 교실 통합의 종단 연구">
-</figure>
-
 ## 1. 연구의 목적
 
 (1) 생성형 AI(GenAI)가 교육을 혁신할 것이라는 광범위한 주장에도 불구하고, 실제 교육 현장에서 GenAI가 교수학습 관행에 어떻게 통합되고 변화하는지에 대한 장기적인 경험적 증거는 부족함. 특히, 기술 통합 수준을 체계적으로 분류하는 SAMR 프레임워크를 적용하여 GenAI의 교육적 활용 변화를 종단적으로 탐색한 연구는 찾아보기 어려움. 이러한 연구 공백은 GenAI의 최적 활용 방안과 교육 정책 수립에 대한 명확한 지침 부재로 이어짐.

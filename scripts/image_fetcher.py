@@ -433,6 +433,7 @@ def fetch_and_inject_image(
     markdown_content: str,
     slug: str,
     source_images: "list[Path | str] | None" = None,
+    inject_body: bool = True,
 ) -> "tuple[str, Optional[Path]]":
     """
     이미지를 우선순위대로 검색해 assets/{slug}-thumb.{ext}에 저장하고
@@ -443,6 +444,9 @@ def fetch_and_inject_image(
       2. ## 출처 URL에서 OG 이미지
       3. Pexels API (PEXELS_API_KEY 필요, 고품질 큐레이션 이미지)
       4. DuckDuckGo 이미지 웹서치 (API 키 불필요, 최후 폴백)
+
+    inject_body=False이면 teaser만 삽입하고 본문 <figure>는 건너뜀.
+    PDF figure처럼 Gemini가 이미 본문에 배치한 경우에 사용한다.
     """
     query = _extract_query(markdown_content)
     alt = _extract_title(markdown_content)
@@ -453,7 +457,8 @@ def fetch_and_inject_image(
         if img_path:
             rel_path = f"/assets/{img_path.name}"
             markdown_content = _inject_teaser(markdown_content, rel_path)
-            markdown_content = _inject_figure(markdown_content, rel_path, alt=alt)
+            if inject_body:
+                markdown_content = _inject_figure(markdown_content, rel_path, alt=alt)
             return markdown_content, img_path
 
     # 2순위: 출처 URL OG 이미지
