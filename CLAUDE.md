@@ -122,6 +122,7 @@ python scripts/pdf_to_post.py _papers/paper.pdf --keep-pdf # 원본 PDF 보존
 - **형식 규칙**: 번호 체계 `(1)(2)...`는 최상위만. 하위 목록은 `-` 불릿(2칸 들여쓰기). 중첩 번호 금지
 - **문체**: 단정체(`~함·~됨·~임`). 존칭 어미(`~합니다·~됩니다`) 금지. 따옴표(' ") 금지
 - **Figure 자동 추출**: PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장 → Gemini가 본문에 배치. `fetch_and_inject_image`는 `inject_body=False`로 호출해 본문 중복 삽입 방지 (teaser만 주입)
+- **Figure 참조 환각 후처리 (필수)**: Gemini가 실제 추출본 수(최대 6개)를 초과하는 `fig-7`·`fig-8` 등을 본문 `<figure>`에 참조하는 환각이 잦다(추출본 일부는 미사용으로 남음). 스크립트가 그대로 commit·push하므로 배포 시 404. `/paper` 실행 직후 **항상** 본문 `<img src=...-fig-N>` 목록과 `assets/<slug>-fig-*` 실제 파일을 대조 → 미존재 참조는 미사용 추출본으로 교체하되 **이미지를 직접 Read로 확인해 캡션을 실제 내용에 맞게 정직하게 재작성**(환각 캡션 금지) → 그림 번호 `1..N` 순차 정렬 → 별도 커밋. 콜론 헤딩 `## 5. 리뷰어의 ADD(+) One: 생각 더하기`는 46개 기존 포스트 공유 고정 템플릿이라 S1 예외로 유지. (2026-05-17 세션 정착)
 - **arXiv ID / DOI 자동 추출**: `extract_paper_metadata()`가 PDF 첫 2페이지에서 `arXiv:XXXX.XXXXX` 및 `10.XXXX/...` 패턴을 추출 → `{PAPER_METADATA}` 블록으로 프롬프트에 주입 → Gemini는 이 값만 그대로 사용 (추측 금지). 추출 실패 시 생성 금지 지시 주입
 - **APA 출처**: arXiv 논문이면 추출된 ID로 `*arXiv preprint arXiv:XXXX.XXXXX*` 형식 포함. DOI도 추출 성공 시 `https://doi.org/...` 추가. 추출 실패 시 ID 완전 생략
 
