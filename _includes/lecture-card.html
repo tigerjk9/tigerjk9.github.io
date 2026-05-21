@@ -1,0 +1,8 @@
+{% assign feature = include.feature %}
+{% assign lecture_slug = include.lecture_slug %}
+<a href="/lectures/{{ lecture_slug }}/{{ feature.slug }}/" class="lecture-card">
+  <div class="card-id">{{ feature.id }}</div>
+  <div class="card-title">{{ feature.name }}</div>
+  <div class="card-def">{{ feature.def | truncate: 80 }}</div>
+  <span class="card-track">{{ feature.track }}</span>
+</a>

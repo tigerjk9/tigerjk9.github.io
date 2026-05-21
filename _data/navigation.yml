@@ -9,3 +9,5 @@ main:
     url: /knowledge-graph/
   - title: "바이브코딩 콜렉션"
     url: https://vibe-project-collection.vercel.app/
+  - title: "강의자료"
+    url: /lectures/

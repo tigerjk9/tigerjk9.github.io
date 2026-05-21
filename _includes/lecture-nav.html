@@ -1,0 +1,19 @@
+{% if page.lecture_slug %}
+{% assign all_features = site.lectures | where: "lecture_slug", page.lecture_slug | sort: "order" %}
+{% assign idx = 0 %}
+{% for f in all_features %}{% if f.url == page.url %}{% assign idx = forloop.index0 %}{% endif %}{% endfor %}
+{% assign prev_idx = idx | minus: 1 %}
+{% assign next_idx = idx | plus: 1 %}
+
+<nav class="lecture-feature-nav" aria-label="기능 페이지 이동">
+  {% if prev_idx >= 0 %}
+    {% assign prev = all_features[prev_idx] %}
+    <a href="{{ prev.url }}" rel="prev">← {{ prev.feature_name }}</a>
+  {% endif %}
+  <a href="/lectures/{{ page.lecture_slug }}/">↑ 허브로</a>
+  {% if next_idx < all_features.size %}
+    {% assign nxt = all_features[next_idx] %}
+    <a href="{{ nxt.url }}" rel="next">{{ nxt.feature_name }} →</a>
+  {% endif %}
+</nav>
+{% endif %}
