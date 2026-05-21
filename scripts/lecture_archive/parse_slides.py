@@ -44,3 +44,48 @@ def parse_html(html: str) -> List[Dict[str, Any]]:
             "images": [img.get("src", "") for img in sec.find_all("img")],
         })
     return slides
+
+
+def capture_pngs(slides_html, output_dir, viewport=(1920, 1080)):
+    """Playwright headless로 슬라이드별 PNG 캡처.
+
+    Reveal.js의 fragment를 비활성화하고 각 슬라이드 첫 상태만 캡처.
+    """
+    from pathlib import Path
+    from playwright.sync_api import sync_playwright
+    slides_html = Path(slides_html)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    pngs = []
+    url = f"file:///{slides_html.resolve().as_posix()}"
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": viewport[0], "height": viewport[1]})
+        page.goto(url, wait_until="networkidle")
+        total = page.evaluate("Reveal.getTotalSlides()")
+        for i in range(total):
+            page.evaluate(f"Reveal.slide({i})")
+            page.wait_for_timeout(300)
+            png_path = output_dir / f"slide-{i+1:02d}.png"
+            page.screenshot(path=str(png_path), full_page=False, clip={
+                "x": 0, "y": 0, "width": viewport[0], "height": viewport[1]
+            })
+            pngs.append(png_path)
+        browser.close()
+    return pngs
+
+
+def convert_to_webp(pngs, max_width=1280, quality=80):
+    """PNG -> WebP 변환 + 리사이즈."""
+    from PIL import Image
+    webps = []
+    for png in pngs:
+        with Image.open(png) as img:
+            if img.width > max_width:
+                ratio = max_width / img.width
+                img = img.resize((max_width, int(img.height * ratio)), Image.LANCZOS)
+            webp_path = png.with_suffix(".webp")
+            img.save(webp_path, "WebP", quality=quality)
+            webps.append(webp_path)
+    return webps
