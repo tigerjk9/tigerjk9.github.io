@@ -416,6 +416,41 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 **태그** (빈도순 상위): `이미지`, `논문리뷰`, `바이브코딩`, `AI`, `생성형AI`, `학습과학`, `교육`, `LLM`, `메타인지`, `AI윤리`, `에듀테크`, `교육공학`, `자기조절학습`, `피드백`, `프롬프트엔지니어링`
 
+---
+
+## 강의자료 큐레이션 하네스 (`/lecture-archive`) — 개발 중
+
+황민호 수석 KIST Claude Code 워크숍 자료(`260429_황민호_강의자료.Zip`)를 첫 사례로 강의자료 zip 한 묶음(slides·instructor-notes·handout·labs·N 기능 카탈로그) → `_lectures/` Jekyll collection 자동 큐레이션. 5명 Superpowers 멀티 에이전트 팀(inventory·parser·curator·builder·reviewer).
+
+**현재 상태 (2026-05-22 기준 Phase A+B 완료, Phase C+D 미완)**
+
+| Phase | 산출 | 상태 |
+|-------|------|------|
+| 디자인 | `docs/superpowers/specs/2026-05-22-lecture-curation-harness-design.md` (605줄) | ✅ |
+| Plan | `docs/superpowers/plans/2026-05-22-lecture-curation-harness-plan.md` (1957줄, 19 task) | ✅ |
+| A 인프라 | `_config.yml` collections.lectures·`_layouts/lecture.html`·`_sass/_lectures.scss`·`_data/lectures.yml`+`navigation.yml`·`_includes/lecture-card.html`+`lecture-nav.html`·`_pages/lectures.md` | ✅ |
+| B 스크립트 | `scripts/lecture_archive/{utils,parse_slides,extract_notes,map_features,build_site,orchestrate}.py` + tests/ (18 tests pass) | ✅ |
+| C 에이전트 | `.claude/skills/lecture-archive-orchestrator/SKILL.md` + `.claude/commands/lecture-archive.md` | ⏳ |
+| D 첫 변환 | KIST 자료 → `_lectures/kist-claude-code/` 23 페이지 + assets 배포·**slug 명시 승인 게이트**·체크리스트 12·push·5 URL 점검 | ⏳ |
+
+**격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 200+개·`graph-data.json`·`_includes/sidebar/*.html` 영향 없음.
+
+**진입점 (Phase C 완료 후 정식 활성)**:
+```powershell
+/lecture-archive <zip-path> [--slug <slug>] [--dry-run] [--no-push] [--skip-playwright] [--rerun parser|curator|builder]
+```
+
+**의존성**: playwright(Chromium ~150MB)·beautifulsoup4·google-generativeai·weasyprint·Pillow·PyYAML·pytest. 기존 `.env`의 `GEMINI_API_KEY` 재사용.
+
+**알려진 동작 특성**:
+- **Python 3.9 호환**: 모든 스크립트가 `from __future__ import annotations` + `typing.Union/Optional/List/Dict` 사용. PEP 604 `bytes | str`은 사용자 환경에서 작동 안 함.
+- **Subagent 환경 Ruby 부재**: Claude Code Agent dispatch subagent에는 `bundle`·`ruby`·`jekyll` PATH 없음. Jekyll 변경 검증은 사용자 측 직접 빌드로.
+- **격리 회귀 검증**: 강의자료 추가 시 `bundle exec jekyll build && ls _site/categories/ | wc -l && ls _site/tags/ | wc -l` 카운트가 변경 전후 동일해야 함.
+- **slug 사용자 게이트**: curator가 `_workspace/<slug>/03_features/_slug_map.yml` 출력 후 builder는 사용자 명시 승인 ("slug 승인") 대기. URL은 영구적이므로 한 번에 정함.
+- **KIST zip 통합 검증 통과**: orchestrate.py가 zip 5종 자산(slides.v2.html·instructor-notes.v2.md·handout.v2.html·labs.md·07_feature_ideas.md) 자동 발견, Playwright Chromium으로 98장 PNG 캡처 성공, `atom_mode: feature_catalog` 자동 결정.
+
+---
+
 ## 공통: 자동화 포스트 후처리 QA 체크리스트 (`/edit-paper`·`/edit-video`·`/edit-paraph`·`/edit-yeonsu`)
 
 Gemini 생성 직후 스크립트가 그대로 commit·push하므로, 생성된 `_posts/*.md`는 **항상 아래 7단계를 수동 점검·교정한 뒤 별도 커밋**한다. (2026-05-17 세션에서 정착)
