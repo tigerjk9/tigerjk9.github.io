@@ -175,6 +175,12 @@ sass:
   sass_dir: _sass
   style: compressed
 
+# Collections — 강의자료 큐레이션 아카이브 (격리 모드)
+collections:
+  lectures:
+    output: true
+    permalink: /lectures/:path/
+
 # Outputting
 permalink: /:categories/:title/
 timezone: Asia/Seoul
