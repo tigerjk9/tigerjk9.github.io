@@ -1,0 +1,26 @@
+---
+layout: single
+toc: true
+toc_sticky: true
+author_profile: false
+share: true
+comments: false
+read_time: false
+---
+
+<nav class="lecture-breadcrumb" aria-label="breadcrumb">
+  <ol>
+    <li><a href="/lectures/">강의자료</a></li>
+    {% if page.lecture_slug %}
+      {% assign lecture = site.data.lectures | where: "slug", page.lecture_slug | first %}
+      <li><a href="{{ lecture.hub_url }}">{{ lecture.title }}</a></li>
+    {% endif %}
+    {% if page.feature_name %}<li aria-current="page">{{ page.feature_name }}</li>{% endif %}
+  </ol>
+</nav>
+
+<article class="lecture-feature">
+  {{ content }}
+</article>
+
+{% include lecture-nav.html %}

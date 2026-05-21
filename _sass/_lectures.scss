@@ -1,0 +1,41 @@
+// 강의자료 큐레이션 — 격리 스타일
+.lecture-breadcrumb {
+  font-size: 0.85em;
+  margin-bottom: 1em;
+  ol { list-style: none; padding: 0; display: flex; gap: 0.5em; flex-wrap: wrap; }
+  li + li::before { content: "▸ "; margin-right: 0.5em; opacity: 0.5; }
+}
+
+.lecture-feature {
+  .feature-header { border-bottom: 2px solid var(--accent, #d65a31); padding-bottom: 0.8em; margin-bottom: 1.5em; }
+  .feature-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; background: #eee; font-size: 0.7em; margin-right: 6px; }
+  .feature-badge.track-basic { background: #e6e6e6; }
+  .feature-badge.track-advanced { background: #1a1a1a; color: #fff; }
+
+  .slide-excerpt { border: 1px solid #ddd; border-radius: 6px; padding: 1em; margin: 1em 0; }
+  .slide-excerpt img { max-width: 100%; height: auto; border-radius: 4px; }
+  .slide-excerpt .slide-text { font-size: 0.9em; color: var(--muted, #444); margin-top: 0.5em; }
+}
+
+.lecture-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1em;
+  transition: transform 0.15s ease;
+  &:hover { transform: translateY(-2px); }
+  .card-id { font-family: monospace; color: var(--accent, #d65a31); font-size: 0.8em; }
+  .card-title { font-weight: 600; margin: 0.4em 0; }
+  .card-track { font-size: 0.7em; padding: 2px 8px; border-radius: 10px; background: #eee; }
+}
+
+.lecture-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1em;
+  margin: 1.5em 0;
+}
+
+// 다크 모드 대응
+html[data-theme="light"] {
+  .lecture-feature .slide-excerpt { background: #fafafa; }
+}
