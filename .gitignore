@@ -71,3 +71,6 @@ scripts/__pycache__/
 _asset_bundler_cache
 _site
 .gstack/
+
+# 강의자료 큐레이션 런타임 작업 디렉토리 (커밋 불필요)
+_workspace/
