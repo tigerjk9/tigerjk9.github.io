@@ -35,9 +35,10 @@ def decode_zip_filename(raw: Union[bytes, str]) -> str:
     return raw.decode("utf-8", errors="replace")
 
 
-def slug_from_zip_name(filename: str) -> str:
-    """zip 파일명에서 영문 slug 추출. 한글 블록은 transliteration."""
-    base = re.sub(r"\.[zZ][iI][pP]$", "", filename)
+def slug_from_filename(filename: str) -> str:
+    """파일명(zip·pdf·html 등)에서 영문 slug 추출. 한글 블록은 transliteration."""
+    # 확장자 제거 (zip/pdf/html 등 모두)
+    base = re.sub(r"\.[a-zA-Z0-9]+$", "", filename)
     parts = re.split(r"[_\-\s]+", base)
     out = []
     for p in parts:
@@ -51,7 +52,12 @@ def slug_from_zip_name(filename: str) -> str:
             ascii_form = unicodedata.normalize("NFKD", p).encode("ascii", "ignore").decode("ascii")
             if ascii_form:
                 out.append(ascii_form.lower())
-    return "-".join(out)
+    return "-".join(out) or "lecture"
+
+
+def slug_from_zip_name(filename: str) -> str:
+    """하위 호환 별칭. slug_from_filename으로 위임."""
+    return slug_from_filename(filename)
 
 
 def safe_slug(text: str) -> str:

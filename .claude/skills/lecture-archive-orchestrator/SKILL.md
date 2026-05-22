@@ -36,16 +36,26 @@ rerun    = --rerun 값 or None  # "parser" | "curator" | "builder"
 
 ---
 
-## Phase 1 — orchestrate.py 실행 (zip 해제·brief.yml 생성)
+## Phase 1 — orchestrate.py 실행 (입력 준비·brief.yml 생성)
 
 ```powershell
-python -m scripts.lecture_archive.orchestrate <zip_path> [--slug <slug>] [--dry-run] [--no-push] [--skip-playwright]
+python -m scripts.lecture_archive.orchestrate <input_path> [--slug <slug>] [--dry-run] [--no-push] [--skip-playwright]
 ```
+
+`orchestrate.py`가 입력 형식을 자동 감지해 처리한다:
+
+| 형식 | 처리 방식 | atom_mode 기본값 |
+|------|----------|-----------------|
+| zip | 압축 해제 + 중첩 zip 재귀 해제 | 내부 자산에 따라 자동 |
+| pdf | pdfplumber로 텍스트 추출 → `instructor-notes.md` | `section_heading` |
+| html | slides.html로 복사 | `slide_group` |
+| 디렉토리 | 파일 그대로 사용 | 내부 자산에 따라 자동 |
 
 성공 시 `_workspace/<slug>/brief.yml`이 생성된다. 실패하면 에러를 사용자에게 보고하고 중단.
 
 `brief.yml` 내용 확인:
 - `slug` — 강의 식별자 (URL 영구 고정, 변경 불가)
+- `input_type` — `zip | pdf | html | dir`
 - `atom_mode` — `feature_catalog | section_heading | slide_group`
 - `assets` — 탐색된 자산 경로 목록
 
