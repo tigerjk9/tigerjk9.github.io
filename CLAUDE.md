@@ -422,7 +422,7 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 황민호 수석 KIST Claude Code 워크숍 자료(`260429_황민호_강의자료.Zip`)를 첫 사례로 강의자료 zip 한 묶음(slides·instructor-notes·handout·labs·N 기능 카탈로그) → `_lectures/` Jekyll collection 자동 큐레이션. 5명 Superpowers 멀티 에이전트 팀(inventory·parser·curator·builder·reviewer).
 
-**현재 상태 (2026-05-22 기준 Phase A+B 완료, Phase D 허브 수동 완료, Phase C 미완)**
+**현재 상태 (2026-05-22 기준 Phase A+B+C 완료, Phase D 허브 수동 완료)**
 
 | Phase | 산출 | 상태 |
 |-------|------|------|
@@ -430,13 +430,13 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 | Plan | `docs/superpowers/plans/2026-05-22-lecture-curation-harness-plan.md` (1957줄, 19 task) | ✅ |
 | A 인프라 | `_config.yml` collections.lectures·`_layouts/lecture.html`·`_sass/_lectures.scss`·`_data/lectures.yml`+`navigation.yml`·`_includes/lecture-card.html`+`lecture-nav.html`·`_pages/lectures.md` | ✅ |
 | B 스크립트 | `scripts/lecture_archive/{utils,parse_slides,extract_notes,map_features,build_site,orchestrate}.py` + tests/ (18 tests pass) | ✅ |
-| C 에이전트 | `.claude/skills/lecture-archive-orchestrator/SKILL.md` + `.claude/commands/lecture-archive.md` | ⏳ |
+| C 에이전트 | `.claude/skills/lecture-archive-orchestrator/SKILL.md` + `.claude/commands/lecture-archive.md` | ✅ |
 | D 첫 변환 (허브만) | `claude-code-edu` 수동 변환: `_lectures/claude-code-edu/index.md` + `assets/lectures/claude-code-edu/` (slides·handout·cover) | ✅ |
 | D 기능 페이지 | 22개 feature 개별 페이지 자동 생성 (Phase C 에이전트 완료 후 진행) | ⏳ |
 
 **격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 200+개·`graph-data.json`·`_includes/sidebar/*.html` 영향 없음.
 
-**진입점 (Phase C 완료 후 정식 활성)**:
+**진입점**:
 ```powershell
 /lecture-archive <zip-path> [--slug <slug>] [--dry-run] [--no-push] [--skip-playwright] [--rerun parser|curator|builder]
 ```
