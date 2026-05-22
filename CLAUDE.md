@@ -472,3 +472,22 @@ Gemini 생성 직후 스크립트가 그대로 commit·push하므로, 생성된 
 - 한글·따옴표가 든 커밋 메시지는 PowerShell here-string이 git 인자 파싱을 깨뜨린다(메시지 단어가 pathspec로 오인). `git commit -F <임시 메시지 파일>` 로 처리한다.
 - `/edit-*` 호출 시 사용자가 URL 뒤에 편집 지시·맥락을 길게 덧붙이면, 그대로 명령행에 이으면 `web_to_post.py`의 `urls`(`nargs="+"`)가 한국어 단어를 전부 URL로 오인한다. URL은 positional 하나로, 지시문은 `--notes '<전문>'` 로 전달한다(프롬프트의 `{OWNER_NOTES}` 자리에 주입, 단일 URL `--edit` 경로에서 동작 확인됨).
 - 추출 실패 시(예: `yozm.wishket.com` 은 CloudFront가 requests·Jina 모두 403 차단 → 제목이 `The request could not be satisfied`·`403`·슬러그 `content-access-forbidden`류) Gemini가 "콘텐츠 접근 불가" 환각 메타 포스트를 생성·푸시한다. 즉시 `git rm` + 미추적 소스 이미지 로컬 삭제 + 사용자에게 차단 사실을 정직하게 보고한다. 대안: 사용자가 PDF·스크린샷·본문을 제공하면 본문을 임시 `.md`(첫 줄 `# <원문 제목>`)로 저장 후 `python scripts/web_to_post.py "<임시.md 절대경로>" --edit` 로 처리한다(`fetch_content` 가 로컬 파일 경로를 직접 지원하며 첫 줄을 title로 사용). 처리 후 출처를 원문 URL로 교정하고 임시 파일을 정리한다.
+
+---
+
+## 하네스: 수학체험전
+
+**목표:** 초등 5학년 수학체험전 부스 선발을 위한 운영계획서 완성 (연구→설계→집필→심사 파이프라인)
+
+**트리거:** "수학체험전", "수학 부스", "운영계획서", "체험전 계획", "부스 선발" 등 수학 체험 부스 관련 요청 시 `수학체험전-orchestrator` 스킬을 사용한다. 단순 질문은 직접 응답 가능.
+
+**에이전트 팀:**
+- `math-fair-researcher` — 대회 특성·교육과정·우수 사례·추천 주제 조사
+- `math-fair-booth-designer` — STEP별 활동·준비물·예산·안전 설계
+- `math-fair-proposal-writer` — 심사 통과 계획서 집필 (단정체, 표 우선)
+- `math-fair-judge-reviewer` — 7축 채점·30초 법칙·PASS/REVISE/REWRITE 판정
+
+**변경 이력:**
+| 날짜 | 변경 내용 | 대상 | 사유 |
+|------|----------|------|------|
+| 2026-05-22 | 초기 구성 | 전체 | 수학체험전 부스 선발 목표 |
