@@ -138,6 +138,7 @@ assets/lectures/<slug>/                    (Phase D 산출)
 - **Phase A 인프라** (Task 1~4): ✅ Jekyll collection·layout·partial·navigation·index
 - **Phase B 핵심 스크립트** (Task 5~11): ✅ 5개 스크립트 + orchestrate.py, 18 tests pass, KIST zip 통합 검증 통과
 - **Phase C 에이전트 팀** (Task 12~13): ⏳ SKILL.md + 슬래시 커맨드
-- **Phase D 첫 변환** (Task 14~19): ⏳ KIST 자료 → 22 페이지 + assets 배포·**slug 승인 게이트**·체크리스트·push
+- **Phase D 허브 수동 변환** (2026-05-22 완료): ✅ `claude-code-edu` — `_lectures/claude-code-edu/index.md` + `assets/lectures/claude-code-edu/{slides.html, handout.html, cover.jpg}`. KIST→교육자 치환, 황민호 원작자 표기, Pillow 생성 커버 이미지.
+- **Phase D 기능 페이지** (Task 14~19): ⏳ 에이전트 자동화로 22개 feature 개별 페이지 생성 — Phase C 완료 후 진행
 
-다음 세션 첫 명령 권장 — `bundle exec jekyll build` 격리 회귀 검증 → Task 12부터 진행.
+다음 세션 첫 명령 권장 — `bundle exec jekyll build` 격리 회귀 검증 → Task 12(Phase C)부터 진행.

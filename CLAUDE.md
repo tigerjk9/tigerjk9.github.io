@@ -422,7 +422,7 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 황민호 수석 KIST Claude Code 워크숍 자료(`260429_황민호_강의자료.Zip`)를 첫 사례로 강의자료 zip 한 묶음(slides·instructor-notes·handout·labs·N 기능 카탈로그) → `_lectures/` Jekyll collection 자동 큐레이션. 5명 Superpowers 멀티 에이전트 팀(inventory·parser·curator·builder·reviewer).
 
-**현재 상태 (2026-05-22 기준 Phase A+B 완료, Phase C+D 미완)**
+**현재 상태 (2026-05-22 기준 Phase A+B 완료, Phase D 허브 수동 완료, Phase C 미완)**
 
 | Phase | 산출 | 상태 |
 |-------|------|------|
@@ -431,7 +431,8 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 | A 인프라 | `_config.yml` collections.lectures·`_layouts/lecture.html`·`_sass/_lectures.scss`·`_data/lectures.yml`+`navigation.yml`·`_includes/lecture-card.html`+`lecture-nav.html`·`_pages/lectures.md` | ✅ |
 | B 스크립트 | `scripts/lecture_archive/{utils,parse_slides,extract_notes,map_features,build_site,orchestrate}.py` + tests/ (18 tests pass) | ✅ |
 | C 에이전트 | `.claude/skills/lecture-archive-orchestrator/SKILL.md` + `.claude/commands/lecture-archive.md` | ⏳ |
-| D 첫 변환 | KIST 자료 → `_lectures/kist-claude-code/` 23 페이지 + assets 배포·**slug 명시 승인 게이트**·체크리스트 12·push·5 URL 점검 | ⏳ |
+| D 첫 변환 (허브만) | `claude-code-edu` 수동 변환: `_lectures/claude-code-edu/index.md` + `assets/lectures/claude-code-edu/` (slides·handout·cover) | ✅ |
+| D 기능 페이지 | 22개 feature 개별 페이지 자동 생성 (Phase C 에이전트 완료 후 진행) | ⏳ |
 
 **격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 200+개·`graph-data.json`·`_includes/sidebar/*.html` 영향 없음.
 
@@ -443,6 +444,9 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 **의존성**: playwright(Chromium ~150MB)·beautifulsoup4·google-generativeai·weasyprint·Pillow·PyYAML·pytest. 기존 `.env`의 `GEMINI_API_KEY` 재사용.
 
 **알려진 동작 특성**:
+- **`_pages` include 필수**: `_config.yml`에 `include: [_pages]` 누락 시 `/lectures/` 404. Jekyll은 `_` 접두사 디렉토리를 기본 무시한다.
+- **외부 기관명 de-institutionalization**: 제3자 강의자료를 블로그에 올릴 때 기관명(KIST 등)은 청중명(교육자)으로 치환. HTML 치환 패턴: `sed`보다 Python `str.replace()` 순서 주의 (긴 표현 먼저).
+- **커버 이미지**: 강의 현장 사진은 초상권 위반 가능. Pillow로 1200×630 텍스트+터미널 모크업 생성(`Malgun Gothic` 폰트 필수). `assets/lectures/<slug>/cover.jpg` 위치.
 - **Python 3.9 호환**: 모든 스크립트가 `from __future__ import annotations` + `typing.Union/Optional/List/Dict` 사용. PEP 604 `bytes | str`은 사용자 환경에서 작동 안 함.
 - **Subagent 환경 Ruby 부재**: Claude Code Agent dispatch subagent에는 `bundle`·`ruby`·`jekyll` PATH 없음. Jekyll 변경 검증은 사용자 측 직접 빌드로.
 - **격리 회귀 검증**: 강의자료 추가 시 `bundle exec jekyll build && ls _site/categories/ | wc -l && ls _site/tags/ | wc -l` 카운트가 변경 전후 동일해야 함.
