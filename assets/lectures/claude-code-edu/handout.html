@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 실무 활용 — 교육자 워크숍 핸드아웃 (22기능 · Basic+Advanced)</title>
+<style>
+
+  /* ===== 카카오 외부 공개 폰트 (KakaoBig / KakaoSmall) =====
+     - assets/fonts/ 에 폰트 파일 두면 자동 적용
+     - 파일 없으면 Pretendard·시스템 폰트로 폴백
+     - 인쇄 시 시스템 폰트로 안전 폴백 (서브셋 임베드는 강사 확인) */
+  @font-face {
+    font-family: 'KakaoBig';
+    src: url('assets/fonts/KakaoBig-Regular.woff2') format('woff2'),
+         url('assets/fonts/KakaoBig-Regular.woff') format('woff');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'KakaoBig';
+    src: url('assets/fonts/KakaoBig-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'KakaoSmall';
+    src: url('assets/fonts/KakaoSmall-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  /* ===== 시스템 폰트 폴백 (외부 의존 없이) ===== */
+  :root{
+    --ink:#111;
+    --muted:#444;
+    --soft:#666;
+    --line:#999;
+    --rule:#000;
+    --hl:#1f3a8a;            /* 1포인트 강조색 (짙은 네이비) */
+    --bg-soft:#f3f3f3;
+    --bg-strong:#e6e6e6;
+    --bg-stripe:#fafafa;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;color:var(--ink);
+    font-family: 'KakaoBig', 'KakaoSmall', 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:11pt; line-height:1.5; background:#fff;
+    -webkit-text-size-adjust:100%;
+  }
+  code, pre, kbd, samp { font-family: 'JetBrains Mono', 'Consolas', 'D2Coding', 'Menlo', monospace; font-size:.92em; }
+
+  /* ===== 페이지 ===== */
+  .page{
+    width:210mm; min-height:297mm; padding:14mm 14mm 14mm 14mm;
+    margin:0 auto; background:#fff; position:relative;
+    page-break-after: always;
+    border-bottom:0.5pt solid #ccc; /* 화면용 페이지 구분 */
+  }
+  .page:last-child{ page-break-after:auto; border-bottom:0; }
+
+  /* 페이지 헤더 / 푸터 */
+  .ph{ display:flex; align-items:flex-end; justify-content:space-between;
+       padding-bottom:4mm; margin-bottom:6mm; border-bottom:1.5pt solid var(--rule); }
+  .ph-l{ font-weight:800; font-size:11pt; letter-spacing:.5px; }
+  .ph-l .hl{ color:var(--hl); }
+  .ph-r{ font-size:8.5pt; color:var(--soft); }
+  .pf{ position:absolute; left:14mm; right:14mm; bottom:8mm;
+       display:flex; justify-content:space-between; font-size:8pt; color:var(--soft);
+       border-top:0.5pt solid var(--line); padding-top:2mm; }
+
+  h1, h2, h3, h4 { color:var(--ink); margin:0; }
+  h1 { font-size:24pt; line-height:1.15; letter-spacing:-.5px; font-weight:800; }
+  h2 { font-size:14pt; font-weight:800; margin:0 0 4mm; padding-bottom:1.5mm; border-bottom:0.8pt solid var(--rule); }
+  h3 { font-size:11pt; font-weight:800; margin:3mm 0 1.5mm; }
+  h4 { font-size:10pt; font-weight:800; }
+
+  p { margin:0 0 2mm; }
+  ul,ol{ margin:0 0 2mm; padding-left:5mm; }
+  li{ margin:0 0 0.4mm; }
+
+  /* 두 단 / 세 단 */
+  .col2{ display:grid; grid-template-columns:1fr 1fr; gap:5mm; }
+  .col3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:4mm; }
+
+  /* 강조색 1포인트 */
+  .hl{ color:var(--hl); }
+  .b{ font-weight:800; }
+  .small{ font-size:9pt; color:var(--muted); }
+  .x-small{ font-size:8pt; color:var(--soft); }
+
+  /* 기능 카드 */
+  .feat{
+    border:0.6pt solid var(--rule); padding:2.5mm 3mm; border-radius:1.5mm;
+    background:#fff; break-inside:avoid; page-break-inside:avoid;
+  }
+  .feat .fhead{ display:flex; align-items:baseline; justify-content:space-between; gap:2mm;
+                border-bottom:0.4pt dashed var(--line); padding-bottom:1mm; margin-bottom:1.5mm;}
+  .feat .fid{ font-family:monospace; color:var(--hl); font-weight:800; font-size:9pt; letter-spacing:.5px; }
+  .feat .fname{ font-weight:800; font-size:10.5pt; }
+  .feat .ftrack{ font-size:7.5pt; padding:0.4mm 1.5mm; border:0.4pt solid var(--ink); border-radius:1mm;
+                 background:var(--bg-soft); white-space:nowrap; }
+  .feat .ftrack.adv{ background:var(--ink); color:#fff; }
+  .feat .fdef{ font-size:9.5pt; margin-bottom:1.2mm; }
+  .feat .fcmd{ font-family:monospace; font-size:8.8pt; background:var(--bg-soft);
+               padding:1mm 1.6mm; border-left:1.5pt solid var(--hl); margin:0 0 1.2mm;
+               white-space:pre-wrap; word-wrap:break-word; }
+  .feat .fprompt{ font-size:9pt; padding:1mm 0 0; border-top:0.3pt solid var(--line); margin-top:1mm; }
+  .feat .fprompt .ptag{ font-weight:800; color:var(--hl); font-size:8pt; }
+  .feat .fscene{ font-size:8.8pt; color:var(--muted); margin-top:0.8mm; font-style:italic; }
+
+  /* 표지 */
+  .cover-hero{ border:1.5pt solid var(--rule); padding:8mm 9mm; margin:6mm 0 5mm; background:#fff; }
+  .cover-hero h1{ font-size:26pt; }
+  .cover-hero .sub{ font-size:12pt; color:var(--muted); margin-top:2mm; }
+  .cover-hero .meta{ display:flex; justify-content:space-between; align-items:flex-end;
+                     margin-top:5mm; padding-top:3mm; border-top:0.6pt solid var(--rule);
+                     font-size:9.5pt; }
+
+  .promise{ background:var(--bg-soft); border:0.6pt solid var(--rule); padding:3mm 4mm; margin:3mm 0; }
+  .promise h3{ margin-top:0; }
+  .promise ol{ margin:0; padding-left:5mm; }
+
+  /* 시간표 */
+  .timetable{ width:100%; border-collapse:collapse; font-size:9pt; }
+  .timetable th, .timetable td{ border:0.4pt solid var(--line); padding:1.2mm 2mm; }
+  .timetable th{ background:var(--bg-strong); text-align:left; font-weight:800; }
+  .timetable tr.basic{ background:#fff; }
+  .timetable tr.adv  { background:var(--bg-stripe); }
+  .timetable tr.brk  { background:var(--bg-soft); font-weight:600; }
+  .timetable tr.intro{ background:#fff; font-weight:600; }
+
+  /* 22기능 한눈에 보기 그리드 */
+  .at-a-glance{ display:grid; grid-template-columns:repeat(4, 1fr); gap:2mm; }
+  .at-cell{ border:0.4pt solid var(--line); padding:1.5mm 2mm; font-size:8.6pt; }
+  .at-cell .at-id{ font-family:monospace; color:var(--hl); font-weight:800; }
+  .at-cell .at-name{ display:block; font-weight:600; }
+  .at-cell.adv{ background:var(--bg-stripe); }
+  .at-cell .at-track{ font-size:7pt; color:var(--soft); float:right; }
+
+  /* 로드맵 */
+  .roadmap{ display:grid; grid-template-columns:repeat(4, 1fr); gap:3mm; }
+  .rm{ border:0.6pt solid var(--rule); padding:2.5mm 3mm; }
+  .rm h4{ margin:0 0 1mm; padding-bottom:0.8mm; border-bottom:0.4pt solid var(--ink); }
+  .rm .rm-row{ font-size:8.5pt; margin:0.6mm 0; }
+  .rm .rm-row b{ display:inline-block; min-width:13mm; color:var(--hl); }
+
+  /* 보안 한 컷 */
+  .three-q{ display:grid; grid-template-columns:repeat(3, 1fr); gap:3mm; margin-top:3mm; }
+  .three-q .q{ border:0.6pt solid var(--rule); padding:2.5mm 3mm; }
+  .three-q .q h4{ color:var(--hl); margin-bottom:1.2mm; }
+  .three-q .q .q-a{ font-size:9pt; }
+
+  /* 체크리스트 */
+  .ck-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1mm 6mm; }
+  .ck{ font-size:9.3pt; padding:0.6mm 0; }
+  .ck::before{ content:"☐"; display:inline-block; width:5mm; color:var(--hl); font-weight:800; }
+  .ck .ck-id{ font-family:monospace; font-weight:800; color:var(--hl); margin-right:1.2mm; }
+
+  /* 강사 연락처 박스 */
+  .contact{ border:1pt solid var(--rule); padding:4mm 5mm; background:var(--bg-soft); }
+  .contact h3{ margin:0 0 2mm; color:var(--hl); }
+  .contact .clines{ font-size:10pt; }
+
+  /* 1줄 요약 */
+  .one-liner{ border-left:3pt solid var(--hl); padding:2mm 3mm; background:var(--bg-soft);
+              font-size:10pt; }
+
+  /* 기능 페이지 그리드 */
+  .feat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2.5mm; }
+
+  /* ===== 인쇄 최적화 ===== */
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    html,body{ background:#fff; }
+    .page{ margin:0; box-shadow:none; border-bottom:0; }
+    .feat, .rm, .q, .promise, .contact { page-break-inside: avoid; }
+    h2, h3 { page-break-after: avoid; }
+    /* 흑백 안전 — 강조색이 회색으로 폴백되어도 식별되도록 굵기/테두리/배경 패턴으로 분리 설계됨 */
+    a { color:inherit; text-decoration:none; }
+  }
+  /* 화면 보기용 살짝 그림자 */
+  @media screen {
+    body{ background:#eeeeec; padding:8mm 0; }
+    .page{ box-shadow: 0 0 8px rgba(0,0,0,.15); margin-bottom:8mm; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE 1 — 표지 + 22기능 한눈에 보기 + 산출물 약속
+     ============================================================ -->
+<section class="page">
+  <div class="ph">
+    <div class="ph-l">Claude Code 실무 활용</div>
+    <div class="ph-r">교육자 워크숍 핸드아웃 · A4 7쪽 · 2026-04-29</div>
+  </div>
+
+  <div class="cover-hero">
+    <h1>Claude Code <span class="hl">22가지</span> 기능을<br><span class="hl">손에 익히기</span></h1>
+    <p class="sub">Basic 12개 + Advanced 10개 · 모두 한국어 프롬프트로 · PowerShell 7+ 기준</p>
+    <div class="meta">
+      <div>
+        <div class="b">강사. 황민호 수석</div>
+        <div class="small">Forward Deployed Engineer</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="b">2026-04-29</div>
+        <div class="small">슬라이드 96장</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col2" style="margin-top:5mm;">
+    <div class="promise">
+      <h3>오늘 가져갈 산출물 세 개</h3>
+      <ol>
+        <li>본인 폴더 <span class="b">CLAUDE.md</span> 한 개 (랩 톤 · 출력 규칙 5줄)</li>
+        <li><span class="b">.claude/settings.json</span><b>의</b> deny 한 줄</li>
+        <li>호출 가능한 <span class="b">/&lt;스킬-이름&gt;</span> 한 개 (SKILL.md 5줄)</li>
+      </ol>
+      <p class="small" style="margin-top:2mm;"><span class="b">덤.</span> Advanced에서 한 번 더 — 본인 파이프라인에 끼울 후보 1~2개 머리에 담기.</p>
+    </div>
+    <div class="promise">
+      <h3>오늘의 약속 세 가지</h3>
+      <ol>
+        <li>모든 명령은 <span class="b">PowerShell 7+</span>. 한글 폴더 경로 피하고 ASCII (예. <code>C:\work\demo</code>)</li>
+        <li><span class="b">막히면 손</span>. 한 사람의 막힘은 다섯 사람의 막힘</li>
+        <li>22개 다 외우려 하지 않기. <span class="b">와닿는 1~2개</span>만 가져가기</li>
+      </ol>
+      <p class="small" style="margin-top:2mm;"><span class="b">UTF-8 한 줄.</span> <code>chcp 65001</code> · 한글 인코딩 깨질 때 첫 약</p>
+    </div>
+  </div>
+
+  <h2 style="margin-top:6mm;">22기능 한눈에 보기</h2>
+  <div class="at-a-glance">
+    <div class="at-cell"><span class="at-name">CLAUDE.md + @import</span></div>
+    <div class="at-cell"><span class="at-name">Auto Memory</span></div>
+    <div class="at-cell"><span class="at-name">Plan Mode</span></div>
+    <div class="at-cell"><span class="at-name">Permission Modes 6종</span></div>
+    <div class="at-cell"><span class="at-name">Skills (/스킬-이름)</span></div>
+    <div class="at-cell"><span class="at-name">Subagents</span></div>
+    <div class="at-cell"><span class="at-name">/agents Library/Running</span></div>
+    <div class="at-cell"><span class="at-name">/compact · /clear</span></div>
+    <div class="at-cell"><span class="at-name">/usage</span></div>
+    <div class="at-cell"><span class="at-name">--continue · --resume</span></div>
+    <div class="at-cell"><span class="at-name">Agent Teams (실험)</span></div>
+    <div class="at-cell"><span class="at-name">.claude/rules/ + paths</span></div>
+    <div class="at-cell adv"><span class="at-name">헤드리스 (-p + JSON)</span></div>
+    <div class="at-cell adv"><span class="at-name">Hooks (라이프사이클)</span></div>
+    <div class="at-cell adv"><span class="at-name">MCP</span></div>
+    <div class="at-cell adv"><span class="at-name">Plugins</span></div>
+    <div class="at-cell adv"><span class="at-name">Routines (클라우드 영구)</span></div>
+    <div class="at-cell adv"><span class="at-name">/ultrareview · /ultraplan</span></div>
+    <div class="at-cell adv"><span class="at-name">/loop</span></div>
+    <div class="at-cell adv"><span class="at-name">/schedule</span></div>
+    <div class="at-cell adv"><span class="at-name">/effort 5단계</span></div>
+    <div class="at-cell adv"><span class="at-name">UX 보조 5종</span></div>
+  </div>
+  <p class="x-small" style="margin-top:1mm;">앞 12개는 Basic(일상). 회색 배경 10개는 Advanced(자동화).</p>
+  <div class="pf"><span>p.1 / 7</span><span>Claude Code v2 · 교육자 워크숍</span></div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 2 — Basic 1~6
+     ============================================================ -->
+<section class="page">
+  <div class="ph">
+    <div class="ph-l"><span class="hl">Basic</span> 12 (1/2)</div>
+    <div class="ph-r">CLAUDE.md · Auto Memory · Plan · 권한 · Skills · Subagents</div>
+  </div>
+
+  <div class="feat-grid">
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">CLAUDE.md + @import</span>
+        <span class="ftrack">Basic 1</span>
+      </div>
+      <div class="fdef">프로젝트 루트의 마크다운 한 파일. 매 세션 자동 로드. 4계층(managed/user/project/local)<b>이</b> cascade.</div>
+      <div class="fcmd">PS C:\work\my-project&gt; claude   # 현재 폴더에서 시작
+&gt; /init                          # CLAUDE.md 초안 자동 생성
+&gt; notepad CLAUDE.md              # 메모장으로 5~10줄 다듬기 (@import로 공용 규칙 끌어쓰기)</div>
+      <div class="fprompt">이 폴더에 CLAUDE.md를 만들어 줘. 답변은 한국어로, 원본 데이터 파일은 절대 건드리지 말고, 본인 랩의 표기 규칙을 따르도록.</div>
+      <div class="fscene">한 폴더에 한 개만 두면 매 세션 톤이 통일.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Auto Memory</span>
+        <span class="ftrack">Basic 2</span>
+      </div>
+      <div class="fdef">정정한 걸 자동 저장. 내 디스크에 마크다운으로 누적. ChatGPT 메모리와 달리 직접 열어 보고 지울 수 있어요.</div>
+      <div class="fcmd">&gt; /memory                    # Auto Memory 토글 + MEMORY.md 폴더 열기
+&gt; /memory off                # 이번 세션만 자동 누적 멈춤 (민감 정정 직전)
+PS&gt; $env:CLAUDE_CODE_DISABLE_AUTO_MEMORY=1   # 환경변수로 영구 비활성</div>
+      <div class="fprompt">앞으로 표는 항상 마크다운 표로 출력해 줘. 우리 랩 표기 규칙이야. 다음부터 그렇게 가 줘.</div>
+      <div class="fscene">민감 정정(미공개 약어)<b>은</b> off로. 내부 ON / 외부 OFF 분리 권장.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Plan Mode</span>
+        <span class="ftrack">Basic 3</span>
+      </div>
+      <div class="fdef">읽기만 + 변경 계획만. 승인 후 실행. AI<b>가</b> 멋대로 고치는 우려에 직접 답하는 모드.</div>
+      <div class="fcmd">PS&gt; claude --permission-mode plan   # Plan 모드로 시작 (실행 없이 계획만)
+&gt; /plan                              # 세션 안에서 Plan 모드로 전환
+키보드. Shift+Tab Shift+Tab           # 모드 토글 (default → acceptEdits → plan)</div>
+      <div class="fprompt">이 보고서 12페이지를 8페이지로 줄여 줘. 어디를 어떻게 줄일지 먼저 계획만 보여 줘. 실행은 아직 하지 마.</div>
+      <div class="fscene">Reviewer 2 응답 작성 전 Plan으로 구조부터 받기 — 본문 수정량 절반.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Permission Modes 6종</span>
+        <span class="ftrack">Basic 4</span>
+      </div>
+      <div class="fdef">자율성 다이얼 — plan · default · acceptEdits · auto · dontAsk · bypass. 일상은 default · acceptEdits 둘만.</div>
+      <div class="fcmd">// .claude/settings.json
+{ "defaultMode":"acceptEdits",          // 기본 모드 (변경은 자동, 터미널은 묻기)
+  "permissions":{
+    "deny":["Bash(Remove-Item *)"],     // deny = 항상 거부 (위험 명령)
+    "allow":["Bash(git status)"]        // allow = 항상 허용 (안전·반복 명령)
+  } }</div>
+      <div class="fprompt">내 .claude/settings.json을 만들어 줘. deny에 <code>Bash(Remove-Item *)</code>·<code>Read(~/.ssh/**)</code>, ask에 <code>Bash(git push *)</code>, allow에 <code>Bash(git status)</code>·<code>Bash(Rscript *)</code>·<code>Read(./data/**)</code>. defaultMode는 acceptEdits. JSON으로 통째로.</div>
+      <div class="fscene">bypass는 격리 환경(컨테이너·VM·일회용 폴더) 외 절대 금지.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Skills (/스킬-이름)</span>
+        <span class="ftrack">Basic 5</span>
+      </div>
+      <div class="fdef">절차를 SKILL.md 한 파일로. 매일 한 줄 호출. description만 평상시 색인 — 토큰 0 / 호출 시만 로드.</div>
+      <div class="fcmd">PS&gt; mkdir ~/.claude/skills/pdf-요약               # 스킬 폴더 (이름 = 호출 명령어)
+PS&gt; notepad ~/.claude/skills/pdf-요약/SKILL.md    # 절차·도구·경로 정의
+&gt; /pdf-요약 ./이 문서.pdf                          # 슬래시 명령으로 호출 + 인자 전달</div>
+      <div class="fprompt">내 ~/.claude/skills/ 아래에 본인이 자주 하는 작업 이름으로 스킬을 만들어 줘. PDF 한 편을 받아 (1) 한 문장 요약 (2) 5단락 한국어 요약 (3) 핵심 인용 5개(페이지 포함) (4) 시사점 3개. allowed-tools=Read,Grep · paths=**/*.pdf · shell=powershell. SKILL.md 통째로 보여 줘.</div>
+      <div class="fscene">자주 하는 작업을 스킬로 만들면 한 줄 호출로 끝나 매번 입력하던 시간이 줄어듭니다.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Subagents</span>
+        <span class="ftrack">Basic 6</span>
+      </div>
+      <div class="fdef">별도 컨텍스트에서 작업하고 요약만 메인에 돌려주는 전문 동료. 역할의 분리(스킬은 절차 재사용).</div>
+      <div class="fcmd">PS&gt; mkdir .claude\agents                          # 프로젝트 전용 에이전트 폴더
+PS&gt; notepad .claude\agents\deep-reviewer.md       # 에이전트 정의 (frontmatter + 본문)
+&gt; @deep-reviewer 이 폴더의 초고를 검토해 줘        # @이름으로 서브에이전트 직접 호출</div>
+      <div class="fprompt">.claude/agents/ 아래에 'deep-reviewer'를 정의해 줘. 역할은 까다로운 심사 위원 시각으로 통계 가정·표본·인용·논리를 본다. tools=Read,Grep,Glob · model=opus · isolation=worktree. initialPrompt에 "이 폴더의 .md 초고를 찾아 검토 시작". 통째로.</div>
+      <div class="fscene">tools 화이트리스트 + isolation: worktree 두 줄 잊지 말기.</div>
+    </div>
+
+  </div>
+
+  <div class="pf"><span>p.2 / 7</span><span>Basic 1–6</span></div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 3 — Basic 7~12
+     ============================================================ -->
+<section class="page">
+  <div class="ph">
+    <div class="ph-l"><span class="hl">Basic</span> 12 (2/2)</div>
+    <div class="ph-r">/agents · /compact · /usage · --resume · Teams · rules</div>
+  </div>
+
+  <div class="feat-grid">
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">/agents Library/Running</span>
+        <span class="ftrack">Basic 7</span>
+      </div>
+      <div class="fdef">정의된 에이전트 목록(Library)<b>과</b> 라이브 인스턴스(Running)<b>를</b> 한 화면에서. 동료들의 관제 화면.</div>
+      <div class="fcmd">&gt; /agents                       # 에이전트 패널 열기 (Library = 정의 / Running = 진행 중)
+# Library ↔ Running Tab 키       # 두 탭을 키보드로 전환
+# 같은 에이전트 다중 인스턴스 가능 # reviewer 다섯 명을 동시에 띄울 수 있음</div>
+      <div class="fprompt">code-reviewer 서브에이전트한테 이 폴더의 초고를 검토하라고 시켜 줘. 끝나면 결과만 메인 세션에 요약해 줘.</div>
+      <div class="fscene">5명 reviewer를 한 화면에. Esc로 특정 인스턴스만 멈춤.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">/compact · /clear</span>
+        <span class="ftrack">Basic 8</span>
+      </div>
+      <div class="fdef">컨텍스트 관리. /compact는 같은 일 이어가기(자동 재주입), /clear는 새 일 시작. 자동 임계 + 수동.</div>
+      <div class="fcmd">&gt; /compact   # 지금까지 대화를 요약·압축 (같은 일을 계속 이어갈 때)
+&gt; /clear     # 컨텍스트 완전 초기화 (전혀 다른 일로 넘어갈 때)</div>
+      <div class="fprompt">지금까지 분석 흐름을 5문장으로 요약하고 컨텍스트를 압축해 줘. 표·코드·이미지 경로는 그대로 남겨 두고.</div>
+      <div class="fscene">자동 compact 직전에 핵심 보존 한 줄을 남겨 두기.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">/usage</span>
+        <span class="ftrack">Basic 9</span>
+      </div>
+      <div class="fdef">토큰·비용·세션 통계. 영수증 역할. 단체 라이선스 환경에서 본인 페이스 잡는 용도.</div>
+      <div class="fcmd">&gt; /usage         # 이번 주 토큰·비용 요약 한 화면 (한도 대비 잔량)
+&gt; /extra-usage   # 세션·시간대별 상세 분석 (어디서 많이 썼는지 추적)</div>
+      <div class="fprompt">비용 많이 나간 세션 톱3이랑 그 이유를 같이 짚어 줘.</div>
+      <div class="fscene">"회의록 8개 합치고 4달러" 같은 구체 감각.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">--continue · --resume</span>
+        <span class="ftrack">Basic 10</span>
+      </div>
+      <div class="fdef">직전 세션 또는 이름·ID로 임의 세션 부활. --fork-session으로 분기. 회의·실험으로 끊겨도 한 줄로.</div>
+      <div class="fcmd">PS&gt; claude -n 2026-Q2-paper        # 새 세션에 이름 부여 (-n = name)
+PS&gt; claude --continue              # 직전 세션 맥락을 그대로 이어 시작
+PS&gt; claude --resume 2026-Q2-paper  # 이름·ID로 임의 세션 부활 (며칠 전 것도 OK)
+PS&gt; claude --fork-session          # 같은 출발점에서 새 세션으로 분기 (다른 시도)</div>
+      <div class="fprompt">오전에 시작한 논문 요약 세션 이어서 가 줘.</div>
+      <div class="fscene">오전 실험 → 오후 분석 재개. 끊긴 맥락을 한 줄로 이어 가서 다시 입력하는 부담이 사라집니다.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Agent Teams (실험)</span>
+        <span class="ftrack">Basic 11</span>
+      </div>
+      <div class="fdef">한 lead가 N teammates를 띄우고 공유 task list로 협업. 실험 기능 — 환경변수로 켜고 끔.</div>
+      <div class="fcmd">// settings.json
+{ "env":{ "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS":"1" } }   // 실험 기능 플래그 (팀 모드 활성)
+&gt; /agents → spawn                                          // 활성 후 lead가 자동 분배·spawn</div>
+      <div class="fprompt">통계·인용·영문 reviewer 세 명이 동시에 검토하도록 팀 짜 줘. lead는 통합 보고만 맡고.</div>
+      <div class="fscene">Basic에서는 "있다는 것만". 토큰 소비 큼 — /usage로 모니터링.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">.claude/rules/ + paths</span>
+        <span class="ftrack">Basic 12</span>
+      </div>
+      <div class="fdef">CLAUDE.md를 토픽별로 쪼개고 글롭 매칭 시점에만 로드. 토큰 0 / 정확도 1 — raw 데이터 만질 때만 떠 줌.</div>
+      <div class="fcmd">// .claude/rules/data-files.md
+---
+paths: ["data/원본/**"]                  // 글롭 매칭될 때만 자동 로드 (토큰 0 / 정확도 1)
+---
+- 원본 폴더 파일은 수정 금지              // 룰 본문 = 매칭 시 추가되는 시스템 규칙
+- 정제 결과는 _clean 접미사로</div>
+      <div class="fprompt">이 .claude/rules/data-files.md 좀 짜 줘. 원본 데이터 폴더의 파일은 절대 수정 금지, 새 파일은 _clean 접미사로.</div>
+      <div class="fscene">팀원이 실수로 원본을 건드릴 가능성 차단. 데이터 무결성 핵심.</div>
+    </div>
+
+  </div>
+
+  <div class="pf"><span>p.3 / 7</span><span>Basic 7–12</span></div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 4 — Advanced 1~5
+     ============================================================ -->
+<section class="page">
+  <div class="ph">
+    <div class="ph-l"><span class="hl">Advanced</span> 10 (1/2)</div>
+    <div class="ph-r">헤드리스 · Hooks · MCP · Plugins · Routines</div>
+  </div>
+
+  <div class="feat-grid">
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">헤드리스 (-p + JSON)</span>
+        <span class="ftrack adv">Adv 1</span>
+      </div>
+      <div class="fdef">claude -p 비대화형. stdin 파이프 입력 + JSON 구조화 출력. 셸 한 줄로 AI를 파이프라인에 끼우기.</div>
+      <div class="fcmd">PS&gt; Get-Content data.csv | claude -p `   # -p = 헤드리스 모드 (대화창 없이 stdin 입력)
+  "표를 학교 보고서 문체로" `         # 변환 지시 (한 줄 프롬프트)
+  --output-format json --max-budget-usd 1.00 `   # JSON 출력 + 비용 상한 (넘으면 자동 중단)
+  | Set-Content out.json                          # 결과를 새 파일로 저장</div>
+      <div class="fprompt">내 PowerShell에서 실행할 한 줄 명령을 만들어 줘. 이 CSV를 stdin으로 claude -p에 흘려보내서 "헤더를 본인 표준 컬럼명으로 통일하고 결측은 NA"로 변환, 결과를 data\clean.csv로 저장. --max-budget-usd 1.00 캡도. 한 줄로.</div>
+      <div class="fscene">야간 잡 후처리 표준. --max-budget 캡 안전벨트.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Hooks (라이프사이클)</span>
+        <span class="ftrack adv">Adv 2</span>
+      </div>
+      <div class="fdef">30+ 라이프사이클 이벤트(PreToolUse·PostToolUse·Notification·PreCompact 등)<b>에</b> 핸들러를 붙임.</div>
+      <div class="fcmd">// .claude/settings.json
+"hooks":{
+  "PreToolUse":[{                              // 도구 실행 직전에 가로채는 훅
+    "matcher":"Bash(Remove-Item *)",            // 매처 = 이 패턴의 명령에만 발동
+    "command":"powershell -c exit 2"            // 실행할 명령 (exit 2 = 차단 + 사용자 확인 강제)
+  }] }   # exit 2 = 차단</div>
+      <div class="fprompt">settings.json에 PowerShell <code>Remove-Item *</code> 명령을 PreToolUse에서 막는 hook 하나 넣어 줘. exit 2로 차단.</div>
+      <div class="fscene">치명적 함정 둘. 무한 루프(같은 도구 재호출 금지)·외부 호출(기관 정책 검토).</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">MCP</span>
+        <span class="ftrack adv">Adv 3</span>
+      </div>
+      <div class="fdef">오픈 표준 외부 시스템 연결. 기관 위키·메신저·드라이브·LIMS·DB. 한 채팅에서 끌어와 요약하고 슬랙에 올리기 한 흐름.</div>
+      <div class="fcmd">PS&gt; claude mcp add wiki `                  # MCP 서버 등록 (이름 = wiki)
+  --transport http --scope project `        # 통신 = http / 적용 범위 = 이 프로젝트만
+  --env WIKI_TOKEN=$env:WT `                # 서버에 전달할 환경변수 (토큰)
+  -- https://wiki/.../mcp                   # 실제 MCP 엔드포인트
+&gt; /mcp                       # 현재 세션의 MCP 서버 연결 상태 확인</div>
+      <div class="fprompt">기관 위키에서 본인이 자주 보는 페이지를 가져와서 5줄로 요약해 줘. 그 요약을 기관 채널에 바로 올려 줘.</div>
+      <div class="fscene">망분리 사전 검토 필수. 토큰은 환경변수로만 (settings.json 평문 금지).</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">Plugins</span>
+        <span class="ftrack adv">Adv 4</span>
+      </div>
+      <div class="fdef">스킬·서브에이전트·훅·MCP·LSP를 한 패키지로. plugin.json + 마켓플레이스. 랩 표준을 학생 5명에게 한 줄로 배포.</div>
+      <div class="fcmd">PS&gt; claude plugin install edu-mh-lab@private-mp   # &lt;플러그인&gt;@&lt;마켓플레이스&gt; 형태로 설치
+PS&gt; claude plugin validate                          # plugin.json·필수 파일 유효성 검사
+PS&gt; claude plugin list                              # 현재 설치된 플러그인과 그 안의 스킬·에이전트</div>
+      <div class="fprompt">내 ~/.claude/skills/ 랑 ~/.claude/agents/를 묶어서 'edu-mh-lab' 플러그인의 plugin.json을 작성해 줘.</div>
+      <div class="fscene">새 학생 첫날 install 한 줄로 동일한 환경. 기관 마켓플레이스는 private repo로.</div>
+    </div>
+
+    <div class="feat" style="grid-column: 1 / 3;">
+      <div class="fhead">
+        <span class="fname">Routines (클라우드 영구 스케줄)</span>
+        <span class="ftrack adv">Adv 5 · 베타</span>
+      </div>
+      <div class="fdef">Anthropic 클라우드에서 노트북이 꺼져도 도는 영구 작업. cron + API endpoint + GitHub event 3종 트리거 조합. 베타 헤더 <code>experimental-cc-routine-2026-04-01</code>.</div>
+      <div class="col2">
+        <div>
+          <div class="fcmd">&gt; /schedule weekdays 8am, 어제 부처 보도자료 5개 요약하고 기관 위키에 게시   # 자연어 cron + 작업 (클라우드 영구)
+&gt; /schedule list                                                                # 등록된 routine 전체 + 다음 실행 시각
+&gt; /schedule update &lt;id&gt;                                                        # 기존 routine의 일정·지시문 갱신</div>
+        </div>
+        <div>
+          <div class="fcmd"># 외부 API 트리거 (스케줄 외에도 호출 가능)
+curl -X POST https://api.anthropic.com/v1/claude_code/routines/&lt;id&gt;/fire `   # routine을 즉시 실행
+  -H "Authorization: Bearer sk-ant-oat01-..." `                             # 인증 헤더 (API 토큰)
+  -H "anthropic-beta: experimental-cc-routine-2026-04-01" `                 # 베타 헤더 (실험 기능 활성)
+  -d '{"text":"Sentry alert"}'                                              # 본문 = routine에 전달할 입력</div>
+        </div>
+      </div>
+      <div class="fprompt">/schedule을 써서 매주 월요일 오전 8시에 도는 routine을 등록해 줘. 작업은 (1) 지난주 부처 보도자료 5건을 기관 위키에서 찾아 (2) 각 1줄 + 우리 부서 시사점 1줄로 요약하고 (3) 결과를 기관 위키 '주간동향' 페이지에 새 항목으로 추가하는 거야. 노트북이 꺼져 있어도 돌아야 해.</div>
+      <div class="fscene">행정 업무가 많은 분에게 결정타. AI 비서 주니어 — 출근 전에 보고서 초안. 망분리 환경이면 /loop 폴백.</div>
+    </div>
+
+  </div>
+
+  <div class="pf"><span>p.4 / 7</span><span>Advanced 1–5</span></div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 5 — Advanced 6~10
+     ============================================================ -->
+<section class="page">
+  <div class="ph">
+    <div class="ph-l"><span class="hl">Advanced</span> 10 (2/2)</div>
+    <div class="ph-r">/ultrareview · /loop · /schedule · /effort · UX 보조</div>
+  </div>
+
+  <div class="feat-grid">
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">/ultrareview · /ultraplan</span>
+        <span class="ftrack adv">Adv 6</span>
+      </div>
+      <div class="fdef">클라우드에서 여러 서브에이전트가 병렬 PR 리뷰 또는 큰 계획 수립. Reviewer 2 시뮬레이션 — 의도적 다관점.</div>
+      <div class="fcmd">&gt; /ultrareview                          # 지금 폴더의 변경분을 여러 reviewer 관점으로 동시 검토
+&gt; /ultrareview &lt;PR#&gt;                    # 특정 PR 번호를 다관점 검토
+&gt; /ultraplan &lt;지시&gt; --json --timeout    # 큰 작업 다관점 계획 + JSON 출력 + 시간 제한</div>
+      <div class="fprompt">/ultraplan 본인 프로젝트의 다음 단계 작업을 단계별 계획으로 짜 줘. 보안·테스트·롤백 세 관점에서.</div>
+      <div class="fscene">매주 한 번 — reviewer 코멘트 줄어듦. 망분리에서는 미작동.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">/loop</span>
+        <span class="ftrack adv">Adv 7</span>
+      </div>
+      <div class="fdef">한 프롬프트를 인터벌마다 반복. fixed/dynamic/maintenance 3모드. 한 세션 50개 한도 · 7일 자동 만료.</div>
+      <div class="fcmd">&gt; /loop 5m queue 상태 확인하고 끝났으면 후처리   # fixed = 5분마다 반복, 조건 충족 시 자동 종료
+&gt; /loop &lt;프롬프트&gt;        # dynamic = 인터벌 생략 시 Claude가 작업 특성에 맞춰 결정
+Esc                          # 다음 발화 전에 누르면 즉시 중단</div>
+      <div class="fprompt">/loop 10m queue 상태 확인해 주고, 끝났으면 후처리 시작해 줘. 다 되면 내가 Esc로 멈출게.</div>
+      <div class="fscene">Routines가 클라우드 영구라면 /loop는 본인 노트북의 짧은 반복.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">/schedule</span>
+        <span class="ftrack adv">Adv 8</span>
+      </div>
+      <div class="fdef">자연어로 cron 등록. Routines와 통합. 최소 1시간 단위. 분 단위는 /loop, 시간·일 단위는 /schedule.</div>
+      <div class="fcmd">&gt; /schedule daily PR review at 9am   # 자연어로 cron 등록 (매일 9시 routine)
+&gt; /schedule list                     # 등록된 routine 전체 + 다음 실행 시각
+&gt; /schedule update &lt;id&gt;             # 기존 routine의 일정·지시문 갱신</div>
+      <div class="fprompt">/schedule 매주 금요일 오후 5시에 이번 주 commit 5개를 요약해서 README에 붙여 줘.</div>
+      <div class="fscene">"매주 월요일 9시" 한 마디면 끝.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">/effort 5단계</span>
+        <span class="ftrack adv">Adv 9</span>
+      </div>
+      <div class="fdef">추론 강도 다이얼 — low / medium / high / xhigh / max. xhigh는 Opus 4.7 전용. 단순은 빠르게, 복잡한 추론은 깊게.</div>
+      <div class="fcmd">&gt; /effort xhigh                 # 추론 강도 즉시 지정 (xhigh = 가장 깊게 + 비용 큼)
+PS&gt; claude --effort high        # 시작 시점부터 강도 고정 (CLI 플래그)
+// 스킬 프론트매터
+effort: high                     # 이 스킬 호출 시 항상 high로 (파일 단위 강제)</div>
+      <div class="fprompt">이건 심사 위원 통계 지적 반박이야. /effort xhigh로 깊게 가 줘. 핵심은 표본 크기 지적이야.</div>
+      <div class="fscene">분류기 Auto가 일상 권장. 진짜 깊은 작업에서만 xhigh.</div>
+    </div>
+
+    <div class="feat">
+      <div class="fhead">
+        <span class="fname">UX 보조 5종</span>
+        <span class="ftrack adv">Adv 10</span>
+      </div>
+      <div class="fdef">/powerup(튜토리얼)·/focus(집중)·/copy(복사)·/terminal-setup(첫 세팅)·/less-permission-prompts(권한 정리).</div>
+      <div class="fcmd">&gt; /powerup                  # 첫 사용자용 인터랙티브 가이드 (주요 기능 한 바퀴)
+&gt; /focus                    # 사이드 패널 숨기고 본문만 (집중 발표·시연)
+&gt; /copy                     # 직전 응답을 클립보드로 (붙여넣기 바로 가능)
+&gt; /less-permission-prompts  # 트랜스크립트 분석해 자주 거치는 명령 영구 허용</div>
+      <div class="fprompt">/less-permission-prompts 내 트랜스크립트 보고 자주 거치는 read-only 명령들 한 번에 영구 허용으로 바꿔 줘.</div>
+      <div class="fscene">처음 쓰는 동료에게 /powerup 한 마디. 행정 업무가 많은 분에게 결정타는 /less-permission-prompts.</div>
+    </div>
+
+  </div>
+
+  <div class="pf"><span>p.5 / 7</span><span>Advanced 6–10</span></div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 6 — 보안·재현성·환각 한 컷 + 5문장 자기 점검
+     ============================================================ -->
+<section class="page">
+  <div class="ph">
+    <div class="ph-l"><span class="hl">종합</span> · 회수 · 보안 한 컷</div>
+    <div class="ph-r">자기 점검</div>
+  </div>
+
+  <h2>보안 · 재현성 · 환각 — 채택 장벽 세 가지에 한 줄씩</h2>
+  <div class="three-q">
+    <div class="q">
+      <h4>보안</h4>
+      <div class="q-a"><b>API 모드는 데이터 학습을 하지 않습니다.</b> 컨슈머 Pro와 다릅니다. 기관 망분리에서는 <b>Bedrock·Vertex·Foundry 라우팅</b> 가능. <b>MCP 화이트리스트</b><b>는</b> <code>allowedMcpServers</code>·<code>allowManagedMcpServersOnly</code>로.</div>
+    </div>
+    <div class="q">
+      <h4>재현성</h4>
+      <div class="q-a"><b>permissions.deny + .claude/rules/ paths + git</b> 세 겹으로 변경 추적. raw 데이터는 paths 글롭으로 자동 보호. CLAUDE.md·SKILL.md를 git에 같이 두면 환경 재현 가능.</div>
+    </div>
+    <div class="q">
+      <h4>환각</h4>
+      <div class="q-a"><b>인용 검수 룰 + Plan 모드 + /ultrareview 다관점</b> 세 가지로 완화. "검수하면 돼요"가 아니라 구체적 도구로 답. 한 사람 검수보다 단단함.</div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:6mm;">5문장 자기 점검 (LO 1~5)</h2>
+  <ol style="margin:0;padding-left:6mm;font-size:10pt;">
+    <li><b>LO-1.</b> 나는 PowerShell에서 <code>claude</code>를 열고 첫 응답을 받을 수 있다</li>
+    <li><b>LO-2.</b> 나는 내 폴더에 CLAUDE.md를 두고 효과 차이를 안다</li>
+    <li><b>LO-3.</b> 나는 Plan 모드와 deny 한 줄로 안전망을 갖췄다</li>
+    <li><b>LO-4.</b> 나는 내 시나리오 한 개를 Claude Code로 끝까지 수행할 수 있다</li>
+    <li><b>LO-5.</b> 나는 환각·재현성·보안 우려에 한 문장씩 답할 수 있다</li>
+  </ol>
+  <p class="small" style="margin-top:1.5mm;">다섯 개 중 네 개 이상이면 오늘 자리는 충분히 회수. 부족하면 다음 페이지 체크리스트로 한 주 안에 채우기.</p>
+
+  <div class="pf"><span>p.6 / 7</span><span>회수 · 보안 한 컷 · 자기 점검</span></div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 7 — 22기능 체크리스트 + 강사 연락처
+     ============================================================ -->
+<section class="page">
+  <div class="ph">
+    <div class="ph-l"><span class="hl">체크리스트</span> · 22기능 자기 채택 추적</div>
+    <div class="ph-r">강사 연락처 · 더 알아볼 것</div>
+  </div>
+
+  <h2>오늘 배운 22개 기능 체크리스트</h2>
+  <p class="small" style="margin-top:-2mm;">한 주 안에 한 개씩 본인 일상에 끼워 보세요. □에 체크가 한두 개라도 채워지면 오늘 자리는 회수입니다.</p>
+
+  <h3 style="margin-top:3mm;">Basic 12 — 일상</h3>
+  <div class="ck-grid">
+    <div class="ck">CLAUDE.md 5줄 만들기 — 본인 폴더에</div>
+    <div class="ck">Auto Memory 한 번 켜고 정정 1개 누적 확인</div>
+    <div class="ck">Plan Mode로 보고서 줄이기 1회</div>
+    <div class="ck">settings.json deny 한 줄 적기</div>
+    <div class="ck">SKILL.md 5줄짜리 1개 만들고 호출 확인</div>
+    <div class="ck">Subagent 1명 정의하고 한 번 호출</div>
+    <div class="ck">/agents 화면 한 번 띄워 보기</div>
+    <div class="ck">긴 세션에서 /compact 한 번 사용</div>
+    <div class="ck">/usage로 본인 한 주 비용 확인</div>
+    <div class="ck">--resume으로 어제 세션 부활</div>
+    <div class="ck">(욕심) Agent Teams 환경변수 켜기</div>
+    <div class="ck">.claude/rules/ paths 글롭 1줄 추가</div>
+  </div>
+
+  <h3 style="margin-top:4mm;">Advanced 10 — 자동화</h3>
+  <div class="ck-grid">
+    <div class="ck">Get-Content | claude -p 한 줄 실행</div>
+    <div class="ck">PreToolUse hook 1개 (Remove-Item 차단)</div>
+    <div class="ck">MCP 서버 1개 등록 (위키 또는 Slack)</div>
+    <div class="ck">본인 환경을 plugin.json으로 묶기</div>
+    <div class="ck">/schedule로 routine 1개 등록 (베타)</div>
+    <div class="ck">/ultrareview 한 번 돌려 보기</div>
+    <div class="ck">/loop 5m로 큐 폴링 체험</div>
+    <div class="ck">/schedule list로 등록된 routine 확인</div>
+    <div class="ck">같은 질문을 /effort low·xhigh로 비교</div>
+    <div class="ck">/powerup·/focus·/copy 1번씩 사용</div>
+  </div>
+
+  <h2 style="margin-top:6mm;">강사 연락처 · 후속 채널</h2>
+  <div class="contact">
+    <h3>황민호 수석</h3>
+    <div class="clines">
+      <div><b>소속.</b> Forward Deployed Engineer</div>
+      <div><b>이메일.</b> robin.hwang@kakaocorp.com</div>
+      <div><b>기관 채널.</b> 기관 위키·메신저 — 기관 도입 페어링 환영</div>
+      <div class="small" style="margin-top:2mm;">강의 끝나고도 자리에 남아 1대1 질문을 받습니다.</div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:5mm;">더 알아볼 것</h2>
+  <ul style="font-size:9.5pt;">
+    <li><b>공식 문서.</b> docs.anthropic.com/claude-code · code.claude.com/docs</li>
+    <li><b>이번에 못 다룬 기능.</b> Output Styles · Status Lines · Channels · Worktree · TDD 사이클 · GitHub Actions 통합</li>
+    <li><b>본 강의 산출물.</b> 슬라이드 96장 · 강사 노트 · 본 핸드아웃</li>
+  </ul>
+
+  <div class="pf"><span>p.7 / 7</span><span>Claude Code v2 핸드아웃 · 황민호 수석 · 2026-04-29</span></div>
+</section>
+
+
+<div style="position:fixed;bottom:6px;right:10px;font-size:11px;color:rgba(255,255,255,0.6);z-index:9999;pointer-events:none;">원작: 황민호 (Forward Deployed Engineer, Kakao AI Studio) · 2026-04-29</div>
+</body>
+</html>

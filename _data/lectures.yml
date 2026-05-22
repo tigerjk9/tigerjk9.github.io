@@ -1,1 +1,15 @@
-[]
+- slug: claude-code-edu
+  title: "Claude Code 실무 활용 — 교육자 워크숍"
+  subtitle: "22개 기능 · Basic/Advanced 트랙 · 120분"
+  audience: "교육자"
+  duration_min: 120
+  feature_count: 22
+  date: "2026-04-29"
+  hub_url: /lectures/claude-code-edu/
+  thumbnail: /assets/lectures/claude-code-edu/cover.jpg
+  author: "황민호 (FDE, Kakao AI Studio)"
+  tags:
+    - Claude Code
+    - AI 활용
+    - 교원연수
+    - 워크숍
