@@ -131,17 +131,27 @@
   .feat .ftrack.adv{ background:var(--ink); color:#fff; }
   .feat .fdef{ font-size:9.5pt; margin-bottom:2.4mm; line-height:1.45; }
 
-  .feat .fcmd-wrap{ position:relative; margin:0 0 1.4mm; }
-  .feat .fcmd-tag{ position:absolute; top:-0.8mm; right:1.4mm;
+  /* 터미널 카드 — 타이틀바 + 코드블록 2단 구조 (절대 위치 폐기, 겹침 방지) */
+  .feat .fcmd-wrap{ margin:0 0 1.6mm;
+                    border:0.4pt solid var(--line); border-radius:1mm;
+                    overflow:hidden; background:var(--bg-soft); }
+  .feat .fcmd-tag{ display:flex; align-items:center; gap:1.4mm;
                    font-family:'JetBrains Mono','Consolas',monospace;
-                   font-size:6.8pt; font-weight:700; letter-spacing:.5pt;
-                   padding:0.2mm 1.4mm; background:#fff; color:var(--soft);
-                   border:0.4pt solid var(--line); border-radius:0.8mm;
+                   font-size:7.2pt; font-weight:700; letter-spacing:.6pt;
+                   padding:1mm 2mm 0.8mm; color:var(--ink);
+                   background:var(--bg-strong);
+                   border-bottom:0.4pt solid var(--line);
                    text-transform:uppercase; }
+  /* macOS 도트 — 터미널 정체성 한 컷 */
+  .feat .fcmd-tag::before{ content:""; display:inline-block;
+                           width:1.6mm; height:1.6mm; border-radius:50%;
+                           background:#ff5f56;
+                           box-shadow: 2mm 0 0 #ffbd2e, 4mm 0 0 #27c93f;
+                           margin-right:4mm; }
   .feat .fcmd{ font-family:'JetBrains Mono','Consolas','D2Coding','Menlo',monospace;
-               font-size:8.8pt; background:var(--bg-soft);
-               padding:1.6mm 1.8mm 1.4mm; border-left:1.8pt solid var(--hl);
-               margin:0; white-space:pre-wrap; word-wrap:break-word; line-height:1.45; }
+               font-size:8.8pt; background:transparent;
+               padding:1.6mm 2mm 1.4mm; border-left:1.8pt solid var(--hl);
+               margin:0; white-space:pre-wrap; word-wrap:break-word; line-height:1.5; }
 
   .feat .fprompt{ font-size:9pt; padding:1.2mm 0 0;
                   border-top:0.3pt solid var(--line); margin-top:1mm;
