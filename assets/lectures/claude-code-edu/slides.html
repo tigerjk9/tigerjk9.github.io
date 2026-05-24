@@ -153,12 +153,22 @@
          data-background-image="assets/hero_terminal.png"
          data-background-size="cover" data-background-color="#0f172a"
          data-background-opacity="0.8">
-  <div class="fullbleed-overlay" style="margin: 0 auto; max-width: 80%;">
+  <div class="fullbleed-overlay" style="margin: 0 auto; max-width: 82%;">
     <h1 style="font-size: 2.1em;">Claude Code 실무 활용</h1>
-    <h3 style="color: #fff; opacity: .9;">교육자를 위한 2시간 워크숍 · Basic + Advanced</h3>
-    <p style="margin-top: 1em; font-size: 1.05em;">황민호 수석</p>
-    <p class="muted-light">Forward Deployed Engineer</p>
-    <p class="muted-light" style="margin-top: 1.2em;">2026-04-29 · 22개 기능</p>
+    <h3 style="color: #fff; opacity: .9;">교육자를 위한 2시간 워크숍 · Basic 12 + Advanced 10</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6em;margin:1.4em auto 0;max-width:600px;">
+      <div style="border-top:2px solid rgba(255,255,255,.35);padding-top:.55em;text-align:left;">
+        <p style="font-size:.62em;opacity:.7;letter-spacing:1.6px;text-transform:uppercase;margin:0 0 .25em;">원작자</p>
+        <p style="font-size:1.05em;font-weight:700;margin:0;">황민호</p>
+        <p class="muted-light" style="margin-top:.2em;font-size:.78em;">Forward Deployed Engineer · Kakao AI Studio</p>
+      </div>
+      <div style="border-top:2px solid #fbbf24;padding-top:.55em;text-align:left;">
+        <p style="font-size:.62em;color:#fbbf24;letter-spacing:1.6px;text-transform:uppercase;margin:0 0 .25em;">교육용 큐레이터</p>
+        <p style="font-size:1.05em;font-weight:700;margin:0;">김진관</p>
+        <p class="muted-light" style="margin-top:.2em;font-size:.78em;">닷커넥터 · 교실 어휘로 재배치</p>
+      </div>
+    </div>
+    <p class="muted-light" style="margin-top:1.4em;font-size:.82em;">2026-04-29 · 22개 기능 · 교육자 큐레이션 버전</p>
   </div>
 </section>
 
@@ -172,13 +182,18 @@
   </ul>
 </section>
 
-<!-- S3. 강사 소개 — L4 인용 -->
+<!-- S3. 원작자 · 큐레이터 한 줄 — L4 인용 -->
 <section class="layout-quote" data-block="intro">
-  <h2>강사 한 줄 소개</h2>
+  <h2>원작자 한 줄 · 큐레이터 한 줄</h2>
   <blockquote class="big-quote">
     현장에 들어가서 이 도구로 진짜 일이 풀리는지 옆에서 같이 검증하는 게 제 일입니다.
   </blockquote>
-  <p class="quote-attr">— 황민호. Forward Deployed Engineer. 여러 팀의 Claude Code 도입 페어링.</p>
+  <p class="quote-attr">— 황민호 · 원작자. Forward Deployed Engineer. 여러 팀의 Claude Code 도입 페어링.</p>
+
+  <blockquote class="big-quote" style="border-left-color:#fbbf24;margin-top:1.1em;font-size:1.18em;">
+    개발자 도구를 교실 어휘로 다시 적었습니다. 옆자리 동료 교사에게 건넨다는 마음으로.
+  </blockquote>
+  <p class="quote-attr">— 김진관 · 교육용 큐레이터. 닷커넥터.</p>
 </section>
 
 <!-- S4. Claude Code 정의 — L9 콜아웃 -->
@@ -1759,14 +1774,15 @@ allow에 추가할까요? (Y/n)
   <p class="muted small" style="margin-top: .5em;">출처. anthropic.com/legal/privacy · docs.anthropic.com/claude-code</p>
 </section>
 
-<!-- S95. 추가 학습·강사 채널 — L1 -->
+<!-- S95. 추가 학습·채널 — L1 -->
 <section class="layout-bullets" data-block="contact">
-  <h2>더 알아볼 것 · 강사 채널</h2>
+  <h2>더 알아볼 것 · 채널</h2>
   <ul>
     <li><strong>공식 문서.</strong> docs.anthropic.com/claude-code</li>
     <li><strong>이번에 못 다룬 기능.</strong> Output Styles · Status Lines · Channels · Worktree · TDD 사이클 · GitHub Actions 통합</li>
-    <li><strong>본 핸드아웃.</strong> A4 6면 — 체크리스트 · 시나리오 · 보안 한 컷</li>
-    <li><strong>강사 채널.</strong> 황민호 수석 · Forward Deployed Engineer · robin.hwang@kakaocorp.com</li>
+    <li><strong>본 핸드아웃.</strong> A4 7면 — 체크리스트 · 시나리오 · 보안 한 컷 (큐레이션 버전)</li>
+    <li><strong>원작 채널.</strong> 황민호 · Forward Deployed Engineer · Kakao AI Studio</li>
+    <li><strong>교육용 큐레이션.</strong> 김진관 · 닷커넥터 · <code>tigerjk9.github.io/lectures/claude-code-edu/</code></li>
   </ul>
 </section>
 
@@ -1776,7 +1792,7 @@ allow에 추가할까요? (Y/n)
   <p class="break-tag">Q&amp;A</p>
   <h1 class="break-title">질문 받습니다</h1>
   <p class="break-sub">질문 받습니다. 아니면 강사 자리로 와 주세요.</p>
-  <p class="muted" style="margin-top: 1em;">오늘 함께해 주셔서 감사합니다. — 황민호</p>
+  <p class="muted" style="margin-top: 1em;">오늘 함께해 주셔서 감사합니다. — 원작 황민호 · 교육용 큐레이션 김진관 (닷커넥터)</p>
 </section>
 
     </div>
@@ -1796,6 +1812,6 @@ allow에 추가할까요? (Y/n)
     });
   </script>
 
-<div style="position:fixed;bottom:6px;right:10px;font-size:11px;color:rgba(255,255,255,0.6);z-index:9999;pointer-events:none;">원작: 황민호 (Forward Deployed Engineer, Kakao AI Studio) · 2026-04-29</div>
+<div style="position:fixed;bottom:6px;right:10px;font-size:11px;color:rgba(255,255,255,0.6);z-index:9999;pointer-events:none;">원작 황민호 (FDE, Kakao AI Studio) · 교육용 큐레이션 김진관 (닷커넥터) · 2026-04-29</div>
 </body>
 </html>

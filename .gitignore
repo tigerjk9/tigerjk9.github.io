@@ -74,3 +74,6 @@ _site
 
 # 강의자료 큐레이션 런타임 작업 디렉토리 (커밋 불필요)
 _workspace/
+
+# Pretendard fonts (download via scripts/gen_lecture_cover.py header instructions)
+.fonts/
