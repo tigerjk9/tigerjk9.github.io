@@ -517,11 +517,11 @@ PS C:\work&gt; $env:CLAUDE_CODE_DISABLE_AUTO_MEMORY=1   # 환경변수로 영구
 <section class="layout-cards" data-block="permissions">
   <p class="feature-id">자리별 진입점</p>
   <h2>역할별 권장 권한 모드</h2>
-  <div class="card-grid-4">
-    <div class="card"><h4>매일 사용하는 익숙한 사용자</h4><p class="card-tag">acceptEdits</p><p class="small">변경은 자동, 터미널 명령은 묻기 (교사·연구자 공통)</p></div>
+  <div class="card-grid-4" style="grid-template-columns: repeat(3, 1fr);">
     <div class="card"><h4>교사 자리</h4><p class="card-tag">plan + default</p><p class="small">수업 자료는 plan, 학생 자료 직접 편집은 default</p></div>
-    <div class="card"><h4>헤드리스 자동화</h4><p class="card-tag">dontAsk (야간만)</p><p class="small">야간 잡 — Advanced에서 봅니다</p></div>
+    <div class="card"><h4>매일 사용하는 익숙한 사용자</h4><p class="card-tag">acceptEdits</p><p class="small">변경은 자동, 터미널 명령은 묻기 (교사·연구자 공통)</p></div>
     <div class="card"><h4>처음 쓰는 분</h4><p class="card-tag">plan</p><p class="small">처음 1주 안전모드</p></div>
+    <div class="card"><h4>헤드리스 자동화</h4><p class="card-tag">dontAsk (야간만)</p><p class="small">야간 잡 — Advanced에서 봅니다</p></div>
     <div class="card"><h4>보고서·계획서 중심</h4><p class="card-tag">default</p><p class="small">매번 확인 — 가장 안전</p></div>
   </div>
 </section>
@@ -1040,12 +1040,12 @@ paths: ["data/원본/**"]
 <section class="layout-cards" data-block="adv-intro" data-background-gradient="linear-gradient(135deg, #dbeafe 0%, #fff 50%)">
   <h2><span class="badge badge-adv">Advanced</span> 트랙 — 자동화 10가지</h2>
   <p class="muted">헤드리스 · 훅 · MCP · 플러그인 · Routines · 다중에이전트 · /loop · /schedule · /effort · UX 보조</p>
-  <div class="card-grid-4">
+  <div class="card-grid-4" style="grid-template-columns: repeat(3, 1fr);">
     <div class="card"><h4>교사·학년부장 자리</h4><p class="card-tag">세 개</p><p class="small">/ultrareview · Plugins(교과 표준) · /schedule</p></div>
     <div class="card"><h4>랩장 자리</h4><p class="card-tag">두 개</p><p class="small">/ultrareview · Plugins(랩 표준)</p></div>
+    <div class="card"><h4>행정·정책 자리</h4><p class="card-tag">세 개</p><p class="small">Routines · MCP · /schedule</p></div>
     <div class="card"><h4>시뮬레이션 자리</h4><p class="card-tag">전부</p><p class="small">자동화 본편</p></div>
     <div class="card"><h4>처음 쓰는 분</h4><p class="card-tag">두 개</p><p class="small">/powerup · /effort</p></div>
-    <div class="card"><h4>행정·정책 자리</h4><p class="card-tag">세 개</p><p class="small">Routines · MCP · /schedule</p></div>
   </div>
   <p class="muted" style="margin-top: .8em;"><strong>도달 목표.</strong> "내 파이프라인 어디에 끼워 넣을지"가 한두 개 보이면 성공.</p>
 </section>
@@ -1817,6 +1817,11 @@ allow에 추가할까요? (Y/n)
       controls: true,
       progress: true,
       pdfSeparateFragments: false,
+      // 한글 본문 + 카드/콜아웃 밀도가 높아 기본 960x700은 잘림 발생
+      // 1280x820 으로 캔버스를 키워 모든 슬라이드에 안전 마진 확보
+      width: 1280,
+      height: 820,
+      margin: 0.04,
       plugins: [RevealNotes, RevealHighlight]
     });
   </script>
