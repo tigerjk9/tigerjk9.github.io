@@ -8,6 +8,8 @@
   hub_url: /lectures/claude-code-edu/
   thumbnail: /assets/lectures/claude-code-edu/cover.jpg
   author: "황민호 (FDE, Kakao AI Studio)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "개발자 도구를 교실 어휘로 다시 적은 교육자 큐레이션 버전"
   tags:
     - Claude Code
     - AI 활용
