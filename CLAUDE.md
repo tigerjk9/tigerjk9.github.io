@@ -422,7 +422,7 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 황민호 수석 KIST Claude Code 워크숍 자료(`260429_황민호_강의자료.Zip`)를 첫 사례로 강의자료 zip 한 묶음(slides·instructor-notes·handout·labs·N 기능 카탈로그) → `_lectures/` Jekyll collection 자동 큐레이션. 5명 Superpowers 멀티 에이전트 팀(inventory·parser·curator·builder·reviewer).
 
-**현재 상태 (2026-05-22 기준 Phase A+B+C 완료, Phase D 허브 수동 완료)**
+**현재 상태 (2026-05-24 기준 Phase A+B 완료, Phase D 첫 변환·큐레이션 완료, Phase C 자동화 진입점 미완)**
 
 | Phase | 산출 | 상태 |
 |-------|------|------|
@@ -430,9 +430,18 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 | Plan | `docs/superpowers/plans/2026-05-22-lecture-curation-harness-plan.md` (1957줄, 19 task) | ✅ |
 | A 인프라 | `_config.yml` collections.lectures·`_layouts/lecture.html`·`_sass/_lectures.scss`·`_data/lectures.yml`+`navigation.yml`·`_includes/lecture-card.html`+`lecture-nav.html`·`_pages/lectures.md` | ✅ |
 | B 스크립트 | `scripts/lecture_archive/{utils,parse_slides,extract_notes,map_features,build_site,orchestrate}.py` + tests/ (18 tests pass) | ✅ |
-| C 에이전트 | `.claude/skills/lecture-archive-orchestrator/SKILL.md` + `.claude/commands/lecture-archive.md` | ✅ |
-| D 첫 변환 (허브만) | `claude-code-edu` 수동 변환: `_lectures/claude-code-edu/index.md` + `assets/lectures/claude-code-edu/` (slides·handout·cover) | ✅ |
-| D 기능 페이지 | 22개 feature 개별 페이지 자동 생성 (Phase C 에이전트 완료 후 진행) | ⏳ |
+| D 첫 변환·큐레이션 (수동) | `claude-code-edu`: 허브 + 22 feature 페이지 + 슬라이드·핸드아웃·OG 커버. 김진관/닷커넥터 큐레이션 메타 + K-12 교사 듀얼 트랙 (15장 슬라이드 + 6곳 핸드아웃) + 허브 카드 큐레이션 배지·크레딧 + Reveal 캔버스 1280x820 + 핸드아웃 터미널 카드 재설계 | ✅ |
+| C 자동화 진입점 | `.claude/skills/lecture-archive-orchestrator/SKILL.md` + `.claude/commands/lecture-archive.md` (두 번째 강의부터 적용 예정) | ⏳ |
+
+**큐레이션 작업 패턴 (claude-code-edu에서 정착)**
+
+- **격리 모드 유지**: `_lectures/`는 `_posts` 사이드바·지식그래프·검색에 침투 0건. 강의자료 추가 시 `bundle exec jekyll build && ls _site/categories/ | wc -l` 카운트 변경 전후 동일해야 함
+- **외부 기관명 de-institutionalization**: 슬러그·타이틀에서 KIST 등 제3자 기관명 회피 (`claude-code-edu`). 청중명(교육자)로 치환
+- **OG 커버**: `scripts/gen_lecture_cover.py`로 Pretendard 4 weight (Black/Bold/SemiBold/Medium) 사용, 슬레이트 네이비 + 블루/앰버 액센트 + macOS 도트 터미널 카드. 폰트는 `.fonts/` (gitignore)에 다운로드 — 스크립트 헤더 docstring에 다운로드 안내
+- **큐레이션 메타 일관화**: 원작자/큐레이터 2-칸 메타를 슬라이드 표지·강사 소개·마무리·푸터 + 핸드아웃 표지·푸터에 동시 표기. `_data/lectures.yml`의 `curator`+`curation_note` 필드로 허브 카드에도 자동 배지 노출 (`curator` 없으면 원작자 1줄 분기)
+- **K-12 교사 듀얼 트랙**: 페르소나 카드·prompt 예제·결과 화면 3 레이어를 **동시** 환원해야 톤 바뀜. 시나리오 한 줄만 추가하면 본문이 학술 톤이라 어색. "교사 자리 / 연구자 자리" 듀얼 페르소나로 통일
+- **Reveal 캔버스**: 한국어+카드 밀도 슬라이드는 기본 960×700이 좁아 잘림 → `width: 1280, height: 820, margin: 0.04`가 안전 기본값. `.card-grid-4`에 카드 5장 넣으면 inline `style="grid-template-columns: repeat(3, 1fr);"`로 3-col 강제
+- **핸드아웃 터미널 카드**: 절대 위치 `.fcmd-tag`는 점선·코드 첫줄과 겹침 → 터미널 타이틀바(`bg-strong`) + 코드블록(`bg-soft`) 2단 flow + macOS 도트 정체성
 
 **격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 200+개·`graph-data.json`·`_includes/sidebar/*.html` 영향 없음.
 
