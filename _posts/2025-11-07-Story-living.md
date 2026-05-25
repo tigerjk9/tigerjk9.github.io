@@ -13,7 +13,7 @@ permalink: /post/Story-living/
 
 ---
 
-### <주요 특징>
+### 주요 특징
 
 **(1) 6가지 시뮬레이션 유형**
 * 과학 실험
@@ -42,7 +42,7 @@ permalink: /post/Story-living/
 
 ---
 
-### <기술 스택>
+### 기술 스택
 
 **(1) 텍스트 생성:** Gemini 2.0 Flash
 **(2) 이미지 생성:** Imagen 4.0
