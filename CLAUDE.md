@@ -125,6 +125,7 @@ python scripts/pdf_to_post.py _papers/paper.pdf --keep-pdf # 원본 PDF 보존
 - **Figure 참조 환각 후처리 (필수)**: Gemini가 실제 추출본 수(최대 6개)를 초과하는 `fig-7`·`fig-8` 등을 본문 `<figure>`에 참조하는 환각이 잦다(추출본 일부는 미사용으로 남음). 스크립트가 그대로 commit·push하므로 배포 시 404. `/paper` 실행 직후 **항상** 본문 `<img src=...-fig-N>` 목록과 `assets/<slug>-fig-*` 실제 파일을 대조 → 미존재 참조는 미사용 추출본으로 교체하되 **이미지를 직접 Read로 확인해 캡션을 실제 내용에 맞게 정직하게 재작성**(환각 캡션 금지) → 그림 번호 `1..N` 순차 정렬 → 별도 커밋. 콜론 헤딩 `## 5. 리뷰어의 ADD(+) One: 생각 더하기`는 46개 기존 포스트 공유 고정 템플릿이라 S1 예외로 유지. (2026-05-17 세션 정착)
 - **arXiv ID / DOI 자동 추출**: `extract_paper_metadata()`가 PDF 첫 2페이지에서 `arXiv:XXXX.XXXXX` 및 `10.XXXX/...` 패턴을 추출 → `{PAPER_METADATA}` 블록으로 프롬프트에 주입 → Gemini는 이 값만 그대로 사용 (추측 금지). 추출 실패 시 생성 금지 지시 주입
 - **APA 출처**: arXiv 논문이면 추출된 ID로 `*arXiv preprint arXiv:XXXX.XXXXX*` 형식 포함. DOI도 추출 성공 시 `https://doi.org/...` 추가. 추출 실패 시 ID 완전 생략
+- **arXiv ID/DOI 환각 후처리 (필수)**: `extract_paper_metadata()` 로그에 `arXiv ID/DOI 미확인 — 출처 ID 생성 금지 지시 적용` 메시지가 떠도 Gemini가 종종 `*arXiv preprint arXiv:2605.10122*` 같은 환각 ID를 출처 라인에 끼워 넣는다. `/paper` 실행 직후 **스크립트 로그 + 본문 `## 출처` 섹션 동시 확인**으로 검증 → 로그가 추출 실패였는데 출처에 ID 들어가 있으면 즉시 제거(논문 제목·저자만 유지). arXiv ID는 한 번 인용되면 잘못된 인용이 영구화돼 학술적 신뢰 손실. (2026-05-25 세션 정착)
 
 ---
 
