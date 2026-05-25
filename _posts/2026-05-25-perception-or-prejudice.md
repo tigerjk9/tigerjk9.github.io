@@ -25,6 +25,11 @@ permalink: /post/perception-or-prejudice/
 -   **4가지 샘플 수준 실패 모드 지표**: 집계된 작업 점수가 아닌, 각 샘플에서 어떤 단계가 실패했는지 파악하기 위해 `편견율(Prejudice Rate, PR)`, `조작율(Confabulation Rate, CR)`, `통합 실패율(Integration-failure Rate, IR)`, `총체적 근거 제시율(Holistic-Grounding Rate, HR)`을 도입함.
 -   **벤치마크 대상**: 13개의 비공개(closed-source) 모델과 14개의 공개(open-source) 모델을 포함한 총 27개의 대표적인 MLLM을 평가하고 비교함.
 
+<figure>
+<img src="/assets/perception-or-prejudice-fig-2.png" alt="MM-OCEAN의 5단계 멀티 에이전트-인간 협업 주석 파이프라인 도식">
+<figcaption>MM-OCEAN의 5단계 멀티 에이전트-인간 협업 주석 파이프라인. 영상에서 Observer(원자적 행동 단서)·Annotator(사람의 검증)·Psychologist(특성 추론)·Examiner(MCQ 생성)·Aligner(품질 검수)가 순차로 협업하고, 마지막 Filtering + Expert Review 단계에서 사람 전문가가 모든 단서가 시간·공간 정보와 사람의 동의를 거쳤는지 다시 검토한다.</figcaption>
+</figure>
+
 ## 3. 주요 발견
 
 이 연구는 기존 성격 평가 벤치마크의 한계를 넘어, MLLM이 성격 판단에 이르는 과정을 다층적으로 분석하고 '편견 간극'이라는 중요한 문제를 밝혀냄.
@@ -49,8 +54,8 @@ permalink: /post/perception-or-prejudice/
 -   **시각적 근거 제시 능력의 병목 현상**: 독점 모델과 공개 모델 간 성능 차이는 `평가(T1)`와 `추론(T2)`에서는 작지만, `단서 검색(T3)`에서는 공개 모델이 평균 26.6% 낮음. 특히 `미세 표정(Micro-expression)` 탐지, `공간적 위치 파악(Spatial Localization)`, `시공간적 공동 위치 파악(Temporal-Spatial Joint Localization)`과 같은 시각적 근거 제시 범주에서 가장 큰 격차를 보임. 이는 MLLM이 복잡한 시각 정보를 세밀하게 이해하고 특정 행동 단서에 연결하는 능력이 여전히 핵심적인 병목 지점임을 시사함.
 
 <figure>
-<img src="/assets/perception-or-prejudice-fig-5.png" alt="모델별 실패 모드 지문 히트맵. Holistic-Grounding Rate, Prejudice Rate, Confabulation Rate, Integration-failure Rate를 보여줌.">
-<figcaption>모델별 실패 모드 지문 히트맵. 높은 HR은 신뢰할 수 있는 AI를, 높은 PR/CR/IR은 각기 다른 실패 유형을 나타냄.</figcaption>
+<img src="/assets/perception-or-prejudice-fig-3.png" alt="MM-OCEAN 벤치마크 전체 구조 — Task 1·2·3의 입출력·평가 지표·실제 영상 데모">
+<figcaption>MM-OCEAN 벤치마크 전체 구조. 같은 영상에 대해 Task 1(성격 평가)·Task 2(개방형 추론)·Task 3(단서 근거 제시) 세 과제를 차례로 던져 모델의 평가-추론-근거 일치도를 측정한다. 아래 데모를 보면 모델은 "Agreeableness=High"를 정답으로 맞히지만, 그 근거로 제시한 행동 단서가 평가자의 정답 단서와 어긋난다 — 본문에서 말한 `Prejudice Gap`의 전형적 장면이다.</figcaption>
 </figure>
 
 (4) **모델 유형별 진단**: 모델의 `평가-근거 제시 불일치(Rating-Grounding Misalignment, RGM)` 지표를 통해 두 가지 아키타입이 명확히 구분됨.
