@@ -79,4 +79,4 @@ permalink: /post/the-hidden-cost-of-contextual-sycophancy/
 
 ## 출처
 
-- Koyuturk, C., Guidotti, S., & Ognibene, D. (2026). *The Hidden Cost of Contextual Sycophancy: an AI Literacy Intervention in Human–AI Collaboration*. arXiv preprint arXiv:2605.18372.
+- Koyuturk, C., Guidotti, S., & Ognibene, D. (2026). *The Hidden Cost of Contextual Sycophancy: an AI Literacy Intervention in Human–AI Collaboration*.
