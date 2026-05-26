@@ -53,8 +53,26 @@ def _session() -> requests.Session:
 # 검색어·URL 추출
 # ---------------------------------------------------------------------------
 
+_QUERY_STOPWORDS = {
+    "the", "a", "an", "of", "in", "on", "at", "to", "for", "and", "or",
+    "with", "by", "as", "is", "are", "be", "this", "that",
+}
+
+
+def _slug_to_query(slug: str) -> str:
+    """영문 슬러그를 Pexels/DDG 검색어로 변환한다.
+
+    슬러그는 보통 PDF 영문 제목·YouTube 영문 슬러그 등 의미 있는 영문 단어 조합이므로
+    한국어 title보다 Pexels·DDG 매칭 정확도가 훨씬 높다.
+    """
+    if not slug:
+        return ""
+    words = [w for w in slug.split("-") if w and w.lower() not in _QUERY_STOPWORDS]
+    return " ".join(words[:6])
+
+
 def _extract_query(markdown_content: str) -> str:
-    """front matter title + tags에서 이미지 검색어를 만든다."""
+    """front matter title + tags에서 이미지 검색어를 만든다 (한국어 폴백용)."""
     title_match = re.search(r'^title:\s*["\']?(.+?)["\']?\s*$', markdown_content, re.MULTILINE)
     tags_match = re.search(r'^tags:\s*\[(.+?)\]', markdown_content, re.MULTILINE)
 
@@ -66,6 +84,25 @@ def _extract_query(markdown_content: str) -> str:
         parts.extend(raw_tags[:2])
 
     return " ".join(parts[:5]) if parts else "education"
+
+
+def _build_query_candidates(markdown_content: str, slug: str) -> list[str]:
+    """검색 우선순위 순으로 쿼리 후보 리스트를 반환한다.
+
+    1순위: 영문 슬러그(있고 영문 단어가 2개 이상일 때) — Pexels/DDG 매칭 정확도 최고
+    2순위: 한국어 title+tags — 영문 슬러그 매칭 실패 시 폴백
+    """
+    candidates: list[str] = []
+    eng = _slug_to_query(slug)
+    # 영문 단어 2개 미만이면 의미 검색 어려움 → 건너뜀
+    if eng and len(eng.split()) >= 2 and re.search(r"[a-zA-Z]{2,}", eng):
+        candidates.append(eng)
+
+    ko = _extract_query(markdown_content)
+    if ko and ko not in candidates:
+        candidates.append(ko)
+
+    return candidates or ["education abstract"]
 
 
 def _extract_source_urls(markdown_content: str) -> list[str]:
@@ -167,42 +204,51 @@ def _try_og_image(markdown_content: str, slug: str) -> Optional[Path]:
 # 3순위: DuckDuckGo 이미지 검색 (최후 폴백)
 # ---------------------------------------------------------------------------
 
-def _try_ddg_image(query: str, slug: str) -> Optional[Path]:
-    """DuckDuckGo 이미지 검색으로 관련 이미지를 가져온다."""
+def _try_ddg_image(queries: "list[str] | str", slug: str) -> Optional[Path]:
+    """DuckDuckGo 이미지 검색으로 관련 이미지를 가져온다.
+
+    queries: 검색 우선순위 리스트(영문 → 한국어). 단일 문자열도 허용(하위 호환).
+    """
     try:
         from duckduckgo_search import DDGS
     except ImportError:
         print("[INFO] duckduckgo-search 미설치 - DDG 검색 건너뜀 (pip install duckduckgo-search)")
         return None
 
-    print(f"[INFO] DDG 이미지 검색: {query!r}")
-    try:
-        # verify=False: 기업 네트워크 SSL 우회
-        with DDGS(verify=False) as ddgs:
-            results = list(ddgs.images(
-                query,
-                max_results=15,
-                type_image="photo",
-                layout="Wide",
-            ))
-    except Exception as exc:
-        print(f"[WARN] DDG 검색 실패: {exc}")
-        return None
+    if isinstance(queries, str):
+        queries = [queries]
 
-    for r in results:
-        img_url = r.get("image", "")
-        w, h = r.get("width", 0), r.get("height", 0)
-        if not img_url or w < 400 or h < 200:
+    for query in queries:
+        if not query:
+            continue
+        print(f"[INFO] DDG 이미지 검색: {query!r}")
+        try:
+            with DDGS(verify=False) as ddgs:
+                results = list(ddgs.images(
+                    query,
+                    max_results=15,
+                    type_image="photo",
+                    layout="Wide",
+                ))
+        except Exception as exc:
+            print(f"[WARN] DDG 검색 실패 ({query!r}): {exc}")
             continue
 
-        result = _download_image(
-            img_url, slug,
-            source_label=f"DDG({r.get('source', '')[:30]})"
-        )
-        if result:
-            return result
+        for r in results:
+            img_url = r.get("image", "")
+            w, h = r.get("width", 0), r.get("height", 0)
+            if not img_url or w < 400 or h < 200:
+                continue
 
-    print("[WARN] DDG 결과에서 유효한 이미지를 찾지 못함")
+            result = _download_image(
+                img_url, slug,
+                source_label=f"DDG({r.get('source', '')[:30]})"
+            )
+            if result:
+                return result
+
+        print(f"[WARN] DDG 결과에서 유효한 이미지를 찾지 못함: {query!r}")
+
     return None
 
 
@@ -210,32 +256,46 @@ def _try_ddg_image(query: str, slug: str) -> Optional[Path]:
 # 2순위: Pexels (API 키 지정 고품질 이미지)
 # ---------------------------------------------------------------------------
 
-def _try_pexels_image(query: str, slug: str) -> Optional[Path]:
-    """Pexels에서 이미지를 검색한다 (API 키 필요, DDG 이전 2순위)."""
+def _try_pexels_image(queries: "list[str] | str", slug: str) -> Optional[Path]:
+    """Pexels에서 이미지를 검색한다 (API 키 필요, DDG 이전 2순위).
+
+    queries: 검색 우선순위 리스트(영문 → 한국어). 단일 문자열도 허용(하위 호환).
+    Pexels는 한국어 매칭 정확도가 매우 낮으므로 영문 키워드 우선이 핵심.
+    """
     api_key = os.getenv("PEXELS_API_KEY", "").strip()
     if not api_key:
         return None
 
-    print(f"[INFO] Pexels 검색: {query!r}")
-    try:
-        resp = _session().get(
-            "https://api.pexels.com/v1/search",
-            headers={"Authorization": api_key},
-            params={"query": query, "per_page": 3, "orientation": "landscape"},
-            timeout=10,
-        )
-        resp.raise_for_status()
-        photos = resp.json().get("photos", [])
-        if not photos:
-            print(f"[WARN] Pexels 검색 결과 없음: {query!r}")
-            return None
+    if isinstance(queries, str):
+        queries = [queries]
 
-        img_url = photos[0]["src"]["large2x"]
-        return _download_image(img_url, slug, source_label="Pexels")
+    for query in queries:
+        if not query:
+            continue
+        print(f"[INFO] Pexels 검색: {query!r}")
+        try:
+            resp = _session().get(
+                "https://api.pexels.com/v1/search",
+                headers={"Authorization": api_key},
+                params={"query": query, "per_page": 3, "orientation": "landscape"},
+                timeout=10,
+            )
+            resp.raise_for_status()
+            photos = resp.json().get("photos", [])
+            if not photos:
+                print(f"[WARN] Pexels 검색 결과 없음: {query!r}")
+                continue
 
-    except Exception as exc:
-        print(f"[WARN] Pexels 실패: {exc}")
-        return None
+            img_url = photos[0]["src"]["large2x"]
+            result = _download_image(img_url, slug, source_label=f"Pexels:{query[:30]}")
+            if result:
+                return result
+
+        except Exception as exc:
+            print(f"[WARN] Pexels 실패 ({query!r}): {exc}")
+            continue
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -448,7 +508,7 @@ def fetch_and_inject_image(
     inject_body=False이면 teaser만 삽입하고 본문 <figure>는 건너뜀.
     PDF figure처럼 Gemini가 이미 본문에 배치한 경우에 사용한다.
     """
-    query = _extract_query(markdown_content)
+    queries = _build_query_candidates(markdown_content, slug)
     alt = _extract_title(markdown_content)
 
     # 1순위: 소스 이미지 (사용자 제공)
@@ -464,13 +524,13 @@ def fetch_and_inject_image(
     # 2순위: 출처 URL OG 이미지
     img_path = _try_og_image(markdown_content, slug)
 
-    # 3순위: Pexels (API 키 지정 고품질)
+    # 3순위: Pexels (API 키 지정 고품질) — 영문 슬러그 → 한국어 폴백
     if img_path is None:
-        img_path = _try_pexels_image(query, slug)
+        img_path = _try_pexels_image(queries, slug)
 
-    # 4순위: DuckDuckGo 폴백
+    # 4순위: DuckDuckGo 폴백 — 영문 슬러그 → 한국어 폴백
     if img_path is None:
-        img_path = _try_ddg_image(query, slug)
+        img_path = _try_ddg_image(queries, slug)
 
     if img_path is None:
         print("[INFO] 이미지 삽입 건너뜀 - 모든 소스 실패")
