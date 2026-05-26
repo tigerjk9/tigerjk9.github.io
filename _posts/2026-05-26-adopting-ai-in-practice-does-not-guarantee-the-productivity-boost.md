@@ -1,5 +1,5 @@
 ---
-title: AI 도입, 생산성 향상을 보장하지 않음: 숨겨진 5가지 인간·환경 요인 분석
+title: "AI 도입, 생산성 향상을 보장하지 않음 — 숨겨진 5가지 인간·환경 요인 분석"
 date: 2026-05-26 23:46:43 +0900
 categories: [AI, 교육혁신]
 tags: [AI, 논문리뷰, 에듀테크, 미래교육, 자기조절학습, 교육정책, 인간중심AI]
@@ -9,7 +9,7 @@ permalink: /post/adopting-ai-in-practice-does-not-guarantee-the-productivity-boo
 ---
 
 <figure>
-<img src="/assets/adopting-ai-in-practice-does-not-guarantee-the-productivity-boost-thumb.jpg" alt="AI 도입, 생산성 향상을 보장하지 않음: 숨겨진 5가지 인간·환경 요인 분석">
+<img src="/assets/adopting-ai-in-practice-does-not-guarantee-the-productivity-boost-thumb.jpg" alt="AI 도입, 생산성 향상을 보장하지 않음 — 숨겨진 5가지 인간·환경 요인 분석">
 </figure>
 
 ## 1. 연구의 목적
