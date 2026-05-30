@@ -14,7 +14,7 @@ header:
 <img src="/assets/lml-assessment-system-thumb.png" alt="무엇을 어떻게 평가할 것인가 — 5장 미래학습을 위한 평가시스템">
 </figure>
 
-**발제 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 발제할 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-assessment-system-handout.html){:target="_blank" rel="noopener"}
+**큐레이션 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 다룰 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-assessment-system-handout.html){:target="_blank" rel="noopener"}
 {: .notice--info}
 
 ## 스냅샷이 아니라 사진첩이다

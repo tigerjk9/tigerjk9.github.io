@@ -14,7 +14,7 @@ header:
 <img src="/assets/lml-instruction-modern-learning-thumb.jpg" alt="가르침이 바뀌어야 배움이 바뀐다 — 6장 미래학습을 위한 수업">
 </figure>
 
-**발제 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 발제할 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-instruction-modern-learning-handout.html){:target="_blank" rel="noopener"}
+**큐레이션 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 다룰 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-instruction-modern-learning-handout.html){:target="_blank" rel="noopener"}
 {: .notice--info}
 
 ## 수업이 목표를 따라가야 한다

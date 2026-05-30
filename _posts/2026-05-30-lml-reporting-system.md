@@ -13,7 +13,7 @@ header:
 <img src="/assets/lml-reporting-system-thumb.jpg" alt="성적표가 학습을 배신할 때 — 7장 미래학습을 위한 통지시스템과 부록">
 </figure>
 
-**발제 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 발제할 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-reporting-system-handout.html){:target="_blank" rel="noopener"}
+**큐레이션 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 다룰 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-reporting-system-handout.html){:target="_blank" rel="noopener"}
 {: .notice--info}
 
 ## 통지가 마지막 관문인 이유
