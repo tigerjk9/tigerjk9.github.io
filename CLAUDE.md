@@ -374,6 +374,13 @@ scripts/
 
 > 출처: [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) — Humanize KR v2.0.0
 
+## 공통: PLC 상투 마무리·콜론 헤딩 템플릿 레벨 차단 (2026-05-30)
+
+`/edit-*` 자동화가 글마다 "전문적 학습 공동체(PLC)를 통한 집단 학습과 성찰 문화가 정착되어야" / "이 변화가 정착되려면 교사들이 함께 실험하고 성찰하는 구조가 먼저다" 같은 **동일 마무리를 반복**하던 근본 원인은, 프롬프트 "필자 관점/비판적 낙관" 항목이 PLC 마무리를 **직접 지시**하고 있었기 때문이다. `edit_paper_prompt_template.txt`·`edit_web_prompt_template.txt`·`edit_web_multi_prompt_template.txt` 3종에서 해당 지시문을 "상투구 절대 금지 + 매번 다른 구체적 협력 행위(동학년 점심 대화·학년 메신저 한 줄·의심 사례 함께 보기·관찰 일지)로 변주"로 교체했고, 콜론 헤딩 금지 규칙에 `###`(H3)를 포함시켰다.
+
+- **미적용 템플릿**: `edit_yt_*`·`lecture_prompt_template.txt` 등에는 동일 PLC 지시문이 남아 있을 수 있다. `/edit-video`·`/edit-yeonsu` 사용 시 발견하면 같은 패턴으로 수정.
+- **후처리는 계속 필요**: 템플릿을 고쳐도 Gemini가 콜론 헤딩·arXiv ID 환각을 종종 생성한다. arXiv ID는 스크립트 로그가 "추출 실패"여도 그럴듯한 틀린 번호를 끼워 넣으므로 `## 출처`의 ID는 **항상 WebSearch 교차검증**(실제 ID면 교정, 미확인이면 제거). 상세 절차는 메모리 `feedback_edit_paper_workflow`.
+
 ## 공통: 이미지 자동 삽입
 
 `scripts/image_fetcher.py`가 4개 자동화 스크립트(`/paper`, `/video`, `/paraph`, `/yeonsu`) 공용 모듈로 동작한다.
