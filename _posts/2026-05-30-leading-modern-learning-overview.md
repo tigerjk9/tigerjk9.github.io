@@ -90,6 +90,18 @@ header:
 | [현대 학습을 위한 수업](/post/lml-instruction-modern-learning/) | 본질적 질문과 학생 주도 탐구의 수업 설계 |
 | [통지 시스템, 학습의 마지막 신호](/post/lml-reporting-system/) | 통지표와 생기부를 학습 촉진 장치로 |
 
+## 큐레이션 핸드아웃 모음
+
+각 장을 책 모임에서 다룰 때 쓸 A4 인쇄용(흑백) 한 장짜리 자료다. 새 탭에서 열려 바로 인쇄·PDF 저장된다.
+
+| 장 | 큐레이션 핸드아웃 |
+|----|------------------|
+| 1·2장 비전·미션 | [핸드아웃 열기](/assets/handouts/lml-vision-to-mission-handout.html){:target="_blank" rel="noopener"} |
+| 3·4장 미션→실행·교육과정 | [핸드아웃 열기](/assets/handouts/lml-mission-to-action-curriculum-handout.html){:target="_blank" rel="noopener"} |
+| 5장 평가시스템 | [핸드아웃 열기](/assets/handouts/lml-assessment-system-handout.html){:target="_blank" rel="noopener"} |
+| 6장 수업 | [핸드아웃 열기](/assets/handouts/lml-instruction-modern-learning-handout.html){:target="_blank" rel="noopener"} |
+| 7장 통지시스템·부록 | [핸드아웃 열기](/assets/handouts/lml-reporting-system-handout.html){:target="_blank" rel="noopener"} |
+
 ## 닫으며
 
 오늘 당장 해 볼 작은 시도 하나를 남긴다. 우리 학교 비전 문장을 종이 한 장에 적고, 그 아래에 "그래서 우리 학생은 졸업할 때 무엇을 할 수 있어야 하는가"를 다섯 줄로 적어 본다. 그 다섯 줄이 이번 학기 내 수행평가지 한 장과 닿아 있는지 짚어 본다. 닿지 않는다면, 비전은 아직 현관 벽에 머물러 있다.
