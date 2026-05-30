@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>책 모임 발제 핸드아웃 — 3·4장</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #000000;
+    --gray: #555555;
+    --line: #000000;
+    --soft: #999999;
+    --bg-emph: #eeeeee;
+  }
+
+  html, body {
+    font-family: "Noto Sans KR", "Pretendard", "본고딕", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    font-size: 11.5pt;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @page { size: A4; margin: 18mm; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+    .avoid-break { page-break-inside: avoid; }
+  }
+
+  @media screen {
+    body { background: #888; padding: 24px 0; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      margin: 0 auto 24px;
+      padding: 18mm;
+      box-shadow: 0 0 14px rgba(0,0,0,0.35);
+    }
+  }
+
+  /* ===== Header ===== */
+  .doc-header {
+    border-bottom: 3px solid var(--line);
+    padding-bottom: 9px;
+    margin-bottom: 14px;
+  }
+  .doc-kicker {
+    font-size: 9.5pt;
+    letter-spacing: 0.5px;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+  .doc-title {
+    font-size: 18pt;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-size: 9.5pt;
+    color: var(--ink);
+  }
+  .doc-meta b { font-weight: 700; }
+  .doc-meta .sep { color: var(--soft); }
+
+  /* ===== Section heads ===== */
+  .sec {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 8px;
+  }
+  .sec-no {
+    flex: 0 0 auto;
+    width: 21px; height: 21px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 10.5pt;
+  }
+  .sec-title {
+    font-size: 13pt;
+    font-weight: 700;
+    border-bottom: 2px solid var(--line);
+    flex: 1 1 auto;
+    padding-bottom: 3px;
+  }
+
+  p { margin-bottom: 7px; }
+  strong { font-weight: 700; }
+  .lead { font-size: 11.5pt; line-height: 1.6; }
+
+  /* ===== Tables ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 4px;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1px solid var(--ink);
+    padding: 5px 7px;
+    vertical-align: top;
+    text-align: left;
+    line-height: 1.45;
+  }
+  thead th {
+    background: var(--bg-emph);
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  td.lbl { font-weight: 700; white-space: nowrap; }
+
+  /* ===== Boxes ===== */
+  .tip {
+    border: 1px solid var(--soft);
+    border-left: 4px solid var(--ink);
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+  .tip .tip-h { font-weight: 700; margin-bottom: 2px; }
+
+  /* ===== Bullet lists ===== */
+  ul.bul { list-style: none; margin: 4px 0 6px; }
+  ul.bul li {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ul.bul li::before {
+    content: "▪";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    font-size: 8pt;
+  }
+
+  /* ===== Question list ===== */
+  ol.q {
+    list-style: none;
+    counter-reset: q;
+    margin: 4px 0;
+  }
+  ol.q li {
+    counter-increment: q;
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 9px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ol.q li::before {
+    content: counter(q);
+    position: absolute;
+    left: 0; top: 0;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 9pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== Footnote / source ===== */
+  .source {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--soft);
+    font-size: 8.8pt;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .source .sh { font-weight: 700; color: var(--ink); }
+
+  .anchor-tag {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <div class="doc-header">
+    <div class="doc-kicker">교사 책 모임 발제 핸드아웃</div>
+    <div class="doc-title">미션을 수업으로 번역하는 법</div>
+    <div class="doc-meta">
+      <span><b>책</b> 학교, 이렇게 바꾼다 (원서 <i>Leading Modern Learning</i>)</span>
+      <span class="sep">|</span>
+      <span><b>지은이</b> 제이 맥타이 · 그레그 커티스</span>
+      <span class="sep">|</span>
+      <span><b>옮긴이</b> 강현석 · 조인숙</span>
+      <span class="sep">|</span>
+      <span><b>출판사</b> 교육을바꾸는사람들 (2020)</span>
+    </div>
+    <div class="doc-meta" style="margin-top:5px;">
+      <span><b>발제 장</b> 3장 미션에서 실행으로 · 4장 미래학습을 위한 교육과정</span>
+      <span class="sep">|</span>
+      <span><b>발제</b> 김진관 (대리)</span>
+    </div>
+  </div>
+
+  <!-- ============ 1. 요지 ============ -->
+  <div class="sec">
+    <div class="sec-no">1</div>
+    <div class="sec-title">한 문단 요지</div>
+  </div>
+  <p class="lead">학교마다 멋진 졸업생상이 있지만, 그 문장은 대개 현관 액자나 홈페이지에 박제된 채 교실 문을 넘지 못한다. 3·4장은 정확히 그 단절을 겨눈다. 저자들은 교실 단원을 설계할 때 쓰던 <strong>백워드 설계</strong>를 학교 시스템 전체로 끌어올린다. 미션이 실행으로 이어지려면 교육과정, 평가, 수업, 전문성 개발, 자원 배분, 시간표, 평가지표가 전부 같은 목표를 향해 줄 맞춰야 한다. 줄이 어긋나는 순간 두 개의 교육과정이 생긴다. 문서로 선언된 교육과정과 실제로 가르쳐지는 교육과정. 많은 학교 개혁이 멈춰 서는 까닭은 새 비전이 부족해서가 아니라 이 정렬이 깨져 있어서라는 것이 책의 핵심 진단이다. 비전은 화려한데 시간표는 30년 전 그대로인 학교를 우리는 너무 많이 안다.</p>
+
+  <!-- ============ 2. 핵심 개념 표 ============ -->
+  <div class="sec avoid-break">
+    <div class="sec-no">2</div>
+    <div class="sec-title">핵심 개념</div>
+  </div>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:34%;">개념</th><th>한 줄 설명</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">백워드 설계</td><td>활동이 아니라 결과에서 출발한다. 학생이 끝내 무엇을 할 수 있어야 하는지를 먼저 정하고, 증거를 정한 뒤, 마지막에 활동을 짠다.</td></tr>
+      <tr><td class="lbl">정렬(alignment)</td><td>미션·교육과정·평가·수업·전문성 개발·자원·시간표가 같은 목표를 향하는 상태. 어긋나면 선언된 교육과정과 실제 교육과정이 갈라진다.</td></tr>
+      <tr><td class="lbl">전이목표</td><td>시험을 다 잊은 뒤에도 남기를 바라는 능력. "교사의 안내 없이도 자립적으로 ~할 수 있다"가 진술의 표지다.</td></tr>
+      <tr><td class="lbl">포괄적 핵심질문</td><td>한 단원에 갇히지 않고 여러 학년·교과를 가로지르는 큰 질문. 정답이 하나로 닫히지 않으며 학년이 올라갈수록 깊어진다.</td></tr>
+      <tr><td class="lbl">코너스톤 과제</td><td>교육과정의 주춧돌. 실제 맥락에서 지식과 역량을 통합 발휘하게 하고, 학년이 올라갈수록 복잡하고 자립적으로 진화한다.</td></tr>
+      <tr><td class="lbl">A-M-T 세 목표</td><td>습득(A)·의미형성(M)·전이(T). 좋은 교육과정은 한 단원에 이 셋이 균형 잡혀 있다.</td></tr>
+      <tr><td class="lbl">수직 정렬</td><td>같은 전이목표·핵심질문을 K-12 전체에 위아래로 꿰어, 학년 사이의 구멍과 불필요한 중복을 동시에 막는다.</td></tr>
+      <tr><td class="lbl">보장되고<br>실행가능한 교육과정</td><td>마자노가 학생 성취의 가장 큰 학교 차원 요인으로 든 개념. 누가 배정돼도 핵심을 배우고(보장), 시수 안에 다 가르칠 수 있어야(실행가능) 한다.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 3. 틀과 도구 ============ -->
+  <div class="sec">
+    <div class="sec-no">3</div>
+    <div class="sec-title">저자들의 틀과 도구</div>
+  </div>
+
+  <p style="font-size:10.5pt; margin-bottom:4px;"><strong>(1) 백워드 설계를 학교 단위로 확장</strong> — 교실 단원 한 개를 설계하던 논리를 학교라는 단위에 그대로 적용한다. 단원 설계자가 교사라면, 시스템 설계자는 학교다.</p>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:26%;">단계</th><th>백워드 설계가 묻는 것</th><th>학교 차원으로 확장하면</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">① 원하는 결과 확인</td><td>전이목표·핵심 이해·핵심질문은 무엇인가</td><td>졸업생상·미션을 학습 성과로 번역</td></tr>
+      <tr><td class="lbl">② 수용 가능한 증거</td><td>무엇을 보면 달성을 알 수 있는가</td><td>코너스톤 수행과제·평가 체계</td></tr>
+      <tr><td class="lbl">③ 학습경험·수업 계획</td><td>어떤 활동이 거기에 닿는가</td><td>교육과정·시간표·전문성 개발·자원</td></tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:10.5pt; margin:8px 0 4px;"><strong>(2) A-M-T 세 목표 유형</strong> — 한국 교실의 수업 목표는 대부분 습득(A)에 몰려 있다. 의미형성(M)과 전이(T)가 비어 있으면 학생은 시험 다음 날 모든 것을 반납한다.</p>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:24%;">목표 유형</th><th>무엇을 겨냥하나</th><th style="width:30%;">짝지어지는 도구</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">습득(A)</td><td>지식·기능을 익힌다</td><td>퀴즈 · 연습문제</td></tr>
+      <tr><td class="lbl">의미형성(M)</td><td>개념을 이해하고 의미를 구성한다</td><td>포괄적 핵심질문</td></tr>
+      <tr><td class="lbl">전이(T)</td><td>새 상황에 자율적으로 적용한다</td><td>전이목표 · 코너스톤 과제</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    <div class="tip-h">(3) 추상을 과제로 내리는 두 도구</div>
+    <strong>표준 풀어헤치기</strong> — 성취기준을 네 범주(장기 전이목표 / 포괄적 이해 / 포괄적 핵심질문 / 반복 코너스톤 과제)로 풀어 비전과 잇는다. 평면적 목록이 입체적 학습 경로로 바뀐다.<br>
+    <strong>GRASPS</strong> — 코너스톤 과제를 막연한 "프로젝트"가 아니라 진짜 맥락의 임무로 만든다. Goal(목표)·Role(역할)·Audience(대상)·Situation(상황)·Product(결과물)·Standards(기준). 핵심은 학생이 시험지가 아니라 진짜 청중 앞에서 통합된 역량을 발휘한다는 점이다.
+  </div>
+
+</div><!-- /page 1 -->
+
+
+<div class="page">
+
+  <!-- ============ 4. 우리 교실 적용 ============ -->
+  <div class="sec">
+    <div class="sec-no">4</div>
+    <div class="sec-title">우리 교실 적용 포인트</div>
+  </div>
+  <p style="font-size:9.5pt; color:var(--gray); margin-bottom:6px;">아래는 원본 글의 필자가 한국 교실 독자로서 읽어 낸 보조선이다. 2022 개정 교육과정·고교학점제와 책의 언어를 잇는다.</p>
+
+  <ul class="bul">
+    <li><strong>2022 개정과 동형, 그러나 같지 않다.</strong> 개정 교육과정의 역량·깊이 있는 학습·핵심 아이디어·교과 간 연계는 이 책의 언어와 거의 동형이다. 오른쪽이 왼쪽에 보태는 것은 방향이 아니라 도구다. 개정은 무엇을 지향할지 말하지만, 어떻게 거꾸로 설계할지는 학교의 몫으로 남긴다.</li>
+    <li><strong>역량을 전이목표로 번역한다.</strong> 역량을 "안내 없이 ~할 수 있다"로 진술하면 설계 가능한 목표가 된다. "이차방정식의 근의 공식을 안다"는 습득 목표이지 전이목표가 아니다. "낯선 실생활 문제를 수학 모델로 옮겨 스스로 해결한다"가 전이목표다.</li>
+    <li><strong>고교학점제는 이 틀이 가장 절실한 무대다.</strong> 과목이 갈라질수록 학교가 공통으로 책임지는 전이목표·핵심질문은 오히려 더 또렷해야 한다. 졸업할 때 반드시 데려가야 할 능력 몇 가지를 학교가 붙잡지 않으면, 학점제는 보장된 교육과정이 아니라 보장되지 않은 뷔페가 된다.</li>
+    <li><strong>한국의 약한 고리는 실행가능 쪽이다.</strong> 보장은 비교적 강하지만(어느 반이든 진도는 나간다) 실행가능이 무너져 있다. 시수에 비해 양이 너무 많아, 다 가르치느라 아무도 제대로 이해하지 못한 채 다음 단원으로 떠밀린다. 진도를 다 뺐다는 말과 학생이 다 배웠다는 말은 같은 말이 아니다.</li>
+    <li><strong>내용과 역량을 두 트랙으로 나누지 않는다.</strong> 역량은 내용을 다루는 방식 안에서만 길러진다. 교과 표준을 버리지 않고 그 안에 비판적 사고·협업·소통·창의성을 얹어 하나의 수행 속에서 함께 길러낸다.</li>
+  </ul>
+
+  <p style="font-size:10.5pt; margin:6px 0 4px;"><strong>우리 교실로 옮긴 GRASPS 예시</strong> (원본 글 필자의 가상 설계 — 동네 분리수거 캠페인)</p>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:24%;">요소</th><th>가상 설계 예시</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">Goal 목표</td><td>우리 동네 분리수거 참여율을 높인다</td></tr>
+      <tr><td class="lbl">Role 역할</td><td>구청 환경 캠페인 기획자</td></tr>
+      <tr><td class="lbl">Audience 대상</td><td>아파트 주민과 관리사무소</td></tr>
+      <tr><td class="lbl">Situation 상황</td><td>예산과 게시 공간이 한정됨</td></tr>
+      <tr><td class="lbl">Product 결과물</td><td>캠페인 포스터와 데이터 근거 제안서</td></tr>
+      <tr><td class="lbl">Standards 기준</td><td>자료 해석·설득력·실현가능성 루브릭</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 5. 함께 생각할 질문 ============ -->
+  <div class="sec">
+    <div class="sec-no">5</div>
+    <div class="sec-title">함께 생각할 질문</div>
+  </div>
+  <ol class="q">
+    <li>우리 학교 미션과 졸업생상을 백워드 설계로 거꾸로 짚어 내려가면, 지금의 교육과정·평가·시간표 중 미션과 어긋나 정렬되지 않은 지점은 어디인가.</li>
+    <li>우리 교과(또는 학년)의 전이목표를 "교사 없이도 학생이 자립적으로 ~할 수 있다"로 3~5개만 써 보면, 평소의 수업 목표와 무엇이 달라지는가.</li>
+    <li>여러 학년을 가로지를 포괄적 핵심질문 하나를 정한다면, 그 질문을 초1과 초6(또는 중1과 고3)에서 각각 어떤 다른 깊이로 다룰 것인가.</li>
+    <li>우리 교육과정에 코너스톤 수행과제를 단 하나 심는다면 어떤 실제 맥락이 좋을까. GRASPS로 초안을 잡아 보자.</li>
+    <li>우리 교육과정은 보장과 실행가능 중 어느 쪽이 더 취약한가. 진도를 다 뺐다는 것과 학생이 다 배웠다는 것이 어긋나는 지점은 어디인가.</li>
+  </ol>
+
+  <!-- ============ 6. 출처 각주 ============ -->
+  <div class="source">
+    <p><span class="sh">출처</span></p>
+    <p>원서: McTighe, J., &amp; Curtis, G. <i>Leading Modern Learning: A Blueprint for Vision-Driven Schools</i>. Solution Tree Press.</p>
+    <p>한국어판: 제이 맥타이·그레그 커티스 지음, 강현석·조인숙 옮김, 《학교, 이렇게 바꾼다》, 교육을바꾸는사람들, 2020. (이 발제는 한국어판을 기준으로 3·4장을 정리함)</p>
+  </div>
+
+</div><!-- /page 2 -->
+
+</body>
+</html>

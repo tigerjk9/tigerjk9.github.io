@@ -14,6 +14,9 @@ header:
 <img src="/assets/lml-instruction-modern-learning-thumb.jpg" alt="가르침이 바뀌어야 배움이 바뀐다 — 6장 미래학습을 위한 수업">
 </figure>
 
+**발제 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 발제할 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-instruction-modern-learning-handout.html){:target="_blank" rel="noopener"}
+{: .notice--info}
+
 ## 수업이 목표를 따라가야 한다
 
 이 장의 출발점은 단순하지만 뒤집어 놓으면 강력하다. 만능 교수법은 없다. 어떤 방법이 좋은지를 묻기 전에, 무엇을 배우게 하려는지를 먼저 정해야 한다. 저자들은 학습 목표를 세 갈래로 나눈다. 사실과 기능을 익히는 습득(Acquisition), 아이디어를 이해하고 연결하는 의미구성(Meaning-making), 배운 것을 낯선 상황에 스스로 적용하는 전이(Transfer)다. 머리글자를 따 A-M-T 틀이라 부른다.

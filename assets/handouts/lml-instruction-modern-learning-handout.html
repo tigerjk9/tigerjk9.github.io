@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>책 모임 발제 핸드아웃 — 6장 미래학습을 위한 수업</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #000000;
+    --gray: #555555;
+    --line: #000000;
+    --soft: #999999;
+    --bg-emph: #eeeeee;
+  }
+
+  html, body {
+    font-family: "Noto Sans KR", "Pretendard", "본고딕", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    font-size: 11.5pt;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @page { size: A4; margin: 18mm; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+    .avoid-break { page-break-inside: avoid; }
+  }
+
+  @media screen {
+    body { background: #888; padding: 24px 0; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      margin: 0 auto 24px;
+      padding: 18mm;
+      box-shadow: 0 0 14px rgba(0,0,0,0.35);
+    }
+  }
+
+  /* ===== Header ===== */
+  .doc-header {
+    border-bottom: 3px solid var(--line);
+    padding-bottom: 9px;
+    margin-bottom: 14px;
+  }
+  .doc-kicker {
+    font-size: 9.5pt;
+    letter-spacing: 0.5px;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+  .doc-title {
+    font-size: 18pt;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-size: 9.5pt;
+    color: var(--ink);
+  }
+  .doc-meta b { font-weight: 700; }
+  .doc-meta .sep { color: var(--soft); }
+
+  /* ===== Section heads ===== */
+  .sec {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 8px;
+  }
+  .sec-no {
+    flex: 0 0 auto;
+    width: 21px; height: 21px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 10.5pt;
+  }
+  .sec-title {
+    font-size: 13pt;
+    font-weight: 700;
+    border-bottom: 2px solid var(--line);
+    flex: 1 1 auto;
+    padding-bottom: 3px;
+  }
+
+  p { margin-bottom: 7px; }
+  strong { font-weight: 700; }
+  .lead { font-size: 11.5pt; line-height: 1.6; }
+
+  /* ===== Tables ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 4px;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1px solid var(--ink);
+    padding: 5px 7px;
+    vertical-align: top;
+    text-align: left;
+    line-height: 1.45;
+  }
+  thead th {
+    background: var(--bg-emph);
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  td.lbl { font-weight: 700; white-space: nowrap; }
+
+  /* ===== Boxes ===== */
+  .tip {
+    border: 1px solid var(--soft);
+    border-left: 4px solid var(--ink);
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+  .tip .tip-h { font-weight: 700; margin-bottom: 2px; }
+
+  /* ===== Bullet lists ===== */
+  ul.bul { list-style: none; margin: 4px 0 6px; }
+  ul.bul li {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ul.bul li::before {
+    content: "▪";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    font-size: 8pt;
+  }
+
+  /* ===== Question list ===== */
+  ol.q {
+    list-style: none;
+    counter-reset: q;
+    margin: 4px 0;
+  }
+  ol.q li {
+    counter-increment: q;
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 9px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ol.q li::before {
+    content: counter(q);
+    position: absolute;
+    left: 0; top: 0;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 9pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== Footnote / source ===== */
+  .source {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--soft);
+    font-size: 8.8pt;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .source .sh { font-weight: 700; color: var(--ink); }
+
+  .anchor-tag {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="doc-kicker">교사 책 모임 발제 핸드아웃</div>
+    <div class="doc-title">가르침이 바뀌어야 배움이 바뀐다</div>
+    <div class="doc-meta">
+      <span><b>책</b> 학교, 이렇게 바꾼다 (원서 <i>Leading Modern Learning</i>)</span>
+      <span class="sep">|</span>
+      <span><b>지은이</b> 제이 맥타이 · 그레그 커티스</span>
+      <span class="sep">|</span>
+      <span><b>옮긴이</b> 강현석 · 조인숙</span>
+      <span class="sep">|</span>
+      <span><b>출판사</b> 교육을바꾸는사람들 (2020)</span>
+    </div>
+    <div class="doc-meta" style="margin-top:5px;">
+      <span><b>발제 장</b> 6장 미래학습을 위한 수업</span>
+      <span class="sep">|</span>
+      <span><b>발제</b> 신혜수</span>
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-no">1</div><div class="sec-title">한 문단 요지</div></div>
+  <p class="lead">강의식 직접교수냐 학생 주도 탐구냐는 오래된 싸움은 잘못된 질문이다. 맥타이와 커티스는 좋은 수업이냐 나쁜 수업이냐가 아니라, 지금 이 활동이 어떤 학습 목표를 겨냥하느냐가 먼저라고 못 박는다. 학습 목표는 습득(A)·의미구성(M)·전이(T) 세 갈래이며, 직접교수와 탐구는 적이 아니라 서로 다른 목표를 맡는 동료다. 강의가 나쁜 게 아니라 전이를 강의로 가르치려는 게 잘못이고, 탐구가 만능인 게 아니라 기초 개념까지 스스로 발견하라고 던지는 게 비효율이다. 수업의 질은 방법의 신구가 아니라 목표와의 적합성에서 갈린다.</p>
+
+  <div class="sec avoid-break"><div class="sec-no">2</div><div class="sec-title">핵심 개념</div></div>
+  <table class="avoid-break">
+    <thead><tr><th style="width:24%;">개념</th><th>한 줄 설명</th></tr></thead>
+    <tbody>
+      <tr><td class="lbl">만능 교수법은 없다</td><td>어떤 방법이 좋은지 묻기 전에 무엇을 배우게 할지를 먼저 정한다.</td></tr>
+      <tr><td class="lbl">A-M-T 틀</td><td>습득·의미구성·전이. 위계가 아니라 맞물려 도는 톱니.</td></tr>
+      <tr><td class="lbl">습득(Acquisition)</td><td>사실·기능·개념을 익힌다. 교사는 직접 가르치는 사람.</td></tr>
+      <tr><td class="lbl">의미구성(Meaning)</td><td>이해하고 추론·해석하며 연결한다. 교사는 촉진자.</td></tr>
+      <tr><td class="lbl">전이(Transfer)</td><td>낯선 맥락에 스스로 적용한다. 교사는 손을 떼는 코치.</td></tr>
+      <tr><td class="lbl">전이목표</td><td>학년·교과를 관통하는 북극성. 학생이 끝내 혼자 해내길 바라는 것.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sec"><div class="sec-no">3</div><div class="sec-title">A-M-T 세 목표와 교사의 세 자리</div></div>
+  <p style="font-size:10.5pt; margin-bottom:4px;">교사는 한 시간 안에서도 역할을 갈아입는다. 개념을 설명할 때는 전달자, 사례를 두고 씨름할 때는 촉진자, 실전 과제 앞에서는 코치가 된다.</p>
+  <table class="avoid-break">
+    <thead><tr><th style="width:18%;">목표</th><th>학생이 하는 일</th><th style="width:20%;">교사 역할</th><th>대표 수업 방식</th></tr></thead>
+    <tbody>
+      <tr><td class="lbl">습득(A)</td><td>사실·기능·개념을 익힌다</td><td>직접 가르치는 사람</td><td>명시적 설명, 시범, 안내된 연습, 피드백</td></tr>
+      <tr><td class="lbl">의미구성(M)</td><td>이해·추론·해석하며 연결한다</td><td>촉진자</td><td>탐구, 토론, 사례 분석, 본질적 질문</td></tr>
+      <tr><td class="lbl">전이(T)</td><td>낯선 맥락에 스스로 적용한다</td><td>코치</td><td>실제 과제, 모델 후 지원 철수, 지속 피드백</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:10.5pt;">이 틀의 상위에는 백워드 설계가 있다. 목표를 먼저 정하고, 달성 증거(평가)를 설계한 뒤, 마지막에 수업 활동을 짠다.</p>
+</div>
+
+<div class="page">
+  <div class="sec"><div class="sec-no">4</div><div class="sec-title">우리 교실 적용 포인트</div></div>
+  <p style="font-size:9.5pt; color:var(--gray); margin-bottom:6px;">아래는 한국 교실로 옮긴 발제자의 해석이다. 2022 개정의 깊이 있는 학습·핵심 아이디어 설계는 A-M-T의 의미구성·전이와 거의 같은 곳을 가리킨다.</p>
+  <table class="avoid-break">
+    <thead><tr><th style="width:32%;">한국 교육 맥락</th><th style="width:26%;">A-M-T로 옮기면</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td class="lbl">깊이 있는 학습</td><td>의미구성 + 전이</td><td>암기 너머 이해·적용을 함께 요구</td></tr>
+      <tr><td class="lbl">교과 간 연계·전이</td><td>전이(T)</td><td>단어부터 일치, 평가까지 가야 진짜</td></tr>
+      <tr><td class="lbl">과정 중심·수행평가</td><td>전이 목표의 평가</td><td>지필고사는 대개 습득까지만 잰다</td></tr>
+      <tr><td class="lbl">고교학점제 자기주도</td><td>학습자 주도성</td><td>교사 자리가 전달자→코치로 이동</td></tr>
+      <tr><td class="lbl">IB 개념기반·탐구단원</td><td>의미구성 + 전이</td><td>UbD와 한 뿌리, 친연성이 높다</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:10.5pt; margin:6px 0 4px;"><strong>한 단원 안에 A·M·T 배치하기 (중1 과학 광합성, 발제자 예시)</strong></p>
+  <ul class="bul">
+    <li><strong>습득</strong> — 광합성 반응식·엽록체 구조를 익히는 구간. 시범과 그래픽 조직자로 직접 가르치는 편이 빠르다.</li>
+    <li><strong>의미구성</strong> — "왜 식물은 낮에 더 활발한가"를 자료로 따져 보게 한다. 교사는 답 대신 질문으로 민다.</li>
+    <li><strong>전이</strong> — "화단의 그늘진 자리에 어떤 식물을 심을지 근거를 들어 제안하라." 낯선 상황의 자율 적용.</li>
+  </ul>
+
+  <div class="tip">
+    <div class="tip-h">균형은 신념이 아니라 진단의 문제다</div>
+    직접교수 옹호자도 탐구 신봉자도 같은 함정에 빠진다. 자기가 편한 한 가지 모드로 한 단원 전체를 밀어붙인다. 우리 현장의 약한 고리는 전이다. 과정 중심 평가를 도입했다면서도 실제 채점하는 것은 대개 습득 수준에 머문다. 전이를 평가하지 않으면 전이는 가르쳐지지 않는다. A-M-T 틀의 진짜 쓸모는 분류표가 아니라, 내 수업이 어디에 쏠려 있는지를 드러내는 거울이다.
+  </div>
+
+  <div class="sec"><div class="sec-no">5</div><div class="sec-title">함께 생각할 질문</div></div>
+  <ol class="q">
+    <li>다음 단원의 차시 계획을 펴고 각 활동 옆에 A·M·T를 적어 보면, 세 글자가 한쪽으로 몰려 있지 않은가.</li>
+    <li>우리 교과에서 가장 자주 빠지는 목표는 습득·의미구성·전이 중 무엇인가.</li>
+    <li>나는 한 시간 안에서 전달자·촉진자·코치 역할을 실제로 갈아입는가, 한 모드에 머무는가.</li>
+    <li>지금의 평가는 전이를 재는가, 기억과 절차만 재는가.</li>
+    <li>전이를 가르치려면 어떤 과제를 새로 설계해야 하는가.</li>
+  </ol>
+
+  <div class="source">
+    <p><span class="sh">출처</span></p>
+    <p>원서: McTighe, J., &amp; Curtis, G. <i>Leading Modern Learning: A Blueprint for Vision-Driven Schools</i>. Solution Tree Press.</p>
+    <p>한국어판: 제이 맥타이·그레그 커티스 지음, 강현석·조인숙 옮김, 《학교, 이렇게 바꾼다》, 교육을바꾸는사람들, 2020. (이 발제는 한국어판을 기준으로 6장을 정리함)</p>
+  </div>
+</div>
+</body>
+</html>

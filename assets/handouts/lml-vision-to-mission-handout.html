@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>책 모임 발제 핸드아웃 — 1·2장 비전에서 미션으로</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #000000;
+    --gray: #555555;
+    --line: #000000;
+    --soft: #999999;
+    --bg-emph: #eeeeee;
+  }
+
+  html, body {
+    font-family: "Noto Sans KR", "Pretendard", "본고딕", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    font-size: 11.5pt;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @page { size: A4; margin: 18mm; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+    .avoid-break { page-break-inside: avoid; }
+  }
+
+  @media screen {
+    body { background: #888; padding: 24px 0; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      margin: 0 auto 24px;
+      padding: 18mm;
+      box-shadow: 0 0 14px rgba(0,0,0,0.35);
+    }
+  }
+
+  /* ===== Header ===== */
+  .doc-header {
+    border-bottom: 3px solid var(--line);
+    padding-bottom: 9px;
+    margin-bottom: 14px;
+  }
+  .doc-kicker {
+    font-size: 9.5pt;
+    letter-spacing: 0.5px;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+  .doc-title {
+    font-size: 18pt;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-size: 9.5pt;
+    color: var(--ink);
+  }
+  .doc-meta b { font-weight: 700; }
+  .doc-meta .sep { color: var(--soft); }
+
+  /* ===== Section heads ===== */
+  .sec {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 8px;
+  }
+  .sec-no {
+    flex: 0 0 auto;
+    width: 21px; height: 21px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 10.5pt;
+  }
+  .sec-title {
+    font-size: 13pt;
+    font-weight: 700;
+    border-bottom: 2px solid var(--line);
+    flex: 1 1 auto;
+    padding-bottom: 3px;
+  }
+
+  p { margin-bottom: 7px; }
+  strong { font-weight: 700; }
+  .lead { font-size: 11.5pt; line-height: 1.6; }
+
+  /* ===== Tables ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 4px;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1px solid var(--ink);
+    padding: 5px 7px;
+    vertical-align: top;
+    text-align: left;
+    line-height: 1.45;
+  }
+  thead th {
+    background: var(--bg-emph);
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  td.lbl { font-weight: 700; white-space: nowrap; }
+
+  /* ===== Boxes ===== */
+  .tip {
+    border: 1px solid var(--soft);
+    border-left: 4px solid var(--ink);
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+  .tip .tip-h { font-weight: 700; margin-bottom: 2px; }
+
+  /* ===== Bullet lists ===== */
+  ul.bul { list-style: none; margin: 4px 0 6px; }
+  ul.bul li {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ul.bul li::before {
+    content: "▪";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    font-size: 8pt;
+  }
+
+  /* ===== Question list ===== */
+  ol.q {
+    list-style: none;
+    counter-reset: q;
+    margin: 4px 0;
+  }
+  ol.q li {
+    counter-increment: q;
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 9px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ol.q li::before {
+    content: counter(q);
+    position: absolute;
+    left: 0; top: 0;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 9pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== Footnote / source ===== */
+  .source {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--soft);
+    font-size: 8.8pt;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .source .sh { font-weight: 700; color: var(--ink); }
+
+  .anchor-tag {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="doc-kicker">교사 책 모임 발제 핸드아웃</div>
+    <div class="doc-title">비전이 없는 학교는 표류한다</div>
+    <div class="doc-meta">
+      <span><b>책</b> 학교, 이렇게 바꾼다 (원서 <i>Leading Modern Learning</i>)</span>
+      <span class="sep">|</span>
+      <span><b>지은이</b> 제이 맥타이 · 그레그 커티스</span>
+      <span class="sep">|</span>
+      <span><b>옮긴이</b> 강현석 · 조인숙</span>
+      <span class="sep">|</span>
+      <span><b>출판사</b> 교육을바꾸는사람들 (2020)</span>
+    </div>
+    <div class="doc-meta" style="margin-top:5px;">
+      <span><b>발제 장</b> 1장 비전 설정의 힘 · 2장 비전에서 미션으로</span>
+      <span class="sep">|</span>
+      <span><b>발제</b> 박득춘</span>
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-no">1</div><div class="sec-title">한 문단 요지</div></div>
+  <p class="lead">학교 개혁은 거의 언제나 시험과 시간표에서 시작한다. 무엇을 더 효율적으로 돌릴지부터 묻는다. 맥타이와 커티스는 그 순서가 틀렸다고 말한다. 먼저 물어야 할 것은 우리 졸업생이 어떤 사람이 되어야 하는가이며, 그 답에서 거꾸로 학교를 설계해야 한다. 비전이 먼저 서고 미션이 그로부터 나오며, 미션은 다시 졸업생 상이라는 측정 가능한 과녁으로 내려온다. 이 책의 새로움은 백워드 설계 자체가 아니라, 그 논리를 한 교사의 단원에서 학교 전체가 합의하는 시스템으로 끌어올린 데 있다. 그래서 난이도는 설계 기법이 아니라 합의에 있다.</p>
+
+  <div class="sec avoid-break"><div class="sec-no">2</div><div class="sec-title">핵심 개념</div></div>
+  <table class="avoid-break">
+    <thead><tr><th style="width:24%;">개념</th><th>한 줄 설명</th></tr></thead>
+    <tbody>
+      <tr><td class="lbl">비전(Vision)</td><td>도달하고 싶은 먼 미래의 그림. 가장 추상적이며 영감을 주는 방향.</td></tr>
+      <tr><td class="lbl">미션(Mission)</td><td>비전을 향한 학교의 실천적 약속. 방향을 현재의 행동으로 옮긴 것.</td></tr>
+      <tr><td class="lbl">졸업생 상</td><td>졸업 시점에 무엇을 알고·할 수 있고·어떤 태도인가. 교육과정·평가가 겨눌 과녁.</td></tr>
+      <tr><td class="lbl">장기 전이목표</td><td>배운 것을 낯선 상황에 스스로 적용하는 능력. 설계의 중심에 놓이는 결과.</td></tr>
+      <tr><td class="lbl">4대 시스템 정렬</td><td>교육과정·평가·수업·통지를 졸업생 상에 맞춰 한 방향으로 줄 세우는 것.</td></tr>
+      <tr><td class="lbl">백워드 설계의 확장</td><td>UbD를 한 단원이 아니라 학교 전체에 적용해 최종 결과에서 거꾸로 설계.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sec"><div class="sec-no">3</div><div class="sec-title">비전에서 졸업생 상으로 내려오는 사다리</div></div>
+  <p style="font-size:10.5pt; margin-bottom:4px;">비전·미션·졸업생 상은 흔히 뭉뚱그려지지만 저자들은 셋을 분명히 나누고 순서를 강조한다. 추상이 측정 가능한 설계로 내려오는 사다리다.</p>
+  <table class="avoid-break">
+    <thead><tr><th style="width:20%;">구분</th><th>비전</th><th>미션</th><th>졸업생 상</th></tr></thead>
+    <tbody>
+      <tr><td class="lbl">묻는 것</td><td>왜·무엇을 향해</td><td>무엇을 어떻게 길러낼까</td><td>졸업 때 무엇을 할 수 있나</td></tr>
+      <tr><td class="lbl">시간축</td><td>먼 미래의 그림</td><td>현재의 실천적 약속</td><td>졸업이라는 구체적 지점</td></tr>
+      <tr><td class="lbl">추상도</td><td>가장 높음</td><td>중간</td><td>가장 구체적</td></tr>
+      <tr><td class="lbl">산출물</td><td>영감을 주는 방향</td><td>행동으로 옮긴 목적</td><td>교육과정·평가의 표적</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:10.5pt;">졸업생 상은 비판적 사고·의사소통·창의성·협업(4C) 같은 21세기 역량을 교과 표준과 묶는 자리다. 학교상은 멋진데 평가는 객관식, 수업은 진도, 통지표는 석차인 따로국밥 상태를 끊는 것이 정렬의 목표다.</p>
+</div>
+
+<div class="page">
+  <div class="sec"><div class="sec-no">4</div><div class="sec-title">우리 교실 적용 포인트</div></div>
+  <p style="font-size:9.5pt; color:var(--gray); margin-bottom:6px;">아래는 한국 학교 맥락으로 옮긴 발제자의 해석이다. 저자들이 한국 사례를 든 것은 아니다.</p>
+  <ul class="bul">
+    <li><strong>2022 개정 6대 핵심역량</strong>(자기관리·지식정보처리·창의적 사고·심미적 감성·협력적 소통·공동체)은 졸업생 상과 같은 장르다. 차이는 국가 공통 목록이냐, 단위 학교가 자기 학생을 보고 다시 쓴 초상이냐다.</li>
+    <li><strong>고교학점제</strong>는 학교 비전을 학생 진로·과목 선택의 나침반으로 삼을 근거가 된다.</li>
+    <li><strong>IB Learner Profile</strong> 10개 속성은 그 자체가 졸업생 상과 같은 장르라 정렬 도구로 직결된다.</li>
+    <li><strong>학교 자율시간·교육과정 편성권</strong>은 단위 학교가 자체 졸업생 상을 세울 실제 여백이다.</li>
+    <li><strong>교훈</strong>이 가장 아픈 지점이다. 성실·창의·봉사 같은 네 글자는 미래의 그림(비전)도 실천적 약속(미션)도 아닌, 측정 불가능한 덕목의 나열인 경우가 많다.</li>
+  </ul>
+
+  <div class="tip">
+    <div class="tip-h">정렬이 쉬운 게 아니라 합의가 어렵다</div>
+    청사진의 단계(비전→미션→졸업생 상→4대 정렬)는 깔끔하지만, 단계도가 그려진다고 학교가 그렇게 움직이지는 않는다. 졸업생 상을 벽에 붙이는 일은 하루면 되지만, 전체 교직원이 진짜 자기 것으로 여기게 만드는 데 시간이 걸린다. 남의 졸업생 상은 액자가 되고, 싸워가며 합의한 졸업생 상은 평가지를 바꾼다. 첫 두 장을 비전·미션에만 통째로 쓴 이유가 여기 있다.
+  </div>
+
+  <div class="sec"><div class="sec-no">5</div><div class="sec-title">함께 생각할 질문</div></div>
+  <ol class="q">
+    <li>우리 학교 교훈은 비전인가, 미션인가, 아니면 둘 다 아닌 덕목의 나열인가.</li>
+    <li>우리 졸업생 상을 한 줄로 쓴다면, 2022 개정 6대 역량 중 무엇을 1순위로 고르겠는가.</li>
+    <li>그 1순위 역량을 지금 우리 평가·시간표·통지표는 실제로 재고 있는가.</li>
+    <li>우리 학교의 비전은 일상의 결정을 끌고 가는 나침반인가, 벽에 걸린 장식인가.</li>
+    <li>졸업생 상을 남의 것을 복사하지 않고 우리 학생을 보며 직접 쓴다면, 가장 먼저 넣을 한 문장은 무엇인가.</li>
+  </ol>
+
+  <div class="source">
+    <p><span class="sh">출처</span></p>
+    <p>원서: McTighe, J., &amp; Curtis, G. <i>Leading Modern Learning: A Blueprint for Vision-Driven Schools</i>. Solution Tree Press.</p>
+    <p>한국어판: 제이 맥타이·그레그 커티스 지음, 강현석·조인숙 옮김, 《학교, 이렇게 바꾼다》, 교육을바꾸는사람들, 2020. (이 발제는 한국어판을 기준으로 1·2장을 정리함)</p>
+  </div>
+</div>
+</body>
+</html>

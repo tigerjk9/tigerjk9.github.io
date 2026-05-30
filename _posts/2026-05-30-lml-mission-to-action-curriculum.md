@@ -13,6 +13,9 @@ header:
 <img src="/assets/lml-mission-to-action-curriculum-thumb.png" alt="미션을 수업으로 번역하는 법 — 3·4장 미션에서 실행으로, 미래학습 교육과정">
 </figure>
 
+**발제 핸드아웃 (A4 인쇄·흑백)** — 이 장을 책 모임에서 발제할 때 쓸 한 장짜리 자료다. [핸드아웃 열어 인쇄하기](/assets/handouts/lml-mission-to-action-curriculum-handout.html){:target="_blank" rel="noopener"}
+{: .notice--info}
+
 ## 도착지에서 거꾸로 짚어 내려오는 설계
 
 저자 맥타이와 커티스가 3·4장에서 하는 일은 단순하다. 교실 단원을 설계할 때 쓰던 백워드 설계(Backward Design)를 학교 시스템 전체로 끌어올린다.

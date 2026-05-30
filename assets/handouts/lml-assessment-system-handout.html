@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>책 모임 발제 핸드아웃 — 5장</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #000000;
+    --gray: #555555;
+    --line: #000000;
+    --soft: #999999;
+    --bg-emph: #eeeeee;
+  }
+
+  html, body {
+    font-family: "Noto Sans KR", "Pretendard", "본고딕", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    font-size: 11.5pt;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @page { size: A4; margin: 18mm; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+    .avoid-break { page-break-inside: avoid; }
+  }
+
+  @media screen {
+    body { background: #888; padding: 24px 0; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      margin: 0 auto 24px;
+      padding: 18mm;
+      box-shadow: 0 0 14px rgba(0,0,0,0.35);
+    }
+  }
+
+  /* ===== Header ===== */
+  .doc-header {
+    border-bottom: 3px solid var(--line);
+    padding-bottom: 9px;
+    margin-bottom: 14px;
+  }
+  .doc-kicker {
+    font-size: 9.5pt;
+    letter-spacing: 0.5px;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+  .doc-title {
+    font-size: 18pt;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-size: 9.5pt;
+    color: var(--ink);
+  }
+  .doc-meta b { font-weight: 700; }
+  .doc-meta .sep { color: var(--soft); }
+
+  /* ===== Section heads ===== */
+  .sec {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 8px;
+  }
+  .sec-no {
+    flex: 0 0 auto;
+    width: 21px; height: 21px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 10.5pt;
+  }
+  .sec-title {
+    font-size: 13pt;
+    font-weight: 700;
+    border-bottom: 2px solid var(--line);
+    flex: 1 1 auto;
+    padding-bottom: 3px;
+  }
+
+  p { margin-bottom: 7px; }
+  strong { font-weight: 700; }
+  .lead { font-size: 11.5pt; line-height: 1.6; }
+
+  /* ===== Tables ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 4px;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1px solid var(--ink);
+    padding: 5px 7px;
+    vertical-align: top;
+    text-align: left;
+    line-height: 1.45;
+  }
+  thead th {
+    background: var(--bg-emph);
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  td.lbl { font-weight: 700; white-space: nowrap; }
+
+  /* ===== Boxes ===== */
+  .tip {
+    border: 1px solid var(--soft);
+    border-left: 4px solid var(--ink);
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+  .tip .tip-h { font-weight: 700; margin-bottom: 2px; }
+
+  /* ===== Bullet lists ===== */
+  ul.bul { list-style: none; margin: 4px 0 6px; }
+  ul.bul li {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ul.bul li::before {
+    content: "▪";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    font-size: 8pt;
+  }
+
+  /* ===== Question list ===== */
+  ol.q {
+    list-style: none;
+    counter-reset: q;
+    margin: 4px 0;
+  }
+  ol.q li {
+    counter-increment: q;
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 9px;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  ol.q li::before {
+    content: counter(q);
+    position: absolute;
+    left: 0; top: 0;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 9pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== Footnote / source ===== */
+  .source {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--soft);
+    font-size: 8.8pt;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .source .sh { font-weight: 700; color: var(--ink); }
+
+  .anchor-tag {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <div class="doc-header">
+    <div class="doc-kicker">교사 책 모임 발제 핸드아웃</div>
+    <div class="doc-title">무엇을 어떻게 평가할 것인가</div>
+    <div class="doc-meta">
+      <span><b>책</b> 학교, 이렇게 바꾼다 (원서 <i>Leading Modern Learning</i>)</span>
+      <span class="sep">|</span>
+      <span><b>지은이</b> 제이 맥타이 · 그레그 커티스</span>
+      <span class="sep">|</span>
+      <span><b>옮긴이</b> 강현석 · 조인숙</span>
+      <span class="sep">|</span>
+      <span><b>출판사</b> 교육을바꾸는사람들 (2020)</span>
+    </div>
+    <div class="doc-meta" style="margin-top:5px;">
+      <span><b>발제 장</b> 5장 미래학습을 위한 평가시스템</span>
+      <span class="sep">|</span>
+      <span><b>발제</b> 김진관 (대리)</span>
+    </div>
+  </div>
+
+  <!-- ============ 1. 요지 ============ -->
+  <div class="sec">
+    <div class="sec-no">1</div>
+    <div class="sec-title">한 문단 요지</div>
+  </div>
+  <p class="lead">우리는 길러내겠다고 선언한 것을 측정하지 않고, 측정하기 쉬운 것만 측정한 뒤 그것을 성취라 부른다. 맥타이와 커티스는 학생의 학습을 시험 한 번의 점수라는 <strong>한 장의 스냅숏</strong>이 아니라, 여러 시점에 여러 렌즈로 찍은 사진을 모은 <strong>한 권의 사진첩</strong>으로 보라고 요구한다. 협력·전이처럼 복합적인 성취는 누적된 증거로만 신뢰성 있게 드러나므로, 평가는 낱개 시험의 합이 아니라 비전이 정의한 장기 목표를 정점에 둔 하나의 <strong>시스템</strong>으로 설계되어야 한다. 평가는 학습이 끝난 뒤 결과를 재는 자가 아니라, 학교가 표방한 학습이 실제로 일어나는지를 증명하는 비전의 거울이다. 비전 문서가 아니라 평가표가 학교의 진심을 말한다.</p>
+
+  <!-- ============ 2. 핵심 개념 표 ============ -->
+  <div class="sec avoid-break">
+    <div class="sec-no">2</div>
+    <div class="sec-title">핵심 개념</div>
+  </div>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:30%;">개념</th><th>한 줄 설명</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">스냅숏 vs 사진첩</td><td>시험 한 번의 점수(스냅숏)가 아니라, 여러 시점·여러 방법으로 모은 누적 증거(사진첩)로 학습을 본다.</td></tr>
+      <tr><td class="lbl">평가 시스템</td><td>한 평가가 놓치는 증거를 다른 평가가 메우도록, 여러 방법을 의도적으로 배치한 구조.</td></tr>
+      <tr><td class="lbl">비전의 거울</td><td>평가는 결과를 재는 자가 아니라, 학교가 표방한 학습이 실제로 일어나는지 증명하는 도구.</td></tr>
+      <tr><td class="lbl">전이</td><td>익숙한 유형 반복이 아니라, 낯선 상황에 배운 것을 적용하는 능력. 진짜 이해의 증거.</td></tr>
+      <tr><td class="lbl">정렬과 균형</td><td>균형은 형성·총괄, 회상·전이를 안배하는 것. 정렬은 평가가 학교 비전·목표와 일치하는 것.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 3. 틀과 도구 ============ -->
+  <div class="sec">
+    <div class="sec-no">3</div>
+    <div class="sec-title">저자들의 틀과 도구</div>
+  </div>
+
+  <p style="font-size:10.5pt; margin-bottom:4px;"><strong>(1) 평가 증거의 세 갈래</strong> — 이 장의 무게중심은 백워드 설계 2단계, 곧 가르치기 전에 무엇을 어떤 증거로 볼지 먼저 정하는 데 있다. 한 가지 방법에 기대지 않고 갈래를 섞는다.</p>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:26%;">유형</th><th>무엇을 보나</th><th style="width:26%;">예시</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">선택형·단답형</td><td>지식·기능의 습득</td><td>퀴즈, 단원평가</td></tr>
+      <tr><td class="lbl">서술·논술</td><td>이해와 설명력</td><td>에세이, 보고서</td></tr>
+      <tr><td class="lbl">수행과제</td><td>전이·실제 적용</td><td>프로젝트, 코너스톤 과제</td></tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:10.5pt; margin:8px 0 4px;"><strong>(2) GRASPS — 수행과제 설계 틀</strong> — 단순 회상이 아니라 학생을 실제 역할에 놓아 지식의 적용을 끌어낸다. (예: 미세먼지 환기 안내문)</p>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:26%;">요소</th><th>설계 질문</th><th style="width:30%;">예시(발제자 가상 설계)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">Goal 목표</td><td>풀어야 할 진짜 문제는</td><td>교실 공기질 개선 방안 제안</td></tr>
+      <tr><td class="lbl">Role 역할</td><td>학생이 맡는 입장은</td><td>학교 환경 담당관</td></tr>
+      <tr><td class="lbl">Audience 청중</td><td>결과물을 받는 이는</td><td>교장 · 보건교사</td></tr>
+      <tr><td class="lbl">Situation 상황</td><td>맥락 · 제약은</td><td>예산과 시간이 한정됨</td></tr>
+      <tr><td class="lbl">Product 결과물</td><td>무엇을 만드나</td><td>데이터 근거 안내문</td></tr>
+      <tr><td class="lbl">Standards 기준</td><td>무엇으로 판단하나</td><td>자료 해석 · 설득력 루브릭</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    <div class="tip-h">(3) 루브릭은 채점표가 아니라 학습 도구</div>
+    루브릭은 채점이 끝난 뒤 꺼내는 도구가 아니라 <strong>우수함의 기준을 미리 보여주는</strong> 도구다. 과제 시작 전에 공유되고 우수 사례(앵커)와 함께 제시될 때 학생이 자기 작업을 스스로 겨냥하게 된다. 같은 표라도 언제 보여주느냐에 따라 기능이 완전히 달라진다. <strong>분석적 루브릭</strong>은 요소별로 나눠 채점해 구체적 피드백에 강하고, <strong>총체적 루브릭</strong>은 전체를 한 번에 보아 빠른 분류에 강하다.
+  </div>
+
+</div><!-- /page 1 -->
+
+
+<div class="page">
+
+  <!-- ============ 4. 우리 교실 적용 ============ -->
+  <div class="sec">
+    <div class="sec-no">4</div>
+    <div class="sec-title">우리 교실 적용 포인트</div>
+  </div>
+  <p style="font-size:9.5pt; color:var(--gray); margin-bottom:6px;">아래는 책의 직접 내용이 아니라 한국 교실 맥락으로 옮긴 발제자의 해석과 가상의 예다. 책에 실린 학교 사례가 아니다.</p>
+
+  <ul class="bul">
+    <li><strong>스냅숏에서 사진첩으로.</strong> 이 장의 지향은 2022 개정 교육과정의 과정중심평가와 거의 같은 방향이다. 결과 점수 한 장이 아니라 학습 과정의 누적 증거로 옮겨 간다.</li>
+    <li><strong>수행과제는 GRASPS로 실제 맥락을 입힌다.</strong> 중1 과학에서 우리 동네 하천 수질을 분석하는 환경 모니터링 요원(Role)이 되어 구청 담당자(Audience)에게 낼 개선 제안서(Product)를 최근 3년 측정 자료(Situation)로 만들면, 회상이 아닌 전이가 증거로 남는다.</li>
+    <li><strong>루브릭은 과제 전에 공개한다.</strong> 고교학점제 성취평가제의 성취수준 산출에는 요소별 도달을 가르는 분석적 루브릭이 일관성·신뢰도에 직접 쓰인다.</li>
+    <li><strong>생성형 AI 시대에 이 장의 무게는 더 무거워진다.</strong> 단편 지식과 정형 과제의 답은 챗봇이 5초에 내놓는다. 낯선 맥락의 적용과 학생 자신의 성찰만이 AI로 대체되기 어려운 증거로 남는다.</li>
+  </ul>
+
+  <p style="font-size:10.5pt; margin:6px 0 4px;"><strong>책의 개념과 한국 제도의 대응</strong></p>
+  <table class="avoid-break">
+    <thead>
+      <tr><th style="width:42%;">책의 개념</th><th>대응하는 한국 제도 · 정책</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="lbl">전이의 평가</td><td>서·논술형 확대, AI 시대 평가 재설계</td></tr>
+      <tr><td class="lbl">과정 증거의 누적</td><td>2022 개정 과정중심평가</td></tr>
+      <tr><td class="lbl">분석적 루브릭</td><td>고교학점제 성취평가제 성취수준 산출</td></tr>
+      <tr><td class="lbl">포트폴리오·자기평가</td><td>학교자율시간·자유학기제 산출물 평가</td></tr>
+      <tr><td class="lbl">진정성 수행과제</td><td>핵심역량 평가, IB(MYP·DP) 내부평가</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    <div class="tip-h">한 가지 비판적 시선</div>
+    한국 학교가 번번이 실패하는 쪽은 균형이 아니라 <strong>정렬</strong>이다. 균형은 평가계획표에 칸을 만들면 어느 정도 채워진다. 문제는 정렬이다. 비전은 게시판에 걸려 있고 평가는 진도와 출제 관행을 따라 굴러가며, 둘은 서로를 한 번도 쳐다보지 않는다. 평가 개혁의 첫 질문은 어떤 루브릭을 쓸까가 아니라, 우리 학교는 정말 길러내려는 것이 있는가여야 한다.
+  </div>
+
+  <!-- ============ 5. 함께 생각할 질문 ============ -->
+  <div class="sec">
+    <div class="sec-no">5</div>
+    <div class="sec-title">함께 생각할 질문</div>
+  </div>
+  <ol class="q">
+    <li>한 학기 동안 한 학생에 대해 우리가 실제로 모으는 증거를 종류별로 적어 보면, 우리 평가는 스냅숏에 가까운가 사진첩에 가까운가, 어떤 편중이 드러나는가.</li>
+    <li>비전에서 표방한 역량 중 지금 평가로는 증거가 거의 잡히지 않는 것은 무엇이며, 그 역량을 GRASPS 과제로 만든다면 Role·Audience·Situation을 어떻게 설정하겠는가.</li>
+    <li>우리 교과에서 단순 응용 문제와 진짜 전이 과제는 무엇이 다르며, 학생에게 배운 적 없는 새로운 상황을 어떻게 제시하겠는가.</li>
+    <li>루브릭을 학습 도구로 쓰려면 과제 전에 무엇을 학생과 공유해야 하며, 우수 사례를 미리 보여주는 것은 공정성과 학습에 각각 어떤 영향을 주는가.</li>
+    <li>생성형 AI로 정형 과제의 답을 쉽게 얻는 시대에, 어떤 종류의 증거가 여전히 학생 자신의 이해와 전이를 보여준다고 신뢰할 수 있는가.</li>
+  </ol>
+
+  <!-- ============ 6. 출처 각주 ============ -->
+  <div class="source">
+    <p><span class="sh">출처</span></p>
+    <p>원서: McTighe, J., &amp; Curtis, G. <i>Leading Modern Learning: A Blueprint for Vision-Driven Schools</i>. Solution Tree Press.</p>
+    <p>한국어판: 제이 맥타이·그레그 커티스 지음, 강현석·조인숙 옮김, 《학교, 이렇게 바꾼다》, 교육을바꾸는사람들, 2020. (이 발제는 한국어판을 기준으로 5장을 정리함)</p>
+  </div>
+
+</div><!-- /page 2 -->
+
+</body>
+</html>
