@@ -4,8 +4,14 @@ date: 2026-05-30 13:25:00 +0900
 categories: [교육, 교육혁신]
 tags: [책리뷰, 통지, 성적, 표준기반평가, 통지시스템, 미래학습]
 permalink: /post/lml-reporting-system/
+header:
+  teaser: /assets/lml-reporting-system-thumb.jpg
 ---
 한 학생의 성적표에 'B'가 찍혔다. 그 'B'는 무엇을 말하는가. 내용을 깊이 이해했지만 과제를 두어 번 늦게 낸 학생인가, 아니면 성실하게 다 제출했지만 핵심 개념에서 미끄러진 학생인가. 같은 한 글자가 정반대의 학생을 가리킨다면, 그 성적표는 정보를 전달하는 게 아니라 정보를 지운다.
+
+<figure>
+<img src="/assets/lml-reporting-system-thumb.jpg" alt="성적표가 학습을 배신할 때 — 7장 미래학습을 위한 통지시스템과 부록">
+</figure>
 
 ## 통지가 마지막 관문인 이유
 

@@ -4,8 +4,14 @@ date: 2026-05-30 13:10:00 +0900
 categories: [교육, 학습과학, AI디지털기반교육혁신]
 tags: [책리뷰, 백워드설계, UbD, 전이목표, 핵심질문, 교육과정, 코너스톤과제]
 permalink: /post/lml-mission-to-action-curriculum/
+header:
+  teaser: /assets/lml-mission-to-action-curriculum-thumb.png
 ---
 학교마다 멋진 졸업생상이 있다. 자기주도적이고 창의적이며 더불어 사는 사람. 그런데 그 문장은 대개 현관 액자나 학교 홈페이지 첫 화면에 박제된 채 교실 문을 넘지 못한다. 이 책 3·4장은 정확히 그 단절을 겨눈다. 비전이 캐비닛 속 문서로 남지 않으려면 무엇을 거꾸로 줄 세워야 하는가.
+
+<figure>
+<img src="/assets/lml-mission-to-action-curriculum-thumb.png" alt="미션을 수업으로 번역하는 법 — 3·4장 미션에서 실행으로, 미래학습 교육과정">
+</figure>
 
 ## 도착지에서 거꾸로 짚어 내려오는 설계
 

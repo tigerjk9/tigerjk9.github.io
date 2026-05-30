@@ -4,9 +4,15 @@ date: 2026-05-30 13:20:00 +0900
 categories: [교육, 학습과학]
 tags: [책리뷰, 수업설계, 깊은학습, 탐구수업, 미래학습, 교수법]
 permalink: /post/lml-instruction-modern-learning/
+header:
+  teaser: /assets/lml-instruction-modern-learning-thumb.jpg
 ---
 
 수업법을 둘러싼 오래된 싸움이 있다. 한쪽은 "강의식 직접교수는 낡았다, 학생 활동과 탐구가 답이다"라고 외치고, 다른 쪽은 "기초는 명시적으로 가르쳐야 한다"라고 맞선다. 맥타이와 커티스는 이 양자택일 자체가 잘못된 질문이라고 못 박는다. 좋은 수업이냐 나쁜 수업이냐가 아니라, 지금 이 활동이 어떤 학습 목표를 겨냥하느냐가 먼저다.
+
+<figure>
+<img src="/assets/lml-instruction-modern-learning-thumb.jpg" alt="가르침이 바뀌어야 배움이 바뀐다 — 6장 미래학습을 위한 수업">
+</figure>
 
 ## 수업이 목표를 따라가야 한다
 

@@ -4,9 +4,15 @@ date: 2026-05-30 13:05:00 +0900
 categories: [교육, 교육혁신]
 tags: [책리뷰, 학교비전, 미션, 미래학습, 학교혁신]
 permalink: /post/lml-vision-to-mission/
+header:
+  teaser: /assets/lml-vision-to-mission-thumb.jpg
 ---
 
 학교 개혁은 거의 언제나 시험과 시간표에서 시작한다. 무엇을 더 효율적으로 돌릴지부터 묻는다. 맥타이와 커티스는 그 순서가 틀렸다고 말한다. 먼저 물어야 할 것은 우리 졸업생이 어떤 사람이 되어야 하는가이며, 그 답에서 거꾸로 학교를 설계해야 한다는 것이다.
+
+<figure>
+<img src="/assets/lml-vision-to-mission-thumb.jpg" alt="비전이 없는 학교는 표류한다 — 비전에서 미션으로">
+</figure>
 
 ## 표준화 시험이 아니라 졸업생 상에서 시작하라
 

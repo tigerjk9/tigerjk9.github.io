@@ -4,9 +4,15 @@ date: 2026-05-30 13:15:00 +0900
 categories: [교육, 학습과학, AI디지털기반교육혁신]
 tags: [책리뷰, 평가, 수행평가, GRASPS, 루브릭, 21세기역량, 평가시스템]
 permalink: /post/lml-assessment-system/
+header:
+  teaser: /assets/lml-assessment-system-thumb.png
 ---
 
 한 학기 동안 한 학생을 두고 우리가 실제로 모으는 증거를 적어 보면, 대개 중간고사 점수 한 줄과 기말고사 점수 한 줄로 끝난다. 학교 비전 페이지에는 자기주도성, 협력, 창의성이 큼직하게 적혀 있는데, 정작 그 역량을 보여주는 증거는 어디에도 쌓이지 않는다. 맥타이와 커티스가 이 장에서 찌르는 지점이 정확히 여기다. 우리는 길러내겠다고 선언한 것을 측정하지 않고, 측정하기 쉬운 것만 측정한 뒤 그것을 성취라 부른다.
+
+<figure>
+<img src="/assets/lml-assessment-system-thumb.png" alt="무엇을 어떻게 평가할 것인가 — 5장 미래학습을 위한 평가시스템">
+</figure>
 
 ## 스냅샷이 아니라 사진첩이다
 
