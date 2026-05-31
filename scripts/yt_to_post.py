@@ -513,7 +513,7 @@ def load_prompt_template(
     template = template.replace("{CHANNEL_NAME}", metadata.get("channel") or "")
     template = template.replace("{UPLOAD_DATE}", upload_date_formatted)
     template = template.replace("{VIDEO_URL}", metadata.get("webpage_url", ""))
-    template = template.replace("{VIDEO_DESCRIPTION}", metadata.get("description", ""))
+    template = template.replace("{VIDEO_DESCRIPTION}", metadata.get("description") or "")
     template = template.replace("{TRANSCRIPT}", transcript_section)
     template = template.replace("{EXISTING_CATEGORIES}", cats_str)
     template = template.replace("{EXISTING_TAGS}", tags_str)
