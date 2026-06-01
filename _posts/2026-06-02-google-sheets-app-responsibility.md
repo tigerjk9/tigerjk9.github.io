@@ -68,7 +68,7 @@ permalink: /post/google-sheets-app-responsibility/
 *   Apps Script 호출 제한 또는 실행 시간 초과
 *   동시 사용자 증가 시 저장 충돌 및 지연
 
-바로 이 지점에서 낙관과 경계를 동시에 쥐어야 한다. 구글 스프레드시트로 시작하되, 나중에 실제 데이터베이스(Supabase, Firebase, PostgreSQL 등)로 이전하기 쉽게 설계해야 한다. 이를 위해서는 앱 전체에서 직접 Apps Script URL을 여러 곳에 하드코딩하는 대신, `dataService`, `apiClient`, `repository` 같은 데이터 접근 계층을 분리해야 한다. 앱 화면은 이 계층을 통해서만 데이터를 요청하게 만든다.
+바로 이 지점에서 낙관과 경계를 동시에 쥐어야 한다. 구글 스프레드시트로 시작하되, 나중에 실제 데이터베이스(Supabase, Firebase, PostgreSQL 등)로 이전하기 쉽게 설계해야 한다. 이를 위해서는 앱 전체에서 직접 Apps Script URL을 여러 곳에 하드코딩하는 대신, `dataService`, `apiClient`, `repository` 같은 데이터 접근 계층을 분리해야 한다. 앱 화면은 이 계층으로만 데이터를 요청하게 만든다.
 
 이렇게 하면 지금은 구글 스프레드시트를 사용해도, 나중에 데이터베이스를 바꿀 때 앱 화면 전체를 갈아엎지 않아도 된다. 당장은 복잡해 보여도, 업무용 앱은 오래 쓸수록 이런 **구조적 견고함**이 결정적인 차이를 만든다.
 
