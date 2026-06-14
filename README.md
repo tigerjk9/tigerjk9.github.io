@@ -222,6 +222,31 @@ python scripts/pdf_to_post.py _papers/paper.pdf --no-push
 
 ---
 
+### `/plain-*` — 담백한 전달 (교육 앵커링 없음)
+
+특정 분야(교육)에 얽매이지 않고 **어떤 주제든 원문에 충실하게** 전달하는 모드. 기존 커맨드가 모두 "교육 전문가" 페르소나로 수렴하던 것과 달리, 주제는 원문이 정한다(기술·경제·문화·과학·스포츠 등).
+
+| 커맨드 | 기반 스크립트 | 특징 |
+|--------|-------------|------|
+| `/plain-paraph` | `web_to_post.py --plain` | 웹 아티클 담백한 전달 (단일·복수 URL) |
+| `/plain-video` | `yt_to_post.py --plain --model gemini-2.5-flash` | YouTube 영상 담백한 전달 |
+
+**스타일 차이점 (`/plain-*` vs 기본·`/edit-*`)**:
+- 페르소나가 "어떤 주제든 명료하게 푸는 블로거" — 교육 렌즈 제거
+- 원문 정보를 정확·빠짐없이 전달, 개인 의견은 절제 (강한 주장보다 정확한 전달 우선)
+- 원문에 없는 사실·수치·인용 날조 금지
+- 크로스오버는 자연스러울 때만, 억지면 생략. 카테고리도 교육에 억지로 넣지 않음
+- 단정체·표 활용·AI 슬롭 금지 규칙은 동일 유지
+
+```bash
+python scripts/web_to_post.py <URL> [URL2 ...] --plain
+python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash
+```
+
+> 차단된 웹 페이지(403·게이트)는 원문 PDF를 markitdown으로 변환 후 로컬 `.md` 경로를 `--plain`에 넘겨 처리한다.
+
+---
+
 ### 클로드 AI PPT 자동화 (별도 워크플로우)
 
 Python 스크립트 없이 Claude의 Projects 기능과 디자인 시스템 파일(`getdesign.md`)을 활용해 발표 자료를 자동 생성하는 워크플로우. 위 4개 스크립트와 달리 **Claude 웹/앱 인터페이스 내에서 대화형으로 진행**한다.

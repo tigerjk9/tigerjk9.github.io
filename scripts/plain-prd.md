@@ -79,3 +79,11 @@ python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash
 ## 후처리
 
 생성물은 기존 자동화와 동일하게 CLAUDE.md의 **자동화 포스트 후처리 QA 체크리스트** 7단계 점검 대상. plain 고유 추가 점검: 억지 교육 연결 혼입 여부(있으면 원문 주제로 교정).
+
+## 운영 노트 (2026-06-15 11건 배치에서 정착)
+
+- **병렬 실행**: `--no-push`로 백그라운드 잡 여러 개에 나눠 동시 실행(잡당 순차)하면 Gemini rate-limit 없이 처리된다. `_config.yml` timezone이 이미 설정돼 있어 `ensure_timezone_config`가 no-op이라 동시 쓰기 경합 없음. 생성 후 QA → 일괄 commit·push.
+- **차단 소스**: axios는 403(requests 차단, Jina 폴백도 hard 403엔 무력). anthropic `resources.anthropic.com/ty-*`는 게이트 랜딩(쿠키 동의문 590자만 추출) → 슬러그가 `website-cookie-policy`류 환각으로 나옴 → 즉시 삭제. 원문 PDF가 있으면 markitdown → 임시 `.md`(첫 줄 `# 제목`) → `web_to_post.py <임시.md> --plain`로 처리(로컬 파일 경로 지원), 출처 수동 교정, 임시 파일 삭제.
+- **멀티 URL `--notes` 미지원**: 2개 이상 URL은 `load_multi_prompt_template` 경로라 `--notes`/편집 앵글이 주입 안 된다. 앵글이 필요하면 생성 후 도입부를 수동 보강(steipete 사례).
+- **한국어 메타누출은 가드 사각**: `_strip_duplicate_post`는 영어 `(Self-correction)`만 절단. Gemini가 `## 출처` 뒤에 한국어 자기검토 체크리스트(`생성 완료 후 검토 사항`)를 붙이면 놓치므로 후처리에서 출처 뒤를 항상 확인.
+- **출처 video ID 손상**: 영상 출처의 video ID를 Gemini가 종종 1글자 바꾼다(`...CTts`→`...Ctts`). 생성 후 입력 URL과 대조 교정.

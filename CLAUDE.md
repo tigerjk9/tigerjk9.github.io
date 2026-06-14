@@ -278,6 +278,7 @@ python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash  
 - **유지**: 단정체 문체 규칙·AI 슬롭 금지·콜론 헤딩 금지·표 활용·이미지 자동삽입·크로스오버(단 **선택적** — 억지면 생략). 카테고리도 교육에 억지로 끼워넣지 않고 원문 주제로 고른다.
 - **`--plain`은 `--dry-run`·`--no-push`·`--slug`·`--date`·`--notes`(웹 단일) 상속.** 멀티 URL 모드(2개 이상)는 notes 미지원(단일 경로만 `{OWNER_NOTES}` 주입).
 - **후처리**: 다른 자동화와 동일하게 7단계 QA 대상. plain 고유 추가 점검 — 억지 교육 연결 혼입 여부(있으면 원문 주제로 교정).
+- **차단 소스 우회**: 403·게이트 페이지(axios·anthropic resources 등)는 본문 추출 실패로 환각 메타 포스트(쿠키 정책 등)를 양산한다. 즉시 삭제하고, 원문 PDF가 있으면 `py -3.12 -m markitdown <pdf> -o <임시.md>` → 첫 줄에 `# <제목>` prepend → `python scripts/web_to_post.py <임시.md> --plain` (fetch_content가 로컬 파일 경로 직접 지원) → 출처를 원문으로 교정 → 임시 파일 삭제. (2026-06-15 anthropic 사례에서 검증)
 
 ---
 
@@ -285,7 +286,7 @@ python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash  
 
 Gemini가 간헐적으로 **본문을 통째로 두 번 출력**하거나 `(Self-correction during drafting)` 같은 **메타 코멘트를 누출**하는 실패 모드가 있다(같은 영상 2회 실행 중 1회 발생 확인). 스크립트가 그대로 commit·push하면 깨진 글(중복 본문 + 두 번째 front matter)이 라이브로 나간다.
 
-`web_to_post.py`·`yt_to_post.py`의 `_sanitize_content` 맨 앞에서 `_strip_duplicate_post`를 호출해 차단한다: 두 번째 `--- / title:` front matter 블록 이후를 절단하고, 말미 self-correction 메타 블록을 제거한다. **web/yt 공용이라 기존 `/video`·`/edit-video`·`/paraph`·`/edit-paraph`·`/plain-*` 모두 보호된다.** 정상 단일 글은 무영향(Red-Green 검증). 단 가드가 잡는 건 "통째 중복"뿐이라, 부분 중복·미묘한 변형은 여전히 후처리 점검 대상이다.
+`web_to_post.py`·`yt_to_post.py`의 `_sanitize_content` 맨 앞에서 `_strip_duplicate_post`를 호출해 차단한다: 두 번째 `--- / title:` front matter 블록 이후를 절단하고, 말미 self-correction 메타 블록을 제거한다. **web/yt 공용이라 기존 `/video`·`/edit-video`·`/paraph`·`/edit-paraph`·`/plain-*` 모두 보호된다.** 정상 단일 글은 무영향(Red-Green 검증). 단 가드는 두 번째 front matter 또는 **영어** `(Self-correction)` 블록만 잡는다. **한국어 자기검토 누출**(`생성 완료 후 검토 사항`·`준수하여 작성`)은 놓치므로(2026-06-15 envy 포스트에서 `## 출처` 뒤에 10항목 체크리스트가 통째 붙어 수동 절단함), 생성 후 출처 섹션 뒤에 메타 체크리스트가 붙지 않았는지 항상 확인해 절단한다.
 
 ---
 
