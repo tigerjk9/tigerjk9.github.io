@@ -7,7 +7,7 @@ header:
   teaser: /assets/github-repo-orchestrator-automation-thumb.jpg
 permalink: /post/github-repo-orchestrator-automation/
 ---
-오픈소스 소프트웨어 개발에서 방대한 양의 리포지토리 작업을 효율적으로 조율하고 완료하는 일은 쉽지 않다. 여기서는 복잡한 리포지토리 유지보수 작업을 자동화된 에이전트 시스템으로 관리하는 방식에 대해 설명한다. 이 시스템은 중앙 오케스트레이터와 독립적인 워커 스레드 간의 명확한 역할 분담으로 운영된다.
+'에이전트에게 프롬프트하지 말고, 에이전트에게 프롬프트할 루프를 설계하라.' Peter Steinberger의 이 한 문장은 며칠 전 830만 뷰를 기록했다. 그리고 그는 자신이 말한 그 루프의 실물을 깃허브에 공개했다. 막상 열어보니 정교한 코드가 아니라 문서 두 장이었다. 오픈소스 리포지토리 유지보수를 자동화된 에이전트 시스템으로 관리하는 방식을 담은 글이다. 이 시스템은 중앙 오케스트레이터와 독립적인 워커 스레드 간의 명확한 역할 분담으로 운영된다.
 
 <figure>
 <img src="/assets/github-repo-orchestrator-automation-thumb.jpg" alt="GitHub 리포지토리 자동 관리 오케스트레이터">
