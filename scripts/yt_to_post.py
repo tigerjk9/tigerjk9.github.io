@@ -52,8 +52,10 @@ REPO_ROOT = SCRIPT_DIR.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_yt_prompt_template.txt"
+PLAIN_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "plain_yt_prompt_template.txt"
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "yt_multi_prompt_template.txt"
 EDIT_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_yt_multi_prompt_template.txt"
+PLAIN_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "plain_yt_multi_prompt_template.txt"
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
@@ -482,13 +484,19 @@ def load_prompt_template(
     tags: "list[str]",
     edit: bool = False,
     frame_info: str = "",
+    plain: bool = False,
 ) -> "tuple[str, str]":
     """yt_prompt_template.txt 읽기 + 플레이스홀더 치환.
 
     Returns:
         (완성된 프롬프트 문자열, 선택된 크로스오버 분야 이름)
     """
-    template_path = EDIT_PROMPT_TEMPLATE_PATH if edit else PROMPT_TEMPLATE_PATH
+    if plain:
+        template_path = PLAIN_PROMPT_TEMPLATE_PATH
+    elif edit:
+        template_path = EDIT_PROMPT_TEMPLATE_PATH
+    else:
+        template_path = PROMPT_TEMPLATE_PATH
     if not template_path.exists():
         raise RuntimeError(f"프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
     template = template_path.read_text(encoding="utf-8")
@@ -532,8 +540,14 @@ def load_multi_prompt_template(
     categories: "list[str]",
     tags: "list[str]",
     edit: bool = False,
+    plain: bool = False,
 ) -> "tuple[str, str]":
-    template_path = EDIT_MULTI_PROMPT_TEMPLATE_PATH if edit else MULTI_PROMPT_TEMPLATE_PATH
+    if plain:
+        template_path = PLAIN_MULTI_PROMPT_TEMPLATE_PATH
+    elif edit:
+        template_path = EDIT_MULTI_PROMPT_TEMPLATE_PATH
+    else:
+        template_path = MULTI_PROMPT_TEMPLATE_PATH
     if not template_path.exists():
         raise RuntimeError(f"멀티 프롬프트 템플릿을 찾을 수 없습니다: {template_path}")
     template = template_path.read_text(encoding="utf-8")
@@ -620,6 +634,22 @@ def _fix_date(text: str, correct_date_str: str) -> str:
     )
 
 
+def _strip_duplicate_post(content: str) -> str:
+    """Gemini가 본문을 통째로 재출력하거나 self-correction 메타 코멘트를 흘리는 경우 제거.
+
+    정상 출력은 최상단 front matter 하나만 갖는다. 두 번째 `--- / title:` 블록이
+    나타나면 그 이후(중복 본문)를 잘라낸다. 또한 말미의 self-correction 메타 블록을 제거한다.
+    이 가드가 없으면 중복·메타 누출 글이 그대로 commit·push 될 수 있다.
+    """
+    fm_starts = [m.start() for m in re.finditer(r"(?m)^---[ \t]*\n[ \t]*title[ \t]*:", content)]
+    if len(fm_starts) >= 2:
+        content = content[: fm_starts[1]]
+    # 말미 self-correction 메타 블록 제거 (--- 구분선 동반 또는 단독)
+    content = re.sub(r"(?is)\n-{3,}[ \t]*\n\(?\s*self[- ]?correction\b.*$", "\n", content)
+    content = re.sub(r"(?is)\n\(?\s*self[- ]?correction\b.*$", "\n", content)
+    return content.rstrip() + "\n"
+
+
 def _sanitize_content(content: str) -> str:
     """출처 URL 마크다운 안전 처리 + 말미 수평선 제거.
 
@@ -628,6 +658,8 @@ def _sanitize_content(content: str) -> str:
     2. ## 출처 섹션 bare URL을 <URL>로 감싸기: &, , 등 특수문자가 MD 파서를
        혼란시키는 것을 방지하고 명시적 autolink로 변환.
     """
+    # 0. Gemini 중복 본문 / self-correction 메타 누출 제거
+    content = _strip_duplicate_post(content)
     # 1. 말미 수평선 제거
     content = re.sub(r"\n[-]{3,}\s*$", "", content.rstrip()) + "\n"
 
@@ -812,6 +844,11 @@ def main() -> None:
         action="store_true",
         help="edit 모드: 블로그 주인장 목소리 강화 프롬프트 사용",
     )
+    parser.add_argument(
+        "--plain",
+        action="store_true",
+        help="plain 모드: 교육 앵커링 없는 담백한 전달 프롬프트 사용 (/plain-video)",
+    )
     args = parser.parse_args()
 
     if not os.environ.get("GEMINI_API_KEY"):
@@ -860,7 +897,7 @@ def main() -> None:
 
         try:
             prompt, crossover_domain = load_multi_prompt_template(
-                args.date, sources, existing_cats, existing_tags, edit=args.edit,
+                args.date, sources, existing_cats, existing_tags, edit=args.edit, plain=args.plain,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:
@@ -910,7 +947,7 @@ def main() -> None:
         try:
             prompt, crossover_domain = load_prompt_template(
                 args.date, metadata, transcript, existing_cats, existing_tags,
-                edit=args.edit, frame_info=frame_info,
+                edit=args.edit, frame_info=frame_info, plain=args.plain,
             )
             print(f"[INFO] 크로스오버 분야: {crossover_domain}")
         except RuntimeError as e:
