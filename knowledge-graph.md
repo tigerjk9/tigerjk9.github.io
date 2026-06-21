@@ -330,7 +330,10 @@ class: "page--knowledge-graph"
     z-index: 30;
   }
 
-  .cluster-label { pointer-events: none; }
+  /* ── Community label chips (노드 위에서도 또렷하게) ── */
+  .kg-comm-label { cursor: pointer; }
+  .kg-comm-label text { paint-order: stroke; }
+  .kg-comm-label:hover rect { fill-opacity: 0.96; }
 
   /* ── Hint ── */
   #kg-hint {
@@ -429,22 +432,18 @@ class: "page--knowledge-graph"
   // ─────────────────────────────────────────────────────────────
   const CONFIG = {
     TOP_K: 8,            // 노드당 유지할 최대 연결 수 (가지치기)
-    MINOR_MIN: 3,        // 이 미만 포스트를 가진 카테고리는 '기타'로 묶음
+    MIN_COMMUNITY: 5,    // 이 미만 크기 군집은 '기타'로 묶음
     NODE_R_MIN: 4,       // 최소 노드 반경
     NODE_R_MAX: 17,      // 허브 노드 최대 반경
-    HUB_LABELS: 16,      // 라벨을 상시 표시할 상위 degree 노드 수
+    HUB_LABELS: 14,      // 라벨을 상시 표시할 상위 degree 노드 수
+    LABEL_TAGS: 2,       // 군집 자동 라벨에 쓸 대표 태그 수
     FADE_OP: 0.07,       // 비강조 노드 투명도
     FOCUS_SCALE: 1.9,    // 검색/필터 포커스 줌 배율
     OTHER: '기타',
-    // 주요 카테고리 브랜드 색 — 나머지는 팔레트에서 자동 배정
-    BRAND: {
-      'AI':'#8b5cf6','교육':'#6366f1','학습과학':'#3b82f6',
-      'AI디지털기반교육혁신':'#f97316','철학':'#ec4899','인지과학':'#f59e0b',
-      '바이브코딩':'#06b6d4','코딩':'#10b981','교육공학':'#14b8a6',
-      '교육혁신':'#0ea5e9','심리학':'#a855f7'
-    },
-    PALETTE: ['#ef4444','#84cc16','#eab308','#f43f5e','#22d3ee','#c084fc',
-              '#fb923c','#4ade80','#60a5fa','#e879f9','#2dd4bf','#facc15'],
+    // 군집(커뮤니티) 색 — 사람이 정한 카테고리가 아니라 연결 구조에서 탐지한 군집에 부여
+    PALETTE: ['#8b5cf6','#06b6d4','#10b981','#f97316','#ec4899','#f59e0b',
+              '#3b82f6','#ef4444','#84cc16','#a855f7','#14b8a6','#eab308',
+              '#fb923c','#60a5fa','#e879f9','#f43f5e'],
     OTHER_COLOR: '#6b6b8a'
   };
 
@@ -470,7 +469,6 @@ class: "page--knowledge-graph"
     .on('zoom', (e) => g.attr('transform', e.transform));
   svg.call(zoom).on('dblclick.zoom', null);
 
-  const gClusterBg = g.append('g').attr('id', 'cluster-bg');
   const gLinks     = g.append('g').attr('id', 'links');
   const gNodes     = g.append('g').attr('id', 'nodes');
   const gHubLabels = g.append('g').attr('id', 'hub-labels');
@@ -536,35 +534,78 @@ class: "page--knowledge-graph"
       const parts = key.split('-');
       edges.push({ source: +parts[0], target: +parts[1], weight: w });
     });
-    return edges;
+    return { idf, edges };
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Community detection (Louvain, 가중 모듈러리티 최적화)
+  //   사람이 정한 카테고리(대부분 'AI'로 쏠림) 대신, 실제 연결 구조에서
+  //   함께 묶이는 글들을 군집으로 찾아 색·라벨을 부여한다. 결정적(노드 순서 고정).
+  // ─────────────────────────────────────────────────────────────
+  function louvain(N, edges, passes) {
+    passes = passes || 10;
+    const adj0 = Array.from({ length: N }, () => []);
+    const k0 = new Array(N).fill(0);
+    let m2 = 0;
+    edges.forEach((e) => {
+      adj0[e.source].push([e.target, e.weight]);
+      adj0[e.target].push([e.source, e.weight]);
+      k0[e.source] += e.weight; k0[e.target] += e.weight; m2 += 2 * e.weight;
+    });
+    if (m2 === 0) return Array.from({ length: N }, (_, i) => i);
+
+    function runLevel(n, adj, k) {
+      const comm = Array.from({ length: n }, (_, i) => i);
+      const commTot = k.slice();
+      let improved = true, guard = 0;
+      while (improved && guard++ < 50) {
+        improved = false;
+        for (let v = 0; v < n; v++) {
+          const cv = comm[v];
+          commTot[cv] -= k[v];
+          const neigh = new Map();
+          for (const [u, w] of adj[v]) if (u !== v) neigh.set(comm[u], (neigh.get(comm[u]) || 0) + w);
+          let bestC = cv, bestGain = 0;
+          neigh.forEach((wIn, c) => {
+            const gain = wIn - commTot[c] * k[v] / m2;
+            if (gain > bestGain + 1e-12) { bestGain = gain; bestC = c; }
+          });
+          comm[v] = bestC; commTot[bestC] += k[v];
+          if (bestC !== cv) improved = true;
+        }
+      }
+      return comm;
+    }
+
+    let curN = N, curAdj = adj0, curK = k0;
+    let mapping = Array.from({ length: N }, (_, i) => i);
+    for (let p = 0; p < passes; p++) {
+      const comm = runLevel(curN, curAdj, curK);
+      const uniq = new Map();
+      comm.forEach((c) => { if (!uniq.has(c)) uniq.set(c, uniq.size); });
+      const comm2 = comm.map((c) => uniq.get(c));
+      const newN = uniq.size;
+      mapping = mapping.map((m) => comm2[m]);
+      if (newN === curN) break;
+      const sAdj = Array.from({ length: newN }, () => new Map());
+      for (let a = 0; a < curN; a++) {
+        const ca = comm2[a];
+        for (const [b, w] of curAdj[a]) sAdj[ca].set(comm2[b], (sAdj[ca].get(comm2[b]) || 0) + w);
+      }
+      const nAdj = Array.from({ length: newN }, () => []);
+      const sK = new Array(newN).fill(0);
+      for (let ca = 0; ca < newN; ca++) sAdj[ca].forEach((w, cb) => { nAdj[ca].push([cb, w]); sK[ca] += w; });
+      curN = newN; curAdj = nAdj; curK = sK;
+    }
+    return mapping;
   }
 
   function init(data) {
     const nodes = (data.nodes || []).map((n, i) => Object.assign({ idx: i }, n));
     if (!nodes.length) { spinner.innerHTML = '<p>표시할 글이 없습니다.</p>'; return; }
 
-    // ── Category counts → displayGroup (minor → 기타) ──
-    const catCount = new Map();
-    nodes.forEach((n) => catCount.set(n.group, (catCount.get(n.group) || 0) + 1));
-    nodes.forEach((n) => {
-      n.dgroup = (catCount.get(n.group) >= CONFIG.MINOR_MIN) ? n.group : CONFIG.OTHER;
-    });
-
-    // ── Color scale (brand first, palette fallback, 기타=gray) ──
-    const dgroups = [...new Set(nodes.map((n) => n.dgroup))]
-      .filter((c) => c !== CONFIG.OTHER)
-      .sort((a, b) => (catCount.get(b) || 0) - (catCount.get(a) || 0));
-    const paletteFor = new Map();
-    let pi = 0;
-    dgroups.forEach((c) => {
-      if (CONFIG.BRAND[c]) { paletteFor.set(c, CONFIG.BRAND[c]); }
-      else { paletteFor.set(c, CONFIG.PALETTE[pi % CONFIG.PALETTE.length]); pi++; }
-    });
-    paletteFor.set(CONFIG.OTHER, CONFIG.OTHER_COLOR);
-    const color = (dg) => paletteFor.get(dg) || CONFIG.OTHER_COLOR;
-
-    // ── Build edges + degree ──
-    const edges = buildEdges(nodes);
+    // ── Build edges (tag IDF) + degree ──
+    const { idf, edges } = buildEdges(nodes);
     nodes.forEach((n) => { n.degree = 0; });
     edges.forEach((e) => { nodes[e.source].degree++; nodes[e.target].degree++; });
 
@@ -573,49 +614,69 @@ class: "page--knowledge-graph"
       .range([CONFIG.NODE_R_MIN, CONFIG.NODE_R_MAX]);
     nodes.forEach((n) => { n.r = rScale(n.degree); });
 
-    // ── Cluster centers (displayGroup) arranged in a circle ──
-    const clusterCats = [...dgroups];
-    if (nodes.some((n) => n.dgroup === CONFIG.OTHER)) clusterCats.push(CONFIG.OTHER);
-    const cr = Math.min(W, H) * 0.34;
-    const centers = new Map();
-    clusterCats.forEach((cat, i) => {
-      const angle = (2 * Math.PI * i / clusterCats.length) - Math.PI / 2;
-      centers.set(cat, { x: W / 2 + cr * Math.cos(angle), y: H / 2 + cr * Math.sin(angle) });
+    // ── Community detection (Louvain) → node.comm ──
+    const rawComm = louvain(nodes.length, edges);
+    const rawSize = new Map();
+    rawComm.forEach((c) => rawSize.set(c, (rawSize.get(c) || 0) + 1));
+    // 큰 군집만 색을 부여하고 작은 군집은 '기타'로 묶음 (크기순 재번호)
+    const bigComms = [...rawSize.entries()]
+      .filter(([, s]) => s >= CONFIG.MIN_COMMUNITY)
+      .sort((a, b) => b[1] - a[1]).map(([c]) => c);
+    const commId = new Map();
+    bigComms.forEach((c, i) => commId.set(c, i));
+    nodes.forEach((n, i) => {
+      n.comm = commId.has(rawComm[i]) ? commId.get(rawComm[i]) : CONFIG.OTHER;
     });
-    const cCount = (cat) => nodes.filter((n) => n.dgroup === cat).length;
 
-    // initial positions near cluster center
+    // ── Community auto-labels: 군집내 (태그빈도 × IDF) 상위 태그 ──
+    const commTags = new Map();
+    const commSize = new Map();
     nodes.forEach((n) => {
-      const c = centers.get(n.dgroup) || { x: W / 2, y: H / 2 };
-      n.x = c.x + (Math.random() - 0.5) * 60;
-      n.y = c.y + (Math.random() - 0.5) * 60;
+      commSize.set(n.comm, (commSize.get(n.comm) || 0) + 1);
+      let m = commTags.get(n.comm); if (!m) { m = new Map(); commTags.set(n.comm, m); }
+      new Set(n.tags || []).forEach((t) => m.set(t, (m.get(t) || 0) + (idf.get(t) || 0)));
+    });
+    const commLabel = new Map();
+    commTags.forEach((m, c) => {
+      if (c === CONFIG.OTHER) { commLabel.set(c, CONFIG.OTHER); return; }
+      const top = [...m.entries()].sort((a, b) => b[1] - a[1])
+        .slice(0, CONFIG.LABEL_TAGS).map(([t]) => t);
+      commLabel.set(c, top.join(', ') || ('군집 ' + (c + 1)));
     });
 
-    // ── Cluster background bubbles ──
-    const maxCC = Math.max(...clusterCats.map(cCount));
-    const bubbleR = (cat) => 46 + 120 * Math.sqrt(cCount(cat) / maxCC);
-    const clusterBgs = gClusterBg.selectAll('circle')
-      .data(clusterCats).join('circle')
-      .attr('cx', (c) => centers.get(c).x)
-      .attr('cy', (c) => centers.get(c).y)
-      .attr('r', bubbleR)
-      .attr('fill', (c) => color(c))
-      .attr('fill-opacity', 0.06)
-      .attr('stroke', (c) => color(c))
-      .attr('stroke-opacity', 0.2)
-      .attr('stroke-width', 1.5)
-      .style('cursor', 'pointer')
-      .on('click', (e, c) => { e.stopPropagation(); setFilterBtnActive(c); activateFilter(c); });
+    // ── Color by community ──
+    const color = (c) => c === CONFIG.OTHER ? CONFIG.OTHER_COLOR
+      : CONFIG.PALETTE[c % CONFIG.PALETTE.length];
+    const cCount = (c) => commSize.get(c) || 0;
 
-    // ── Cluster labels ──
-    gLabels.selectAll('text').data(clusterCats).join('text')
-      .attr('class', 'cluster-label')
-      .attr('x', (c) => centers.get(c).x)
-      .attr('y', (c) => centers.get(c).y - bubbleR(c) + 16)
-      .attr('text-anchor', 'middle')
-      .attr('fill', (c) => color(c))
-      .attr('font-size', '13px').attr('font-weight', '600')
-      .text((c) => `${c} (${cCount(c)})`);
+    // ── Community list (size desc, OTHER last) ──
+    const communities = bigComms.map((_, i) => i);
+    if (commSize.has(CONFIG.OTHER)) communities.push(CONFIG.OTHER);
+
+    // ── Seed positions per community (seeding only — no fixed bubbles) ──
+    const cr = Math.min(W, H) * 0.34;
+    const seed = new Map();
+    communities.forEach((c, i) => {
+      const a = (2 * Math.PI * i / communities.length) - Math.PI / 2;
+      seed.set(c, { x: W / 2 + cr * Math.cos(a), y: H / 2 + cr * Math.sin(a) });
+    });
+    nodes.forEach((n) => {
+      const s = seed.get(n.comm) || { x: W / 2, y: H / 2 };
+      n.x = s.x + (Math.random() - 0.5) * 80;
+      n.y = s.y + (Math.random() - 0.5) * 80;
+    });
+
+    // 군집 centroid(동적) — 라벨 위치 + 약한 응집력에 사용
+    const centroid = new Map();
+    function updateCentroids() {
+      const sx = new Map(), sy = new Map(), cn = new Map();
+      nodes.forEach((n) => {
+        sx.set(n.comm, (sx.get(n.comm) || 0) + n.x);
+        sy.set(n.comm, (sy.get(n.comm) || 0) + n.y);
+        cn.set(n.comm, (cn.get(n.comm) || 0) + 1);
+      });
+      cn.forEach((cnt, c) => centroid.set(c, { x: sx.get(c) / cnt, y: sy.get(c) / cnt }));
+    }
 
     // ── Links (forceLink target; always rendered, faint) ──
     const linkLines = gLinks.selectAll('line').data(edges).join('line')
@@ -626,9 +687,9 @@ class: "page--knowledge-graph"
     // ── Nodes ──
     const nodeCircles = gNodes.selectAll('circle').data(nodes).join('circle')
       .attr('r', (n) => n.r)
-      .attr('fill', (n) => color(n.dgroup))
+      .attr('fill', (n) => color(n.comm))
       .attr('fill-opacity', 0.88)
-      .attr('stroke', (n) => color(n.dgroup))
+      .attr('stroke', (n) => color(n.comm))
       .attr('stroke-width', 1)
       .attr('stroke-opacity', 0.5)
       .style('cursor', 'pointer');
@@ -641,17 +702,45 @@ class: "page--knowledge-graph"
       .attr('text-anchor', 'middle')
       .text((n) => n.label.length > 18 ? n.label.slice(0, 17) + '…' : n.label);
 
+    // ── Community labels (centroid, dynamic) — 배경 칩으로 노드 위에서도 또렷 ──
+    const commLabelSel = gLabels.selectAll('g.kg-comm-label').data(communities)
+      .join((enter) => {
+        const gg = enter.append('g').attr('class', 'kg-comm-label');
+        gg.append('rect');
+        gg.append('text');
+        return gg;
+      })
+      .on('click', (e, c) => { e.stopPropagation(); setFilterBtnActive(c); activateFilter(c); });
+    commLabelSel.select('text')
+      .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
+      .attr('fill', (c) => color(c))
+      .attr('font-size', '12.5px').attr('font-weight', '700')
+      .text((c) => `${commLabel.get(c)} (${cCount(c)})`);
+    // 텍스트 크기에 맞춰 배경 칩(rect) 치수 설정
+    commLabelSel.each(function (c) {
+      const bb = this.querySelector('text').getBBox();
+      const px = 9, py = 4;
+      d3.select(this).select('rect')
+        .attr('x', bb.x - px).attr('y', bb.y - py)
+        .attr('width', bb.width + px * 2).attr('height', bb.height + py * 2)
+        .attr('rx', 6)
+        .attr('fill', 'rgba(15,15,22,0.82)').attr('fill-opacity', 0.82)
+        .attr('stroke', color(c)).attr('stroke-opacity', 0.55).attr('stroke-width', 1);
+    });
+
     // ── Simulation: forceLink makes connected posts attract ──
     const linkForce = d3.forceLink(edges)
       .id((n) => n.idx)
       .distance((e) => Math.max(28, 120 - e.weight * 9))
       .strength(0.25);
 
+    // 같은 군집을 동적 중심으로 끌어 영역을 또렷하게 한다(연결력 위에 보조).
     function clusterForce(alpha) {
+      updateCentroids();
       nodes.forEach((n) => {
-        const c = centers.get(n.dgroup); if (!c) return;
-        n.vx += (c.x - n.x) * 0.05 * alpha;
-        n.vy += (c.y - n.y) * 0.05 * alpha;
+        const c = centroid.get(n.comm); if (!c) return;
+        n.vx += (c.x - n.x) * 0.08 * alpha;
+        n.vy += (c.y - n.y) * 0.08 * alpha;
       });
     }
 
@@ -694,6 +783,11 @@ class: "page--knowledge-graph"
         .attr('x2', (e) => e.target.x).attr('y2', (e) => e.target.y);
       nodeCircles.attr('cx', (n) => n.x).attr('cy', (n) => n.y);
       hubLabels.attr('x', (n) => n.x).attr('y', (n) => n.y - n.r - 3);
+      // 군집 라벨 칩을 군집 무게중심에 동적으로 배치
+      commLabelSel.attr('transform', (c) => {
+        const ct = centroid.get(c) || { x: 0, y: 0 };
+        return `translate(${ct.x},${ct.y})`;
+      });
     }
 
     // ── Drag ──
@@ -742,12 +836,13 @@ class: "page--knowledge-graph"
     }
 
     function showPanel(node) {
-      const col = color(node.dgroup);
+      const col = color(node.comm);
       document.getElementById('kg-panel-title').textContent = node.label;
       const catEl = document.getElementById('kg-panel-cat');
-      catEl.textContent = node.group;
+      catEl.textContent = commLabel.get(node.comm) || CONFIG.OTHER; // 군집 라벨
       catEl.style.color = col; catEl.style.borderColor = col + '60'; catEl.style.background = col + '1f';
-      document.getElementById('kg-panel-date').textContent = node.date || '';
+      document.getElementById('kg-panel-date').textContent =
+        (node.date || '') + (node.group ? ' · ' + node.group : ''); // 날짜 + 원 카테고리
 
       document.getElementById('kg-panel-tags').innerHTML =
         (node.tags || []).map((t) => `<span class="kg-tag">${esc(t)}</span>`).join('');
@@ -809,13 +904,13 @@ class: "page--knowledge-graph"
       );
     }
 
-    // ── Filter buttons ──
+    // ── Filter buttons (군집 단위) ──
     const filterContainer = document.getElementById('kg-filters');
-    clusterCats.forEach((cat) => {
+    communities.forEach((c) => {
       const btn = document.createElement('button');
       btn.className = 'kg-filter-btn';
-      btn.dataset.cat = cat;
-      btn.innerHTML = `<span class="kg-filter-dot" style="background:${color(cat)}"></span>${esc(cat)} (${cCount(cat)})`;
+      btn.dataset.cat = String(c);
+      btn.innerHTML = `<span class="kg-filter-dot" style="background:${color(c)}"></span>${esc(commLabel.get(c))} (${cCount(c)})`;
       filterContainer.appendChild(btn);
     });
     document.querySelectorAll('.kg-filter-btn').forEach((btn) => {
@@ -824,26 +919,29 @@ class: "page--knowledge-graph"
 
     function setFilterBtnActive(cat) {
       document.querySelectorAll('.kg-filter-btn').forEach((b) =>
-        b.classList.toggle('active', b.dataset.cat === cat));
+        b.classList.toggle('active', b.dataset.cat === String(cat)));
     }
 
     function activateFilter(cat) {
-      activeFilter = cat; deselect();
-      if (cat === 'all') {
+      const catStr = String(cat);
+      activeFilter = catStr; deselect();
+      if (catStr === 'all') {
         currentFilterOpacity = () => 1;
         nodeCircles.attr('opacity', 1);
-        clusterBgs.attr('opacity', 1);
-        gLabels.selectAll('text').attr('opacity', 1);
+        commLabelSel.attr('opacity', 1);
         fitToView(60);
       } else {
-        currentFilterOpacity = (n) => n.dgroup === cat ? 1 : CONFIG.FADE_OP;
+        currentFilterOpacity = (n) => String(n.comm) === catStr ? 1 : CONFIG.FADE_OP;
         nodeCircles.attr('opacity', currentFilterOpacity);
-        clusterBgs.attr('opacity', (c) => c === cat ? 1 : 0.25);
-        gLabels.selectAll('text').attr('opacity', (c) => c === cat ? 1 : 0.3);
-        const c = centers.get(cat), sc = CONFIG.FOCUS_SCALE;
-        svg.transition().duration(dur(600)).call(
-          zoom.transform,
-          d3.zoomIdentity.translate(W / 2 - c.x * sc, H / 2 - c.y * sc).scale(sc));
+        commLabelSel.attr('opacity', (c) => String(c) === catStr ? 1 : 0.3);
+        const target = communities.find((c) => String(c) === catStr);
+        const ctr = centroid.get(target);
+        if (ctr) {
+          const sc = CONFIG.FOCUS_SCALE;
+          svg.transition().duration(dur(600)).call(
+            zoom.transform,
+            d3.zoomIdentity.translate(W / 2 - ctr.x * sc, H / 2 - ctr.y * sc).scale(sc));
+        }
       }
     }
 
@@ -859,7 +957,7 @@ class: "page--knowledge-graph"
       if (!q) { nodeCircles.attr('opacity', currentFilterOpacity); return; }
       const matched = [];
       nodeCircles.attr('opacity', (n) => {
-        if (activeFilter !== 'all' && n.dgroup !== activeFilter) return CONFIG.FADE_OP;
+        if (activeFilter !== 'all' && String(n.comm) !== activeFilter) return CONFIG.FADE_OP;
         const m = n.label.toLowerCase().includes(q) ||
           (n.tags || []).some((t) => t.toLowerCase().includes(q));
         if (m) matched.push(n);
@@ -896,7 +994,7 @@ class: "page--knowledge-graph"
 
     // ── Stats / legend summary ──
     document.getElementById('kg-stat').textContent =
-      `${nodes.length}개 글 · ${edges.length}개 연결 · ${clusterCats.length}개 주제`;
+      `${nodes.length}개 글 · ${edges.length}개 연결 · ${communities.length}개 군집`;
 
     // ── Resize ──
     let resizeTimer = null;
