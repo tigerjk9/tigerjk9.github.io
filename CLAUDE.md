@@ -37,10 +37,11 @@ bundle exec rake version        # 버전 일괄 업데이트
 
 ### Custom Features
 
-**3D Knowledge Graph** (`/knowledge-graph/`):
-- 페이지: `knowledge-graph.md` (layout `wide`)
-- 그래프 데이터: Liquid 템플릿 `graph-data.json`, `knowledge-graph.json`이 빌드 시 포스트 태그를 집계해 노드/엣지 JSON 생성
-- 시각화: Three.js + D3 + 3d-force-graph (CDN). 노드 = 포스트·태그, 엣지 = 태그 관계
+**Knowledge Graph** (`/knowledge-graph/`):
+- 페이지: `knowledge-graph.md` (layout `wide`). D3 v7 2D force 그래프 (Three.js/3d-force-graph 아님)
+- 데이터: Liquid 템플릿 `knowledge-graph.json`이 **노드(포스트)만** 출력 (노드 id = `date+slug`로 고유화, url은 링크 전용). 구버전의 O(N²) 엣지 이중루프와 `graph-data.json`(dead code)은 제거됨 → 페이로드 5MB→236KB
+- 엣지·군집은 전부 클라이언트 계산: 엣지 = 태그 IDF 가중 + 노드당 top-K(8) 가지치기(흔한 허브 태그 디스카운트) / 색·분류 = 연결 구조 Louvain 군집 탐지(클라 직접 구현, 자동 라벨 = 군집내 태그빈도×IDF 상위). forceLink 레이아웃 + degree 비례 노드 반경 + 동적 centroid 라벨 칩
+- 검증 하네스 `.omc/kg-eval/`(gitignore, Ruby 부재 환경에서 Python 산출 재현 + gstack browse 헤드리스). 설계·품질 루브릭은 메모리 `project_knowledge_graph` 참고
 
 **Custom Sidebar** (`_includes/sidebar/`):
 - `categories.html` — 카테고리별 포스트 수
@@ -478,7 +479,7 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 - **Reveal 캔버스**: 한국어+카드 밀도 슬라이드는 기본 960×700이 좁아 잘림 → `width: 1280, height: 820, margin: 0.04`가 안전 기본값. `.card-grid-4`에 카드 5장 넣으면 inline `style="grid-template-columns: repeat(3, 1fr);"`로 3-col 강제
 - **핸드아웃 터미널 카드**: 절대 위치 `.fcmd-tag`는 점선·코드 첫줄과 겹침 → 터미널 타이틀바(`bg-strong`) + 코드블록(`bg-soft`) 2단 flow + macOS 도트 정체성
 
-**격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 200+개·`graph-data.json`·`_includes/sidebar/*.html` 영향 없음.
+**격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 400+개·`knowledge-graph.json`·`_includes/sidebar/*.html` 영향 없음.
 
 **진입점**:
 ```powershell
