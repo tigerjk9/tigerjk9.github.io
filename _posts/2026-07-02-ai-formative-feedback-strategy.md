@@ -5,8 +5,14 @@ date: 2026-07-02 13:15:40 +0900
 categories: [AI, 교육혁신, 교사전문성]
 tags: [AI, 에듀테크, 교육혁신, 논문리뷰, 교사전문성, 미래교육, 학습과학]
 permalink: /post/ai-formative-feedback-strategy/
+header:
+  teaser: /assets/ai-formative-feedback-strategy-thumb.jpg
 ---
 "우리는 공룡이 되어서는 안 된다." 이 연구의 제목이 던지는 메시지는 현장 교사들에게 특히 묵직하게 다가온다. 새로운 기술 앞에서 움츠러들거나 무작정 달려들기보다, AI를 교육적 맥락에서 어떻게 활용할지 고민하는 현장의 목소리가 여기에 담겨있다. 이 노르웨이 연구는 AI 기반 형성 평가 피드백의 실질적 가치와 함께, 우리가 외면해서는 안 될 엄중한 조건들을 제시한다.
+
+<figure>
+<img src="/assets/ai-formative-feedback-strategy-thumb.jpg" alt="교사가 학생에게 첨삭한 과제를 돌려주며 피드백을 건네는 교실 수업 장면">
+</figure>
 
 ## AI 피드백, 교사의 오랜 갈증을 해소하는가?
 
