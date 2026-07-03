@@ -5,6 +5,8 @@ main:
     url: /categories/
   - title: "Tags"
     url: /tags/
+  - title: "리서치 허브"
+    url: /research/
   - title: "지식그래프"
     url: /knowledge-graph/
   - title: "바이브코딩 콜렉션"

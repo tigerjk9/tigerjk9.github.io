@@ -1,0 +1,7 @@
+{
+  "name": "research-ask",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "tigerjk9.github.io 리서치 허브의 시맨틱 검색 + RAG 질의응답 서버리스 API"
+}

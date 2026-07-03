@@ -57,3 +57,16 @@ python scripts/pdf_to_post.py _papers/paper.pdf
 - `_papers/*.pdf`는 `.gitignore`에 등록되어 저장소에 커밋되지 않습니다.
 - 처리가 완료되면 **원본 PDF는 자동 삭제**되어 로컬 용량이 쌓이지 않습니다.
 - 원본을 보존하려면 `--keep-pdf` 플래그를 사용하세요.
+
+## 실행 후 반드시 — 리서치 허브 갱신
+
+포스트 후처리 QA(CLAUDE.md 체크리스트)를 마친 뒤, 리서치 허브·AI 검색·챗봇 데이터를 재생성하고 커밋하세요:
+
+```bash
+py scripts/build_research_db.py
+py scripts/build_embeddings.py
+git add assets/research-db.json assets/research-emb-posts.json assets/research-rag-index.json
+```
+
+이 단계를 건너뛰면 신규 논문리뷰가 `/research/`와 `/ask/`에서 누락됩니다.
+임베딩은 텍스트 해시 기반 증분이라 신규 포스트 분량만 API를 호출합니다.

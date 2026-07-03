@@ -147,6 +147,7 @@ exclude:
   - /test # ignore Minimal Mistakes /test
   - _papers
   - scripts
+  - research-ask
 keep_files:
   - .git
   - .svn

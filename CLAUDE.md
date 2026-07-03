@@ -43,6 +43,24 @@ bundle exec rake version        # 버전 일괄 업데이트
 - 엣지·군집은 전부 클라이언트 계산: 엣지 = 태그 IDF 가중 + 노드당 top-K(8) 가지치기(흔한 허브 태그 디스카운트) / 색·분류 = 연결 구조 Louvain 군집 탐지(클라 직접 구현, 자동 라벨 = 군집내 태그빈도×IDF 상위). forceLink 레이아웃 + degree 비례 노드 반경 + 동적 centroid 라벨 칩
 - 검증 하네스 `.omc/kg-eval/`(gitignore, Ruby 부재 환경에서 Python 산출 재현 + gstack browse 헤드리스). 설계·품질 루브릭은 메모리 `project_knowledge_graph` 참고
 
+**리서치 허브** (`/research/`):
+- 페이지: `research.md` (layout `default` — 사이트 내비·푸터 유지, 저자 사이드바 없음). 자체 완결 `<style>`/`<script>`, `#rh-app` 스코프. 테마 대응(다크 기본 + `html[data-theme="light"] #rh-app` 오버라이드). 스크립트는 `{% raw %}` 래핑(Liquid 안전)
+- 데이터: `scripts/build_research_db.py`가 `_posts/*.md` 중 **'리뷰어의 ADD' 헤딩 보유 논문리뷰(현재 100편)**를 파싱 → `assets/research-db.json`(약 1MB, gzip 후 ~280KB). 지식그래프처럼 정적 생성 + 클라 렌더 패턴. Liquid로는 6섹션 분리·arXiv 추출이 불가해 Python 정적 생성 채택
+- 파서 설계: 섹션 원자화 금지·텍스트 블롭 보존(h2/h3·번호 off-by-one·존칭/단정체 편차 흡수). 섹션 매핑은 번호 아닌 **헤딩 키워드**(목적/방법/발견/결론/ADD/탐구, '목적 및 방법' 결합 헤딩은 목적 우선). 출처 6종 포맷(`## 출처`·`_**출처:**_`·`**출처**:`·`### 📚 APA`) 유연 추출 후 arXiv/DOI 정규식. 요약은 연구목적 첫 문장 추출(생성·환각 금지)
+- UI: 태그 칩 AND 필터 + 연도 + 키워드 검색(제목·요약·발견·시사점) + 정렬. 카드 인라인 확장(마크다운 라이트 렌더 — 볼드·불릿·`####` 소제목·인용·**표**·링크). 원문 링크(arXiv/DOI) + 블로그 링크
+- **재생성 필수 (2단계)**: 논문리뷰 포스트를 새로 올리거나 수정하면 `py scripts/build_research_db.py` → `py scripts/build_embeddings.py` 순서로 재실행 → `assets/research-db.json`·`research-emb-posts.json`·`research-rag-index.json` 커밋. `/paper` 후처리 QA 마지막에 이 단계를 추가한다(안 하면 허브·AI 검색·챗봇이 신규 글을 누락). 임베딩은 텍스트 해시 기반 증분이라 신규 포스트 분량만 API 호출
+- 격리: `research.md`는 front matter에 `categories`/`tags` 없음 → 사이드바·카테고리/태그 페이지·지식그래프에 침투 0건. 검증은 `bundle exec jekyll build && ls _site/categories | wc -l` 카운트가 추가 전후 동일해야 함
+
+**AI 시맨틱 검색 + RAG 챗봇** (`/research/` AI 모드 · `/ask/`):
+- 백엔드: `research-ask/` — 의존성 제로 Vercel 서버리스(Gemini REST 직접 호출). `api/health`(프로브)·`api/embed`(쿼리 임베딩)·`api/ask`(RAG 답변). 블로그 정적 파일(`research-db.json`+`research-rag-index.json`)을 콜드스타트에 fetch·6h 캐시 → **콘텐츠가 늘어도 서비스 재배포 불필요**. `_config.yml` exclude 등록(Jekyll 빌드 제외)
+- 임베딩: `scripts/build_embeddings.py` — gemini-embedding-001 768차원, 포스트당 overview+6섹션 청크(현재 ~700청크), int8 양자화(per-vector scale, base64). `research-emb-posts.json`(허브 클라 코사인용 ~108KB) + `research-rag-index.json`(RAG용 ~765KB)
+- **유사도 게이트 (중요)**: gemini-embedding은 무관 질의도 top1 0.5~0.6이 나옴(실측: 김치찌개 0.52, 주식 0.60, 관련 질의 0.79). 절대 컷 하나로는 판별 불가 → `ask.js` MIN_SIM 0.6 + TOP_GATE 0.63, `research.md` AI_TOP_GATE 0.62 + top1 대비 상대 컷 0.08. 무관 질문은 생성 호출 없이 차단
+- **thinking 토큰 함정**: gemini-2.5-flash는 thinking이 기본 켜져 있어 maxOutputTokens를 소진해 답변이 잘림 → `generationConfig.thinkingConfig.thinkingBudget: 0` 필수 (`lib/store.js`)
+- 프론트: `research.md` AI 검색 토글(Enter 실행, 유사도순 재정렬) + `ask.md` 챗 UI(`[n]` 인용→출처 링크, 출처 카드, sessionless). 둘 다 `/api/health` 프로브 성공 시에만 AI UI 노출 — **서비스 미배포여도 사이트는 완전 정상**
+- 배포(최초 1회): `cd research-ask && npx vercel login && npx vercel link`(프로젝트명 `dotconnector-ask` 권장 — 코드의 `ASK_API` 상수와 일치) `&& npx vercel env add GEMINI_API_KEY production && npx vercel --prod`. 다른 이름이면 `research.md`·`ask.md` 상단 `ASK_API` 수정
+- 남용 방지: CORS 허용(블로그+localhost), 인스턴스 로컬 레이트리밋(ask 6/min·400/day), 질문 500자·답변 2000토큰 상한. 트래픽 증가 시 Upstash 교체
+- 로컬 E2E: `node research-ask/test/local-harness.mjs "질문"` (`--embed`·`--health` 모드 지원, .env 키 자동 로드, 블로그 fetch를 로컬 파일로 몽키패치)
+
 **Custom Sidebar** (`_includes/sidebar/`):
 - `categories.html` — 카테고리별 포스트 수
 - `tag_cloud.html` — 태그 클라우드
@@ -288,6 +306,25 @@ python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash  
 Gemini가 간헐적으로 **본문을 통째로 두 번 출력**하거나 `(Self-correction during drafting)` 같은 **메타 코멘트를 누출**하는 실패 모드가 있다(같은 영상 2회 실행 중 1회 발생 확인). 스크립트가 그대로 commit·push하면 깨진 글(중복 본문 + 두 번째 front matter)이 라이브로 나간다.
 
 `web_to_post.py`·`yt_to_post.py`의 `_sanitize_content` 맨 앞에서 `_strip_duplicate_post`를 호출해 차단한다: 두 번째 `--- / title:` front matter 블록 이후를 절단하고, 말미 self-correction 메타 블록을 제거한다. **web/yt 공용이라 기존 `/video`·`/edit-video`·`/paraph`·`/edit-paraph`·`/plain-*` 모두 보호된다.** 정상 단일 글은 무영향(Red-Green 검증). 단 가드는 두 번째 front matter 또는 **영어** `(Self-correction)` 블록만 잡는다. **한국어 자기검토 누출**(`생성 완료 후 검토 사항`·`준수하여 작성`)은 놓치므로(2026-06-15 envy 포스트에서 `## 출처` 뒤에 10항목 체크리스트가 통째 붙어 수동 절단함), 생성 후 출처 섹션 뒤에 메타 체크리스트가 붙지 않았는지 항상 확인해 절단한다.
+
+---
+
+## 주간 다이제스트 자동화 (`/digest`)
+
+`scripts/weekly_digest.py`가 지난 7일 포스트를 모아 주간 다이제스트 포스트를 생성한다.
+Claude Code에서는 `/digest` 슬래시 커맨드로 호출한다 (`.claude/commands/digest.md`).
+
+```bash
+py scripts/weekly_digest.py             # 생성 + git push
+py scripts/weekly_digest.py --dry-run   # 출력만
+py scripts/weekly_digest.py --no-push   # 로컬 저장만
+py scripts/weekly_digest.py --days 14   # 기간 변경
+```
+
+- **구조**: 도입 2~3문장 → 주제별 `###` 섹션(카테고리 그대로가 아닌 실제 묶임 재구성) → 글마다 `- **[제목](퍼머링크)** — 한 줄 코멘트`(요약 아닌 "왜 읽을 가치") → 마무리 한 단락. 프롬프트 `scripts/digest_prompt_template.txt`
+- **자기 참조 방지**: `주간다이제스트` 태그 포스트는 수집 제외. 3편 미만이면 생성 안 함
+- **출력**: `_posts/YYYY-MM-DD-weekly-digest.md`, 카테고리 `[다이제스트]`, 퍼머링크 `/post/weekly-digest-YYYY-MM-DD/`. Gemini 출력은 `TITLE:` 첫 줄 + 본문 형식 — front matter는 스크립트가 직접 조립(환각 여지 축소)
+- **후처리 QA**: 링크가 대상 포스트 permalink와 일치하는지(지어낼 수 있음), S1 금지 표현(`~을 넘어` 등 혼입 확인됨), 포스트 누락, 존칭 어미 — `.claude/commands/digest.md`의 체크리스트 참고
 
 ---
 
