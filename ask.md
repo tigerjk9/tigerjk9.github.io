@@ -28,6 +28,8 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     display: flex; flex-direction: column;
     min-height: calc(100vh - 220px);
   }
+  /* hidden 속성 강제 — display를 지정한 컴포넌트가 [hidden]을 이기는 것 차단 */
+  #ask-app [hidden] { display: none !important; }
   html[data-theme="light"] #ask-app {
     --ak-card: #ffffff;
     --ak-border: #e4e8ee;
@@ -154,8 +156,17 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
   #ask-app .ak-disclaim { font-size: 0.72rem; color: var(--ak-faint); text-align: center; margin: 0.7em 0 0; }
 
   @media (max-width: 600px) {
-    #ask-app { padding: 1em 0.9em 1.4em; }
+    #ask-app { padding: 0.9em 0.85em 1.2em; }
+    #ask-app .ak-head h1 { font-size: 1.35rem; }
+    #ask-app .ak-desc { font-size: 0.85rem; }
     #ask-app .ak-msg { max-width: 100%; }
+    #ask-app .ak-bot-body { padding: 12px 13px; }
+    #ask-app .ak-ex { font-size: 0.82rem; padding: 0.5em 0.9em; }
+    /* iOS Safari는 입력 폰트가 16px 미만이면 포커스 시 강제 줌 */
+    #ak-input, #ask-app .ak-keyform input { font-size: 16px; }
+    #ak-inputbar { bottom: 8px; border-radius: 12px; padding: 8px 8px 8px 13px; }
+    #ak-send { padding: 0.6em 1em; }
+    #ask-app .ak-src { padding: 9px 10px; }
   }
   @media (prefers-reduced-motion: reduce) {
     #ask-app .ak-dots span { animation: none; }

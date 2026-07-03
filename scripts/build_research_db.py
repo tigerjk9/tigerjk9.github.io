@@ -255,7 +255,9 @@ def extract_source(body):
         link = "https://arxiv.org/abs/%s" % arxiv
     elif doi:
         link = "https://doi.org/%s" % doi
-    return {"citation": cite, "arxiv_id": arxiv, "doi": doi, "link": link}
+    # in_block: 출처 '블록'에서 찾았는지 (본문 폴백 아님) — 대상 판정에만 사용, JSON엔 미포함
+    return {"citation": cite, "arxiv_id": arxiv, "doi": doi, "link": link,
+            "in_block": bool(blob) and bool(arxiv or doi)}
 
 
 def first_body_image(body):
@@ -312,9 +314,16 @@ def process(path):
     warns = []
     if fm is None:
         return None, []
+    src = extract_source(body)
     is_structured = ADD_MARKER in text
-    if not is_structured and PAPER_TAG not in (fm.get("tags") or []):
-        return None, []  # 대상 아님
+    # 대상 판정 3신호: ADD 6섹션 / 논문리뷰 태그 / 출처 '블록'의 arXiv·DOI
+    # (/edit-paper 출력 일부는 논문리뷰 태그 없이 생성됨 — 출처 블록 시그널로 포착.
+    #  본문 중간에 논문 링크만 언급한 에세이류가 딸려오지 않도록 블록 발견만 인정)
+    is_paper = (is_structured
+                or PAPER_TAG in (fm.get("tags") or [])
+                or src["in_block"])
+    if not is_paper:
+        return None, []
 
     base = os.path.basename(path)
     if is_structured:
@@ -326,11 +335,11 @@ def process(path):
         if not sections:
             return None, warns
 
-    src = extract_source(body)
     if not src["citation"]:
         warns.append("[%s] 출처 추출 실패" % base)
 
     teaser = fm.get("teaser") or first_body_image(body)
+    src.pop("in_block", None)  # 판정용 내부 필드 — JSON 미포함
 
     record = {
         "id": (fm.get("permalink") or "/" + base[:-3] + "/").strip("/"),
