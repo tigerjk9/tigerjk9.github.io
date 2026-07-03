@@ -26,6 +26,10 @@
 
   // 초기화
   function initSidebarToggle() {
+    // 토글할 사이드바가 없는 페이지(layout default — 리서치 허브·AI에게 묻기 등)에는
+    // 버튼을 만들지 않는다. 안 그러면 ☰/✕ 버튼이 본문 위에 떠서 제목을 가린다.
+    if (!document.querySelector('.sidebar')) return;
+
     // 모바일 사이드바 헤더 주입
     injectMobileSidebarHeader();
 
