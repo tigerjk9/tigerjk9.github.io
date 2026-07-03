@@ -24,7 +24,7 @@ export function applyCors(req, res) {
     res.setHeader('Vary', 'Origin');
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Ask-Key');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Ask-Key, X-Gemini-Key');
   res.setHeader('Access-Control-Max-Age', '86400');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
@@ -37,8 +37,19 @@ export function applyCors(req, res) {
 // ASK_ACCESS_KEY 미설정이면 공개 모드(하위 호환). 설정 시 embed/ask는 키 필수.
 const ACCESS_KEY = process.env.ASK_ACCESS_KEY || '';
 
+// ── BYOK (방문자 본인 Gemini API 키) ──────────────────────────
+// X-Gemini-Key 헤더로 자기 키를 가져오면 접근 키 없이 이용 가능. 생성 비용은 방문자 키 부담.
+// Google API 키 형식(AIza + 35자 내외)만 통과 — 형식이 다르면 없는 것으로 취급.
+const GEMINI_KEY_RE = /^AIza[0-9A-Za-z_-]{30,80}$/;
+
+export function userGeminiKey(req) {
+  const k = String(req.headers['x-gemini-key'] || '').trim();
+  return GEMINI_KEY_RE.test(k) ? k : '';
+}
+
 export function keyValid(req) {
   if (!ACCESS_KEY) return true; // 키 미설정 = 공개 모드
+  if (userGeminiKey(req)) return true; // 본인 Gemini 키 지참 = 접근 키 불필요
   const given = String(req.headers['x-ask-key'] || '');
   if (given.length !== ACCESS_KEY.length) return false;
   let diff = 0;
@@ -52,7 +63,7 @@ export function authRequired() {
 
 export function requireKey(req, res) {
   if (keyValid(req)) return false;
-  res.status(401).json({ error: 'unauthorized', message: '접근 키가 필요하다. 이 기능은 블로그 주인장 전용으로 운영 중이다.' });
+  res.status(401).json({ error: 'unauthorized', message: '접근 키 또는 본인의 Gemini API 키가 필요하다. /ask/ 페이지에서 키를 입력해 달라.' });
   return true;
 }
 
@@ -61,10 +72,12 @@ const hits = new Map(); // ip -> timestamps[]
 let dayCount = 0;
 let dayStamp = new Date().toDateString();
 
-export function rateLimit(req, res, perMin = 8, perDayInstance = 800) {
+// skipDaily: BYOK 요청은 생성 비용이 방문자 키 부담이라 일일 총량(주인장 키 보호)에서 제외.
+// 단 서버 자체 보호용 분당 IP 제한은 항상 적용.
+export function rateLimit(req, res, perMin = 8, perDayInstance = 800, skipDaily = false) {
   const today = new Date().toDateString();
   if (today !== dayStamp) { dayStamp = today; dayCount = 0; }
-  if (dayCount >= perDayInstance) {
+  if (!skipDaily && dayCount >= perDayInstance) {
     res.status(429).json({ error: 'daily_quota', message: '오늘의 사용량이 모두 소진됐다. 내일 다시 시도해 달라.' });
     return true;
   }
@@ -78,7 +91,7 @@ export function rateLimit(req, res, perMin = 8, perDayInstance = 800) {
   arr.push(now);
   hits.set(ip, arr);
   if (hits.size > 5000) hits.clear(); // 메모리 상한
-  dayCount++;
+  if (!skipDaily) dayCount++;
   return false;
 }
 
@@ -132,9 +145,19 @@ export function normalize(v) {
 // ── Gemini REST ───────────────────────────────────────────────
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 
-export async function embedQuery(text) {
-  if (!GEMINI_KEY) throw new Error('GEMINI_API_KEY 미설정');
-  const r = await fetch(`${API_BASE}/${EMBED_MODEL}:embedContent?key=${GEMINI_KEY}`, {
+// BYOK 오류 분류 — 방문자 키가 무효(400/401/403)거나 할당량 소진(429)이면
+// 프론트가 키 재입력/안내를 하도록 마킹된 오류를 던진다. 오류 메시지에 키는 포함하지 않는다.
+function geminiApiError(kind, status, bodyText, usingUserKey) {
+  const err = new Error(`${kind} API ${status}: ${String(bodyText).slice(0, 200)}`);
+  if (usingUserKey && (status === 400 || status === 401 || status === 403)) err.badUserKey = true;
+  if (usingUserKey && status === 429) err.userQuota = true;
+  return err;
+}
+
+export async function embedQuery(text, apiKey = '') {
+  const key = apiKey || GEMINI_KEY;
+  if (!key) throw new Error('GEMINI_API_KEY 미설정');
+  const r = await fetch(`${API_BASE}/${EMBED_MODEL}:embedContent?key=${key}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -143,15 +166,16 @@ export async function embedQuery(text) {
       outputDimensionality: 768,
     }),
   });
-  if (!r.ok) throw new Error(`embed API ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  if (!r.ok) throw geminiApiError('embed', r.status, await r.text(), Boolean(apiKey));
   const data = await r.json();
   // 768 truncate 벡터는 비정규 → 반드시 정규화
   return normalize(data.embedding.values);
 }
 
-export async function generate(prompt, maxTokens = 2000) {
-  if (!GEMINI_KEY) throw new Error('GEMINI_API_KEY 미설정');
-  const r = await fetch(`${API_BASE}/${GEN_MODEL}:generateContent?key=${GEMINI_KEY}`, {
+export async function generate(prompt, maxTokens = 2000, apiKey = '') {
+  const key = apiKey || GEMINI_KEY;
+  if (!key) throw new Error('GEMINI_API_KEY 미설정');
+  const r = await fetch(`${API_BASE}/${GEN_MODEL}:generateContent?key=${key}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -164,10 +188,23 @@ export async function generate(prompt, maxTokens = 2000) {
       },
     }),
   });
-  if (!r.ok) throw new Error(`generate API ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  if (!r.ok) throw geminiApiError('generate', r.status, await r.text(), Boolean(apiKey));
   const data = await r.json();
   const parts = data.candidates?.[0]?.content?.parts || [];
   return parts.map((p) => p.text || '').join('');
+}
+
+// 핸들러 공용 — BYOK 오류를 HTTP 응답으로 변환. 처리했으면 true.
+export function handleByokError(e, res) {
+  if (e && e.badUserKey) {
+    res.status(401).json({ error: 'bad_gemini_key', message: '입력한 Gemini API 키가 유효하지 않다. 키를 다시 확인해 달라.' });
+    return true;
+  }
+  if (e && e.userQuota) {
+    res.status(429).json({ error: 'gemini_quota', message: '입력한 키의 무료 할당량이 소진된 것으로 보인다. 잠시 후 다시 시도해 달라.' });
+    return true;
+  }
+  return false;
 }
 
 // ── 검색: 쿼리 벡터 → top 청크 → 포스트 단위 근거 목록 ─────────

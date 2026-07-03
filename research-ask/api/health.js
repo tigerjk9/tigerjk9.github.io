@@ -13,6 +13,8 @@ export default async function handler(req, res) {
       hasKey: Boolean(process.env.GEMINI_API_KEY),
       authRequired: authRequired(),
       authorized: keyValid(req),
+      byok: true, // 방문자 본인 Gemini 키(X-Gemini-Key) 지원 — 구버전 배포와 구분하는 기능 플래그
+
     });
   } catch (e) {
     res.status(503).json({ ok: false, error: String(e.message || e) });

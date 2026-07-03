@@ -1,6 +1,6 @@
 // POST /api/ask {q, history?} → {answer, sources[]}
 // RAG: 쿼리 임베딩 → 청크 코사인 top-k → 논문리뷰 근거로 Gemini가 인용 답변 생성.
-import { applyCors, rateLimit, requireKey, loadData, embedQuery, retrieve, generate } from '../lib/store.js';
+import { applyCors, rateLimit, requireKey, userGeminiKey, handleByokError, loadData, embedQuery, retrieve, generate } from '../lib/store.js';
 
 // sections는 [{key, label, body}] 배열 (structured 6키 + article 자유 헤딩 공용)
 function secOf(post, key) {
@@ -50,7 +50,8 @@ export default async function handler(req, res) {
   if (applyCors(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
   if (requireKey(req, res)) return;
-  if (rateLimit(req, res, 6, 400)) return;
+  const byokKey = userGeminiKey(req); // 방문자 본인 키 — 생성 비용이 방문자 부담이라 일일 총량 제외
+  if (rateLimit(req, res, 6, 400, Boolean(byokKey))) return;
 
   const q = (req.body?.q || '').trim();
   const history = Array.isArray(req.body?.history) ? req.body.history : [];
@@ -58,7 +59,7 @@ export default async function handler(req, res) {
   if (q.length > 500) return res.status(400).json({ error: 'query_too_long', message: '질문은 500자 이내로 해달라.' });
 
   try {
-    const [data, queryVec] = await Promise.all([loadData(), embedQuery(q)]);
+    const [data, queryVec] = await Promise.all([loadData(), embedQuery(q, byokKey)]);
     const hits = retrieve(queryVec, data, { maxSources: 5 });
     const sources = hits.filter((h) => h.sim >= MIN_SIM);
 
@@ -69,7 +70,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const answer = await generate(buildPrompt(q, history, sources));
+    const answer = await generate(buildPrompt(q, history, sources), 2000, byokKey);
     res.status(200).json({
       answer: answer.trim(),
       sources: sources.map((s, i) => ({
@@ -82,6 +83,7 @@ export default async function handler(req, res) {
       })),
     });
   } catch (e) {
+    if (handleByokError(e, res)) return;
     console.error('ask error:', e);
     res.status(502).json({ error: 'ask_failed', message: '답변 생성에 실패했다. 잠시 후 다시 시도해 달라.' });
   }

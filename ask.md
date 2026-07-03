@@ -27,6 +27,10 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     font-family: -apple-system, "Pretendard", "Segoe UI", "Malgun Gothic", sans-serif;
     display: flex; flex-direction: column;
     min-height: calc(100vh - 220px);
+    min-height: calc(100dvh - 220px); /* 모바일 주소창 수축 대응 */
+    /* 한국어 어절 단위 줄바꿈 — 단어 중간에서 끊기지 않게. 긴 URL 등은 break-word로 방어 */
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   /* hidden 속성 강제 — display를 지정한 컴포넌트가 [hidden]을 이기는 것 차단 */
   #ask-app [hidden] { display: none !important; }
@@ -58,7 +62,7 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
   #ask-app .ak-msg-user {
     align-self: flex-end; background: var(--ak-user-bubble);
     border-radius: 14px 14px 3px 14px; padding: 10px 15px; color: var(--ak-text);
-    white-space: pre-wrap; word-break: break-word;
+    white-space: pre-wrap;
   }
   #ask-app .ak-msg-bot { align-self: flex-start; width: 100%; }
   #ask-app .ak-bot-body {
@@ -117,7 +121,8 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     display: flex; gap: 8px; align-items: flex-end;
     background: var(--ak-card); border: 1px solid var(--ak-border-strong);
     border-radius: 14px; padding: 9px 10px 9px 15px;
-    position: sticky; bottom: 12px; box-shadow: var(--ak-shadow);
+    position: sticky; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    box-shadow: var(--ak-shadow);
   }
   #ak-inputbar:focus-within { border-color: var(--ak-accent); }
   #ak-input {
@@ -154,6 +159,19 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
   }
   #ask-app .ak-keyerr { color: #e07a6a; font-size: 0.8rem; margin: 6px 0 0; display: none; }
   #ask-app .ak-disclaim { font-size: 0.72rem; color: var(--ak-faint); text-align: center; margin: 0.7em 0 0; }
+  #ask-app .ak-notice strong { color: var(--ak-text); }
+  #ask-app .ak-lock-meta { font-size: 0.78rem; color: var(--ak-faint); line-height: 1.6; margin: 10px 0 0; }
+  #ask-app .ak-lock-meta a, #ask-app .ak-notice a { color: var(--ak-accent); }
+  #ask-app .ak-owner-link {
+    background: none; border: none; color: var(--ak-faint); font-size: 0.76rem;
+    text-decoration: underline; cursor: pointer; padding: 0; margin-top: 13px; font-family: inherit;
+  }
+  #ask-app .ak-owner-link:hover { color: var(--ak-muted); }
+  #ask-app .ak-linkbtn {
+    background: none; border: none; color: var(--ak-accent); font-size: inherit;
+    text-decoration: underline; cursor: pointer; padding: 0; font-family: inherit;
+  }
+  #ask-app .ak-keyform button:disabled { opacity: 0.5; cursor: default; }
 
   @media (max-width: 600px) {
     #ask-app { padding: 0.9em 0.85em 1.2em; }
@@ -164,7 +182,7 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     #ask-app .ak-ex { font-size: 0.82rem; padding: 0.5em 0.9em; }
     /* iOS Safari는 입력 폰트가 16px 미만이면 포커스 시 강제 줌 */
     #ak-input, #ask-app .ak-keyform input { font-size: 16px; }
-    #ak-inputbar { bottom: 8px; border-radius: 12px; padding: 8px 8px 8px 13px; }
+    #ak-inputbar { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); border-radius: 12px; padding: 8px 8px 8px 13px; }
     #ak-send { padding: 0.6em 1em; }
     #ask-app .ak-src { padding: 9px 10px; }
   }
@@ -178,7 +196,7 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     <h1>&#128172; AI에게 묻기</h1>
     <a class="ak-back" href="/research/">&#8592; 리서치 허브</a>
   </div>
-  <p class="ak-desc">AI·교육 논문 리뷰·아티클 <b id="ak-total">140여</b> 편을 근거로 답하는 리서치 어시스턴트. 답변의 모든 주장에는 근거 논문이 붙는다. 근거가 없으면 없다고 말한다.</p>
+  <p class="ak-desc">AI·교육 논문 리뷰·아티클 <b id="ak-total">140여</b>편을 근거로 답하는 리서치 어시스턴트. 답변의 모든 주장에는 근거 논문이 붙는다. 근거가 없으면 없다고 말한다.</p>
 
   <div id="ak-thread" aria-live="polite"></div>
 
@@ -214,14 +232,21 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
   var history = [];   // {role: 'user'|'bot', text}
   var busy = false;
 
-  // 주인장 전용 접근 키 (localStorage, 기기당 1회 입력)
+  // 접근 키(주인장) + Gemini API 키(방문자 BYOK) — localStorage, 기기당 1회 입력
   var KEY_STORE = 'dc_ask_key';
+  var GKEY_STORE = 'dc_gemini_key';
+  var GKEY_RE = /^AIza[0-9A-Za-z_-]{30,80}$/;
   function getKey() { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } }
   function setKey(v) { try { localStorage.setItem(KEY_STORE, v); } catch (e) {} }
+  function getGKey() { try { return localStorage.getItem(GKEY_STORE) || ''; } catch (e) { return ''; } }
+  function setGKey(v) { try { localStorage.setItem(GKEY_STORE, v); } catch (e) {} }
+  function dropGKey() { try { localStorage.removeItem(GKEY_STORE); } catch (e) {} }
   function keyHeaders(extra) {
     var h = extra || {};
     var k = getKey();
     if (k) h['X-Ask-Key'] = k;
+    var g = getGKey();
+    if (g) h['X-Gemini-Key'] = g;
     return h;
   }
 
@@ -325,8 +350,13 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     }).then(function (res) {
       loader.remove();
       if (res.status === 401) {
-        try { localStorage.removeItem(KEY_STORE); } catch (e) {}
-        addError('접근 키가 더 이상 유효하지 않다. 페이지를 새로고침해 키를 다시 입력해 달라.');
+        if (res.data && res.data.error === 'bad_gemini_key') {
+          dropGKey();
+          addError('Gemini API 키가 더 이상 유효하지 않다. 페이지를 새로고침해 키를 다시 입력해 달라.');
+        } else {
+          try { localStorage.removeItem(KEY_STORE); } catch (e) {}
+          addError('접근 키가 더 이상 유효하지 않다. 페이지를 새로고침해 키를 다시 입력해 달라.');
+        }
         return;
       }
       if (res.status === 429) {
@@ -380,28 +410,57 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     disclaim.hidden = false;
     examplesEl.style.display = '';
     document.getElementById('ak-total').textContent = h.posts;
+    // 방문자 본인 키로 이용 중이면 표시 + 키 삭제 수단 제공
+    if (getGKey() && !document.getElementById('ak-gkey-bar')) {
+      var bar = document.createElement('p');
+      bar.className = 'ak-disclaim';
+      bar.id = 'ak-gkey-bar';
+      bar.innerHTML = '내 Gemini 키로 이용 중 (호출량은 내 키의 무료 할당량에서 차감) &#183; <button class="ak-linkbtn" id="ak-gkey-del" type="button">키 삭제</button>';
+      disclaim.parentNode.insertBefore(bar, disclaim);
+      document.getElementById('ak-gkey-del').addEventListener('click', function () {
+        dropGKey();
+        location.reload();
+      });
+    }
     input.focus();
   }
 
-  function lockedUi() {
+  function lockedUi(h) {
     examplesEl.style.display = 'none';
+    if (h && h.posts) document.getElementById('ak-total').textContent = h.posts;
+    var byok = Boolean(h && h.byok); // 백엔드가 방문자 키 모드를 지원할 때만 키 입력 UI 노출
     var n = document.createElement('div');
     n.className = 'ak-notice';
-    n.innerHTML = '리서치 어시스턴트는 API 비용 문제로 현재 <strong>블로그 주인장 전용</strong>으로 운영 중이다. ' +
-      '방문자는 <a href="/research/">리서치 허브</a>에서 태그·키워드·카드 탐색으로 같은 논문리뷰를 자유롭게 읽을 수 있다.' +
-      '<div class="ak-keyform"><input type="password" id="ak-key-in" placeholder="접근 키" aria-label="접근 키 입력">' +
+    var ownerForm =
+      '<div class="ak-keyform" id="ak-owner-form"' + (byok ? ' hidden' : '') + '><input type="password" id="ak-key-in" placeholder="접근 키" aria-label="접근 키 입력">' +
       '<button id="ak-key-btn">확인</button></div>' +
       '<p class="ak-keyerr" id="ak-key-err">키가 일치하지 않는다.</p>';
+    if (byok) {
+      n.innerHTML = '리서치 어시스턴트는 서버 비용 문제로 <strong>본인의 Gemini API 키</strong>를 넣어 쓰는 방식으로 열려 있다. ' +
+        'Google AI Studio에서 무료로 발급받은 키를 입력하면 누구나 바로 대화할 수 있다.' +
+        '<div class="ak-keyform"><input type="password" id="ak-gkey-in" placeholder="Gemini API 키 (AIza&#8230;)" aria-label="Gemini API 키 입력">' +
+        '<button id="ak-gkey-btn">시작하기</button></div>' +
+        '<p class="ak-keyerr" id="ak-gkey-err"></p>' +
+        '<p class="ak-lock-meta">키는 지금 쓰는 브라우저에만 저장되고 서버에는 저장되지 않는다. 질문할 때 Gemini 호출에만 쓰인다. ' +
+        '<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">키 무료 발급 &#8599;</a></p>' +
+        '<p class="ak-lock-meta">키 없이도 <a href="/research/">리서치 허브</a>에서 태그·키워드 탐색으로 같은 논문리뷰를 읽을 수 있다.</p>' +
+        '<button class="ak-owner-link" id="ak-owner-link" type="button">블로그 주인장이라면 접근 키로 입장</button>' + ownerForm;
+    } else {
+      n.innerHTML = '리서치 어시스턴트는 API 비용 문제로 현재 <strong>블로그 주인장 전용</strong>으로 운영 중이다. ' +
+        '방문자는 <a href="/research/">리서치 허브</a>에서 태그·키워드·카드 탐색으로 같은 논문리뷰를 자유롭게 읽을 수 있다.' + ownerForm;
+    }
     thread.appendChild(n);
+
+    // 주인장 접근 키
     var keyIn = document.getElementById('ak-key-in');
     var tryKey = function () {
       var v = keyIn.value.trim();
       if (!v) return;
       setKey(v);
-      fetch(ASK_API + '/api/health', { headers: keyHeaders() })
+      fetch(ASK_API + '/api/health', { headers: { 'X-Ask-Key': v } })
         .then(function (r) { return r.json(); })
-        .then(function (h) {
-          if (h && h.authorized) { n.remove(); unlockUi(h); }
+        .then(function (h2) {
+          if (h2 && h2.authorized) { n.remove(); unlockUi(h2); }
           else {
             try { localStorage.removeItem(KEY_STORE); } catch (e) {}
             document.getElementById('ak-key-err').style.display = 'block';
@@ -410,6 +469,47 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     };
     document.getElementById('ak-key-btn').addEventListener('click', tryKey);
     keyIn.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') tryKey(); });
+
+    if (!byok) return;
+
+    document.getElementById('ak-owner-link').addEventListener('click', function () {
+      var f = document.getElementById('ak-owner-form');
+      f.hidden = !f.hidden;
+      if (!f.hidden) keyIn.focus();
+    });
+
+    // 방문자 Gemini API 키 — Google에 직접 유효성 확인 (이 확인 요청은 우리 서버를 거치지 않는다)
+    var gIn = document.getElementById('ak-gkey-in');
+    var gErr = document.getElementById('ak-gkey-err');
+    var gBtn = document.getElementById('ak-gkey-btn');
+    function gFail(msg) { gErr.textContent = msg; gErr.style.display = 'block'; }
+    var tryGKey = function () {
+      var v = gIn.value.trim();
+      if (!v || gBtn.disabled) return;
+      gErr.style.display = 'none';
+      if (!GKEY_RE.test(v)) { gFail('Gemini API 키 형식이 아니다. AIza로 시작하는 키를 넣어 달라.'); return; }
+      gBtn.disabled = true;
+      gBtn.textContent = '확인 중…';
+      fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1&key=' + encodeURIComponent(v))
+        .then(function (r) {
+          if (!r.ok) throw new Error('invalid');
+          setGKey(v);
+          return fetch(ASK_API + '/api/health', { headers: keyHeaders() }).then(function (r2) { return r2.json(); });
+        })
+        .then(function (h2) {
+          if (h2 && h2.authorized) { n.remove(); unlockUi(h2); }
+          else { throw new Error('server'); }
+        })
+        .catch(function (err) {
+          dropGKey();
+          gFail(err && err.message === 'invalid'
+            ? '키가 유효하지 않다. Google AI Studio에서 발급한 키인지 확인해 달라.'
+            : '키 확인에 실패했다. 네트워크 상태를 확인하고 다시 시도해 달라.');
+        })
+        .finally(function () { gBtn.disabled = false; gBtn.textContent = '시작하기'; });
+    };
+    gBtn.addEventListener('click', tryGKey);
+    gIn.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') tryGKey(); });
   }
 
   var ctrl = ('AbortController' in window) ? new AbortController() : null;
@@ -418,7 +518,7 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     .then(function (r) { return r.json(); })
     .then(function (h) {
       if (h && h.ok && h.hasKey && (!h.authRequired || h.authorized)) unlockUi(h);
-      else if (h && h.ok && h.authRequired) lockedUi();
+      else if (h && h.ok && h.authRequired) lockedUi(h);
       else throw new Error('not ready');
     })
     .catch(function () {

@@ -58,10 +58,11 @@ bundle exec rake version        # 버전 일괄 업데이트
 - **thinking 토큰 함정**: gemini-2.5-flash는 thinking이 기본 켜져 있어 maxOutputTokens를 소진해 답변이 잘림 → `generationConfig.thinkingConfig.thinkingBudget: 0` 필수 (`lib/store.js`)
 - **라이트모드 가독성 함정 (CRITICAL)**: `main.scss`의 `html[data-theme="light"] a { color: #0078c8 }`(특이성 0,1,1)가 커스텀 페이지 버튼형 앵커의 흰 텍스트(단일 클래스 0,1,0)를 덮어 **파란 배경+파란 글자**가 됨 (2026-07-03 챗봇에서 실측). research.md·ask.md는 전 셀렉터에 `#rh-app`/`#ask-app` ID 프리픽스(1,1,0)로 방어 완료. **새 커스텀 페이지를 만들 땐 반드시 컨테이너 ID 프리픽스로 스타일을 스코프**할 것. 챗봇 인용 `[n]`은 단락당 1회만 붙도록 프롬프트에 명시(문장마다 붙으면 가독성 붕괴)
 - 프론트: `research.md` AI 검색 토글(Enter 실행, 유사도순 재정렬) + `ask.md` 챗 UI(`[n]` 인용→출처 링크, 출처 카드, sessionless). 둘 다 `/api/health` 프로브 성공 시에만 AI UI 노출 — **서비스 미배포여도 사이트는 완전 정상**
-- **배포 완료 (2026-07-03)**: 프로덕션 `https://dotconnector-ask.vercel.app` (팀 `dot-connectors-projects-282d6187` / 프로젝트 `dotconnector-ask` — 코드의 `ASK_API` 상수와 일치). **이 머신은 컴퓨터 이름이 한글이라 `vercel login`이 ByteString 오류로 실패** → `.env`의 `VERCEL_TOKEN`으로 우회. 재배포(코드 수정 시에만 — 데이터 갱신은 불필요): `cd research-ask && npx vercel deploy --prod --yes --scope dot-connectors-projects-282d6187 --token <VERCEL_TOKEN>`. 비대화 모드는 `--scope` 명시 필수
+- **배포 완료 (2026-07-03)**: 프로덕션 `https://dotconnector-ask.vercel.app` (팀 `dot-connectors-projects-282d6187` / 프로젝트 `dotconnector-ask` — 코드의 `ASK_API` 상수와 일치). 재배포(코드 수정 시에만 — 데이터 갱신은 불필요): `cd research-ask && npx vercel link --yes --project dotconnector-ask --scope dot-connectors-projects-282d6187 && npx vercel deploy --prod --yes --scope dot-connectors-projects-282d6187` (`.vercel` 링크는 gitignore라 클론마다 link 먼저). **배포 전 `npx vercel whoami`로 CLI 인증 확인** — 이 머신은 전역 인증돼 있어 토큰 불필요(2026-07-03 확인). 인증 없고 `vercel login`이 한글 컴퓨터 이름 ByteString 오류로 실패하면 `--token <VERCEL_TOKEN>` 우회. 비대화 모드는 `--scope` 명시 필수
 - 남용 방지: CORS 허용(블로그+localhost), 인스턴스 로컬 레이트리밋(ask 6/min·400/day), 질문 500자·답변 2000토큰 상한. 트래픽 증가 시 Upstash 교체
 - **주인장 전용 모드 (2026-07-03, API 비용 통제)**: Vercel env `ASK_ACCESS_KEY` 설정 시 embed/ask는 `X-Ask-Key` 헤더 필수(401), health가 `authRequired`/`authorized`를 반환. 블로그 UI는 미인증 방문자에게 AI 토글·CTA를 숨기고, `/ask/` 방문 시 잠금 안내+키 입력 폼 표시. **키는 `.env`의 `ASK_ACCESS_KEY`** — 주인장이 기기당 1회 `/ask/`에서 입력하면 localStorage(`dc_ask_key`) 저장, 허브 AI 검색도 같은 키 공유. 허브 키워드 탐색은 전면 공개 유지(클라이언트 연산, 비용 0). 키 제거하면 공개 모드로 복귀. 로컬 하네스는 키 자동 첨부(`--no-key`로 미인증 시뮬레이션)
-- 로컬 E2E: `node research-ask/test/local-harness.mjs "질문"` (`--embed`·`--health` 모드 지원, .env 키 자동 로드, 블로그 fetch를 로컬 파일로 몽키패치)
+- **방문자 BYOK 모드 (2026-07-03 추가)**: 잠금 상태여도 방문자가 `/ask/`에서 **본인 Gemini API 키**(Google AI Studio 무료 발급)를 입력하면 이용 가능. 프론트가 Google `models` 엔드포인트로 키를 직접 검증(우리 서버 미경유) 후 localStorage(`dc_gemini_key`) 저장 → embed/ask 요청에 `X-Gemini-Key` 헤더 첨부 → 서버가 접근 키 검사 우회 + 해당 요청의 Gemini 호출을 방문자 키로 수행(비용 방문자 부담). BYOK 요청은 일일 총량(주인장 키 보호)에서 제외, 분당 IP 제한은 유지. 키 무효(400/401/403)는 401 `bad_gemini_key`(프론트가 키 자동 삭제), 할당량 소진(429)은 `gemini_quota`로 구분 응답. **프론트는 health의 `byok` 플래그를 확인한 뒤에만 키 입력 UI를 노출**(구버전 배포와 새 프론트가 섞여도 안전). 허브는 미인증이어도 `byok`면 "AI에게 묻기" CTA를 노출해 입구를 열어 둔다. 키 형식 검증 regex `AIza[0-9A-Za-z_-]{30,80}` (프론트·백엔드 동일)
+- 로컬 E2E: `node research-ask/test/local-harness.mjs "질문"` (`--embed`·`--health`·`--byok` 모드 지원, .env 키 자동 로드, 블로그 fetch를 로컬 파일로 몽키패치). `--byok`는 잠금 강제 후 무키 401 / 무효키 401 / 본인키 200 3종 검증
 
 **Custom Sidebar** (`_includes/sidebar/`):
 - `categories.html` — 카테고리별 포스트 수
@@ -85,7 +86,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 사이드바 섹션 접기/펼치기 | `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html` |
 | 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
 | 리서치 허브 (논문 탐색+AI 검색) | `research.md`, `scripts/build_research_db.py`, `scripts/build_embeddings.py`, `assets/research-*.json` |
-| AI에게 묻기 (RAG 챗봇, 주인장 전용) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
+| AI에게 묻기 (RAG 챗봇, 주인장 키 + 방문자 BYOK) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
 | 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
 
 **다크/라이트 모드**: `html[data-theme="light"]` CSS 레이어 방식. 컴파일된 dark skin 위에 light 오버라이드 덮기. anti-FOUC 인라인 스크립트를 `_includes/head.html` CSS `<link>` 이전에 삽입. `theme-toggle.js`는 이벤트 위임 방식 — masthead와 모바일 사이드바의 `.theme-toggle` 버튼 모두 처리.
