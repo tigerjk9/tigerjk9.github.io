@@ -1,0 +1,41 @@
+name: Weekly Digest
+
+on:
+  schedule:
+    # 매주 일요일 20:00 KST (11:00 UTC)
+    - cron: "0 11 * * 0"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Seoul
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install google-generativeai
+
+      - name: Generate digest
+        run: python scripts/weekly_digest.py --no-push
+
+      - name: Commit and push
+        run: |
+          git config user.name "digest-bot"
+          git config user.email "actions@github.com"
+          git add _posts/
+          if git diff --cached --quiet; then
+            echo "변경 없음 (3편 미만 스킵 등) — 커밋 생략"
+          else
+            git commit -m "add: $(date +%F) 주간 다이제스트 (자동)"
+            git push
+          fi

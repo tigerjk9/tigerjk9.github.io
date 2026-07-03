@@ -2,19 +2,22 @@
 """
 build_research_db.py — 논문리뷰 포스트를 리서치 허브용 구조화 JSON으로 변환한다.
 
-대상: _posts/*.md 중 '리뷰어의 ADD' 헤딩을 가진 포스트 (고정 6섹션 논문리뷰).
-출력: assets/research-db.json
+대상 (2계층):
+  structured — '리뷰어의 ADD' 헤딩 보유 고정 6섹션 논문리뷰 (/paper 출력)
+  article    — 그 외 '논문리뷰' 태그 포스트 (/edit-paper 등 자유 구조)
+출력: assets/research-db.json — sections는 [{key, label, body}] 배열 (두 계층 공용 스키마)
 
 설계 원칙
 - 섹션은 원자화하지 않고 텍스트 블롭으로 보존 (h2/h3·번호 off-by-one·존칭/단정체 편차 흡수).
-- 섹션 매핑은 번호가 아니라 헤딩 키워드로 (목적/방법/발견/결론/ADD/탐구).
+- structured 매핑은 번호가 아니라 헤딩 키워드로 (목적/방법/발견/결론/ADD/탐구).
+- article은 실제 H2(부족하면 H3) 헤딩 그대로 섹션화. 출처 헤딩은 섹션에서 제외.
 - 출처 포맷 6종(## 출처 · _**출처:**_ · **출처**: · ### APA · 📚 등) 유연 추출 후 arXiv/DOI 정규식.
-- 요약은 연구목적 첫 문장에서 추출 (생성·환각 금지).
+- 요약은 본문 첫 문장에서 추출 (생성·환각 금지).
 
 실행:  py scripts/build_research_db.py        # assets/research-db.json 생성
        py scripts/build_research_db.py --dry-run   # 리포트만, 파일 미기록
 
-/paper 등 논문리뷰 포스트를 새로 올릴 때마다 재실행해 JSON을 갱신·커밋한다.
+논문리뷰 포스트를 새로 올릴 때마다 재실행해 JSON을 갱신·커밋한다 (이후 build_embeddings.py).
 """
 from __future__ import annotations
 
@@ -34,8 +37,16 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POSTS_DIR = os.path.join(ROOT, "_posts")
 OUT_PATH = os.path.join(ROOT, "assets", "research-db.json")
 
-# '리뷰어의 ADD' 헤딩으로 논문리뷰 포스트를 식별
+# '리뷰어의 ADD' 헤딩 → structured / '논문리뷰' 태그 → article
 ADD_MARKER = "리뷰어의 ADD"
+PAPER_TAG = "논문리뷰"
+
+SEC_LABELS = {
+    "purpose": "연구 목적", "method": "연구 방법", "findings": "주요 발견",
+    "implications": "결론 및 시사점", "add_one": "리뷰어의 ADD +", "questions": "탐구 질문",
+}
+ARTICLE_MAX_SECTIONS = 10
+SOURCE_HEADING_RE = re.compile(r"출처|APA|references", re.IGNORECASE)
 
 FM_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 
@@ -252,27 +263,68 @@ def first_body_image(body):
     return m.group(1) if m else None
 
 
-def process(path):
-    text = read(path)
-    if ADD_MARKER not in text:
-        return None, []
-    fm, body = parse_front_matter(text)
-    warns = []
-    if fm is None:
-        return None, ["front matter 파싱 실패: %s" % os.path.basename(path)]
-
+def parse_structured(body, base, warns):
+    """고정 6섹션 논문리뷰 → 표준 키 섹션 배열."""
     level = detect_level(body)
-    sections_raw = split_sections(body, level)
     mapped = {}
-    for heading, content in sections_raw:
+    for heading, content in split_sections(body, level):
         key = classify(heading)
         if key and key not in mapped:
             mapped[key] = clean_text(content)
+    for req in ("purpose", "findings", "implications", "add_one"):
+        if not mapped.get(req):
+            warns.append("[%s] 섹션 누락/빈값: %s" % (base, req))
+    sections = [{"key": k, "label": SEC_LABELS[k], "body": mapped[k]}
+                for k in ("purpose", "method", "findings", "implications", "add_one", "questions")
+                if mapped.get(k)]
+    summary_src = mapped.get("purpose") or mapped.get("findings", "")
+    return sections, summary_src
+
+
+def parse_article(body, base, warns):
+    """자유 구조 논문리뷰(/edit-paper 등) → 실제 헤딩 그대로 섹션 배열."""
+    raw = split_sections(body, 2)
+    if len(raw) < 2:
+        raw = split_sections(body, 3)
+    sections = []
+    for heading, content in raw:
+        if SOURCE_HEADING_RE.search(heading):
+            continue  # 출처는 extract_source가 별도 처리
+        text = clean_text(content)
+        if not text:
+            continue
+        sections.append({"key": "s%d" % len(sections),
+                         "label": strip_markdown(heading)[:80], "body": text})
+        if len(sections) >= ARTICLE_MAX_SECTIONS:
+            break
+    # 요약: 첫 헤딩 앞 도입부 우선, 없으면 첫 섹션
+    first_head = re.search(r"^#{2,3}(?!#)[ \t]", body, re.MULTILINE)
+    intro = clean_text(body[:first_head.start()]) if first_head else ""
+    summary_src = intro or (sections[0]["body"] if sections else "")
+    if not sections:
+        warns.append("[%s] article 섹션 추출 실패" % base)
+    return sections, summary_src
+
+
+def process(path):
+    text = read(path)
+    fm, body = parse_front_matter(text)
+    warns = []
+    if fm is None:
+        return None, []
+    is_structured = ADD_MARKER in text
+    if not is_structured and PAPER_TAG not in (fm.get("tags") or []):
+        return None, []  # 대상 아님
 
     base = os.path.basename(path)
-    for req in ("purpose", "findings", "implications", "add_one"):
-        if req not in mapped or not mapped[req]:
-            warns.append("[%s] 섹션 누락/빈값: %s" % (base, req))
+    if is_structured:
+        sections, summary_src = parse_structured(body, base, warns)
+        fmt = "structured"
+    else:
+        sections, summary_src = parse_article(body, base, warns)
+        fmt = "article"
+        if not sections:
+            return None, warns
 
     src = extract_source(body)
     if not src["citation"]:
@@ -289,15 +341,9 @@ def process(path):
         "categories": fm.get("categories", []),
         "tags": fm.get("tags", []),
         "teaser": teaser,
-        "summary": make_summary(mapped.get("purpose") or mapped.get("findings", "")),
-        "sections": {
-            "purpose": mapped.get("purpose", ""),
-            "method": mapped.get("method", ""),
-            "findings": mapped.get("findings", ""),
-            "implications": mapped.get("implications", ""),
-            "add_one": mapped.get("add_one", ""),
-            "questions": mapped.get("questions", ""),
-        },
+        "format": fmt,
+        "summary": make_summary(summary_src),
+        "sections": sections,
         "source": src,
     }
     if not record["url"]:
@@ -346,22 +392,31 @@ def main():
     print("=" * 56)
     print("리서치 DB 빌드 리포트")
     print("=" * 56)
-    print("논문리뷰 포스트: %d편" % len(records))
+    n_struct = sum(1 for r in records if r["format"] == "structured")
+    n_art = len(records) - n_struct
+    print("논문리뷰 포스트: %d편 (structured %d + article %d)"
+          % (len(records), n_struct, n_art))
     fill = {k: 0 for k in ("purpose", "method", "findings", "implications", "add_one", "questions")}
     arxiv_n = doi_n = cite_n = 0
+    sec_total = 0
     for r in records:
-        for k in fill:
-            if r["sections"][k]:
-                fill[k] += 1
+        sec_total += len(r["sections"])
+        if r["format"] == "structured":
+            keys = {s["key"] for s in r["sections"]}
+            for k in fill:
+                if k in keys:
+                    fill[k] += 1
         if r["source"]["arxiv_id"]:
             arxiv_n += 1
         if r["source"]["doi"]:
             doi_n += 1
         if r["source"]["citation"]:
             cite_n += 1
-    print("섹션 채움률:")
+    print("structured 섹션 채움률 (/%d):" % max(n_struct, 1))
     for k in ("purpose", "method", "findings", "implications", "add_one", "questions"):
-        print("  - %-13s %3d/%d" % (k, fill[k], len(records)))
+        print("  - %-13s %3d" % (k, fill[k]))
+    print("전체 섹션 수: %d (article 평균 %.1f)"
+          % (sec_total, (sec_total - n_struct * 6) / max(n_art, 1)))
     print("출처: citation %d / arXiv %d / DOI %d" % (cite_n, arxiv_n, doi_n))
     print("고유 태그: %d개, 연도: %s" % (len(tag_freq), ", ".join(years)))
     if all_warns:

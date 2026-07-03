@@ -143,6 +143,8 @@ def sanitize(text: str) -> str:
     text = re.sub(r"^```(?:markdown)?\s*\n", "", text)
     text = re.sub(r"\n```\s*$", "", text)
     text = re.sub(r"^\*\s+", "- ", text, flags=re.MULTILINE)  # 불릿 컨벤션 통일
+    # 콜론 헤딩(S1) 자동 교정: '### 제목: 부제' → '### 제목, 부제' (자동 실행 대비)
+    text = re.sub(r"^(#{2,3}\s+[^:\n]+):\s+", r"\1, ", text, flags=re.MULTILINE)
     return text.strip()
 
 

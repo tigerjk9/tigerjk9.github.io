@@ -69,19 +69,22 @@ def text_hash(s: str) -> str:
 
 
 def build_chunks(db: dict) -> "list[dict]":
-    """포스트 → 청크 목록. overview + 6섹션."""
+    """포스트 → 청크 목록. overview + 섹션 배열(구조화/아티클 공용).
+
+    청크 텍스트는 "[제목] <섹션key>\\n<본문>" — key를 쓰는 이유는 기존 structured
+    청크의 텍스트 해시를 보존해 증분 재사용을 극대화하기 위함.
+    """
     chunks = []
     for p in db["posts"]:
         overview = "제목: %s\n태그: %s\n요약: %s" % (
             p["title"], ", ".join(p.get("tags", [])), p.get("summary", ""))
         chunks.append({"id": p["id"], "sec": "overview",
                        "text": overview[:CHUNK_CHAR_LIMIT]})
-        for sec, body in p.get("sections", {}).items():
-            if not body:
+        for s in p.get("sections", []):
+            if not s.get("body"):
                 continue
-            # 검색 문맥 보강: 제목을 앞에 붙여 섹션 단독 청크의 주제 정보 유지
-            text = "[%s] %s\n%s" % (p["title"], sec, body)
-            chunks.append({"id": p["id"], "sec": sec,
+            text = "[%s] %s\n%s" % (p["title"], s["key"], s["body"])
+            chunks.append({"id": p["id"], "sec": s["key"],
                            "text": text[:CHUNK_CHAR_LIMIT]})
     return chunks
 

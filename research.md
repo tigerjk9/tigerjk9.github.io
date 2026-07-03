@@ -48,29 +48,29 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
   }
 
   /* ── Hero ── */
-  .rh-hero { margin-bottom: 1.4em; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .rh-hero-text { flex: 1 1 30em; }
-  .rh-hero h1 {
+  #rh-app .rh-hero { margin-bottom: 1.4em; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  #rh-app .rh-hero-text { flex: 1 1 30em; }
+  #rh-app .rh-hero h1 {
     font-size: 1.9rem; font-weight: 800; margin: 0 0 0.3em;
     letter-spacing: -0.01em; line-height: 1.25; color: var(--rh-text);
   }
-  .rh-sub { font-size: 0.98rem; color: var(--rh-muted); margin: 0; line-height: 1.6; max-width: 44em; }
-  .rh-sub b { color: var(--rh-accent); font-weight: 700; }
-  .rh-ask-cta {
+  #rh-app .rh-sub { font-size: 0.98rem; color: var(--rh-muted); margin: 0; line-height: 1.6; max-width: 44em; }
+  #rh-app .rh-sub b { color: var(--rh-accent); font-weight: 700; }
+  #rh-app .rh-ask-cta {
     display: none; align-items: center; gap: 7px; align-self: center;
     background: var(--rh-accent); color: var(--rh-accent-ink);
     font-size: 0.9rem; font-weight: 700; padding: 0.65em 1.1em;
     border-radius: 10px; text-decoration: none; white-space: nowrap;
     transition: filter .16s;
   }
-  .rh-ask-cta:hover { filter: brightness(1.08); color: var(--rh-accent-ink); }
+  #rh-app .rh-ask-cta:hover { filter: brightness(1.08); color: var(--rh-accent-ink); }
 
   /* ── Toolbar ── */
-  .rh-toolbar {
+  #rh-app .rh-toolbar {
     display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
     margin: 1.4em 0 0.9em;
   }
-  .rh-search-wrap { position: relative; flex: 1 1 240px; min-width: 180px; }
+  #rh-app .rh-search-wrap { position: relative; flex: 1 1 240px; min-width: 180px; }
   #rh-search {
     width: 100%; box-sizing: border-box;
     background: var(--rh-card); border: 1px solid var(--rh-border-strong);
@@ -80,7 +80,7 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
   }
   #rh-search::placeholder { color: var(--rh-faint); }
   #rh-search:focus { border-color: var(--rh-accent); box-shadow: 0 0 0 3px var(--rh-accent-soft); }
-  .rh-search-ico {
+  #rh-app .rh-search-ico {
     position: absolute; left: 0.75em; top: 50%; transform: translateY(-50%);
     color: var(--rh-faint); pointer-events: none; font-size: 0.95rem;
   }
@@ -95,12 +95,12 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
   #rh-ai-toggle.on {
     background: var(--rh-accent); color: var(--rh-accent-ink); border-color: var(--rh-accent);
   }
-  .rh-ai-note {
+  #rh-app .rh-ai-note {
     display: none; font-size: 0.8rem; color: var(--rh-accent);
     margin: 0.2em 0 0; align-items: center; gap: 6px;
   }
-  .rh-ai-note.show { display: flex; }
-  .rh-ai-spin {
+  #rh-app .rh-ai-note.show { display: flex; }
+  #rh-app .rh-ai-spin {
     width: 12px; height: 12px; border: 2px solid var(--rh-accent-soft);
     border-top-color: var(--rh-accent); border-radius: 50%;
     animation: rh-spin 0.8s linear infinite; display: inline-block;
@@ -112,36 +112,36 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
     padding: 0.62em 0.7em; outline: none; cursor: pointer;
   }
   #rh-sort:focus { border-color: var(--rh-accent); }
-  .rh-years { display: inline-flex; gap: 4px; background: var(--rh-chip); padding: 3px; border-radius: 9px; }
-  .rh-year-btn {
+  #rh-app .rh-years { display: inline-flex; gap: 4px; background: var(--rh-chip); padding: 3px; border-radius: 9px; }
+  #rh-app .rh-year-btn {
     background: none; border: none; color: var(--rh-muted);
     font-size: 0.85rem; padding: 0.4em 0.8em; border-radius: 7px; cursor: pointer;
     transition: all .15s; font-family: inherit;
   }
-  .rh-year-btn:hover { color: var(--rh-text); }
-  .rh-year-btn.active { background: var(--rh-accent); color: var(--rh-accent-ink); font-weight: 600; }
+  #rh-app .rh-year-btn:hover { color: var(--rh-text); }
+  #rh-app .rh-year-btn.active { background: var(--rh-accent); color: var(--rh-accent-ink); font-weight: 600; }
 
   /* ── Tag bar ── */
-  .rh-tagbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.6em; align-items: center; }
-  .rh-tag-btn {
+  #rh-app .rh-tagbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.6em; align-items: center; }
+  #rh-app .rh-tag-btn {
     background: var(--rh-chip); border: 1px solid transparent;
     color: var(--rh-muted); font-size: 0.82rem; padding: 0.32em 0.7em;
     border-radius: 999px; cursor: pointer; transition: all .15s;
     font-family: inherit; white-space: nowrap;
   }
-  .rh-tag-btn:hover { color: var(--rh-text); border-color: var(--rh-border-strong); }
-  .rh-tag-btn.active {
+  #rh-app .rh-tag-btn:hover { color: var(--rh-text); border-color: var(--rh-border-strong); }
+  #rh-app .rh-tag-btn.active {
     background: var(--rh-accent); color: var(--rh-accent-ink);
     border-color: var(--rh-accent); font-weight: 600;
   }
-  .rh-tag-btn .rh-tag-n { opacity: 0.6; font-size: 0.88em; margin-left: 3px; }
-  .rh-tag-more {
+  #rh-app .rh-tag-btn .rh-tag-n { opacity: 0.6; font-size: 0.88em; margin-left: 3px; }
+  #rh-app .rh-tag-more {
     background: none; border: none; color: var(--rh-accent);
     font-size: 0.82rem; cursor: pointer; padding: 0.32em 0.5em; font-family: inherit;
   }
 
   /* ── Status row ── */
-  .rh-status {
+  #rh-app .rh-status {
     display: flex; align-items: center; gap: 12px;
     margin: 0.4em 0 1.1em; font-size: 0.88rem; color: var(--rh-muted);
     border-top: 1px solid var(--rh-border); padding-top: 0.9em;
@@ -155,108 +155,114 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
   #rh-clear:hover { color: var(--rh-text); border-color: var(--rh-accent); }
 
   /* ── Grid ── */
-  .rh-grid {
+  #rh-app .rh-grid {
     display: grid; gap: 14px;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
-  .rh-card {
+  #rh-app .rh-card {
     background: var(--rh-card); border: 1px solid var(--rh-border);
     border-radius: 13px; overflow: hidden; transition: border-color .18s, box-shadow .18s, transform .18s;
     display: flex; flex-direction: column;
   }
-  .rh-card:hover { border-color: var(--rh-border-strong); box-shadow: var(--rh-shadow); }
-  .rh-card--open { border-color: var(--rh-accent-line); box-shadow: var(--rh-shadow); }
+  #rh-app .rh-card:hover { border-color: var(--rh-border-strong); box-shadow: var(--rh-shadow); }
+  #rh-app .rh-card--open { border-color: var(--rh-accent-line); box-shadow: var(--rh-shadow); }
 
-  .rh-card-head { padding: 15px 16px; cursor: pointer; }
-  .rh-card-head:focus-visible { outline: 2px solid var(--rh-accent); outline-offset: -2px; }
-  .rh-card-meta {
+  #rh-app .rh-card-head { padding: 15px 16px; cursor: pointer; }
+  #rh-app .rh-card-head:focus-visible { outline: 2px solid var(--rh-accent); outline-offset: -2px; }
+  #rh-app .rh-card-meta {
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
     font-size: 0.74rem; color: var(--rh-faint); margin-bottom: 7px;
   }
-  .rh-card-date { font-variant-numeric: tabular-nums; }
-  .rh-card-src {
+  #rh-app .rh-card-date { font-variant-numeric: tabular-nums; }
+  #rh-app .rh-card-src {
     font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em;
     padding: 1px 6px; border-radius: 4px;
     background: var(--rh-accent-soft); color: var(--rh-accent);
   }
-  .rh-card-title {
+  #rh-app .rh-card-fmt {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em;
+    padding: 1px 6px; border-radius: 4px; margin-left: 4px;
+    background: var(--rh-chip); color: var(--rh-faint);
+    border: 1px solid var(--rh-border);
+  }
+  #rh-app .rh-card-title {
     font-size: 1.02rem; font-weight: 700; line-height: 1.4; margin: 0 0 8px;
     color: var(--rh-text); letter-spacing: -0.005em;
   }
-  .rh-card-summary {
+  #rh-app .rh-card-summary {
     font-size: 0.87rem; color: var(--rh-muted); line-height: 1.62; margin: 0 0 11px;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .rh-card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .rh-mini-tag {
+  #rh-app .rh-card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  #rh-app .rh-mini-tag {
     font-size: 0.72rem; color: var(--rh-faint);
     background: var(--rh-chip); padding: 1px 8px; border-radius: 999px;
     cursor: pointer; transition: color .15s;
   }
-  .rh-mini-tag:hover { color: var(--rh-accent); }
-  .rh-mini-tag.on { color: var(--rh-accent); font-weight: 600; }
-  .rh-card-expand {
+  #rh-app .rh-mini-tag:hover { color: var(--rh-accent); }
+  #rh-app .rh-mini-tag.on { color: var(--rh-accent); font-weight: 600; }
+  #rh-app .rh-card-expand {
     margin-top: 11px; font-size: 0.8rem; color: var(--rh-accent);
     display: inline-flex; align-items: center; gap: 4px; font-weight: 600;
   }
-  .rh-card-expand .rh-chev { transition: transform .2s; display: inline-block; }
-  .rh-card--open .rh-chev { transform: rotate(180deg); }
+  #rh-app .rh-card-expand .rh-chev { transition: transform .2s; display: inline-block; }
+  #rh-app .rh-card--open .rh-chev { transform: rotate(180deg); }
 
   /* ── Card body (detail) ── */
-  .rh-card-body { display: none; padding: 0 16px 16px; }
-  .rh-card--open .rh-card-body { display: block; }
-  .rh-sec { border-top: 1px solid var(--rh-border); padding-top: 13px; margin-top: 13px; }
-  .rh-sec:first-child { border-top: none; padding-top: 4px; margin-top: 0; }
-  .rh-sec-label {
+  #rh-app .rh-card-body { display: none; padding: 0 16px 16px; }
+  #rh-app .rh-card--open .rh-card-body { display: block; }
+  #rh-app .rh-sec { border-top: 1px solid var(--rh-border); padding-top: 13px; margin-top: 13px; }
+  #rh-app .rh-sec:first-child { border-top: none; padding-top: 4px; margin-top: 0; }
+  #rh-app .rh-sec-label {
     font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
     color: var(--rh-accent); text-transform: uppercase; margin: 0 0 7px;
   }
-  .rh-sec-body { font-size: 0.87rem; color: var(--rh-text); line-height: 1.7; }
-  .rh-sec-body p { margin: 0 0 0.6em; }
-  .rh-sec-body ul { margin: 0.2em 0 0.7em; padding-left: 1.2em; }
-  .rh-sec-body li { margin-bottom: 0.4em; }
-  .rh-sec-body strong { color: var(--rh-text); font-weight: 700; }
-  .rh-sec-body .rh-sub-h { font-size: 0.85rem; font-weight: 700; color: var(--rh-text); margin: 0.7em 0 0.3em; }
-  .rh-sec-body .rh-quote {
+  #rh-app .rh-sec-body { font-size: 0.87rem; color: var(--rh-text); line-height: 1.7; }
+  #rh-app .rh-sec-body p { margin: 0 0 0.6em; }
+  #rh-app .rh-sec-body ul { margin: 0.2em 0 0.7em; padding-left: 1.2em; }
+  #rh-app .rh-sec-body li { margin-bottom: 0.4em; }
+  #rh-app .rh-sec-body strong { color: var(--rh-text); font-weight: 700; }
+  #rh-app .rh-sec-body .rh-sub-h { font-size: 0.85rem; font-weight: 700; color: var(--rh-text); margin: 0.7em 0 0.3em; }
+  #rh-app .rh-sec-body .rh-quote {
     border-left: 2px solid var(--rh-accent-line); padding-left: 0.8em;
     color: var(--rh-muted); font-style: italic; margin: 0 0 0.6em;
   }
-  .rh-sec-body a { color: var(--rh-accent); text-decoration: underline; }
-  .rh-tbl-wrap { overflow-x: auto; margin: 0.4em 0 0.8em; -webkit-overflow-scrolling: touch; }
-  .rh-tbl { border-collapse: collapse; font-size: 0.8rem; min-width: 100%; }
-  .rh-tbl th, .rh-tbl td {
+  #rh-app .rh-sec-body a { color: var(--rh-accent); text-decoration: underline; }
+  #rh-app .rh-tbl-wrap { overflow-x: auto; margin: 0.4em 0 0.8em; -webkit-overflow-scrolling: touch; }
+  #rh-app .rh-tbl { border-collapse: collapse; font-size: 0.8rem; min-width: 100%; }
+  #rh-app .rh-tbl th, #rh-app .rh-tbl td {
     border: 1px solid var(--rh-border); padding: 6px 10px; text-align: left;
     vertical-align: top; line-height: 1.5;
   }
-  .rh-tbl th { background: var(--rh-accent-soft); color: var(--rh-text); font-weight: 700; white-space: nowrap; }
-  .rh-tbl td { color: var(--rh-muted); min-width: 7em; }
+  #rh-app .rh-tbl th { background: var(--rh-accent-soft); color: var(--rh-text); font-weight: 700; white-space: nowrap; }
+  #rh-app .rh-tbl td { color: var(--rh-muted); min-width: 7em; }
 
-  .rh-source { background: var(--rh-panel); border-radius: 9px; padding: 11px 13px; margin-top: 14px; }
-  .rh-source-cite { font-size: 0.8rem; color: var(--rh-muted); line-height: 1.55; margin: 0 0 9px; white-space: pre-line; }
-  .rh-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-  .rh-btn {
+  #rh-app .rh-source { background: var(--rh-panel); border-radius: 9px; padding: 11px 13px; margin-top: 14px; }
+  #rh-app .rh-source-cite { font-size: 0.8rem; color: var(--rh-muted); line-height: 1.55; margin: 0 0 9px; white-space: pre-line; }
+  #rh-app .rh-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  #rh-app .rh-btn {
     display: inline-flex; align-items: center; gap: 5px;
     font-size: 0.82rem; font-weight: 600; padding: 0.45em 0.9em; border-radius: 8px;
     text-decoration: none; transition: all .16s; cursor: pointer; border: 1px solid transparent;
   }
-  .rh-btn-primary { background: var(--rh-accent); color: var(--rh-accent-ink); }
-  .rh-btn-primary:hover { filter: brightness(1.08); }
-  .rh-btn-ghost { background: none; border-color: var(--rh-border-strong); color: var(--rh-muted); }
-  .rh-btn-ghost:hover { color: var(--rh-text); border-color: var(--rh-accent); }
+  #rh-app .rh-btn-primary { background: var(--rh-accent); color: var(--rh-accent-ink); }
+  #rh-app .rh-btn-primary:hover { filter: brightness(1.08); }
+  #rh-app .rh-btn-ghost { background: none; border-color: var(--rh-border-strong); color: var(--rh-muted); }
+  #rh-app .rh-btn-ghost:hover { color: var(--rh-text); border-color: var(--rh-accent); }
 
   /* ── Empty / loading ── */
-  .rh-empty, .rh-loading { text-align: center; color: var(--rh-faint); padding: 3.5em 1em; font-size: 0.95rem; }
+  #rh-app .rh-empty, #rh-app .rh-loading { text-align: center; color: var(--rh-faint); padding: 3.5em 1em; font-size: 0.95rem; }
 
   /* ── Mobile ── */
   @media (max-width: 600px) {
     #rh-app { padding: 1.1em 1em 3em; }
-    .rh-hero h1 { font-size: 1.5rem; }
-    .rh-grid { grid-template-columns: 1fr; }
-    .rh-toolbar { gap: 8px; }
-    .rh-search-wrap { flex-basis: 100%; }
+    #rh-app .rh-hero h1 { font-size: 1.5rem; }
+    #rh-app .rh-grid { grid-template-columns: 1fr; }
+    #rh-app .rh-toolbar { gap: 8px; }
+    #rh-app .rh-search-wrap { flex-basis: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .rh-card, .rh-tag-btn, .rh-year-btn, .rh-btn, .rh-chev { transition: none; }
+    #rh-app .rh-card, #rh-app .rh-tag-btn, #rh-app .rh-year-btn, #rh-app .rh-btn, #rh-app .rh-chev { transition: none; }
   }
 </style>
 
@@ -264,7 +270,7 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
   <header class="rh-hero">
     <div class="rh-hero-text">
       <h1>AI · 교육 리서치 허브</h1>
-      <p class="rh-sub">AI와 교육을 다룬 논문리뷰 <b id="rh-total">…</b>편을 한곳에 모았다. 태그·연도·키워드로 걸러 <b>주요 발견</b>과 <b>교육적 시사점</b>을 원문까지 가지 않고 바로 읽는다.</p>
+      <p class="rh-sub">AI와 교육을 다룬 논문 리뷰·아티클 <b id="rh-total">…</b>편을 한곳에 모았다. 태그·연도·키워드로 걸러 <b>주요 발견</b>과 <b>교육적 시사점</b>을 원문까지 가지 않고 바로 읽는다.</p>
     </div>
     <a class="rh-ask-cta" id="rh-ask-cta" href="/ask/">&#128172; AI에게 묻기</a>
   </header>
@@ -384,23 +390,14 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
     return out.join('');
   }
 
-  var SECTIONS = [
-    ['purpose', '연구 목적'],
-    ['method', '연구 방법'],
-    ['findings', '주요 발견'],
-    ['implications', '결론 및 시사점'],
-    ['add_one', '리뷰어의 ADD +'],
-    ['questions', '탐구 질문']
-  ];
-
+  // sections는 [{key, label, body}] 배열 — structured(고정 6섹션)와 article(자유 헤딩) 공용
   function buildDetail(post) {
     var html = '';
-    for (var i = 0; i < SECTIONS.length; i++) {
-      var key = SECTIONS[i][0], label = SECTIONS[i][1];
-      var body = post.sections[key];
-      if (!body) continue;
-      html += '<div class="rh-sec"><p class="rh-sec-label">' + esc(label) +
-        '</p><div class="rh-sec-body">' + mdLite(body) + '</div></div>';
+    var secs = post.sections || [];
+    for (var i = 0; i < secs.length; i++) {
+      if (!secs[i].body) continue;
+      html += '<div class="rh-sec"><p class="rh-sec-label">' + esc(secs[i].label) +
+        '</p><div class="rh-sec-body">' + mdLite(secs[i].body) + '</div></div>';
     }
     var src = post.source || {};
     var srcInner = '';
@@ -430,6 +427,7 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
     var s = post.source || {};
     if (s.arxiv_id) srcBadge = '<span class="rh-card-src">arXiv</span>';
     else if (s.doi) srcBadge = '<span class="rh-card-src">DOI</span>';
+    if (post.format === 'article') srcBadge += '<span class="rh-card-fmt">아티클</span>';
 
     var cats = (post.categories || []).slice(0, 2).join(' · ');
     var tagsHtml = (post.tags || []).slice(0, 5).map(function (t) {
@@ -482,7 +480,8 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
     });
 
     rec.search = (post.title + ' ' + post.summary + ' ' + (post.tags || []).join(' ') + ' ' +
-      (post.sections.findings || '') + ' ' + (post.sections.implications || '')).toLowerCase();
+      (post.sections || []).map(function (s) { return s.label + ' ' + s.body; }).join(' ')
+    ).toLowerCase();
     return rec;
   }
 

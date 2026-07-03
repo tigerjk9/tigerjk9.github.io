@@ -2,11 +2,12 @@
 // RAG: 쿼리 임베딩 → 청크 코사인 top-k → 논문리뷰 근거로 Gemini가 인용 답변 생성.
 import { applyCors, rateLimit, loadData, embedQuery, retrieve, generate } from '../lib/store.js';
 
-const SEC_LABEL = {
-  overview: '개요', purpose: '연구 목적', method: '연구 방법',
-  findings: '주요 발견', implications: '결론 및 시사점',
-  add_one: '리뷰어 관점', questions: '탐구 질문',
-};
+// sections는 [{key, label, body}] 배열 (structured 6키 + article 자유 헤딩 공용)
+function secOf(post, key) {
+  if (key === 'overview') return { label: '개요', body: post.summary || '' };
+  const s = (post.sections || []).find((x) => x.key === key);
+  return s ? { label: s.label, body: s.body } : { label: key, body: '' };
+}
 // gemini-embedding 유사도 분포: 무관 질의도 top1 0.5~0.6이 나온다 (실측: 김치찌개 0.52, 주식 0.60,
 // 관련 질의 0.79). 절대 컷 + top1 게이트 이중 방어.
 const MIN_SIM = 0.6;         // 개별 근거 최소 유사도
@@ -17,8 +18,9 @@ function buildPrompt(q, history, sources) {
   const ctx = sources.map((s, i) => {
     const n = i + 1;
     const secs = s.secs.map((x) => {
-      const body = (s.post.sections[x.sec] || s.post.summary || '').slice(0, CTX_CHAR_PER_SEC);
-      return `(${SEC_LABEL[x.sec] || x.sec})\n${body}`;
+      const sec = secOf(s.post, x.sec);
+      const body = (sec.body || s.post.summary || '').slice(0, CTX_CHAR_PER_SEC);
+      return `(${sec.label})\n${body}`;
     }).join('\n');
     return `[${n}] ${s.post.title} (${s.post.date})\n${secs}`;
   }).join('\n\n---\n\n');
@@ -38,7 +40,7 @@ ${q}
 ## 답변 규칙
 - 반드시 위 근거 자료의 내용만 사용해 답한다. 근거에 없는 내용은 지어내지 않는다.
 - 근거 자료가 질문 주제와 관련이 있으면 적극적으로 종합해 답한다. 질문 문구와 완전히 일치하지 않아도 관련 발견을 연결해 실질적인 답을 준다. "직접 다룬 논문리뷰가 없다"는 답변은 근거가 정말 무관할 때만 한다.
-- 근거를 사용한 문장 끝에 [1], [2] 형식으로 출처 번호를 붙인다.
+- 출처 번호 [1], [2]는 단락(또는 불릿)당 한 번, 해당 단락의 끝에만 붙인다. 문장마다 붙이지 않는다 — 인용 표시가 많으면 본문 가독성이 무너진다.
 - 간결한 존댓말(합니다체)로, 300~700자 내외. 필요하면 불릿(-)을 쓴다.
 - 수치·연구 결과는 정확히 인용한다. 과장·일반화하지 않는다. 연구들이 상반된 결과를 보이면 그 조건 차이를 밝힌다.
 - 마크다운은 **볼드**와 불릿(-)만 사용한다. 헤딩(#)은 쓰지 않는다.`;
@@ -75,7 +77,7 @@ export default async function handler(req, res) {
         url: s.post.url,
         date: s.post.date,
         sim: Math.round(s.sim * 100) / 100,
-        secs: s.secs.map((x) => SEC_LABEL[x.sec] || x.sec),
+        secs: s.secs.map((x) => secOf(s.post, x.sec).label),
       })),
     });
   } catch (e) {

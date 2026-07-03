@@ -2,7 +2,7 @@
 layout: default
 title: "AI에게 묻기"
 permalink: /ask/
-description: "AI·교육 논문리뷰 100여 편을 근거로 답하는 리서치 어시스턴트. 질문하면 관련 연구의 발견과 시사점을 출처와 함께 알려준다."
+description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하는 리서치 어시스턴트. 질문하면 관련 연구의 발견과 시사점을 출처와 함께 알려준다."
 ---
 
 <style>
@@ -43,72 +43,72 @@ description: "AI·교육 논문리뷰 100여 편을 근거로 답하는 리서�
     --ak-shadow: 0 6px 20px rgba(30,40,60,0.09);
   }
 
-  .ak-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 0.4em; }
-  .ak-head h1 { font-size: 1.55rem; font-weight: 800; margin: 0; letter-spacing: -0.01em; color: var(--ak-text); }
-  .ak-back { font-size: 0.85rem; color: var(--ak-accent); text-decoration: none; white-space: nowrap; }
-  .ak-back:hover { text-decoration: underline; color: var(--ak-accent); }
-  .ak-desc { font-size: 0.9rem; color: var(--ak-muted); line-height: 1.6; margin: 0 0 1.1em; }
-  .ak-desc b { color: var(--ak-accent); font-weight: 700; }
+  #ask-app .ak-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 0.4em; }
+  #ask-app .ak-head h1 { font-size: 1.55rem; font-weight: 800; margin: 0; letter-spacing: -0.01em; color: var(--ak-text); }
+  #ask-app .ak-back { font-size: 0.85rem; color: var(--ak-accent); text-decoration: none; white-space: nowrap; }
+  #ask-app .ak-back:hover { text-decoration: underline; color: var(--ak-accent); }
+  #ask-app .ak-desc { font-size: 0.9rem; color: var(--ak-muted); line-height: 1.6; margin: 0 0 1.1em; }
+  #ask-app .ak-desc b { color: var(--ak-accent); font-weight: 700; }
 
   /* ── 대화 영역 ── */
   #ak-thread { flex: 1; display: flex; flex-direction: column; gap: 14px; margin-bottom: 1em; }
-  .ak-msg { max-width: 92%; line-height: 1.7; font-size: 0.93rem; }
-  .ak-msg-user {
+  #ask-app .ak-msg { max-width: 92%; line-height: 1.7; font-size: 0.93rem; }
+  #ask-app .ak-msg-user {
     align-self: flex-end; background: var(--ak-user-bubble);
     border-radius: 14px 14px 3px 14px; padding: 10px 15px; color: var(--ak-text);
     white-space: pre-wrap; word-break: break-word;
   }
-  .ak-msg-bot { align-self: flex-start; width: 100%; }
-  .ak-bot-body {
+  #ask-app .ak-msg-bot { align-self: flex-start; width: 100%; }
+  #ask-app .ak-bot-body {
     background: var(--ak-card); border: 1px solid var(--ak-border);
     border-radius: 3px 14px 14px 14px; padding: 13px 16px; color: var(--ak-text);
   }
-  .ak-bot-body p { margin: 0 0 0.65em; }
-  .ak-bot-body p:last-child { margin-bottom: 0; }
-  .ak-bot-body ul { margin: 0.2em 0 0.7em; padding-left: 1.2em; }
-  .ak-bot-body li { margin-bottom: 0.35em; }
-  .ak-bot-body strong { font-weight: 700; }
-  .ak-cite {
+  #ask-app .ak-bot-body p { margin: 0 0 0.65em; }
+  #ask-app .ak-bot-body p:last-child { margin-bottom: 0; }
+  #ask-app .ak-bot-body ul { margin: 0.2em 0 0.7em; padding-left: 1.2em; }
+  #ask-app .ak-bot-body li { margin-bottom: 0.35em; }
+  #ask-app .ak-bot-body strong { font-weight: 700; }
+  #ask-app .ak-cite {
     font-size: 0.72em; font-weight: 700; color: var(--ak-accent);
     text-decoration: none; vertical-align: super; margin: 0 1px;
   }
-  .ak-cite:hover { text-decoration: underline; color: var(--ak-accent); }
+  #ask-app .ak-cite:hover { text-decoration: underline; color: var(--ak-accent); }
 
   /* ── 출처 카드 ── */
-  .ak-sources { display: flex; flex-direction: column; gap: 6px; margin-top: 9px; }
-  .ak-src {
+  #ask-app .ak-sources { display: flex; flex-direction: column; gap: 6px; margin-top: 9px; }
+  #ask-app .ak-src {
     display: flex; gap: 9px; align-items: flex-start;
     background: var(--ak-panel); border: 1px solid var(--ak-border);
     border-radius: 9px; padding: 8px 11px; text-decoration: none;
     transition: border-color .15s;
   }
-  .ak-src:hover { border-color: var(--ak-accent); }
-  .ak-src-n {
+  #ask-app .ak-src:hover { border-color: var(--ak-accent); }
+  #ask-app .ak-src-n {
     flex-shrink: 0; font-size: 0.72rem; font-weight: 700;
     background: var(--ak-accent-soft); color: var(--ak-accent);
     border-radius: 5px; padding: 2px 7px; margin-top: 1px;
   }
-  .ak-src-t { font-size: 0.82rem; color: var(--ak-text); line-height: 1.45; font-weight: 600; }
-  .ak-src-m { display: block; font-size: 0.72rem; color: var(--ak-faint); font-weight: 400; margin-top: 2px; }
+  #ask-app .ak-src-t { font-size: 0.82rem; color: var(--ak-text); line-height: 1.45; font-weight: 600; }
+  #ask-app .ak-src-m { display: block; font-size: 0.72rem; color: var(--ak-faint); font-weight: 400; margin-top: 2px; }
 
   /* ── 로딩 ── */
-  .ak-dots { display: inline-flex; gap: 4px; padding: 12px 16px; }
-  .ak-dots span {
+  #ask-app .ak-dots { display: inline-flex; gap: 4px; padding: 12px 16px; }
+  #ask-app .ak-dots span {
     width: 7px; height: 7px; border-radius: 50%; background: var(--ak-accent);
     animation: ak-bounce 1.2s infinite ease-in-out;
   }
-  .ak-dots span:nth-child(2) { animation-delay: 0.15s; }
-  .ak-dots span:nth-child(3) { animation-delay: 0.3s; }
+  #ask-app .ak-dots span:nth-child(2) { animation-delay: 0.15s; }
+  #ask-app .ak-dots span:nth-child(3) { animation-delay: 0.3s; }
   @keyframes ak-bounce { 0%, 70%, 100% { transform: translateY(0); opacity: .45; } 35% { transform: translateY(-5px); opacity: 1; } }
 
   /* ── 예시 질문 ── */
   #ak-examples { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1em; }
-  .ak-ex {
+  #ask-app .ak-ex {
     background: var(--ak-panel); border: 1px solid var(--ak-border-strong);
     border-radius: 999px; color: var(--ak-muted); font-size: 0.84rem;
     padding: 0.45em 1em; cursor: pointer; font-family: inherit; transition: all .15s;
   }
-  .ak-ex:hover { color: var(--ak-accent); border-color: var(--ak-accent); }
+  #ask-app .ak-ex:hover { color: var(--ak-accent); border-color: var(--ak-accent); }
 
   /* ── 입력바 ── */
   #ak-inputbar {
@@ -132,20 +132,20 @@ description: "AI·교육 논문리뷰 100여 편을 근거로 답하는 리서�
   #ak-send:hover:not(:disabled) { filter: brightness(1.08); }
   #ak-send:disabled { opacity: 0.45; cursor: default; }
 
-  .ak-notice {
+  #ask-app .ak-notice {
     background: var(--ak-panel); border: 1px solid var(--ak-border);
     border-radius: 11px; padding: 14px 16px; font-size: 0.88rem;
     color: var(--ak-muted); line-height: 1.65;
   }
-  .ak-error { color: #e07a6a; font-size: 0.85rem; padding: 8px 2px; }
-  .ak-disclaim { font-size: 0.72rem; color: var(--ak-faint); text-align: center; margin: 0.7em 0 0; }
+  #ask-app .ak-error { color: #e07a6a; font-size: 0.85rem; padding: 8px 2px; }
+  #ask-app .ak-disclaim { font-size: 0.72rem; color: var(--ak-faint); text-align: center; margin: 0.7em 0 0; }
 
   @media (max-width: 600px) {
     #ask-app { padding: 1em 0.9em 1.4em; }
-    .ak-msg { max-width: 100%; }
+    #ask-app .ak-msg { max-width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ak-dots span { animation: none; }
+    #ask-app .ak-dots span { animation: none; }
   }
 </style>
 
@@ -154,7 +154,7 @@ description: "AI·교육 논문리뷰 100여 편을 근거로 답하는 리서�
     <h1>&#128172; AI에게 묻기</h1>
     <a class="ak-back" href="/research/">&#8592; 리서치 허브</a>
   </div>
-  <p class="ak-desc">AI·교육 논문리뷰 <b id="ak-total">100여</b> 편을 근거로 답하는 리서치 어시스턴트. 답변의 모든 주장에는 근거 논문이 붙는다. 근거가 없으면 없다고 말한다.</p>
+  <p class="ak-desc">AI·교육 논문 리뷰·아티클 <b id="ak-total">140여</b> 편을 근거로 답하는 리서치 어시스턴트. 답변의 모든 주장에는 근거 논문이 붙는다. 근거가 없으면 없다고 말한다.</p>
 
   <div id="ak-thread" aria-live="polite"></div>
 
