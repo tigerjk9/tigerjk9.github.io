@@ -323,6 +323,7 @@ py scripts/weekly_digest.py --days 14   # 기간 변경
 
 - **구조**: 도입 2~3문장 → 주제별 `###` 섹션(카테고리 그대로가 아닌 실제 묶임 재구성) → 글마다 `- **[제목](퍼머링크)** — 한 줄 코멘트`(요약 아닌 "왜 읽을 가치") → 마무리 한 단락. 프롬프트 `scripts/digest_prompt_template.txt`
 - **자기 참조 방지**: `주간다이제스트` 태그 포스트는 수집 제외. 3편 미만이면 생성 안 함
+- **링크 환각 자동 차단**: Gemini가 제공된 상대경로에 존재하지 않는 도메인(`https://dotconnector.co`)을 전 링크에 붙인 사례 실측(2026-07-03 첫 실행) → `normalize_links()`가 도메인을 벗겨 상대경로로 정규화하고 대상 포스트 permalink 화이트리스트와 대조해 불일치 시 경고 출력
 - **출력**: `_posts/YYYY-MM-DD-weekly-digest.md`, 카테고리 `[다이제스트]`, 퍼머링크 `/post/weekly-digest-YYYY-MM-DD/`. Gemini 출력은 `TITLE:` 첫 줄 + 본문 형식 — front matter는 스크립트가 직접 조립(환각 여지 축소)
 - **후처리 QA**: 링크가 대상 포스트 permalink와 일치하는지(지어낼 수 있음), S1 금지 표현(`~을 넘어` 등 혼입 확인됨), 포스트 누락, 존칭 어미 — `.claude/commands/digest.md`의 체크리스트 참고
 
