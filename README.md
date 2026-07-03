@@ -247,6 +247,14 @@ python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash
 
 ---
 
+### `/digest` — 주간 다이제스트 자동 생성
+
+지난 7일 포스트를 주제별로 재구성한 다이제스트 포스트를 생성한다. 각 글마다 "왜 읽을 가치가 있는지" 한 줄 코멘트와 퍼머링크를 붙인다.
+
+- **완전 자동**: GitHub Actions cron이 매주 일요일 20:00 KST에 생성·커밋·푸시 (`.github/workflows/weekly-digest.yml`)
+- **안전장치**: Gemini의 링크 도메인 환각 자동 차단(permalink 화이트리스트 대조), 콜론 헤딩 자동 교정, 3편 미만 시 스킵, 다이제스트 자기 참조 방지
+- 수동 실행: `py scripts/weekly_digest.py` (`--dry-run` / `--no-push` / `--days N`)
+
 ### 클로드 AI PPT 자동화 (별도 워크플로우)
 
 Python 스크립트 없이 Claude의 Projects 기능과 디자인 시스템 파일(`getdesign.md`)을 활용해 발표 자료를 자동 생성하는 워크플로우. 위 4개 스크립트와 달리 **Claude 웹/앱 인터페이스 내에서 대화형으로 진행**한다.
@@ -441,6 +449,21 @@ Categories / Tag Cloud 섹션 헤더를 클릭해 접기/펼치기 가능.
 - **엣지**: 포스트-태그 연결
 - **데이터**: 빌드 시 Liquid 템플릿이 포스트 태그를 집계해 JSON으로 출력
 - 구현: `knowledge-graph.md` (layout `wide`), Three.js + D3 + 3d-force-graph (CDN)
+
+### 리서치 허브 (`/research/`)
+
+AI·교육 논문 리뷰·아티클 147편을 태그·연도·키워드로 탐색하는 전용 페이지.
+
+- **데이터**: `scripts/build_research_db.py`가 논문리뷰 포스트를 2계층(고정 6섹션 / 자유 구조)으로 파싱해 `assets/research-db.json` 정적 생성
+- **카드 확장**: 연구 목적·주요 발견·시사점·탐구 질문을 원문 이동 없이 바로 읽음. arXiv/DOI 원문 링크
+- **AI 시맨틱 검색**: 질문하듯 검색하면 의미 유사도로 재정렬 (gemini-embedding int8, 주인장 전용)
+
+### AI에게 묻기 (`/ask/`)
+
+논문 리뷰 코퍼스를 근거로 답하는 RAG 챗봇. API 비용 통제를 위해 접근 키 기반 **주인장 전용**으로 운영.
+
+- **백엔드**: `research-ask/` — 의존성 제로 Vercel 서버리스. 블로그 정적 파일(DB+임베딩 인덱스)을 콜드스타트에 로드해 콘텐츠 갱신 시 재배포 불필요
+- **답변**: 유사도 상위 근거만 사용, `[n]` 인용이 출처 카드로 연결, 근거 없으면 없다고 답함
 
 ---
 

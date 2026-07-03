@@ -75,3 +75,16 @@ python scripts/pdf_to_post.py _papers/paper.pdf --edit
 - `_papers/*.pdf`는 `.gitignore`에 등록되어 저장소에 커밋되지 않습니다.
 - 처리가 완료되면 **원본 PDF는 자동 삭제**되어 로컬 용량이 쌓이지 않습니다.
 - 원본을 보존하려면 `--keep-pdf` 플래그를 사용하세요.
+
+## 실행 후 반드시 — 후처리 QA + 리서치 허브 갱신
+
+1. CLAUDE.md의 공통 후처리 QA 체크리스트(7단계)를 적용하세요 (코드펜스·출처·콜론 헤딩·오타·figure 등).
+2. **front matter `tags:`에 `논문리뷰` 태그가 있는지 확인** — Gemini가 종종 누락합니다. 없으면 추가하세요.
+   리서치 허브(/research/) 편입의 1차 신호입니다. 출처 블록에 arXiv/DOI가 있으면 자동 보완되지만,
+   DOI 없는 논문(학술지 페이지 링크만 있는 경우 등)은 태그가 없으면 허브에서 누락됩니다.
+3. 리서치 허브 데이터 재생성 후 함께 커밋하세요:
+   ```bash
+   py scripts/build_research_db.py
+   py scripts/build_embeddings.py
+   git add assets/research-db.json assets/research-emb-posts.json assets/research-rag-index.json
+   ```

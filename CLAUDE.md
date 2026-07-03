@@ -84,6 +84,9 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 본문 복사 + 링크 복사 버튼 | `assets/js/post-copy.js`, `_layouts/single.html` |
 | 사이드바 섹션 접기/펼치기 | `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html` |
 | 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
+| 리서치 허브 (논문 탐색+AI 검색) | `research.md`, `scripts/build_research_db.py`, `scripts/build_embeddings.py`, `assets/research-*.json` |
+| AI에게 묻기 (RAG 챗봇, 주인장 전용) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
+| 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
 
 **다크/라이트 모드**: `html[data-theme="light"]` CSS 레이어 방식. 컴파일된 dark skin 위에 light 오버라이드 덮기. anti-FOUC 인라인 스크립트를 `_includes/head.html` CSS `<link>` 이전에 삽입. `theme-toggle.js`는 이벤트 위임 방식 — masthead와 모바일 사이드바의 `.theme-toggle` 버튼 모두 처리.
 
@@ -553,6 +556,7 @@ Gemini 생성 직후 스크립트가 그대로 commit·push하므로, 생성된 
 5. **오타** — Gemini 특유의 한 글자 누락·중복(`영향을 미 주는가`→`미치는가`, `두 순 개의`→`두 개의`)을 확인.
 6. **출처는 최종 섹션** — 크로스오버 단락·마무리 질문이 `## 출처` 뒤에 배치되는 경우가 있다. 본문을 출처 앞으로 이동해 출처를 맨 끝에 둔다.
 7. **figure 앞뒤 빈 줄** — `[IMAGE:]` 마커가 단락 중간에 빈 줄 없이 삽입되면(`텍스트.\n<figure>…`) kramdown 블록 파싱이 깨진다. `<figure>` 앞뒤에 빈 줄을 보강하고 잘린 단락을 정리한다.
+8. **논문리뷰 태그 확인 (`/edit-paper` 한정)** — Gemini가 front matter `tags:`에 `논문리뷰`를 종종 누락한다. 리서치 허브(/research/) 편입의 1차 신호이므로 없으면 추가한다 (출처 블록 arXiv/DOI가 있으면 자동 보완되지만, DOI 없는 논문은 태그가 없으면 허브에서 누락). 확인 후 `build_research_db.py` → `build_embeddings.py` 재실행·커밋.
 
 **운영 노트**
 
