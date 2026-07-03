@@ -1,10 +1,11 @@
 // POST /api/embed {q} → {vec: float[768]} — 허브 시맨틱 검색용 쿼리 임베딩
 // 문서 벡터는 블로그 정적 파일(research-emb-posts.json)에 있으므로 코사인은 클라이언트가 계산한다.
-import { applyCors, rateLimit, embedQuery } from '../lib/store.js';
+import { applyCors, rateLimit, requireKey, embedQuery } from '../lib/store.js';
 
 export default async function handler(req, res) {
   if (applyCors(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
+  if (requireKey(req, res)) return;
   if (rateLimit(req, res, 10, 1200)) return;
 
   const q = (req.body?.q || '').trim();

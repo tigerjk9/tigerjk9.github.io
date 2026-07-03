@@ -29,9 +29,12 @@ globalThis.fetch = async (url, opts) => {
   return realFetch(url, opts);
 };
 
-// Vercel req/res 모의
+// Vercel req/res 모의 — .env의 ASK_ACCESS_KEY를 자동 첨부 (--no-key로 미인증 시뮬레이션)
+const useKey = !process.argv.includes('--no-key');
 function mockReq(body, method = 'POST') {
-  return { method, headers: { origin: 'https://tigerjk9.github.io', 'x-forwarded-for': '127.0.0.1' }, body };
+  const headers = { origin: 'https://tigerjk9.github.io', 'x-forwarded-for': '127.0.0.1' };
+  if (useKey && process.env.ASK_ACCESS_KEY) headers['x-ask-key'] = process.env.ASK_ACCESS_KEY;
+  return { method, headers, body };
 }
 function mockRes() {
   const res = { _status: 0, _json: null, _headers: {} };

@@ -1,6 +1,6 @@
 // POST /api/ask {q, history?} → {answer, sources[]}
 // RAG: 쿼리 임베딩 → 청크 코사인 top-k → 논문리뷰 근거로 Gemini가 인용 답변 생성.
-import { applyCors, rateLimit, loadData, embedQuery, retrieve, generate } from '../lib/store.js';
+import { applyCors, rateLimit, requireKey, loadData, embedQuery, retrieve, generate } from '../lib/store.js';
 
 // sections는 [{key, label, body}] 배열 (structured 6키 + article 자유 헤딩 공용)
 function secOf(post, key) {
@@ -49,6 +49,7 @@ ${q}
 export default async function handler(req, res) {
   if (applyCors(req, res)) return;
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
+  if (requireKey(req, res)) return;
   if (rateLimit(req, res, 6, 400)) return;
 
   const q = (req.body?.q || '').trim();

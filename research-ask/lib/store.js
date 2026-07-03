@@ -24,13 +24,36 @@ export function applyCors(req, res) {
     res.setHeader('Vary', 'Origin');
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Ask-Key');
   res.setHeader('Access-Control-Max-Age', '86400');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return true; // preflight 종료
   }
   return false;
+}
+
+// ── 접근 키 (주인장 전용 운영) ────────────────────────────────
+// ASK_ACCESS_KEY 미설정이면 공개 모드(하위 호환). 설정 시 embed/ask는 키 필수.
+const ACCESS_KEY = process.env.ASK_ACCESS_KEY || '';
+
+export function keyValid(req) {
+  if (!ACCESS_KEY) return true; // 키 미설정 = 공개 모드
+  const given = String(req.headers['x-ask-key'] || '');
+  if (given.length !== ACCESS_KEY.length) return false;
+  let diff = 0;
+  for (let i = 0; i < ACCESS_KEY.length; i++) diff |= given.charCodeAt(i) ^ ACCESS_KEY.charCodeAt(i);
+  return diff === 0;
+}
+
+export function authRequired() {
+  return Boolean(ACCESS_KEY);
+}
+
+export function requireKey(req, res) {
+  if (keyValid(req)) return false;
+  res.status(401).json({ error: 'unauthorized', message: '접근 키가 필요하다. 이 기능은 블로그 주인장 전용으로 운영 중이다.' });
+  return true;
 }
 
 // ── Rate limit (인스턴스 로컬 — 완화용. 강한 보호가 필요하면 Upstash로 교체) ──

@@ -33,6 +33,7 @@ npx vercel --prod
 | 변수 | 필수 | 설명 |
 |------|------|------|
 | `GEMINI_API_KEY` | O | Google AI Studio 키 |
+| `ASK_ACCESS_KEY` | X | 설정 시 주인장 전용 모드 — embed/ask에 `X-Ask-Key` 헤더 필수. 미설정이면 공개 모드 |
 | `BLOG_ORIGIN` | X | 데이터 원본 (기본 `https://tigerjk9.github.io`) |
 | `GEN_MODEL` | X | 생성 모델 (기본 `gemini-2.5-flash`) |
 | `ALLOWED_ORIGINS` | X | 추가 CORS 오리진 (쉼표 구분) |

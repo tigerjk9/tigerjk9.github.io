@@ -138,6 +138,19 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     color: var(--ak-muted); line-height: 1.65;
   }
   #ask-app .ak-error { color: #e07a6a; font-size: 0.85rem; padding: 8px 2px; }
+  #ask-app .ak-keyform { display: flex; gap: 7px; margin-top: 11px; flex-wrap: wrap; }
+  #ask-app .ak-keyform input {
+    flex: 1 1 180px; background: var(--ak-card); border: 1px solid var(--ak-border-strong);
+    border-radius: 8px; color: var(--ak-text); font-size: 0.88rem;
+    padding: 0.5em 0.8em; outline: none; font-family: inherit;
+  }
+  #ask-app .ak-keyform input:focus { border-color: var(--ak-accent); }
+  #ask-app .ak-keyform button {
+    background: var(--ak-accent); color: var(--ak-accent-ink); border: none;
+    border-radius: 8px; font-size: 0.86rem; font-weight: 700; padding: 0.5em 1em;
+    cursor: pointer; font-family: inherit;
+  }
+  #ask-app .ak-keyerr { color: #e07a6a; font-size: 0.8rem; margin: 6px 0 0; display: none; }
   #ask-app .ak-disclaim { font-size: 0.72rem; color: var(--ak-faint); text-align: center; margin: 0.7em 0 0; }
 
   @media (max-width: 600px) {
@@ -189,6 +202,17 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
 
   var history = [];   // {role: 'user'|'bot', text}
   var busy = false;
+
+  // 주인장 전용 접근 키 (localStorage, 기기당 1회 입력)
+  var KEY_STORE = 'dc_ask_key';
+  function getKey() { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } }
+  function setKey(v) { try { localStorage.setItem(KEY_STORE, v); } catch (e) {} }
+  function keyHeaders(extra) {
+    var h = extra || {};
+    var k = getKey();
+    if (k) h['X-Ask-Key'] = k;
+    return h;
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
@@ -280,7 +304,7 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
 
     fetch(ASK_API + '/api/ask', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: keyHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({
         q: q,
         history: history.slice(-6).map(function (h) { return { role: h.role === 'bot' ? 'model' : 'user', text: h.text.slice(0, 500) }; })
@@ -289,6 +313,11 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
       return r.json().then(function (data) { return { status: r.status, data: data }; });
     }).then(function (res) {
       loader.remove();
+      if (res.status === 401) {
+        try { localStorage.removeItem(KEY_STORE); } catch (e) {}
+        addError('접근 키가 더 이상 유효하지 않다. 페이지를 새로고침해 키를 다시 입력해 달라.');
+        return;
+      }
       if (res.status === 429) {
         addError(res.data.message || '요청이 너무 잦다. 잠시 후 다시 시도해 달라.');
         return;
@@ -334,18 +363,52 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     examplesEl.appendChild(b);
   });
 
-  // 서비스 프로브 — 성공 시 입력 활성화, 실패 시 안내
+  // 서비스 프로브 — 인증되면 채팅 UI, 키 필요하면 잠금 UI, 서비스 없으면 안내
+  function unlockUi(h) {
+    inputbar.hidden = false;
+    disclaim.hidden = false;
+    examplesEl.style.display = '';
+    document.getElementById('ak-total').textContent = h.posts;
+    input.focus();
+  }
+
+  function lockedUi() {
+    examplesEl.style.display = 'none';
+    var n = document.createElement('div');
+    n.className = 'ak-notice';
+    n.innerHTML = '리서치 어시스턴트는 API 비용 문제로 현재 <strong>블로그 주인장 전용</strong>으로 운영 중이다. ' +
+      '방문자는 <a href="/research/">리서치 허브</a>에서 태그·키워드·카드 탐색으로 같은 논문리뷰를 자유롭게 읽을 수 있다.' +
+      '<div class="ak-keyform"><input type="password" id="ak-key-in" placeholder="접근 키" aria-label="접근 키 입력">' +
+      '<button id="ak-key-btn">확인</button></div>' +
+      '<p class="ak-keyerr" id="ak-key-err">키가 일치하지 않는다.</p>';
+    thread.appendChild(n);
+    var keyIn = document.getElementById('ak-key-in');
+    var tryKey = function () {
+      var v = keyIn.value.trim();
+      if (!v) return;
+      setKey(v);
+      fetch(ASK_API + '/api/health', { headers: keyHeaders() })
+        .then(function (r) { return r.json(); })
+        .then(function (h) {
+          if (h && h.authorized) { n.remove(); unlockUi(h); }
+          else {
+            try { localStorage.removeItem(KEY_STORE); } catch (e) {}
+            document.getElementById('ak-key-err').style.display = 'block';
+          }
+        });
+    };
+    document.getElementById('ak-key-btn').addEventListener('click', tryKey);
+    keyIn.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') tryKey(); });
+  }
+
   var ctrl = ('AbortController' in window) ? new AbortController() : null;
   var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 4000) : null;
-  fetch(ASK_API + '/api/health', { signal: ctrl ? ctrl.signal : undefined })
+  fetch(ASK_API + '/api/health', { signal: ctrl ? ctrl.signal : undefined, headers: keyHeaders() })
     .then(function (r) { return r.json(); })
     .then(function (h) {
-      if (h && h.ok && h.hasKey) {
-        inputbar.hidden = false;
-        disclaim.hidden = false;
-        document.getElementById('ak-total').textContent = h.posts;
-        input.focus();
-      } else { throw new Error('not ready'); }
+      if (h && h.ok && h.hasKey && (!h.authRequired || h.authorized)) unlockUi(h);
+      else if (h && h.ok && h.authRequired) lockedUi();
+      else throw new Error('not ready');
     })
     .catch(function () {
       examplesEl.style.display = 'none';
