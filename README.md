@@ -1,488 +1,344 @@
-# tigerjk9.github.io
+<div align="center">
 
-[![Jekyll](https://img.shields.io/badge/jekyll-%3E%3D%203.7-blue.svg)](https://jekyllrb.com/)
-[![GitHub Pages](https://img.shields.io/badge/hosted-GitHub%20Pages-brightgreen.svg)](https://tigerjk9.github.io)
-[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey.svg)](LICENSE)
+# 닷커넥터의 지식과 경험의 발자국
 
-교육, AI, 학습과학을 중심으로 다양한 분야를 넘나드는 개인 블로그.
-[https://tigerjk9.github.io](https://tigerjk9.github.io)
+**교육 · AI · 학습과학을 가로지르는 개인 기술 블로그**
 
-Minimal Mistakes Jekyll 테마(v4.27.3) 기반. 테마 파일을 gem 대신 프로젝트 내 직접 포함.
+논문 한 편, 유튜브 영상 하나, 웹 아티클 한 편을 넣으면 — 한국어 블로그 포스트로 나온다.
+그 위에 논문리뷰를 근거로 대화하는 RAG 챗봇과 의미 기반 리서치 허브를 얹었다.
+
+<br>
+
+[![Live](https://img.shields.io/badge/blog-tigerjk9.github.io-2ec4cc?style=for-the-badge&logo=jekyll&logoColor=white)](https://tigerjk9.github.io) [![Posts](https://img.shields.io/badge/posts-439-4c9aff?style=for-the-badge)](https://tigerjk9.github.io) [![Research](https://img.shields.io/badge/papers-147-8e75b2?style=for-the-badge)](https://tigerjk9.github.io/research/) [![Last commit](https://img.shields.io/github/last-commit/tigerjk9/tigerjk9.github.io?style=for-the-badge&color=555)](https://github.com/tigerjk9/tigerjk9.github.io/commits/main) [![License](https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge)](LICENSE)
+
+<br>
+
+[**블로그**](https://tigerjk9.github.io) · [**리서치 허브**](https://tigerjk9.github.io/research/) · [**AI에게 묻기**](https://tigerjk9.github.io/ask/) · [**지식 그래프**](https://tigerjk9.github.io/knowledge-graph/)
+
+<br>
+
+![Jekyll](https://img.shields.io/badge/Jekyll-CC0000?style=flat-square&logo=jekyll&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![Google Gemini](https://img.shields.io/badge/Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white) ![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222?style=flat-square&logo=githubpages&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white) ![D3.js](https://img.shields.io/badge/D3.js-F9A03C?style=flat-square&logo=d3dotjs&logoColor=white)
+
+</div>
 
 ---
 
-## 자동화 파이프라인
+## 이 저장소는 무엇인가
+
+[Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes) Jekyll 테마(v4.27.3)를 gem이 아니라 **프로젝트 안에 직접 포함**해 자유롭게 개조한 개인 블로그이자, 그 위에 쌓아 올린 **콘텐츠 자동화 파이프라인**의 소스다. GitHub Pages로 호스팅하고, AI 챗봇 백엔드만 Vercel 서버리스로 분리했다.
+
+콘텐츠 생성은 Claude Code 슬래시 커맨드로 호출하는 Python 스크립트가 담당하고, Gemini가 초안을 쓰며, 사람이 후처리 QA를 거쳐 커밋한다.
+
+---
+
+## ✨ 시그니처 기능
+
+| | 기능 | 한 줄 소개 |
+|---|------|-----------|
+| 🔎 | **[리서치 허브](https://tigerjk9.github.io/research/)** | AI·교육 논문리뷰 147편을 태그·연도·키워드로 걸러 발견·시사점까지 카드에서 바로 읽는다. 의미 기반 AI 검색 포함 |
+| 💬 | **[AI에게 묻기](https://tigerjk9.github.io/ask/)** | 논문리뷰 코퍼스를 근거로 답하는 RAG 챗봇. 방문자가 본인 Gemini 키를 넣으면 누구나 대화 가능(BYOK) |
+| 🕸️ | **[지식 그래프](https://tigerjk9.github.io/knowledge-graph/)** | 태그 IDF 가중 엣지 + Louvain 군집을 클라이언트에서 계산하는 D3 포스 그래프 |
+| 🤖 | **자동화 파이프라인** | 논문·영상·웹·연수자료를 한국어 포스트로 바꾸는 스크립트 6종 + 주간 다이제스트 cron |
+
+---
+
+## 🤖 자동화 파이프라인
+
+Claude Code에서 슬래시 커맨드로 호출하면 각 스크립트가 콘텐츠를 추출하고 Gemini로 한국어 포스트를 생성한 뒤 `_posts/`에 저장하고 커밋·푸시한다.
+
+| 커맨드 | 입력 | 출력 | 모델 |
+|--------|------|------|------|
+| `/paraph` | 웹 URL (단일·복수·머지) | 패러프레이즈 포스트 | gemini-2.5-flash |
+| `/video` | YouTube URL (단일·복수) | 영상 요약 포스트 | gemini-2.0-flash |
+| `/paper` | PDF 논문 | 고정 6섹션 논문리뷰 | gemini-2.5-flash |
+| `/yeonsu` | URL·PDF·파일 (복수 통합) | 교원 연수 탐구 에세이 | gemini-2.5-flash |
+| `/edit-*` | 위와 동일 | 주인장 목소리 강화 버전 | 〃 |
+| `/plain-*` | 웹·YouTube | 교육 앵커링 없는 담백한 전달 | 〃 |
+| `/digest` | 지난 7일 포스트 | 주간 다이제스트 (cron 자동) | gemini-2.5-flash |
 
 ### 공통 출력 품질 규칙
 
-4개 스크립트(`/paraph`, `/video`, `/yeonsu`, `/paper`) 모든 Gemini 프롬프트 템플릿에 아래 규칙이 상단 `[문체 절대 규칙]` 블록으로 강제 적용된다.
+모든 Gemini 프롬프트 템플릿 상단에 `[문체 절대 규칙]` 블록으로 강제된다.
 
 | 규칙 | 내용 |
 |------|------|
-| 단정체 강제 | `~이다`, `~한다` (paper는 `~함·~됨` 명사형). `~입니다·~합니다·~됩니다` 전면 금지 |
-| 콜론 헤딩 금지 | `title:` 필드 및 `##` 섹션 제목에 `제목: 부제` 형식 금지. 단일 명사구 또는 질문형으로 |
-| Humanize KR v2.0.0 | `~를 통해`, `~을 넘어`, `혁신적`, 이모지 등 AI 티 표현 즉시 교체. 대명사 강박(`그/그녀`), 이중 조사(`~에서의`), 연결어미 뒤 쉼표 등 v2.0.0 규칙 추가 |
+| **단정체 강제** | `~이다`·`~한다` (paper는 `~함`·`~됨` 명사형). 존칭 어미 전면 금지 |
+| **콜론 헤딩 금지** | `title:` 및 `##` 섹션 제목에 `제목: 부제` 형식 금지 |
+| **Humanize KR v2.0.0** | `~를 통해`·`~을 넘어`·`혁신적`·이모지 등 AI 티 표현 즉시 교체 |
+| **날카로움 + 따뜻함** | 입장 없는 요약·"더 연구가 필요하다"식 마무리 금지, 섹션마다 뾰족한 단언 1개 |
 
-### `/paraph` — 웹 아티클 → 블로그 포스트
+<details>
+<summary><b>/paraph — 웹 아티클 → 포스트 (3모드)</b></summary>
 
-웹 페이지 URL을 주면 내용을 한국어로 패러프레이즈해 Jekyll 포스트를 자동 생성한다.
-**3가지 모드**를 지원한다 — 단일 URL 변환, 복수 URL 통합, 그리고 기존 포스트에 신규 자료를 녹이는 머지 모드(`--into`).
+<br>
 
-```bash
-python scripts/web_to_post.py <URL>                              # 단일 출처 → 신규 포스트
-python scripts/web_to_post.py <URL1> <URL2>                      # 복수 출처 통합 → 신규 포스트 1개
-python scripts/web_to_post.py <URL> --into _posts/YYYY-MM-DD-slug.md  # 기존 포스트에 통합·덮어쓰기
-python scripts/web_to_post.py <URL> --dry-run                    # 파일 저장 없이 출력만
-python scripts/web_to_post.py <URL> --no-push                    # 로컬 저장만
-python scripts/web_to_post.py <URL> --slug my-slug               # 슬러그 직접 지정
-```
-
-Claude Code에서는 `/paraph <URL> [URL2 ...] [--into PATH]` 스킬로 호출한다.
-
-**동작 순서**
-
-1. `.env`에서 `GEMINI_API_KEY` 자동 로드
-2. 각 URL에서 제목·본문 추출 (requests + BeautifulSoup)
-3. 본문 500자 미만이면 Jina Reader(`r.jina.ai`) 폴백 — JS 렌더링 사이트·접근 제한 도메인 대응
-4. 기존 포스트에서 카테고리·태그 수집
-5. 모드별 프롬프트 선택:
-   - 단일: `web_prompt_template.txt` + 랜덤 크로스오버 분야
-   - 복수: `web_multi_prompt_template.txt` + 랜덤 크로스오버 분야
-   - 머지: `web_merge_prompt_template.txt` (기존 크로스오버 분야 보존)
-6. Gemini(`gemini-2.5-flash`)로 한국어 포스트 생성
-7. `_posts/`에 저장(신규) 또는 기존 파일 덮어쓰기(머지) → git commit + push
-
-**포스트 스타일** (`/paraph` 전용)
-
-- **패러프레이즈**: 원문 이해 후 재서술. 번역 금지. 처음부터 새로 쓴다.
-- **복수 URL 통합**: 각 출처의 핵심 논점을 목차식 나열 없이 하나의 흐름으로 재구성
-- **교육 전문가 컨셉**: 전문 용어를 쉽게 풀고, 한국 교육 맥락 예시 추가
-- **크로스오버**: 뜻밖의 분야와 연결하는 마지막 섹션 (신경과학·행동경제학·언어학·복잡계 이론 등 풀)
-- **문체**: `~이다`, `~한다` 단정체
-
-**머지 모드(`--into`) 핵심 원칙**
-
-기존 포스트의 정체성을 보존한 채 신규 자료를 흡수한다. 새 글을 만드는 것이 아니라 정밀 수술이다.
-
-- 기존 `date`·구조·문체·크로스오버 분야 절대 보존 (SEO 슬러그·발행 시각 유지)
-- 신규 자료에서 채굴 우선순위: **수치·통계 → 비유·은유 → 인용·출처 → 사례·실험 → 균형 관점·비판 → 구조적 대안**
-- 새 섹션 신설은 (a) 비판적 균형, (b) 분류 체계 확장, (c) 기존 어디에도 못 들어가는 독자적 관점일 때만 정당
-- 커밋 메시지는 `Update:` 접두어 (신규 모드는 `Add:`)
-
----
-
-### `/video` — YouTube → 블로그 포스트
-
-YouTube URL을 주면 자막을 분석해 Jekyll 포스트를 자동 생성한다.
-**3가지 모드**: 단일 URL 변환, 복수 URL 통합(하나의 포스트로 종합), 영어 자막 우선.
+웹 페이지를 한국어로 **패러프레이즈**(번역 아님)해 포스트를 만든다. 단일 URL, 복수 URL 통합, 기존 포스트에 신규 자료를 녹이는 머지(`--into`) 세 모드.
 
 ```bash
-python scripts/yt_to_post.py <YouTube_URL>                      # 변환 + git push
-python scripts/yt_to_post.py <URL1> <URL2>                      # 복수 영상 통합 → 포스트 1개
-python scripts/yt_to_post.py <YouTube_URL> --dry-run            # 파일 저장 없이 출력만
-python scripts/yt_to_post.py <YouTube_URL> --no-push            # 로컬 저장만
-python scripts/yt_to_post.py <YouTube_URL> --lang en            # 영어 자막 우선
+python scripts/web_to_post.py <URL>                                   # 단일 → 신규 포스트
+python scripts/web_to_post.py <URL1> <URL2>                           # 복수 통합 → 포스트 1개
+python scripts/web_to_post.py <URL> --into _posts/YYYY-MM-DD-slug.md  # 기존 포스트에 통합
+python scripts/web_to_post.py <URL> --dry-run   # 출력만
+python scripts/web_to_post.py <URL> --no-push   # 로컬 저장만
+python scripts/web_to_post.py <URL> --slug SLUG # 슬러그 지정
 ```
 
-Claude Code에서는 `/video <URL> [URL2 ...]` 스킬로 호출한다.
+- 본문 추출은 requests + BeautifulSoup, 500자 미만이면 Jina Reader(`r.jina.ai`) 폴백 (JS 렌더링·접근 제한 대응)
+- Naver 블로그는 `m.blog.naver.com` 자동 변환
+- **머지 모드**: 기존 `date`·구조·문체·크로스오버 분야를 보존한 채 신규 자료에서 수치·비유·인용·사례·균형 관점을 채굴해 흡수. 새 글이 아니라 정밀 수술
+- 마지막에 뜻밖의 분야(신경과학·행동경제학·언어학 등)와 잇는 크로스오버 섹션
 
-**동작 순서**
+</details>
 
-1. `.env`에서 `GEMINI_API_KEY` 자동 로드
-2. `yt-dlp`로 각 영상 메타데이터(제목·채널·업로드 날짜) 수집
-3. 자막 3단계 폴백: `youtube-transcript-api` → `yt-dlp` VTT → 영상 description
-4. 모드별 프롬프트 선택:
-   - 단일: `yt_prompt_template.txt` + 랜덤 크로스오버 분야
-   - 복수: `yt_multi_prompt_template.txt` + 랜덤 크로스오버 분야
-5. Gemini(`gemini-2.0-flash`)로 한국어 포스트 생성 (영문 slug 포함)
-6. `_posts/YYYY-MM-DD-{slug}.md` 저장 → git commit + push
+<details>
+<summary><b>/video — YouTube → 포스트</b></summary>
 
-**포스트 스타일** (`/video` 전용)
+<br>
 
-- **문체**: `~이다`, `~한다` 단정체. 존칭·명사형 어미(`~입니다`, `~함`, `~됨`) 금지
-- **분량**: 자막 내용을 빠짐없이 다룬다. 생략 없음
-- **구조**: 도입부 → 본문(자유 섹션) → 크로스오버 섹션 → 출처
-- **복수 URL 통합**: 각 영상을 순서대로 나열하지 않고 공통 주제·대비 관점·보완 논점을 하나의 흐름으로 재구성
-- **크로스오버**: 실행마다 20개 분야 풀(신경과학·행동경제학·언어학·음악이론·스포츠과학 등)에서 `random.choice()`로 선택 → 본문 끝에 3~5문장으로 짧게 수록
-
----
-
-### `/yeonsu` — 다양한 입력 → 교원 연수 탐구 에세이
-
-YouTube URL, 웹 페이지, PDF 논문, 텍스트 파일을 주면 내용을 분석해 현직 교사를 위한 탐구 에세이 형식의 블로그 포스트를 자동 생성한다.
+자막을 분석해 영상 흐름을 따라가는 포스트를 만든다. 단일·복수(하나로 종합) 모드.
 
 ```bash
-python scripts/lecture_script.py <입력>                          # 변환 + git push
-python scripts/lecture_script.py <입력1> <입력2> ...             # 복수 입력 → 하나의 아티클로 통합
-python scripts/lecture_script.py <URL or 파일> --dry-run         # 파일 저장 없이 출력만
-python scripts/lecture_script.py <URL or 파일> --no-push         # 로컬 저장만
-python scripts/lecture_script.py <URL or 파일> --duration 90     # 강의 시간 지정 (기본 120분)
-python scripts/lecture_script.py <URL or 파일> --level 초급      # 수준 지정 (기본 중급)
+python scripts/yt_to_post.py <URL>              # 변환 + push
+python scripts/yt_to_post.py <URL1> <URL2>      # 복수 통합
+python scripts/yt_to_post.py <URL> --dry-run
+python scripts/yt_to_post.py <URL> --no-push
+python scripts/yt_to_post.py <URL> --lang en    # 영어 자막 우선
 ```
 
-Claude Code에서는 `/yeonsu <입력>` 스킬로 호출한다. 입력값이 확인되면 시간·수준을 묻지 않고 기본값(120분/중급)으로 즉시 실행한다.
-**복수 입력**: 여러 URL/파일을 공백으로 구분하면 모두 추출해 하나의 포스트로 통합 생성한다.
+- 자막 3단계 폴백: `youtube-transcript-api` → `yt-dlp` VTT → 영상 description
+- `--edit` 단일 모드는 OpenCV로 영상 프레임 4장을 추출해 본문에 배치
+- Gemini가 영문 slug를 생성하고, 스크립트가 `date` 연도 변조 버그를 강제 복원
 
-**입력 형식**
+</details>
 
-| 입력 타입 | 감지 조건 | 추출 방법 |
-|-----------|-----------|-----------|
-| YouTube URL | `youtube.com` 또는 `youtu.be` 포함 | youtube-transcript-api → yt-dlp VTT → description |
-| 웹 URL (일반) | `http(s)://`로 시작 | requests + BeautifulSoup → Jina Reader 폴백 |
-| 웹 URL (Naver 블로그) | `blog.naver.com` 포함 | `m.blog.naver.com`으로 자동 변환 후 모바일 UA 추출 |
-| PDF | `.pdf` 확장자 | pdfplumber → PyMuPDF |
-| 기타 파일 | 위 외 모든 경로 | python-docx → 텍스트 읽기 |
+<details>
+<summary><b>/paper — PDF 논문 → 논문리뷰</b></summary>
 
-**동작 순서**
+<br>
 
-1. `.env`에서 `GEMINI_API_KEY` 자동 로드
-2. 입력 타입 자동 감지 → 콘텐츠 추출
-3. `_posts/` 전체에서 키워드 매칭으로 관련 포스트 최대 3개 탐색 → 프롬프트에 포함
-4. 강의 시간에 맞는 챕터 수 자동 계산 (챕터당 평균 45분)
-5. Gemini(`gemini-2.5-flash`)로 탐구 에세이 생성
-6. `_posts/YYYY-MM-DD-{slug}.md` 저장 → git commit + push
-
-**출력 파일**
-
-| 파일 | 위치 | 용도 |
-|------|------|------|
-| `.md` | `_posts/` | 블로그 포스트 (Jekyll) |
-
-**포스트 구조**
-
-본문 챕터 (`## N. 챕터 제목`):
-- **에피그래프** `> *"..."*` — 확인 가능한 인용만 `— 이름` 출처 표기. 불확실하면 경구만. 한국인 학자 이름 날조 금지.
-- **케이스 오프너** — 2~3문장. 교육 현장 구체 상황 + 딜레마 질문으로 끝남. 특정 인물 주인공 금지.
-- **탐구 에세이 본문** — 오프너 질문에서 출발해 개념·이론·연구를 사유의 흐름으로 전개. 최소 800자.
-- **토의 활동** — 전체 문서에서 3~5개만.
-- **핵심 정리** — 챕터 핵심 메시지 한 문장.
-
-마지막 챕터 (갈무리):
-- 앞선 챕터들의 핵심 논점 연결·종합 본문 (최소 400자)
-- **앞으로** — 교실·학교·자기 자신에게 이어갈 방향. 처방이 아닌 가능성으로 서술.
-- **생각할 질문** — 열린 질문 3개. 각 질문은 빈 줄로 구분.
-
-**수준별 작성 방식**
-
-- **초급**: 핵심 개념 2~3개에 집중. 비유·실생활 예시 중심. 전문 용어 필수 풀이.
-- **중급**: 전체 개념 다룸. 심화 적용·비판적 시각. 연구 결과·데이터 직접 인용.
-
-**이미지 삽입 형식**: 포스트에 이미지를 넣을 때는 반드시 `<figure>/<figcaption>` HTML 형식을 사용한다. 마크다운 `![alt](url)` 형식은 캡션이 이미지 옆에 붙으므로 절대 사용하지 않는다.
-
-```html
-<figure>
-<img src="/assets/파일명.png" alt="한국어 설명">
-<figcaption>이미지 아래 캡션.</figcaption>
-</figure>
-```
-
----
-
-### `/paper` — PDF 논문 → 블로그 포스트
-
-`_papers/`에 PDF를 넣고 명령어 한 줄로 한국어 포스트를 자동 생성한다.  
-Claude Code에서는 `/paper <PDF경로>` 스킬로 호출한다.
+`_papers/`에 PDF를 넣고 한 줄로 고정 6섹션 논문리뷰를 만든다.
 
 ```bash
-python scripts/pdf_to_post.py _papers/paper.pdf           # 변환 + git push
+python scripts/pdf_to_post.py _papers/paper.pdf            # 변환 + push
 python scripts/pdf_to_post.py _papers/paper.pdf --dry-run
-python scripts/pdf_to_post.py _papers/paper.pdf --no-push
+python scripts/pdf_to_post.py _papers/paper.pdf --keep-pdf # 원본 보존 (기본은 처리 후 삭제)
 ```
 
-**동작 순서**
+- 구조: 연구 목적 → 방법 → 주요 발견 → 결론 및 시사점 → 리뷰어 ADD One → 탐구 질문 + APA 출처
+- PyMuPDF로 그림 최대 6개 추출 → Gemini가 본문에 배치
+- **arXiv ID / DOI**: PDF 첫 2페이지에서 실제 값을 추출해 ground truth로 주입 (환각 방지). 추출 실패 시 ID 생략
+- 이 출력이 **리서치 허브·AI 챗봇의 데이터 원천**이라, 후처리 QA 끝에 임베딩 재생성 단계가 붙는다
 
-1. `.env`에서 `GEMINI_API_KEY` 자동 로드
-2. PyMuPDF로 300×200px 이상 이미지 최대 6개 추출 → `assets/` 저장
-3. pdfplumber로 텍스트 추출 (최대 100,000자)
-4. Gemini(`gemini-2.5-flash`)로 한국어 포스트 생성 (멀티모달)
-5. `_posts/YYYY-MM-DD-{slug}.md` 저장 → git commit + push
+</details>
 
-**포스트 스타일** (`/paper` 전용)
+<details>
+<summary><b>/yeonsu — 다양한 입력 → 교원 연수 탐구 에세이</b></summary>
 
-- **구조 고정**: 연구 목적 → 연구 방법 → 주요 발견 → 결론 → ADD One → 탐구 질문 + APA 출처
-- **APA 출처**: URL/DOI 미포함 — LLM이 생성하는 링크는 신뢰할 수 없으므로 텍스트만 기재
-- **Figure**: 논문 이미지가 본문 적절한 위치에 자동 삽입됨
+<br>
 
-### `/edit-*` — 블로그 주인장 목소리 강화 편집 커맨드
-
-기존 자동화 커맨드의 **강화 버전**. 필자의 직접 판단·절제된 비관론을 살린 포스트를 생성한다.
-
-| 커맨드 | 기반 스크립트 | 특징 |
-|--------|-------------|------|
-| `/edit-paraph` | `web_to_post.py --edit` | 주인장 목소리 + 다중 이미지 자동 삽입 |
-| `/edit-video` | `yt_to_post.py --edit` | 주인장 목소리 강화 영상 분석 포스트 |
-| `/edit-paper` | `pdf_to_post.py --edit` | 주인장 목소리 강화 논문 리뷰 |
-| `/edit-yeonsu` | `lecture_script.py --edit` | 주인장 목소리 강화 교원 연수 에세이 |
-
-**스타일 차이점 (`/edit-*` vs 기본)**:
-- 필자의 직접 판단과 절제된 비관론이 최소 2곳 드러남
-- 도입부가 질문에 국한되지 않음 — 선언·탄식·일화·역설 등 다양한 첫 문장
-- 크로스오버 섹션이 억지 연결이면 본문에 통합하거나 생략
-- 본문 내 `[IMAGE: query]` 마커로 다중 이미지 자동 삽입 (`/edit-paraph`)
-
----
-
-### `/plain-*` — 담백한 전달 (교육 앵커링 없음)
-
-특정 분야(교육)에 얽매이지 않고 **어떤 주제든 원문에 충실하게** 전달하는 모드. 기존 커맨드가 모두 "교육 전문가" 페르소나로 수렴하던 것과 달리, 주제는 원문이 정한다(기술·경제·문화·과학·스포츠 등).
-
-| 커맨드 | 기반 스크립트 | 특징 |
-|--------|-------------|------|
-| `/plain-paraph` | `web_to_post.py --plain` | 웹 아티클 담백한 전달 (단일·복수 URL) |
-| `/plain-video` | `yt_to_post.py --plain --model gemini-2.5-flash` | YouTube 영상 담백한 전달 |
-
-**스타일 차이점 (`/plain-*` vs 기본·`/edit-*`)**:
-- 페르소나가 "어떤 주제든 명료하게 푸는 블로거" — 교육 렌즈 제거
-- 원문 정보를 정확·빠짐없이 전달, 개인 의견은 절제 (강한 주장보다 정확한 전달 우선)
-- 원문에 없는 사실·수치·인용 날조 금지
-- 크로스오버는 자연스러울 때만, 억지면 생략. 카테고리도 교육에 억지로 넣지 않음
-- 단정체·표 활용·AI 슬롭 금지 규칙은 동일 유지
+YouTube·웹·PDF·텍스트/docx를 받아 현직 교사용 탐구 에세이를 만든다. 복수 입력을 하나로 통합.
 
 ```bash
-python scripts/web_to_post.py <URL> [URL2 ...] --plain
-python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash
+python scripts/lecture_script.py <입력>
+python scripts/lecture_script.py <입력1> <입력2> ...   # 복수 통합
+python scripts/lecture_script.py <입력> --duration 90  # 강의 시간 (기본 120분)
+python scripts/lecture_script.py <입력> --level 초급    # 수준 (기본 중급)
 ```
 
-> 차단된 웹 페이지(403·게이트)는 원문 PDF를 markitdown으로 변환 후 로컬 `.md` 경로를 `--plain`에 넘겨 처리한다.
+- 입력 타입 자동 감지, `_posts/`에서 관련 포스트 3개를 찾아 프롬프트에 포함
+- 챕터: 에피그래프 → 케이스 오프너 → 탐구 에세이 본문 → 토의 활동 → 핵심 정리
+- 이미지는 반드시 `<figure>/<figcaption>` HTML (마크다운 `![]()`는 캡션이 옆에 붙어 금지)
+
+</details>
+
+<details>
+<summary><b>/edit-* · /plain-* — 목소리 변주 모드</b></summary>
+
+<br>
+
+**`/edit-*`** — 필자의 직접 판단과 절제된 비관론을 최소 2곳 살린 강화 버전. 도입부가 질문에 국한되지 않고, 억지 크로스오버는 본문에 통합하거나 생략.
+
+| 커맨드 | 기반 |
+|--------|------|
+| `/edit-paraph` | `web_to_post.py --edit` |
+| `/edit-video` | `yt_to_post.py --edit` |
+| `/edit-paper` | `pdf_to_post.py --edit` |
+| `/edit-yeonsu` | `lecture_script.py --edit` |
+
+**`/plain-*`** — 교육 렌즈를 제거하고 주제를 원문이 정하게 하는 담백한 전달 모드. 원문 정보를 정확·빠짐없이 옮기고 개인 의견은 절제.
+
+```bash
+python scripts/web_to_post.py <URL> --plain
+python scripts/yt_to_post.py <URL> --plain --model gemini-2.5-flash
+```
+
+</details>
+
+<details>
+<summary><b>/digest — 주간 다이제스트 (완전 자동)</b></summary>
+
+<br>
+
+지난 7일 포스트를 주제별로 재구성한 다이제스트를 만든다. GitHub Actions cron이 **매주 일요일 20:00 KST**에 생성·커밋·푸시한다 (`.github/workflows/weekly-digest.yml`).
+
+```bash
+py scripts/weekly_digest.py             # 수동 실행 + push
+py scripts/weekly_digest.py --dry-run   # 출력만
+py scripts/weekly_digest.py --days 14   # 기간 변경
+```
+
+- Gemini의 링크 도메인 환각을 permalink 화이트리스트로 자동 차단
+- 3편 미만이면 생성 안 함, 다이제스트 자기 참조 방지
+
+</details>
 
 ---
 
-### `/digest` — 주간 다이제스트 자동 생성
+## 🧩 커스텀 기능 상세
 
-지난 7일 포스트를 주제별로 재구성한 다이제스트 포스트를 생성한다. 각 글마다 "왜 읽을 가치가 있는지" 한 줄 코멘트와 퍼머링크를 붙인다.
+### 🔎 리서치 허브 — `/research/`
 
-- **완전 자동**: GitHub Actions cron이 매주 일요일 20:00 KST에 생성·커밋·푸시 (`.github/workflows/weekly-digest.yml`)
-- **안전장치**: Gemini의 링크 도메인 환각 자동 차단(permalink 화이트리스트 대조), 콜론 헤딩 자동 교정, 3편 미만 시 스킵, 다이제스트 자기 참조 방지
-- 수동 실행: `py scripts/weekly_digest.py` (`--dry-run` / `--no-push` / `--days N`)
+AI·교육 논문리뷰 **147편**을 태그·연도·키워드로 탐색하는 전용 페이지. 그라디언트 히어로 + 통계 행(논문리뷰·원문 링크·태그·연도 범위) + 카드 인라인 확장 UI.
 
-### 클로드 AI PPT 자동화 (별도 워크플로우)
+- **데이터**: `scripts/build_research_db.py`가 논문리뷰 포스트를 2계층(고정 6섹션 / 자유 구조)으로 파싱해 `assets/research-db.json` 정적 생성
+- **카드 확장**: 연구 목적·주요 발견·시사점·탐구 질문을 원문 이동 없이 읽고 arXiv/DOI 원문으로 바로 이동
+- **AI 시맨틱 검색**: 질문하듯 검색하면 gemini-embedding(int8 양자화) 코사인 유사도로 재정렬
+- **격리**: 사이드바·지식 그래프·검색·카테고리 카운트에 침투 0건
 
-Python 스크립트 없이 Claude의 Projects 기능과 디자인 시스템 파일(`getdesign.md`)을 활용해 발표 자료를 자동 생성하는 워크플로우. 위 4개 스크립트와 달리 **Claude 웹/앱 인터페이스 내에서 대화형으로 진행**한다.
+### 💬 AI에게 묻기 — `/ask/`
 
-**준비 사항**
+논문리뷰 코퍼스를 근거로 답하는 RAG 챗봇. 답변의 모든 주장에 근거 논문이 `[n]` 인용으로 붙고, 근거가 없으면 없다고 답한다.
 
-1. Claude Project 생성 → Project Instructions에 PPT 제작 역할 및 출력 형식 지정
-2. `getdesign.md` (디자인 시스템: 색상 팔레트·타이포그래피·레이아웃 규칙) Project 파일로 업로드
-3. 원하는 주제·대상·분량 프롬프트 입력
+- **백엔드**: `research-ask/` — 의존성 제로 Vercel 서버리스. 블로그 정적 파일(DB + 임베딩 인덱스)을 콜드스타트에 로드·6h 캐시 → **콘텐츠가 늘어도 재배포 불필요**
+- **방문자 BYOK**: 본인 Gemini API 키(Google AI Studio 무료 발급)를 넣으면 누구나 대화 가능. 키는 브라우저에만 저장되고 Google에 직접 검증(서버 미경유), 호출 비용은 방문자 키 부담
+- **주인장 모드**: 접근 키(`ASK_ACCESS_KEY`)로 입장하면 서버 Gemini 키로 동작 (일일 사용량 보호 포함)
+- **유사도 게이트**: 무관 질의(top1 0.5~0.6)를 절대 컷 + top1 게이트로 걸러 생성 호출 없이 차단
 
-**핵심 원칙**
+### 🕸️ 지식 그래프 — `/knowledge-graph/`
 
-- 모든 슬라이드 구조는 `getdesign.md` 기준을 따른다 (컬러·폰트 일관성 보장)
-- 커스터마이징 프롬프트 예시를 Project Instructions에 누적 저장해 재사용
-- Claude Artifacts로 HTML/CSS 슬라이드 초안 → 복사·수정 워크플로우
+포스트를 노드로 하는 D3 v7 2D 포스 그래프. 엣지·군집을 전부 클라이언트에서 계산한다.
+
+- **엣지**: 태그 IDF 가중 + 노드당 top-K(8) 가지치기 (흔한 허브 태그 디스카운트)
+- **군집**: 연결 구조 Louvain 군집 탐지(직접 구현), 자동 라벨은 군집 내 태그빈도 × IDF 상위
+- Liquid 템플릿이 노드만 출력해 페이로드 5MB → 236KB로 경량화
+
+### 🎨 그 외 UI
+
+<details>
+<summary>다크/라이트 토글 · 본문 복사 · 읽기 진행줄 · 모바일 TOC · 조회수 배지 …</summary>
+
+<br>
+
+| 기능 | 구현 |
+|------|------|
+| 다크/라이트 모드 토글 | `theme-toggle.js` — `html[data-theme="light"]` 레이어, FOUC 방지 인라인 스크립트 |
+| 본문 복사 / 링크 복사 | `post-copy.js` — 본문에 `원문링크:` 자동 삽입, 한글 URL 디코딩 |
+| 접이식 사이드바 섹션 | `sidebar-toggle.js` (`initSectionCollapse`) — localStorage 상태 유지 |
+| 읽기 진행 표시줄 | `reading-progress.js` |
+| 모바일 TOC 드로어 | `mobile-toc.js` |
+| 맨 위로 버튼 | `back-to-top.js` |
+| 조회수 카운터 | `myhits.vercel.app` 배지 |
+| 웰빙 코너 | `wellbeing.js` (모듈별 try/catch 격리) |
+
+상단 네비게이션은 `_data/navigation.yml`에서 외부 서비스([쉼표](https://comma-for-wellbeing.vercel.app/) · [기록 대화](https://dotconnector-log.vercel.app/) · [말씀의 길](https://malsseum-ui.vercel.app/))로 직접 연결된다.
+
+> ⚠️ 커스텀 페이지 스타일은 반드시 컨테이너 ID로 스코프한다 — 테마의 `html[data-theme="light"] a` 규칙이 버튼형 앵커를 덮어 파란 배경+파란 글자가 되는 함정이 있다.
+
+</details>
 
 ---
 
-## 강의자료 아카이브 — `/lectures/`
+## 📚 강의자료 아카이브 — `/lectures/`
 
-블로그 본문(`_posts`) 흐름과 분리된 별도 Jekyll collection. 강의 한 건당 허브 1장 + 기능 페이지 N개 + 원본 슬라이드·핸드아웃·OG 커버 한 묶음으로 큐레이션.
+블로그 본문(`_posts`)과 완전히 분리된 별도 Jekyll collection. 강의 한 건당 허브 1장 + 기능 페이지 N개 + 원본 슬라이드·핸드아웃·OG 커버 한 묶음으로 큐레이션한다.
 
 ```
-/lectures/                            아카이브 인덱스 (큐레이션 배지·크레딧 카드)
+/lectures/                            아카이브 인덱스
 /lectures/<slug>/                     강의 허브 (개요·다운로드·기능 트랙)
 /lectures/<slug>/<feature>/           기능 페이지
-/assets/lectures/<slug>/slides.html   원본 풀스크린 (Reveal.js)
-/assets/lectures/<slug>/handout.html  핸드아웃 (A4 HTML)
-/assets/lectures/<slug>/cover.jpg     OG 이미지 (1200×630)
+/assets/lectures/<slug>/slides.html   Reveal.js 풀스크린
+/assets/lectures/<slug>/handout.html  A4 핸드아웃
+/assets/lectures/<slug>/cover.jpg     OG 커버 (1200×630)
 ```
 
-**격리 모드** — `_posts` 사이드바·지식 그래프·검색·카테고리 카운트에 침투 0건.
-
-**메타 분기** — `_data/lectures.yml`의 `curator`+`curation_note` 필드 유무에 따라 카드가 자동 분기.
-- 큐레이션 강의: 앰버 "교육자 큐레이션" 배지 + 원작/큐레이션 2줄 크레딧
-- 직접 제작: 원작자 1줄만
-
-**OG 커버 재생성** — `python scripts/gen_lecture_cover.py` (Pretendard OTF 5종, `.fonts/`는 gitignore — 스크립트 헤더의 다운로드 명령으로 일회성 설치).
-
-**첫 사례**: `claude-code-edu` (Claude Code 실무 활용 — 교육자 워크숍). 원작 황민호(FDE, Kakao AI Studio) → 교육용 큐레이션 김진관(닷커넥터). K-12 교사·연구자 듀얼 트랙으로 22 기능 슬라이드 + 7면 핸드아웃 큐레이션 완료.
+- **격리 모드**: `_posts` 사이드바·지식 그래프·검색·카테고리 카운트에 침투 0건
+- **첫 사례**: `claude-code-edu` — Claude Code 실무 활용 교육자 워크숍. K-12 교사·연구자 듀얼 트랙으로 22개 기능 슬라이드 + 7면 핸드아웃
 
 ---
 
-## 환경 설정
+## ⚙️ 시작하기
 
 ```bash
-# Ruby 의존성 (Jekyll)
+# 1) Ruby 의존성 (Jekyll)
 bundle install
 
-# Python 의존성 (/paper, /video 스크립트 공통)
+# 2) Python 의존성 (자동화 스크립트 공통)
 pip install -r scripts/requirements.txt
 
-# API 키 설정 (.env는 gitignore 등록됨)
+# 3) API 키 (.env는 gitignore)
 cp .env.example .env
-# .env 파일에 GEMINI_API_KEY=AIza... 입력
 ```
 
-**`.env` 형식** — `/paraph`, `/paper`, `/video`, `/yeonsu` 네 스크립트 모두 이 파일에서 자동 로드
+`.env` 형식 — 모든 자동화 스크립트가 여기서 자동 로드:
 
-```
+```dotenv
 GEMINI_API_KEY=AIza...
 PEXELS_API_KEY=...   # 이미지 자동 삽입 (없으면 DuckDuckGo 폴백)
 ```
 
----
-
-## 로컬 개발
+로컬 개발:
 
 ```bash
-bundle exec jekyll serve        # http://localhost:4000
-bundle exec jekyll build        # 사이트 빌드
-bundle exec rake preview        # 테마 테스트 http://localhost:4000/test/
+bundle exec jekyll serve   # http://localhost:4000
+bundle exec jekyll build   # 사이트 빌드
+bundle exec rake preview   # 테마 테스트
 ```
 
 ---
 
-## 프로젝트 구조
+## 🗂️ 프로젝트 구조
 
 ```
-_posts/          # 블로그 포스트 (YYYY-MM-DD-slug.md)
-_papers/         # 논문 PDF 원본 (/paper 스크립트 입력)
-assets/          # 이미지 (flat, 서브디렉토리 없음)
+_posts/            블로그 포스트 (YYYY-MM-DD-slug.md)
+_papers/           논문 PDF 원본 (/paper 입력, gitignore)
+_lectures/         강의자료 collection (격리)
+assets/            이미지 (flat) + research-*.json (허브·챗봇 데이터)
+research-ask/       AI 챗봇 백엔드 (Vercel 서버리스, 의존성 제로)
 scripts/
-  web_to_post.py                # /paraph — 웹 아티클 → 포스트 변환 (단일/복수/머지 3모드)
-  web_prompt_template.txt       # /paraph 단일 URL용 Gemini 프롬프트
-  web_multi_prompt_template.txt # /paraph 복수 URL 통합용 Gemini 프롬프트
-  web_merge_prompt_template.txt # /paraph --into 머지 모드용 Gemini 프롬프트
-  yt_to_post.py                 # /video — YouTube → 포스트 변환 (단일/복수 2모드)
-  yt_prompt_template.txt        # /video 단일 URL용 Gemini 프롬프트
-  yt_multi_prompt_template.txt  # /video 복수 URL 통합용 Gemini 프롬프트
-  pdf_to_post.py                # /paper — PDF → 포스트 변환
-  prompt_template.txt           # /paper Gemini 프롬프트 (URL 미포함 규칙 명시)
-  lecture_script.py             # /yeonsu — 다양한 입력 → 탐구 에세이 변환
-  lecture_prompt_template.txt   # /yeonsu Gemini 프롬프트 (탐구 에세이·케이스 오프너 구조 포함)
-  lecture-script-prd.md         # /yeonsu 설계 PRD
-  image_fetcher.py              # 이미지 검색·삽입 공용 모듈 (OG→Pexels→DDG 우선순위, site-wide 기본 OG 자동 감지·폴백)
-  requirements.txt              # Python 의존성 (duckduckgo-search 포함)
-.claude/
-  commands/
-    paraph.md          # /paraph 슬래시 커맨드 정의
-    video.md           # /video 슬래시 커맨드 정의
-    paper.md           # /paper 슬래시 커맨드 정의
-    yeonsu.md          # /yeonsu 슬래시 커맨드 정의
-    edit-paraph.md     # /edit-paraph 슬래시 커맨드 (주인장 목소리 강화 버전)
-    edit-video.md      # /edit-video 슬래시 커맨드 (주인장 목소리 강화 버전)
-    edit-paper.md      # /edit-paper 슬래시 커맨드 (주인장 목소리 강화 버전)
-    edit-yeonsu.md     # /edit-yeonsu 슬래시 커맨드 (주인장 목소리 강화 버전)
-_config.yml      # 사이트 설정 (timezone: Asia/Seoul 필수)
-_data/
-  navigation.yml # 상단 메뉴
-.env             # API 키 (gitignore, 커밋 금지)
-.env.example     # 키 형식 예시
-docs/            # 테마 원본 문서 (블로그 빌드에서 제외)
+  web_to_post.py            /paraph, /plain-paraph, /edit-paraph
+  yt_to_post.py             /video, /plain-video, /edit-video
+  pdf_to_post.py            /paper, /edit-paper
+  lecture_script.py         /yeonsu, /edit-yeonsu
+  weekly_digest.py          /digest (+ GitHub Actions cron)
+  build_research_db.py      논문리뷰 → research-db.json
+  build_embeddings.py       임베딩 인덱스 (허브 검색 + RAG)
+  image_fetcher.py          이미지 공용 모듈 (OG→Pexels→DDG)
+  *_prompt_template.txt     각 스킬별 Gemini 프롬프트
+.claude/commands/  슬래시 커맨드 정의
+.github/workflows/ CI + 주간 다이제스트 cron
+_config.yml        사이트 설정 (timezone: Asia/Seoul 필수)
+_data/navigation.yml  상단 메뉴
 ```
 
 ---
 
-## 커스텀 UI 기능
-
-### 다크 / 라이트 모드 토글
-
-마스트헤드 우측 버튼으로 전환. `localStorage`에 선택값을 저장해 새로고침 후에도 유지된다.  
-FOUC 방지 인라인 스크립트를 CSS `<link>` 앞에 삽입해 깜빡임 없이 테마가 적용된다.
-
-- 구현: `assets/js/theme-toggle.js`, `_includes/masthead.html`, `_includes/head.html`
-- CSS: `html[data-theme="light"]` 레이어로 컴파일된 dark skin 위에 덮어씀
-
-### 본문 복사 / 링크 복사 버튼
-
-포스트 상단에 **본문 복사**·**링크 복사** 버튼 나란히 표시 (모바일에서는 세로 스택).
-
-- **본문 복사**: 포스트 전체 텍스트 + `원문링크: <URL>` 자동 삽입 (`## 출처` 섹션 앞, 없으면 맨 끝)
-- **링크 복사**: 현재 포스트 URL만 단독 복사. 한글 경로도 `decodeURIComponent`로 깨짐 없이 복사
-- URL은 `decodeURIComponent(window.location.href)` 사용 — 퍼센트 인코딩 없는 한글 URL 그대로
-- 구현: `assets/js/post-copy.js`, `_layouts/single.html`
-
-### 접이식 사이드바 섹션
-
-Categories / Tag Cloud 섹션 헤더를 클릭해 접기/펼치기 가능.  
-상태는 `localStorage`에 저장되어 재방문 시 유지된다.
-
-- 구현: `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html`
-- 각 섹션 콘텐츠 높이: `calc(50vh - 175px)` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남
-
-### 상단 네비게이션 외부 서비스
-
-`_data/navigation.yml`에서 외부 사이트를 직접 연결한다.
-
-| 메뉴 | 링크 |
-|------|------|
-| 쉼표 | https://comma-for-wellbeing.vercel.app/ |
-| 기록 대화 | https://dotconnector-log.vercel.app/ |
-| 말씀의 길 | https://malsseum-ui.vercel.app/ |
-
-`/wellbeing/` 경로는 meta refresh + JS로 쉼표 사이트로 즉시 리디렉트된다.
-
-### 푸터
-
-로고 이미지 + 저작권 텍스트만 표시. `max-width:400px; margin:0 auto; text-align:center` 인라인 style 컨테이너로 가운데 정렬.
-
-- 구현: `_includes/footer.html` (인라인 style 직접 지정 — CSS 클래스가 인라인 style에 특이성이 밀려 무효화되므로)
-
-### 읽기 진행 표시줄
-
-포스트 페이지 최상단에 가로 진행 표시줄이 나타나 스크롤 위치를 실시간으로 표시한다.
-
-- 구현: `assets/js/reading-progress.js`, `_layouts/single.html`
-
-### 모바일 TOC 드로어
-
-모바일에서 포스트 목차(TOC)를 하단에서 올라오는 드로어 형태로 표시한다.
-
-- 구현: `assets/js/mobile-toc.js`
-
-### 맨 위로 버튼
-
-스크롤을 내리면 우측 하단에 페이지 최상단 이동 버튼이 나타난다.
-
-- 구현: `assets/js/back-to-top.js`
-
-### 조회수 카운터
-
-포스트마다 `myhits.vercel.app` 기반 배지 형태로 조회수를 표시한다.
-
-- 구현: `_layouts/single.html` (포스트 본문 위 `<img>` 배지)
-
-### 3D 지식 그래프 (`/knowledge-graph/`)
-
-포스트·태그 관계를 인터랙티브 3D 그래프로 시각화하는 전용 페이지.
-
-- **노드**: 포스트, 태그 (크기·색으로 구분)
-- **엣지**: 포스트-태그 연결
-- **데이터**: 빌드 시 Liquid 템플릿이 포스트 태그를 집계해 JSON으로 출력
-- 구현: `knowledge-graph.md` (layout `wide`), Three.js + D3 + 3d-force-graph (CDN)
-
-### 리서치 허브 (`/research/`)
-
-AI·교육 논문 리뷰·아티클 147편을 태그·연도·키워드로 탐색하는 전용 페이지.
-
-- **데이터**: `scripts/build_research_db.py`가 논문리뷰 포스트를 2계층(고정 6섹션 / 자유 구조)으로 파싱해 `assets/research-db.json` 정적 생성
-- **카드 확장**: 연구 목적·주요 발견·시사점·탐구 질문을 원문 이동 없이 바로 읽음. arXiv/DOI 원문 링크
-- **AI 시맨틱 검색**: 질문하듯 검색하면 의미 유사도로 재정렬 (gemini-embedding int8, 주인장 전용)
-
-### AI에게 묻기 (`/ask/`)
-
-논문 리뷰 코퍼스를 근거로 답하는 RAG 챗봇. API 비용 통제를 위해 접근 키 기반 **주인장 전용**으로 운영.
-
-- **백엔드**: `research-ask/` — 의존성 제로 Vercel 서버리스. 블로그 정적 파일(DB+임베딩 인덱스)을 콜드스타트에 로드해 콘텐츠 갱신 시 재배포 불필요
-- **답변**: 유사도 상위 근거만 사용, `[n]` 인용이 출처 카드로 연결, 근거 없으면 없다고 답함
-
----
-
-## 주요 설정값
+## 🔧 주요 설정값
 
 | 항목 | 값 |
 |------|----|
 | 테마 | Minimal Mistakes v4.27.3 (dark skin) |
-| locale | ko-KR |
-| timezone | Asia/Seoul |
+| locale / timezone | ko-KR / Asia/Seoul |
+| 검색 | Lunr.js |
 | 댓글 | Giscus (기본 비활성) |
 | 분석 | Google Analytics `G-Y8TNBPZQEZ` |
-| 검색 | Lunr.js |
-| head_scripts | `<head>`에 추가 스크립트 삽입 지원 |
-| turbo | `false` — Turbo 비활성화 |
-| enable_copy_code_button | `true` — 코드 블록 복사 버튼 활성화 |
+| 호스팅 | GitHub Pages (블로그) + Vercel (AI 챗봇 백엔드) |
 
 ---
 
-## 베이스 테마
+<div align="center">
 
-이 블로그는 [Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes) (Michael Rose, MIT License)를 기반으로 한다.
+이 블로그는 [**Minimal Mistakes**](https://github.com/mmistakes/minimal-mistakes) (Michael Rose, MIT License)를 기반으로 한다.
+
+**[김진관 · 닷커넥터](https://tigerjk9.github.io)** 가 만들고 기록한다.
+
+</div>
