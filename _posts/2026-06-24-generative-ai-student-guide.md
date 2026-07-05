@@ -181,3 +181,4 @@ permalink: /post/generative-ai-student-guide/
 
 ## 출처
 - 생성형 인공지능 활용 안내서 (학생용)
+- [학생을 위한 생성형 AI 활용 안내서](https://tigerjk9.github.io/Student-Guide-to-Using-Generative-AI/)
