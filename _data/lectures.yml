@@ -16,6 +16,24 @@
     - 교원연수
     - 워크숍
 
+- slug: vibe-coding-git-github
+  title: "바이브 코딩을 위한 Git & GitHub 완벽 가이드"
+  subtitle: "PRD·프롬프트·컨텍스트 + Git·GitHub 실습 · 90분"
+  audience: "교사·입문자"
+  duration_min: 90
+  slide_count: 40
+  chapter_count: 2
+  date: "2026-05-09"
+  hub_url: /lectures/vibe-coding-git-github/
+  thumbnail: /assets/lectures/vibe-coding-git-github/cover.jpg
+  author: "김진관 (대전둔천초등학교)"
+  tags:
+    - 바이브코딩
+    - Git
+    - GitHub
+    - 프롬프트 엔지니어링
+    - 교원연수
+
 - slug: digital-analog-class
   title: "똑똑한 AI 디지털 도구 활용으로 살아나는 아날로그 수업"
   subtitle: "디지털 기반 아날로그 수업 · HTHT · 3챕터"
