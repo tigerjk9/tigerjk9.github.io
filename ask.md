@@ -409,7 +409,7 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     inputbar.hidden = false;
     disclaim.hidden = false;
     examplesEl.style.display = '';
-    document.getElementById('ak-total').textContent = h.posts;
+    if (h && h.posts) document.getElementById('ak-total').textContent = h.posts;
     // 방문자 본인 키로 이용 중이면 표시 + 키 삭제 수단 제공
     if (getGKey() && !document.getElementById('ak-gkey-bar')) {
       var bar = document.createElement('p');
@@ -512,8 +512,10 @@ description: "AI·교육 논문 리뷰·아티클 140여 편을 근거로 답하
     gIn.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') tryGKey(); });
   }
 
+  // /api/health는 콜드스타트 시 데이터 로드 때문에 4초 이상 걸릴 수 있다 (실측 4.4초) —
+  // 타임아웃이 이보다 짧으면 응답 전에 abort돼 "아직 준비되지 않았다"는 오탐 메시지가 뜬다.
   var ctrl = ('AbortController' in window) ? new AbortController() : null;
-  var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 4000) : null;
+  var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 9000) : null;
   fetch(ASK_API + '/api/health', { signal: ctrl ? ctrl.signal : undefined, headers: keyHeaders() })
     .then(function (r) { return r.json(); })
     .then(function (h) {

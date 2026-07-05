@@ -97,6 +97,7 @@ export function rateLimit(req, res, perMin = 8, perDayInstance = 800, skipDaily 
 
 // ── 데이터 로드 (모듈 스코프 캐시) ─────────────────────────────
 let cache = null; // { loadedAt, posts: Map<id, post>, chunks: [{id, sec, vec}] }
+let warming = null; // 진행 중인 loadData() — 콜드스타트 때 동시 요청이 중복 로드하지 않게 dedupe
 
 function dequantize(b64, scale) {
   const bin = Buffer.from(b64, 'base64');
@@ -110,22 +111,47 @@ function dequantize(b64, scale) {
 
 export async function loadData() {
   if (cache && Date.now() - cache.loadedAt < DATA_TTL_MS) return cache;
-  const [dbRes, idxRes] = await Promise.all([
-    fetch(`${BLOG_ORIGIN}/assets/research-db.json`),
-    fetch(`${BLOG_ORIGIN}/assets/research-rag-index.json`),
-  ]);
-  if (!dbRes.ok || !idxRes.ok) {
-    throw new Error(`데이터 로드 실패: db=${dbRes.status} idx=${idxRes.status}`);
+  if (warming) return warming;
+  warming = (async () => {
+    const [dbRes, idxRes] = await Promise.all([
+      fetch(`${BLOG_ORIGIN}/assets/research-db.json`),
+      fetch(`${BLOG_ORIGIN}/assets/research-rag-index.json`),
+    ]);
+    if (!dbRes.ok || !idxRes.ok) {
+      throw new Error(`데이터 로드 실패: db=${dbRes.status} idx=${idxRes.status}`);
+    }
+    const db = await dbRes.json();
+    const idx = await idxRes.json();
+    const posts = new Map();
+    for (const p of db.posts) posts.set(p.id, p);
+    const chunks = idx.chunks.map((c) => ({
+      id: c.id, sec: c.sec, vec: dequantize(c.v, c.s),
+    }));
+    cache = { loadedAt: Date.now(), posts, chunks, dim: idx.dim };
+    return cache;
+  })();
+  try {
+    return await warming;
+  } finally {
+    warming = null;
   }
-  const db = await dbRes.json();
-  const idx = await idxRes.json();
-  const posts = new Map();
-  for (const p of db.posts) posts.set(p.id, p);
-  const chunks = idx.chunks.map((c) => ({
-    id: c.id, sec: c.sec, vec: dequantize(c.v, c.s),
-  }));
-  cache = { loadedAt: Date.now(), posts, chunks, dim: idx.dim };
-  return cache;
+}
+
+// health 프로브 전용 — RAG 청크(벡터 디코딩 포함)까지 기다리지 않고 포스트 수만 가볍게 반환한다.
+// 캐시가 이미 따뜻하면 즉시 반환. 차가우면 research-db.json 하나만 받아 카운트를 내고,
+// 무거운 전체 로드(loadData)는 백그라운드로 미룬다 — 프로브가 4초+ 걸려 프론트 타임아웃과
+// 경합하는 바람에 AI 버튼이 안 뜨는 것처럼 보이던 문제의 원인이었다.
+export async function getPostsCount() {
+  if (cache && Date.now() - cache.loadedAt < DATA_TTL_MS) return cache.posts.size;
+  loadData().catch(() => {}); // 백그라운드 워밍 — 이 응답은 기다리지 않는다
+  try {
+    const r = await fetch(`${BLOG_ORIGIN}/assets/research-db.json`);
+    if (!r.ok) return null;
+    const db = await r.json();
+    return db.posts.length;
+  } catch (e) {
+    return null;
+  }
 }
 
 // ── 벡터 연산 ─────────────────────────────────────────────────
