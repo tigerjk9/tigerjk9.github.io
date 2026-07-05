@@ -75,6 +75,64 @@
   margin: 1.5em 0;
 }
 
+// 슬라이드 갤러리 (슬라이드형 강의)
+.slide-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin: 1.2em 0 2em;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid rgba(127, 127, 127, 0.25);
+    background: #111;
+    cursor: zoom-in;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  img:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); }
+}
+
+// 라이트박스 오버레이 (JS 주입 DOM)
+.slb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 3vw;
+
+  &.open { display: flex; }
+  img { max-width: 94vw; max-height: 90vh; border-radius: 6px; box-shadow: 0 10px 44px rgba(0, 0, 0, 0.6); }
+}
+.slb-close, .slb-prev, .slb-next {
+  position: fixed;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border: none;
+  cursor: pointer;
+  font-size: 1.7rem;
+  line-height: 1;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover { background: rgba(255, 255, 255, 0.28); }
+}
+.slb-close { top: 3vh; right: 3vw; }
+.slb-prev  { left: 2vw; top: 50%; transform: translateY(-50%); }
+.slb-next  { right: 2vw; top: 50%; transform: translateY(-50%); }
+.slb-counter { position: fixed; bottom: 3vh; left: 50%; transform: translateX(-50%); color: #ddd; font-size: 0.9rem; letter-spacing: 0.5px; }
+
+@media (max-width: 600px) {
+  .slb-prev, .slb-next { width: 40px; height: 40px; font-size: 1.4rem; }
+}
+
 // 다크 모드 대응
 html[data-theme="light"] {
   .lecture-feature .slide-excerpt { background: #fafafa; }

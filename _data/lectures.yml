@@ -15,3 +15,21 @@
     - AI 활용
     - 교원연수
     - 워크숍
+
+- slug: digital-analog-class
+  title: "똑똑한 AI 디지털 도구 활용으로 살아나는 아날로그 수업"
+  subtitle: "디지털 기반 아날로그 수업 · HTHT · 3챕터"
+  audience: "교사·교육자"
+  duration_min: 370
+  slide_count: 102
+  chapter_count: 3
+  date: "2026-06-27"
+  hub_url: /lectures/digital-analog-class/
+  thumbnail: /assets/lectures/digital-analog-class/cover.jpg
+  author: "김진관 (대전둔천초등학교)"
+  tags:
+    - AI 디지털 수업
+    - 아날로그 수업
+    - HTHT
+    - 과정중심평가
+    - 교원연수
