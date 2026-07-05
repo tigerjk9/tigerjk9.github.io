@@ -51,3 +51,21 @@
     - HTHT
     - 과정중심평가
     - 교원연수
+
+- slug: deep-learning-cnn-basics
+  title: "딥러닝의 기초 — 합성곱 신경망을 중심으로"
+  subtitle: "AI 개요 · 인공신경망 · CNN · 튜닝 · 89쪽 교재"
+  audience: "정보 교과 교사·입문자"
+  duration_min: 180
+  slide_count: 89
+  chapter_count: 4
+  date: "2026-07-05"
+  hub_url: /lectures/deep-learning-cnn-basics/
+  thumbnail: /assets/lectures/deep-learning-cnn-basics/cover.jpg
+  author: "김진관"
+  tags:
+    - 딥러닝
+    - CNN
+    - 합성곱신경망
+    - 인공신경망
+    - 교원연수
