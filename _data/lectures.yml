@@ -87,3 +87,18 @@
     - 딥러닝
     - XOR
     - 교원연수
+
+- slug: ax-education-handbook
+  title: "공교육 AX 전략 핸드북"
+  subtitle: "정책 → 전략 → 현장 → 윤리 → 에이전트 · 7개 장"
+  audience: "교사·학교 관리자·교육정책 담당자"
+  chapter_count: 7
+  date: "2026-07-05"
+  hub_url: https://tigerjk9.github.io/Educational-handout/
+  author: "김진관 (닷커넥터)"
+  tags:
+    - AX
+    - 인공지능전환
+    - 교육정책
+    - 학교혁신
+    - AI에이전트

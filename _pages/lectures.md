@@ -16,7 +16,7 @@ toc: false
     {% if lecture.curator %}<span class="card-badge">교육자 큐레이션</span>{% endif %}
     <div class="card-title">{{ lecture.title }}</div>
     <div class="card-meta">
-      <span>{{ lecture.audience }}</span> · <span>{{ lecture.duration_min }}분</span>{% if lecture.feature_count %} · <span>{{ lecture.feature_count }}개 기능</span>{% elsif lecture.slide_count %} · <span>{{ lecture.slide_count }}장 · {{ lecture.chapter_count }}챕터</span>{% endif %}
+      <span>{{ lecture.audience }}</span>{% if lecture.duration_min %} · <span>{{ lecture.duration_min }}분</span>{% endif %}{% if lecture.feature_count %} · <span>{{ lecture.feature_count }}개 기능</span>{% elsif lecture.slide_count %} · <span>{{ lecture.slide_count }}장 · {{ lecture.chapter_count }}챕터</span>{% elsif lecture.chapter_count %} · <span>{{ lecture.chapter_count }}개 장</span>{% endif %}
     </div>
     {% if lecture.curator %}
     <div class="card-credit">
