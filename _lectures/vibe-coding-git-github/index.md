@@ -17,7 +17,7 @@ AI에게 자연어로 지시해 소프트웨어를 만드는 바이브 코딩에
 
 | 항목 | 내용 |
 |------|------|
-| 강사 | 김진관 (대전둔천초등학교) |
+| 강사 | 김진관 (닷커넥터) |
 | 주최·형식 | AI Teacher School(AITS) 3rd 교사자율연수 온라인 세미나 · ZOOM 라이브 |
 | 일시 | 2026-05-09 (토) 21:00–22:30 (90분) |
 | 대상 | 비전공자·초보자를 포함한 교사 및 바이브 코딩 입문자 |
@@ -94,7 +94,7 @@ AI에게 자연어로 지시해 소프트웨어를 만드는 바이브 코딩에
 
 ## 참고와 출처
 
-- 강사: 김진관 (대전둔천초등학교)
+- 강사: 김진관 (닷커넥터)
 - 주최·형식: AI Teacher School(AITS) 3rd 교사자율연수 온라인 세미나 · ZOOM 라이브 · 2026-05-09
 - 주요 인용: Laban, P., Hayashi, H., Zhou, Y., & Neville, J. (2025). LLMs Get Lost In Multi-Turn Conversation. arXiv:2505.06120
 - Git 설치 참고: [git-scm.com/install/windows](https://git-scm.com/install/windows){:target="_blank"}

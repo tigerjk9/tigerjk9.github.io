@@ -26,7 +26,7 @@
   date: "2026-05-09"
   hub_url: /lectures/vibe-coding-git-github/
   thumbnail: /assets/lectures/vibe-coding-git-github/cover.jpg
-  author: "김진관 (대전둔천초등학교)"
+  author: "김진관 (닷커넥터)"
   tags:
     - 바이브코딩
     - Git
@@ -44,7 +44,7 @@
   date: "2026-06-27"
   hub_url: /lectures/digital-analog-class/
   thumbnail: /assets/lectures/digital-analog-class/cover.jpg
-  author: "김진관 (대전둔천초등학교)"
+  author: "김진관 (닷커넥터)"
   tags:
     - AI 디지털 수업
     - 아날로그 수업
@@ -62,7 +62,7 @@
   date: "2026-07-05"
   hub_url: /lectures/deep-learning-cnn-basics/
   thumbnail: /assets/lectures/deep-learning-cnn-basics/cover.jpg
-  author: "김진관"
+  author: "김진관 (닷커넥터)"
   tags:
     - 딥러닝
     - CNN
@@ -80,7 +80,7 @@
   date: "2022-10-06"
   hub_url: /lectures/perceptron-neural-network/
   thumbnail: /assets/lectures/perceptron-neural-network/cover.jpg
-  author: "김진관"
+  author: "김진관 (닷커넥터)"
   tags:
     - 퍼셉트론
     - 인공신경망
