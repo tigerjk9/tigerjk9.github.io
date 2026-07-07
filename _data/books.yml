@@ -6,6 +6,7 @@
   audience: "비개발자 교육자 (교사·강사·교수)"
   structure: "13장 + 부록 A~C"
   date: "2026-05-08"
+  author: "김진관 (닷커넥터)"
   url: "https://educator-agent-engineering.vercel.app"
   external: true
   cover: /assets/lectures/books/book-07-cover.jpg
@@ -16,6 +17,7 @@
   audience: "초5-6·중1-2 학생 (교사·학부모 동반)"
   structure: "프롤로그 + Case 10편 + 부록 A~C"
   date: "2026-04-20"
+  author: "김진관 (닷커넥터)"
   url: "https://ai-academy-error-hunter.vercel.app"
   external: true
   cover: /assets/lectures/books/book-06-cover.jpg
@@ -25,6 +27,7 @@
   audience: "초5-6·중1-2 학생 (교사·학부모 동반)"
   structure: "프롤로그 + 수사일지 10편 + 부록 A~C"
   date: "2026-04-17"
+  author: "김진관 (닷커넥터)"
   url: "https://ai-storytelling-adventure.vercel.app"
   external: true
   cover: /assets/lectures/books/book-05-cover.jpg
@@ -34,6 +37,7 @@
   audience: "바이브 코딩 입문자 (비개발자 교사)"
   structure: "프롤로그 + 10장 + 부록 A~B"
   date: "2026-04-14"
+  author: "김진관 (닷커넥터)"
   url: "https://vibe-coding-git.vercel.app"
   external: true
   cover: /assets/lectures/books/book-04-cover.jpg
@@ -43,6 +47,7 @@
   audience: "중급 교사 (이론 기반 보강)"
   structure: "프롤로그 + 12장 + 부록 A~C"
   date: "2026-04-11"
+  author: "김진관 (닷커넥터)"
   url: "https://ai-edu-essence.vercel.app"
   external: true
   cover: /assets/lectures/books/book-03-cover.jpg
@@ -52,6 +57,7 @@
   audience: "교사·강사 (비개발자)"
   structure: "프롤로그 + 15장 + 부록 A~J"
   date: "2026-03-31"
+  author: "김진관 (닷커넥터)"
   url: "https://teacher-claude-cowork-guide.vercel.app"
   external: true
   cover: /assets/lectures/books/book-02-cover.jpg
@@ -62,6 +68,7 @@
   audience: "초등 담임 교사"
   structure: "프롤로그 + 11장 + 부록 A~F"
   date: "2026-03-21"
+  author: "김진관 (닷커넥터)"
   url: "https://teacher-claude-guide.vercel.app"
   external: true
   cover: /assets/lectures/books/book-01-cover.jpg
