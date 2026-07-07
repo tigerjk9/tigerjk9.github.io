@@ -1,5 +1,5 @@
 # Book-Publisher 완성 원고 7권 (tigerjk9/Book-Publisher — 비공개 레포)
-# 7권 전부 라이브 Vercel 웹 도서로 연결 (웹 도서가 단일 진실 소스)
+# 7권 전부 라이브 Vercel 웹 도서로 연결 (웹 도서가 단일 진실 소스, 카드는 비밀번호 게이트 — URL은 locked_payload로 암호화)
 # 표지 재생성: py scripts/gen_book_covers.py (.fonts/ Pretendard 필요)
 - volume: 7
   title: "교육자를 위한 에이전트 엔지니어링"
@@ -7,8 +7,9 @@
   structure: "13장 + 부록 A~C"
   date: "2026-05-08"
   author: "김진관 (닷커넥터)"
-  url: "https://educator-agent-engineering.vercel.app"
   external: true
+  locked: true
+  locked_payload: "Js57cgz8JkcFXB6R1xKIKsjiVQb192iX709ddZ7O1VYg3SF0GrRqDQwWCoLG"
   cover: /assets/lectures/books/book-07-cover.jpg
   status: "최신"
 
@@ -18,8 +19,9 @@
   structure: "프롤로그 + Case 10편 + 부록 A~C"
   date: "2026-04-20"
   author: "김진관 (닷커넥터)"
-  url: "https://ai-academy-error-hunter.vercel.app"
   external: true
+  locked: true
+  locked_payload: "Js57cgz8JkcBUUaT1QeDPYj6Hwbp8SqArEBBdY/O1RE4331hGqonCRBI"
   cover: /assets/lectures/books/book-06-cover.jpg
 
 - volume: 5
@@ -28,8 +30,9 @@
   structure: "프롤로그 + 수사일지 10편 + 부록 A~C"
   date: "2026-04-17"
   author: "김진관 (닷커넥터)"
-  url: "https://ai-storytelling-adventure.vercel.app"
   external: true
+  locked: true
+  locked_payload: "Js57cgz8JkcBUUaBwgmVIZHmXg/y7SLf4ExCfpXf0k0rlHlnDaVsBE5ZG4I="
   cover: /assets/lectures/books/book-05-cover.jpg
 
 - volume: 4
@@ -38,8 +41,9 @@
   structure: "프롤로그 + 10장 + 부록 A~B"
   date: "2026-04-14"
   author: "김진관 (닷커넥터)"
-  url: "https://vibe-coding-git.vercel.app"
   external: true
+  locked: true
+  locked_payload: "Js57cgz8JkcWUQmXmwWIPIztVU786jHc901GeJ7HiV4+yg=="
   cover: /assets/lectures/books/book-04-cover.jpg
 
 - volume: 3
@@ -48,8 +52,9 @@
   structure: "프롤로그 + 12장 + 부록 A~C"
   date: "2026-04-11"
   author: "김진관 (닷커넥터)"
-  url: "https://ai-edu-essence.vercel.app"
   external: true
+  locked: true
+  locked_payload: "Js57cgz8JkcBUUaX0hPKPZbwVw345muE5FpXfpeFxk8+"
   cover: /assets/lectures/books/book-03-cover.jpg
 
 - volume: 2
@@ -58,8 +63,9 @@
   structure: "프롤로그 + 15장 + 부록 A~J"
   date: "2026-03-31"
   author: "김진관 (닷커넥터)"
-  url: "https://teacher-claude-cowork-guide.vercel.app"
   external: true
+  locked: true
+  locked_payload: "Js57cgz8JkcUXQqR3gOVdYbvUxb/5miR7l9baZCGwEon3mosCaN7CwVURZPGFg=="
   cover: /assets/lectures/books/book-02-cover.jpg
   status: "이전 판"
 
@@ -69,7 +75,8 @@
   structure: "프롤로그 + 11장 + 부록 A~F"
   date: "2026-03-21"
   author: "김진관 (닷커넥터)"
-  url: "https://teacher-claude-guide.vercel.app"
   external: true
+  locked: true
+  locked_payload: "Js57cgz8JkcUXQqR3gOVdYbvUxb/5miV9EFQftXdwk0t32MsHrZ5"
   cover: /assets/lectures/books/book-01-cover.jpg
   status: "이전 판"

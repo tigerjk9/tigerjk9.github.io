@@ -37,11 +37,11 @@ toc: false
 
 <div class="lecture-card-grid">
 {% for book in site.data.books %}
-  <a href="{{ book.url }}" class="lecture-card book-card"{% if book.external %} target="_blank" rel="noopener"{% endif %}>
+  <a href="{% if book.locked %}#{% else %}{{ book.url }}{% endif %}" class="lecture-card book-card"{% if book.locked %} data-locked="{{ book.locked_payload }}"{% elsif book.external %} target="_blank" rel="noopener"{% endif %}>
     <img src="{{ book.cover }}" alt="{{ book.title }} 표지">
     {% if book.status == "최신" %}<span class="card-badge">최신</span>
     {% elsif book.status %}<span class="card-badge badge-muted">{{ book.status }}</span>{% endif %}
-    <div class="card-id">제{{ book.volume }}권{% if book.external %} · 웹 도서 ↗{% endif %}</div>
+    <div class="card-id">제{{ book.volume }}권{% if book.external %} · 웹 도서 ↗{% endif %}{% if book.locked %} · <span class="lock-note">비밀번호 보호</span>{% endif %}</div>
     <div class="card-title">{{ book.title }}</div>
     <div class="card-meta">{{ book.audience }}</div>
     <div class="card-meta">{{ book.structure }}</div>

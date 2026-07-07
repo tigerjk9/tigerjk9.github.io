@@ -43,6 +43,8 @@
   chapter_count: 3
   date: "2026-06-27"
   hub_url: /lectures/digital-analog-class/
+  locked: true
+  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtG69uARRZB9/XCIY0iuQfAPfiNoGu"
   thumbnail: /assets/lectures/digital-analog-class/cover.jpg
   author: "김진관 (닷커넥터)"
   tags:
