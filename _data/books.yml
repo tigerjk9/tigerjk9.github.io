@@ -1,5 +1,5 @@
 # Book-Publisher 완성 원고 7권 (tigerjk9/Book-Publisher — 비공개 레포)
-# 2~7권은 Vercel 웹 도서로 연결, 1권은 블로그 내 페이지(_lectures/books/claude-intro.md)
+# 7권 전부 라이브 Vercel 웹 도서로 연결 (웹 도서가 단일 진실 소스)
 # 표지 재생성: py scripts/gen_book_covers.py (.fonts/ Pretendard 필요)
 - volume: 7
   title: "교육자를 위한 에이전트 엔지니어링"
@@ -62,7 +62,7 @@
   audience: "초등 담임 교사"
   structure: "프롤로그 + 11장 + 부록 A~F"
   date: "2026-03-21"
-  url: /lectures/books/claude-intro/
-  external: false
+  url: "https://teacher-claude-guide.vercel.app"
+  external: true
   cover: /assets/lectures/books/book-01-cover.jpg
   status: "이전 판"
