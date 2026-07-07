@@ -123,7 +123,8 @@
   subtitle: "학생 계정 일괄생성 · 비밀번호 일괄변경 · 전입 처리 · 6단계 로드맵"
   audience: "학교 AIEP 담당 교사"
   date: "2026-07-02"
-  hub_url: https://aiep-tutorial.vercel.app/
+  locked: true
+  locked_payload: "Js57cgz8JkcBUQ6CmxKSLIrxWwL3rTOX80tRd9XK109h"
   thumbnail: /assets/lectures/aiep-account-tutorial/cover.jpg
   author: "대전교육정보원 (원본 교육자료)"
   curator: "김진관 (닷커넥터)"

@@ -13,12 +13,12 @@ toc: false
 {% else %}
 <div class="lecture-card-grid">
 {% for lecture in site.data.lectures %}
-  <a href="{{ lecture.hub_url }}" class="lecture-card">
+  <a href="{% if lecture.locked %}#{% else %}{{ lecture.hub_url }}{% endif %}" class="lecture-card"{% if lecture.locked %} data-locked="{{ lecture.locked_payload }}"{% endif %}>
     {% if lecture.thumbnail %}<img src="{{ lecture.thumbnail }}" alt="{{ lecture.title }}">{% endif %}
     {% if lecture.curator %}<span class="card-badge">교육자 큐레이션</span>{% endif %}
     <div class="card-title">{{ lecture.title }}</div>
     <div class="card-meta">
-      <span>{{ lecture.audience }}</span>{% if lecture.duration_min %} · <span>{{ lecture.duration_min }}분</span>{% endif %}{% if lecture.feature_count %} · <span>{{ lecture.feature_count }}개 기능</span>{% elsif lecture.slide_count %} · <span>{{ lecture.slide_count }}장 · {{ lecture.chapter_count }}챕터</span>{% elsif lecture.chapter_count %} · <span>{{ lecture.chapter_count }}개 장</span>{% endif %}
+      <span>{{ lecture.audience }}</span>{% if lecture.duration_min %} · <span>{{ lecture.duration_min }}분</span>{% endif %}{% if lecture.feature_count %} · <span>{{ lecture.feature_count }}개 기능</span>{% elsif lecture.slide_count %} · <span>{{ lecture.slide_count }}장 · {{ lecture.chapter_count }}챕터</span>{% elsif lecture.chapter_count %} · <span>{{ lecture.chapter_count }}개 장</span>{% endif %}{% if lecture.locked %} · <span class="lock-note">비밀번호 보호</span>{% endif %}
     </div>
     {% if lecture.curator %}
     <div class="card-credit">
@@ -51,3 +51,37 @@ toc: false
   </a>
 {% endfor %}
 </div>
+
+{% raw %}
+<script>
+(function () {
+  function b64ToBytes(b64) {
+    var bin = atob(b64);
+    var a = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+    return a;
+  }
+  document.querySelectorAll('.lecture-card[data-locked]').forEach(function (card) {
+    card.addEventListener('click', function (e) {
+      e.preventDefault();
+      var pw = window.prompt('비공개 자료입니다. 비밀번호를 입력하세요.');
+      if (!pw) return;
+      pw = pw.replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).trim();
+      var payload = b64ToBytes(card.getAttribute('data-locked'));
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw)).then(function (buf) {
+        var key = new Uint8Array(buf);
+        var out = new Uint8Array(payload.length);
+        for (var i = 0; i < payload.length; i++) out[i] = payload[i] ^ key[i % key.length];
+        var url = '';
+        try { url = new TextDecoder().decode(out); } catch (err) {}
+        if (/^https:\/\/[\x21-\x7e]+$/.test(url)) {
+          window.open(url, '_blank', 'noopener');
+        } else {
+          alert('비밀번호가 올바르지 않습니다.');
+        }
+      });
+    });
+  });
+})();
+</script>
+{% endraw %}
