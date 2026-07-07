@@ -1,0 +1,68 @@
+# Book-Publisher 완성 원고 7권 (tigerjk9/Book-Publisher — 비공개 레포)
+# 2~7권은 Vercel 웹 도서로 연결, 1권은 블로그 내 페이지(_lectures/books/claude-intro.md)
+# 표지 재생성: py scripts/gen_book_covers.py (.fonts/ Pretendard 필요)
+- volume: 7
+  title: "교육자를 위한 에이전트 엔지니어링"
+  audience: "비개발자 교육자 (교사·강사·교수)"
+  structure: "13장 + 부록 A~C"
+  date: "2026-05-08"
+  url: "https://educator-agent-engineering.vercel.app"
+  external: true
+  cover: /assets/lectures/books/book-07-cover.jpg
+  status: "최신"
+
+- volume: 6
+  title: "AI의 지문 — 강이솔의 수사일지"
+  audience: "초5-6·중1-2 학생 (교사·학부모 동반)"
+  structure: "프롤로그 + Case 10편 + 부록 A~C"
+  date: "2026-04-20"
+  url: "https://ai-academy-error-hunter.vercel.app"
+  external: true
+  cover: /assets/lectures/books/book-06-cover.jpg
+
+- volume: 5
+  title: "명탐정 준의 AI 수사일지"
+  audience: "초5-6·중1-2 학생 (교사·학부모 동반)"
+  structure: "프롤로그 + 수사일지 10편 + 부록 A~C"
+  date: "2026-04-17"
+  url: "https://ai-storytelling-adventure.vercel.app"
+  external: true
+  cover: /assets/lectures/books/book-05-cover.jpg
+
+- volume: 4
+  title: "바이브 코딩을 위한 Git & GitHub 완벽 가이드"
+  audience: "바이브 코딩 입문자 (비개발자 교사)"
+  structure: "프롤로그 + 10장 + 부록 A~B"
+  date: "2026-04-14"
+  url: "https://vibe-coding-git.vercel.app"
+  external: true
+  cover: /assets/lectures/books/book-04-cover.jpg
+
+- volume: 3
+  title: "AI 디지털 교육의 본질 그리고 확장"
+  audience: "중급 교사 (이론 기반 보강)"
+  structure: "프롤로그 + 12장 + 부록 A~C"
+  date: "2026-04-11"
+  url: "https://ai-edu-essence.vercel.app"
+  external: true
+  cover: /assets/lectures/books/book-03-cover.jpg
+
+- volume: 2
+  title: "교사를 위한 Claude Code & Cowork 완벽 가이드"
+  audience: "교사·강사 (비개발자)"
+  structure: "프롤로그 + 15장 + 부록 A~J"
+  date: "2026-03-31"
+  url: "https://teacher-claude-cowork-guide.vercel.app"
+  external: true
+  cover: /assets/lectures/books/book-02-cover.jpg
+  status: "이전 판"
+
+- volume: 1
+  title: "교사를 위한 클로드코드 완벽 입문"
+  audience: "초등 담임 교사"
+  structure: "프롤로그 + 11장 + 부록 A~F"
+  date: "2026-03-21"
+  url: /lectures/books/claude-intro/
+  external: false
+  cover: /assets/lectures/books/book-01-cover.jpg
+  status: "이전 판"

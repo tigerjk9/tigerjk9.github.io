@@ -6,6 +6,8 @@ author_profile: false
 toc: false
 ---
 
+## 워크숍 강의
+
 {% if site.data.lectures.size == 0 %}
 <p>아직 등록된 강의가 없습니다.</p>
 {% else %}
@@ -30,3 +32,21 @@ toc: false
 {% endfor %}
 </div>
 {% endif %}
+
+## 도서 원고
+
+AI 멀티에이전트 집필 파이프라인으로 제작한 교육 도서 원고 7권. 카드를 누르면 웹 도서가 새 탭으로 열린다 (1권은 블로그 안에서 바로 읽는다).
+
+<div class="lecture-card-grid">
+{% for book in site.data.books %}
+  <a href="{{ book.url }}" class="lecture-card book-card"{% if book.external %} target="_blank" rel="noopener"{% endif %}>
+    <img src="{{ book.cover }}" alt="{{ book.title }} 표지">
+    {% if book.status == "최신" %}<span class="card-badge">최신</span>
+    {% elsif book.status %}<span class="card-badge badge-muted">{{ book.status }}</span>{% endif %}
+    <div class="card-id">제{{ book.volume }}권{% if book.external %} · 웹 도서 ↗{% endif %}</div>
+    <div class="card-title">{{ book.title }}</div>
+    <div class="card-meta">{{ book.audience }}</div>
+    <div class="card-meta">{{ book.structure }}</div>
+  </a>
+{% endfor %}
+</div>

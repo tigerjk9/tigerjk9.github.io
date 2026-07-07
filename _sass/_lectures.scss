@@ -68,6 +68,12 @@
   }
 }
 
+.book-card {
+  img { display: block; width: 100%; height: auto; border-radius: 6px; margin-bottom: 0.6em; }
+  .card-badge.badge-muted { background: #64748b; color: #f1f5f9; }
+  .card-meta + .card-meta { margin-top: 0.2em; }
+}
+
 .lecture-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
