@@ -35,8 +35,6 @@ toc: false
 
 ## 도서 원고
 
-AI 멀티에이전트 집필 파이프라인으로 제작한 교육 도서 원고 7권. 카드를 누르면 웹 도서가 새 탭으로 열린다 (1권은 블로그 안에서 바로 읽는다).
-
 <div class="lecture-card-grid">
 {% for book in site.data.books %}
   <a href="{{ book.url }}" class="lecture-card book-card"{% if book.external %} target="_blank" rel="noopener"{% endif %}>

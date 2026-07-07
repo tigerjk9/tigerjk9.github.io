@@ -87,6 +87,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 사이드바 섹션 접기/펼치기 | `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html` |
 | 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
 | 리서치 허브 (논문 탐색+AI 검색) | `research.md`, `scripts/build_research_db.py`, `scripts/build_embeddings.py`, `assets/research-*.json` |
+| 강의자료 아카이브 (강의+도서 허브) | `_pages/lectures.md`, `_data/lectures.yml`, `_data/books.yml`, `scripts/gen_book_covers.py`, `_sass/_lectures.scss` |
 | AI에게 묻기 (RAG 챗봇, 주인장 키 + 방문자 BYOK) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
 | 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
 
@@ -528,7 +529,7 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 **격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 400+개·`knowledge-graph.json`·`_includes/sidebar/*.html` 영향 없음.
 
-**도서 원고 섹션 (2026-07-07)** — `/lectures/` 허브는 "워크숍 강의"(`_data/lectures.yml`) + "도서 원고"(`_data/books.yml`) 2섹션 구성. 도서 7권은 `tigerjk9/Book-Publisher`(비공개 레포) 완성 원고 — 7권 전부 라이브 Vercel 웹 도서로 새 탭 연결(웹 도서가 단일 진실 소스, 원고 개정 시 Vercel만 재배포하면 블로그는 무수정. 1권은 teacher-claude-guide.vercel.app — 최초 편입 때 배포 없는 줄 알고 블로그 내 전문 렌더링했다가 사용자가 URL 확인해 줘 제거). 통일 표지 재생성: `py scripts/gen_book_covers.py` (`.fonts/` Pretendard 필요, 출력 `assets/lectures/books/book-0N-cover.jpg`, 권별 액센트 컬러). 상태 배지: 최신(앰버)·이전 판(슬레이트). 4권 웹 도서와 `vibe-coding-git-github` 슬라이드 강의는 동일 주제의 별개 자산(도서 vs 강의)으로 의도적 공존.
+**도서 원고 섹션 (2026-07-07)** — `/lectures/` 허브는 "워크숍 강의"(`_data/lectures.yml`) + "도서 원고"(`_data/books.yml`) 2섹션 구성. 도서 7권은 `tigerjk9/Book-Publisher`(비공개 레포) 완성 원고 — 7권 전부 라이브 Vercel 웹 도서로 새 탭 연결(웹 도서가 단일 진실 소스, 원고 개정 시 Vercel만 재배포하면 블로그는 무수정. 1권은 teacher-claude-guide.vercel.app — 최초 편입 때 배포 없는 줄 알고 블로그 내 전문 렌더링했다가 사용자가 URL 확인해 줘 제거). 통일 표지 재생성: `py scripts/gen_book_covers.py` (`.fonts/` Pretendard 필요, 출력 `assets/lectures/books/book-0N-cover.jpg`, 권별 액센트 컬러). 상태 배지: 최신(앰버)·이전 판(슬레이트). 4권 웹 도서와 `vibe-coding-git-github` 슬라이드 강의는 동일 주제의 별개 자산(도서 vs 강의)으로 의도적 공존. 카드에는 저자 크레딧 필수(도서 `author` 필드 + "저자" 라벨, 타사 원본 자료는 `author` 원작 + `curator` 2단 — AIEP 튜토리얼 선례), 섹션 도입 산문은 넣지 않는다(헤딩+카드 그리드만). 외부 링크형 강의 카드(학생용 생성형 AI 안내서·AIEP·AX 핸드북) 표지는 사이트 히어로 스크린샷 — 이 머신은 playwright·gstack browse가 없거나 고장이라 **Edge 헤드리스**(`--user-data-dir` 임시 프로필 필수)로 캡처한다.
 
 **진입점**:
 ```powershell
