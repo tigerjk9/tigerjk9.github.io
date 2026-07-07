@@ -41,9 +41,8 @@
   structure: "프롤로그 + 10장 + 부록 A~B"
   date: "2026-04-14"
   author: "김진관 (닷커넥터)"
+  url: "https://vibe-coding-git.vercel.app"
   external: true
-  locked: true
-  locked_payload: "Js57cgz8JkcWUQmXmwWIPIztVU786jHc901GeJ7HiV4+yg=="
   cover: /assets/lectures/books/book-04-cover.jpg
 
 - volume: 3
@@ -63,9 +62,8 @@
   structure: "프롤로그 + 15장 + 부록 A~J"
   date: "2026-03-31"
   author: "김진관 (닷커넥터)"
+  url: "https://teacher-claude-cowork-guide.vercel.app"
   external: true
-  locked: true
-  locked_payload: "Js57cgz8JkcUXQqR3gOVdYbvUxb/5miR7l9baZCGwEon3mosCaN7CwVURZPGFg=="
   cover: /assets/lectures/books/book-02-cover.jpg
   status: "이전 판"
 
@@ -75,8 +73,7 @@
   structure: "프롤로그 + 11장 + 부록 A~F"
   date: "2026-03-21"
   author: "김진관 (닷커넥터)"
+  url: "https://teacher-claude-guide.vercel.app"
   external: true
-  locked: true
-  locked_payload: "Js57cgz8JkcUXQqR3gOVdYbvUxb/5miV9EFQftXdwk0t32MsHrZ5"
   cover: /assets/lectures/books/book-01-cover.jpg
   status: "이전 판"
