@@ -103,3 +103,33 @@
     - 교육정책
     - 학교혁신
     - AI에이전트
+
+- slug: student-genai-guide
+  title: "생성형 인공지능 활용 안내서 (학생용)"
+  subtitle: "똑똑하게·올바르게·안전하게 · 사용 습관 자가진단 · 나의 약속"
+  audience: "초·중등 학생·지도 교사"
+  date: "2026-06-25"
+  hub_url: https://tigerjk9.github.io/Student-Guide-to-Using-Generative-AI/
+  thumbnail: /assets/lectures/student-genai-guide/cover.jpg
+  author: "김진관 (닷커넥터)"
+  tags:
+    - 생성형AI
+    - 디지털시민성
+    - AI윤리
+    - 지도자료
+
+- slug: aiep-account-tutorial
+  title: "AIEP 학교 담당자 계정 관리 안내"
+  subtitle: "학생 계정 일괄생성 · 비밀번호 일괄변경 · 전입 처리 · 6단계 로드맵"
+  audience: "학교 AIEP 담당 교사"
+  date: "2026-07-02"
+  hub_url: https://aiep-tutorial.vercel.app/
+  thumbnail: /assets/lectures/aiep-account-tutorial/cover.jpg
+  author: "대전교육정보원 (원본 교육자료)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "원본 PDF 교육자료를 단계별 웹 튜토리얼로 재구성"
+  tags:
+    - AIEP
+    - 계정 관리
+    - 교수학습 플랫폼
+    - 튜토리얼
