@@ -42,7 +42,8 @@ bundle exec rake version        # 버전 일괄 업데이트
 - 데이터: Liquid 템플릿 `knowledge-graph.json`이 **노드(포스트)만** 출력 (노드 id = `date+slug`로 고유화, url은 링크 전용). 구버전의 O(N²) 엣지 이중루프와 `graph-data.json`(dead code)은 제거됨 → 페이로드 5MB→236KB
 - 엣지·군집은 전부 클라이언트 계산: 엣지 = 태그 IDF 가중 + 노드당 top-K(8) 가지치기(흔한 허브 태그 디스카운트) / 색·분류 = 연결 구조 Louvain 군집 탐지(클라 직접 구현, 자동 라벨 = 군집내 태그빈도×IDF 상위). forceLink 레이아웃 + degree 비례 노드 반경 + 동적 centroid 라벨 칩
 - 검증 하네스 `.omc/kg-eval/`(gitignore, Ruby 부재 환경에서 Python 산출 재현 + gstack browse 헤드리스). 설계·품질 루브릭은 메모리 `project_knowledge_graph` 참고
-- **미니 그래프 뷰** (`assets/js/post-graph.js`, 2026-07-11): 모든 포스트 우측 sticky 사이드바 "On this page" **위**에 현재 글 + 태그 IDF top-8 이웃을 표시 (Quartz 스타일). D3 무의존 vanilla 포스 시뮬레이션(동기 260 iter 후 정적 SVG), `/knowledge-graph.json`을 `requestIdleCallback`으로 유휴 fetch. 엣지 스코어링은 KG 페이지 `buildEdges`와 동일(IDF 합산, 카테고리 fallback 포함), 이웃 간 엣지는 노드당 top-2. 노드 클릭 → 해당 글 이동, 헤더 확장 아이콘 → `/knowledge-graph/`. 현재 글 미매칭·이웃 0이면 위젯 자동 숨김, 모바일(<1024px) 숨김. sticky 컬럼 뷰포트 초과 방지 위해 그래프 존재 시 `.toc__menu` max-height를 260px 축소(`main.scss`). `single.html`은 `page.toc or page.date`로 aside를 렌더
+- **미니 그래프 뷰** (`assets/js/post-graph.js`, 2026-07-11): 모든 포스트 우측 sticky 사이드바 "On this page" **위**에 현재 글 + 태그 IDF top-8 이웃을 표시 (Quartz 스타일). D3 무의존 vanilla 포스 시뮬레이션(동기 300 iter 후 정적 SVG), `/knowledge-graph.json`을 `requestIdleCallback`으로 유휴 fetch. 엣지 스코어링은 KG 페이지 `buildEdges`와 동일(IDF 합산, 카테고리 fallback 포함), 이웃 간 엣지는 노드당 top-2. 노드 클릭 → 해당 글 이동, 헤더 확장 아이콘 → `/knowledge-graph/`. 현재 글 미매칭·이웃 0이면 위젯 자동 숨김, 모바일(<1024px) 숨김. sticky 컬럼 뷰포트 초과 방지 위해 그래프 존재 시 `.toc__menu` max-height를 290px 축소(`main.scss`). `single.html`은 `page.toc or page.date`로 aside를 렌더
+- **미니 그래프 가독성 원칙 (2026-07-11 재설계)**: ① viewBox는 컨테이너 **실측 폭 1:1 px 매핑**(고정 200 viewBox는 사이드바 300px에서 레터박스+블러 유발) ② 라벨은 halo 필수(`paint-order: stroke` + 배경색 stroke 3px — 엣지 선 위에서 판독) ③ 가까운 라벨(수평 78px·수직 15px 이내)은 노드 위쪽 플립으로 충돌 회피 ④ 라벨 10.5px·12자 잘림 ⑤ hover는 `transform-box: fill-box` + scale(1.3). 검증: DOM 스텁 하네스(스크래치패드 test-post-graph.js 패턴)로 viewBox 실측·좌표 범위·플립 동작 확인
 
 **리서치 허브** (`/research/`):
 - 페이지: `research.md` (layout `default` — 사이트 내비·푸터 유지, 저자 사이드바 없음). 자체 완결 `<style>`/`<script>`, `#rh-app` 스코프. 테마 대응(다크 기본 + `html[data-theme="light"] #rh-app` 오버라이드). 스크립트는 `{% raw %}` 래핑(Liquid 안전)
@@ -110,7 +111,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 - **CSS float 함정**: `.post-share`는 테마 `.page__meta`/`.page__share`처럼 `float:inline-start; width:100%; clear:both` 필수(`_sass/minimal-mistakes/_page.scss:55-63`). 없으면 float된 `.page__content` 옆에 끼어 "오른쪽에 붙은" 것처럼 렌더됨.
 - **카카오톡 = 도메인 2곳 + 키 일치 (에러 4019, 비직관)**: `Kakao.Share.sendDefault`는 ① 제품 링크 관리→웹 도메인(링크 이동) ② 플랫폼 키→JavaScript 키→**JavaScript SDK 도메인**(SDK 인증, 4019 담당) **두 곳** 등록 필요. `_config.yml`의 `kakao_js_key`는 **SDK 도메인이 등록된 바로 그 키**여야 함(JS 키 여러 개면 엉뚱한 키 등록으로 4019 지속 — 실제 `9751bcbf…`→`9e4827c8…` 교체로 해결). 도메인은 scheme+host만(경로/슬래시 자동 제거). JS 키는 도메인 제한 공개 클라이언트 키라 커밋 안전(REST API/Admin 키는 금지). SDK는 `kakao_js_key` 설정 시에만 로드, 미설정 시 카카오 버튼은 OS 공유시트→링크복사 폴백.
 
-**사이드바 섹션 높이**: 데스크톱 `max-height: calc(50vh - 175px) !important` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남. 내부 스크롤(얇은 4px 스크롤바) 유지.
+**사이드바 섹션 높이**: 데스크톱 `max-height: calc(60vh - 120px) !important` — 최근 방문 8개가 잘리지 않도록 확대 (2026-07-11, 이전 `calc(50vh - 175px)`). 내부 스크롤(얇은 4px 스크롤바) 유지.
 
 **웰빙 코너**: `assets/js/wellbeing.js`가 IIFE `(function(W){...})(window.WB = window.WB || {})`로 실행됨. 내부 `$` 헬퍼는 `id => document.getElementById(id)` (jQuery 아님). `W.init()`에서 각 모듈 호출을 개별 `try/catch`로 래핑해 한 모듈 오류가 나머지에 영향 없음.
 - **`/wellbeing/` 페이지**: `wellbeing.md` — meta refresh + JS로 `https://comma-for-wellbeing.vercel.app/` 즉시 리디렉트. 상단 네비게이션 "쉼표" 메뉴도 동일 외부 URL 직접 연결

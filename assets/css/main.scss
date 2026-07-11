@@ -220,9 +220,9 @@ $max-width: 100%;
     max-height: none !important;
   }
 
-  /* 각 섹션: 뷰포트 절반에서 author profile/여백 공제 → 합산 시 페이지네이션 라인 근방 */
+  /* 각 섹션 내부 스크롤 캡 — 최근 방문 8개가 잘리지 않도록 확대 (2026-07-11) */
   .sidebar-section__content {
-    max-height: calc(50vh - 175px) !important;
+    max-height: calc(60vh - 120px) !important;
     overflow-y: auto !important;
     overflow-x: hidden;
     scrollbar-width: thin;
@@ -1383,36 +1383,46 @@ html[data-theme="light"] .recent-posts__empty {
 .pg-svg {
   display: block;
   width: 100%;
-  height: 210px;
+  height: 240px;
 }
 
-.pg-edge { stroke: #5a6572; }
+.pg-edge { stroke: #6b7684; }
+
+/* 라벨: halo(paint-order stroke)로 엣지 선 위에서도 읽히게 */
+.pg-label {
+  font-size: 10.5px;
+  font-family: inherit;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(35, 39, 47, 0.9);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
 
 .pg-node {
   cursor: pointer;
 
   circle {
-    fill: #7d8b99;
-    stroke: rgba(255, 255, 255, 0.25);
+    fill: #9fb3c8;
+    stroke: rgba(255, 255, 255, 0.35);
     stroke-width: 1;
-    transition: fill 0.15s ease;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.15s ease, fill 0.15s ease;
   }
 
-  .pg-label {
-    fill: #9aa5b1;
-    font-size: 8.5px;
-    pointer-events: none;
-  }
+  .pg-label { fill: #c3cdd9; }
 
-  &:hover circle { fill: #42a5f5; }
-  &:hover .pg-label { fill: #cfd8e3; }
+  &:hover circle { fill: #42a5f5; transform: scale(1.3); }
+  &:hover .pg-label { fill: #eaf2fa; }
 }
 
 .pg-node--center {
   cursor: default;
 
-  circle { fill: #42a5f5; stroke: rgba(255, 255, 255, 0.4); }
-  .pg-label { fill: #d7e3f0; font-weight: 700; }
+  circle { fill: #42a5f5; stroke: rgba(255, 255, 255, 0.5); }
+  .pg-label { fill: #eaf2fa; font-weight: 700; }
+  &:hover circle { transform: none; }
 }
 
 html[data-theme="light"] {
@@ -1420,18 +1430,20 @@ html[data-theme="light"] {
   .post-graph__header { border-bottom-color: rgba(0, 0, 0, 0.08); }
   .post-graph__title { color: #666; }
   #post-graph .post-graph__expand { color: #999; &:hover { color: #0078c8; } }
-  .pg-edge { stroke: #b6c2cd; }
-  .pg-node circle { fill: #8fa0b0; stroke: rgba(0, 0, 0, 0.15); }
-  .pg-node .pg-label { fill: #666e77; }
+  .pg-edge { stroke: #a8b4c0; }
+  .pg-label { stroke: rgba(255, 255, 255, 0.92); }
+  .pg-node circle { fill: #7d93a8; stroke: rgba(0, 0, 0, 0.2); }
+  .pg-node .pg-label { fill: #3d4650; }
   .pg-node:hover circle { fill: #0078c8; }
+  .pg-node:hover .pg-label { fill: #10151a; }
   .pg-node--center circle { fill: #0078c8; }
-  .pg-node--center .pg-label { fill: #223344; }
+  .pg-node--center .pg-label { fill: #10151a; }
 }
 
 /* sticky 컬럼이 뷰포트를 넘지 않도록 그래프 높이만큼 TOC 내부 스크롤 영역 축소 */
 @media (min-width: 1024px) {
   .sidebar__right.sticky #post-graph ~ .toc .toc__menu {
-    max-height: calc(100vh - 7em - 260px);
+    max-height: calc(100vh - 7em - 290px);
   }
 }
 

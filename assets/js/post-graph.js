@@ -3,6 +3,8 @@
    우측 사이드바 "On this page" 위에 현재 글 + 관련 글 top-8을 표시한다.
    데이터: /knowledge-graph.json (노드만). 엣지는 지식그래프 페이지와 동일한
    태그 IDF 가중 스코어링을 현재 글 기준으로 축소 계산 (D3 의존성 없음).
+   가독성: 컨테이너 실측 폭으로 viewBox를 1:1 px 매핑(스케일 블러 방지),
+   라벨 halo(paint-order stroke) + 상하 플립 충돌 회피.
    ========================================================================== */
 
 (function () {
@@ -11,7 +13,7 @@
   if (!root || !canvas || !window.__currentPost) return;
 
   var MAX_NEIGHBORS = 8;   // 지식그래프 TOP_K와 동일
-  var W = 200, H = 200;    // viewBox 기준 (실제 폭은 CSS 100%)
+  var H = 240;             // 캔버스 높이(px)
 
   function normUrl(u) {
     try { u = decodeURIComponent(u); } catch (e) { /* 이중 인코딩 등 — raw 비교 */ }
@@ -93,25 +95,26 @@
   }
 
   // 소규모 포스 시뮬레이션 (동기 실행 후 정적 렌더 — 노드 ≤ 9)
-  function layout(local, edges) {
-    var cx = W / 2, cy = H / 2 - 6;
+  function layout(local, edges, W) {
+    var cx = W / 2, cy = H / 2 - 8;
     var maxW = edges.reduce(function (m, e) { return Math.max(m, e.w); }, 0.01);
+    var ring = Math.min(W, H) / 2 - 40;
     local.forEach(function (d, i) {
       if (d.center) { d.x = cx; d.y = cy; }
       else {
         var ang = (i / (local.length - 1)) * Math.PI * 2 + 0.7;
-        d.x = cx + Math.cos(ang) * 55;
-        d.y = cy + Math.sin(ang) * 55;
+        d.x = cx + Math.cos(ang) * ring;
+        d.y = cy + Math.sin(ang) * ring;
       }
       d.vx = 0; d.vy = 0;
     });
-    for (var iter = 0; iter < 260; iter++) {
+    for (var iter = 0; iter < 300; iter++) {
       // 반발력
       for (var a = 0; a < local.length; a++) {
         for (var b = a + 1; b < local.length; b++) {
           var dx = local[b].x - local[a].x, dy = local[b].y - local[a].y;
           var d2 = dx * dx + dy * dy || 1;
-          var f = 1800 / d2, dist = Math.sqrt(d2);
+          var f = 2600 / d2, dist = Math.sqrt(d2);
           var fx = (dx / dist) * f, fy = (dy / dist) * f;
           local[a].vx -= fx; local[a].vy -= fy;
           local[b].vx += fx; local[b].vy += fy;
@@ -122,7 +125,7 @@
         var na = local[e.a], nb = local[e.b];
         var dx = nb.x - na.x, dy = nb.y - na.y;
         var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        var rest = 46 + (1 - e.w / maxW) * 26;
+        var rest = 58 + (1 - e.w / maxW) * 30;
         var f = (dist - rest) * 0.03;
         var fx = (dx / dist) * f, fy = (dy / dist) * f;
         na.vx += fx; na.vy += fy;
@@ -131,17 +134,27 @@
       // 중심 인력 + 적분
       local.forEach(function (d) {
         if (d.center) { d.x = cx; d.y = cy; d.vx = 0; d.vy = 0; return; }
-        d.vx += (cx - d.x) * 0.012;
-        d.vy += (cy - d.y) * 0.012;
+        d.vx += (cx - d.x) * 0.01;
+        d.vy += (cy - d.y) * 0.01;
         d.vx *= 0.85; d.vy *= 0.85;
-        d.x = Math.max(14, Math.min(W - 14, d.x + d.vx));
-        d.y = Math.max(14, Math.min(H - 26, d.y + d.vy));
+        d.x = Math.max(18, Math.min(W - 18, d.x + d.vx));
+        d.y = Math.max(20, Math.min(H - 34, d.y + d.vy));
       });
+    }
+    // 라벨 충돌 회피 — 가까운 라벨은 노드 위쪽으로 플립
+    var nb2 = local.filter(function (d) { return !d.center; });
+    nb2.sort(function (a, b) { return a.x - b.x; });
+    for (var m = 0; m < nb2.length; m++) {
+      for (var n2 = m + 1; n2 < nb2.length; n2++) {
+        var ddx = Math.abs(nb2[n2].x - nb2[m].x);
+        var ddy = Math.abs(nb2[n2].y - nb2[m].y);
+        if (ddx < 78 && ddy < 15 && !nb2[m].flip && !nb2[n2].flip) nb2[n2].flip = true;
+      }
     }
     return maxW;
   }
 
-  function render(local, edges, maxW) {
+  function render(local, edges, maxW, W) {
     var NS = 'http://www.w3.org/2000/svg';
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
@@ -155,8 +168,8 @@
       line.setAttribute('x1', local[e.a].x); line.setAttribute('y1', local[e.a].y);
       line.setAttribute('x2', local[e.b].x); line.setAttribute('y2', local[e.b].y);
       line.setAttribute('class', 'pg-edge');
-      line.setAttribute('stroke-width', (0.6 + 1.4 * norm).toFixed(2));
-      line.style.opacity = (0.3 + 0.4 * norm).toFixed(2);
+      line.setAttribute('stroke-width', (1 + 1.4 * norm).toFixed(2));
+      line.style.opacity = (0.4 + 0.35 * norm).toFixed(2);
       svg.appendChild(line);
     });
 
@@ -165,13 +178,14 @@
       g.setAttribute('class', d.center ? 'pg-node pg-node--center' : 'pg-node');
       var circle = document.createElementNS(NS, 'circle');
       circle.setAttribute('cx', d.x); circle.setAttribute('cy', d.y);
-      circle.setAttribute('r', d.center ? 7 : 4.5);
+      circle.setAttribute('r', d.center ? 8 : 5.5);
       var label = document.createElementNS(NS, 'text');
-      label.setAttribute('x', d.x); label.setAttribute('y', d.y + (d.center ? 16 : 13));
+      label.setAttribute('x', d.x);
+      label.setAttribute('y', d.center ? d.y + 20 : (d.flip ? d.y - 11 : d.y + 17));
       label.setAttribute('class', 'pg-label');
       label.setAttribute('text-anchor', 'middle');
       var t = d.node.label || '';
-      label.textContent = t.length > 9 ? t.slice(0, 9) + '…' : t;
+      label.textContent = t.length > 12 ? t.slice(0, 12) + '…' : t;
       var title = document.createElementNS(NS, 'title');
       title.textContent = t;
       g.appendChild(title); g.appendChild(circle); g.appendChild(label);
@@ -185,13 +199,17 @@
   }
 
   function init() {
+    var rect = canvas.getBoundingClientRect();
+    var W = Math.round(rect.width) || 0;
+    if (W < 180) W = 220; // 측정 실패·숨김 상태 fallback
+
     fetch('/knowledge-graph.json')
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var g = buildLocalGraph(data.nodes || []);
         if (!g) { root.style.display = 'none'; return; }
-        var maxW = layout(g.local, g.edges);
-        render(g.local, g.edges, maxW);
+        var maxW = layout(g.local, g.edges, W);
+        render(g.local, g.edges, maxW, W);
       })
       .catch(function (e) {
         console.error('그래프 뷰 로드 실패:', e);
