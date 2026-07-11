@@ -70,7 +70,7 @@ facebook:
   app_id                    :
   publisher                 :
 og_image                    : "/assets/og-image.jpg" # Open Graph/Twitter default site image
-kakao_js_key                : "9751bcbf097541a85540e2ee01a6b08a" # developers.kakao.com JavaScript 키 (카카오톡 공유). Web 플랫폼 도메인 등록 필수.
+kakao_js_key                : "9e4827c8cb18c86fbc9660a9648c9d52" # JavaScript 키 (이 키의 JavaScript SDK 도메인에 https://tigerjk9.github.io 등록됨). 카카오톡 공유용.
 
 # Analytics
 analytics:
