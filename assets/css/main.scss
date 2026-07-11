@@ -307,28 +307,6 @@ html[data-theme="light"] .post-copy-btn--done {
   color: #fff !important;
 }
 
-.post-url-btn {
-  background: #7e57c2;
-}
-
-.post-url-btn:hover {
-  background: #5e35b1;
-}
-
-.post-url-btn:active,
-.post-url-btn:focus {
-  background: #4527a0;
-}
-
-html[data-theme="light"] .post-url-btn {
-  background: #6a1b9a;
-}
-
-html[data-theme="light"] .post-url-btn:hover {
-  background: #4a148c;
-}
-
-
 /* ==========================================================================
    포스트 소셜 공유 패널
    ========================================================================== */
@@ -403,12 +381,18 @@ html[data-theme="light"] .post-share {
   box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.5);
 }
 
+.share-btn--done {
+  background: #43a047 !important;
+  color: #fff !important;
+}
+
 /* 플랫폼 브랜드 색상 */
 .share-btn--kakao { background: #fee500; color: #3c1e1e; }
 .share-btn--x { background: #000; color: #fff; }
 .share-btn--linkedin { background: #0a66c2; }
 .share-btn--facebook { background: #1877f2; }
 .share-btn--threads { background: #000; color: #fff; }
+.share-btn--copy { background: #7e57c2; }
 
 /* 다크 스킨에서 검정 버튼은 테두리로 배경과 분리 */
 .share-btn--x,

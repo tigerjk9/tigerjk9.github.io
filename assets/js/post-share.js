@@ -63,6 +63,28 @@
     }, 2200);
   }
 
+  function flashButton(btn, doneLabel) {
+    var icon = btn.querySelector('i');
+    var label = btn.querySelector('span');
+    var prevLabel = label ? label.textContent : '';
+    var prevIcon = icon ? icon.className : '';
+    if (icon) icon.className = 'fa-solid fa-check';
+    if (label) label.textContent = doneLabel;
+    btn.classList.add('share-btn--done');
+    setTimeout(function () {
+      if (icon) icon.className = prevIcon;
+      if (label) label.textContent = prevLabel;
+      btn.classList.remove('share-btn--done');
+    }, 2000);
+  }
+
+  // 링크복사 — raw window.location.href 사용 (NFC 인코딩, iOS 카카오톡·메모앱 호환)
+  function copyLink(btn) {
+    copyToClipboard(window.location.href, function () {
+      flashButton(btn, '복사됨!');
+    });
+  }
+
   function shareKakao(btn) {
     if (window.Kakao && window.__kakaoKey) {
       try {
@@ -112,7 +134,8 @@
     threads: function () {
       openPopup('https://www.threads.net/intent/post?text=' +
         encodeURIComponent(shareTitle + ' ' + shareUrl));
-    }
+    },
+    copy: copyLink
   };
 
   panel.addEventListener('click', function (e) {
