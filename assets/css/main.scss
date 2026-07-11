@@ -1370,10 +1370,29 @@ html[data-theme="light"] .recent-posts__empty {
   i { margin-right: 4px; }
 }
 
+.post-graph__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
 #post-graph .post-graph__expand {
   color: #888;
   font-size: 0.75em;
   text-decoration: none;
+
+  &:hover { color: #42a5f5; }
+}
+
+#post-graph .post-graph__zoom {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: #888;
+  font-size: 0.75em;
+  line-height: 1;
+  cursor: pointer;
 
   &:hover { color: #42a5f5; }
 }
@@ -1430,6 +1449,7 @@ html[data-theme="light"] {
   .post-graph__header { border-bottom-color: rgba(0, 0, 0, 0.08); }
   .post-graph__title { color: #666; }
   #post-graph .post-graph__expand { color: #999; &:hover { color: #0078c8; } }
+  #post-graph .post-graph__zoom { color: #999; &:hover { color: #0078c8; } }
   .pg-edge { stroke: #a8b4c0; }
   .pg-label { stroke: rgba(255, 255, 255, 0.92); }
   .pg-node circle { fill: #7d93a8; stroke: rgba(0, 0, 0, 0.2); }
@@ -1438,6 +1458,97 @@ html[data-theme="light"] {
   .pg-node:hover .pg-label { fill: #10151a; }
   .pg-node--center circle { fill: #0078c8; }
   .pg-node--center .pg-label { fill: #10151a; }
+}
+
+/* ── 그래프 확대 모달 ── */
+body.pg-modal-open { overflow: hidden; }
+
+#pg-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: rgba(10, 12, 16, 0.72);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+#pg-modal.open { display: flex; }
+
+.pg-modal__dialog {
+  width: min(90vw, 860px);
+  height: min(82vh, 620px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1d222b;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.5);
+}
+
+.pg-modal__header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pg-modal__title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: #cfd8e3;
+
+  i { margin-right: 6px; color: #42a5f5; }
+}
+
+.pg-modal__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#pg-modal .pg-modal__full {
+  font-size: 0.75em;
+  color: #9aa5b1;
+  text-decoration: none;
+
+  &:hover { color: #42a5f5; }
+}
+
+.pg-modal__close {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #9aa5b1;
+  font-size: 1.05em;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover { color: #fff; }
+}
+
+.pg-modal__canvas {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  .pg-svg { height: 100%; }
+}
+
+.pg-svg--lg .pg-label { font-size: 13px; }
+
+html[data-theme="light"] {
+  #pg-modal { background: rgba(240, 242, 246, 0.72); }
+  .pg-modal__dialog { background: #fff; border-color: rgba(0, 0, 0, 0.12); box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18); }
+  .pg-modal__header { border-bottom-color: rgba(0, 0, 0, 0.08); }
+  .pg-modal__title { color: #2a323c; i { color: #0078c8; } }
+  #pg-modal .pg-modal__full { color: #667077; &:hover { color: #0078c8; } }
+  .pg-modal__close { color: #778088; &:hover { color: #111; } }
 }
 
 /* sticky 컬럼이 뷰포트를 넘지 않도록 그래프 높이만큼 TOC 내부 스크롤 영역 축소 */

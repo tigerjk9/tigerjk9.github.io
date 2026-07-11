@@ -56,7 +56,10 @@ layout: default
             <div id="post-graph">
               <header class="post-graph__header">
                 <h4 class="post-graph__title"><i class="fas fa-project-diagram"></i> 그래프 뷰</h4>
-                <a href="/knowledge-graph/" class="post-graph__expand" title="전체 그래프 보기" aria-label="전체 지식그래프 페이지 열기"><i class="fas fa-expand-alt"></i></a>
+                <span class="post-graph__actions">
+                  <button type="button" id="post-graph-zoom" class="post-graph__zoom" title="크게 보기" aria-label="현재 그래프 크게 보기"><i class="fas fa-search-plus"></i></button>
+                  <a href="/knowledge-graph/" class="post-graph__expand" title="전체 그래프 보기" aria-label="전체 지식그래프 페이지 열기"><i class="fas fa-expand-alt"></i></a>
+                </span>
               </header>
               <div class="post-graph__canvas" id="post-graph-canvas"></div>
             </div>
