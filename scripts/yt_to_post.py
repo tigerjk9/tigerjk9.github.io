@@ -190,6 +190,8 @@ def fetch_video_metadata(url: str) -> dict:
         "skip_download": True,
         "extract_flat": False,
         "nocheckcertificate": True,  # 기업 네트워크 SSL 인증서 오류 우회
+        # web client가 "The page needs to be reloaded" 오류를 내므로 android client 우선
+        "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
         "logger": _SilentLogger(),
     }
 
@@ -232,6 +234,8 @@ def fetch_auto_captions_via_ytdlp(url: str, lang_pref: str = "ko") -> str:
                 "subtitleslangs": [lang_pref, "en"],
                 "subtitlesformat": "vtt",
                 "nocheckcertificate": True,
+                # web client가 "The page needs to be reloaded" 오류를 내므로 android client 우선
+                "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
                 "outtmpl": str(Path(tmpdir) / "%(id)s.%(ext)s"),
                 "logger": _SilentLogger(),
             }
