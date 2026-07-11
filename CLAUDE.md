@@ -83,7 +83,8 @@ bundle exec rake version        # 버전 일괄 업데이트
 |------|----------|
 | 다크/라이트 모드 토글 | `assets/js/theme-toggle.js`, `_includes/masthead.html` |
 | 모바일 사이드바 테마 토글 | `assets/js/sidebar-toggle.js` (`injectMobileSidebarHeader`) |
-| 본문 복사 + 링크 복사 버튼 | `assets/js/post-copy.js`, `_layouts/single.html` |
+| 본문 복사 버튼 (상단) | `assets/js/post-copy.js`, `_layouts/single.html` |
+| 소셜 공유 패널 (카카오톡·X·링크드인·페이스북·스레드·링크복사) | `_includes/post-share.html`, `assets/js/post-share.js`, `assets/css/main.scss`, `_config.yml`(kakao_js_key) |
 | 사이드바 섹션 접기/펼치기 | `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html` |
 | 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
 | 리서치 허브 (논문 탐색+AI 검색) | `research.md`, `scripts/build_research_db.py`, `scripts/build_embeddings.py`, `assets/research-*.json` |
@@ -99,7 +100,11 @@ bundle exec rake version        # 버전 일괄 업데이트
 
 **출처 섹션**: 모든 자동화 포스트의 출처는 `## 출처` 헤딩으로 통일 (기존 `<출처>` 태그 폐기). 프롬프트 템플릿 7개 + 기존 포스트 54개 일괄 변환 완료 (2026-04-28).
 
-**링크 복사**: 포스트 URL만 단독 복사. raw `window.location.href` 사용 (NFC 인코딩 형태). iOS Safari는 한글을 NFD로 클립보드에 저장해 카카오톡·메모앱 등 NFC 기대 환경에서 깨지므로 디코딩된 한글 URL은 모바일에서 위험. 본문 복사 안의 "원문링크:" 표시는 사람이 읽는 텍스트라 디코딩 유지. 버튼은 `.post-copy-wrap` flex 컨테이너에 본문 복사 버튼과 나란히 배치 (모바일에서는 세로 스택).
+**링크 복사**: 포스트 URL만 단독 복사. raw `window.location.href` 사용 (NFC 인코딩 형태). iOS Safari는 한글을 NFD로 클립보드에 저장해 카카오톡·메모앱 등 NFC 기대 환경에서 깨지므로 디코딩된 한글 URL은 모바일에서 위험. 본문 복사 안의 "원문링크:" 표시는 사람이 읽는 텍스트라 디코딩 유지. **링크복사 버튼은 상단이 아니라 하단 소셜 공유 패널에 있음**(아래 참고). 상단 `.post-copy-wrap`엔 본문 복사만 남김.
+
+**소셜 공유 패널** (`_includes/post-share.html` · `assets/js/post-share.js` · `main.scss`의 `.post-share`/`.share-btn`, 2026-07-11): 포스트 하단(`single.html`에서 `page.date` 있는 글, footer meta 뒤·pagination 앞)에 카카오톡·X·링크드인·페이스북·스레드·링크복사 버튼. 테마 기본 `social-share.html`(X·FB·LinkedIn·Bluesky)은 중복이라 제거. `window.__currentPost`(title/url/description/image, `seo.html` OG 이미지 재사용)를 JS가 소비. X·링크드인·페이스북·스레드는 표준 인텐트 URL 팝업(키 불필요).
+- **CSS float 함정**: `.post-share`는 테마 `.page__meta`/`.page__share`처럼 `float:inline-start; width:100%; clear:both` 필수(`_sass/minimal-mistakes/_page.scss:55-63`). 없으면 float된 `.page__content` 옆에 끼어 "오른쪽에 붙은" 것처럼 렌더됨.
+- **카카오톡 = 도메인 2곳 + 키 일치 (에러 4019, 비직관)**: `Kakao.Share.sendDefault`는 ① 제품 링크 관리→웹 도메인(링크 이동) ② 플랫폼 키→JavaScript 키→**JavaScript SDK 도메인**(SDK 인증, 4019 담당) **두 곳** 등록 필요. `_config.yml`의 `kakao_js_key`는 **SDK 도메인이 등록된 바로 그 키**여야 함(JS 키 여러 개면 엉뚱한 키 등록으로 4019 지속 — 실제 `9751bcbf…`→`9e4827c8…` 교체로 해결). 도메인은 scheme+host만(경로/슬래시 자동 제거). JS 키는 도메인 제한 공개 클라이언트 키라 커밋 안전(REST API/Admin 키는 금지). SDK는 `kakao_js_key` 설정 시에만 로드, 미설정 시 카카오 버튼은 OS 공유시트→링크복사 폴백.
 
 **사이드바 섹션 높이**: 데스크톱 `max-height: calc(50vh - 175px) !important` — 두 섹션 합산 시 페이지네이션 라인 근방에서 끝남. 내부 스크롤(얇은 4px 스크롤바) 유지.
 
