@@ -330,6 +330,118 @@ html[data-theme="light"] .post-url-btn:hover {
 
 
 /* ==========================================================================
+   포스트 소셜 공유 패널
+   ========================================================================== */
+
+.post-share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 2.5em 0 1em;
+  padding-top: 1.25em;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="light"] .post-share {
+  border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+.post-share__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.post-share__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.2s ease, background 0.2s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share-btn i {
+  font-size: 14px;
+}
+
+.share-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.share-btn:active {
+  transform: translateY(0);
+}
+
+.share-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.5);
+}
+
+/* 플랫폼 브랜드 색상 */
+.share-btn--kakao { background: #fee500; color: #3c1e1e; }
+.share-btn--x { background: #000; color: #fff; }
+.share-btn--linkedin { background: #0a66c2; }
+.share-btn--facebook { background: #1877f2; }
+.share-btn--threads { background: #000; color: #fff; }
+
+/* 다크 스킨에서 검정 버튼은 테두리로 배경과 분리 */
+.share-btn--x,
+.share-btn--threads {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+html[data-theme="light"] .share-btn--x,
+html[data-theme="light"] .share-btn--threads {
+  border-color: transparent;
+}
+
+/* 공유 토스트 (카카오 폴백 안내 등) */
+.share-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%) translateY(12px);
+  max-width: 90vw;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: rgba(20, 20, 20, 0.95);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.share-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+/* ==========================================================================
    테마 토글 버튼
    ========================================================================== */
 
@@ -1028,6 +1140,22 @@ html[data-theme="light"] .clipboard-copy-button:active {
 
   .post-copy-btn {
     width: 100%;
+    justify-content: center;
+  }
+
+  /* --- 공유 패널 — 모바일: 라벨 위, 버튼 균등 분배 --- */
+  .post-share {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .post-share__buttons {
+    width: 100%;
+  }
+
+  .share-btn {
+    flex: 1 1 auto;
     justify-content: center;
   }
 

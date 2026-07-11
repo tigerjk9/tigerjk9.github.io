@@ -1,0 +1,29 @@
+<div class="post-share" aria-label="이 글 공유하기">
+  <span class="post-share__label"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i> 공유</span>
+  <div class="post-share__buttons">
+    <button type="button" class="share-btn share-btn--kakao" data-share="kakao" aria-label="카카오톡으로 공유하기">
+      <i class="fa-solid fa-comment" aria-hidden="true"></i><span>카카오톡</span>
+    </button>
+    <button type="button" class="share-btn share-btn--x" data-share="x" aria-label="X에 공유하기">
+      <i class="fa-brands fa-x-twitter" aria-hidden="true"></i><span>X</span>
+    </button>
+    <button type="button" class="share-btn share-btn--linkedin" data-share="linkedin" aria-label="링크드인에 공유하기">
+      <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i><span>링크드인</span>
+    </button>
+    <button type="button" class="share-btn share-btn--facebook" data-share="facebook" aria-label="페이스북에 공유하기">
+      <i class="fa-brands fa-facebook-f" aria-hidden="true"></i><span>페이스북</span>
+    </button>
+    <button type="button" class="share-btn share-btn--threads" data-share="threads" aria-label="스레드에 공유하기">
+      <i class="fa-brands fa-threads" aria-hidden="true"></i><span>스레드</span>
+    </button>
+  </div>
+</div>
+
+{%- comment -%}
+  카카오톡 네이티브 공유는 JavaScript 키가 설정된 경우에만 SDK를 로드한다.
+  키가 비어 있으면 카카오 버튼은 post-share.js에서 OS 공유시트/링크복사로 폴백한다.
+{%- endcomment -%}
+{% if site.kakao_js_key %}
+<script async src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
+<script>window.__kakaoKey = {{ site.kakao_js_key | jsonify }};</script>
+{% endif %}

@@ -73,6 +73,8 @@ layout: default
         {% include page__date.html %}
       </footer>
 
+      {% if page.date %}{% include post-share.html %}{% endif %}
+
       {% if page.share %}{% include social-share.html %}{% endif %}
 
       {% include post_pagination.html %}
@@ -102,8 +104,14 @@ layout: default
 </div>
 
 {% if page.title and page.url %}
+{%- assign share_image = page.header.og_image | default: page.header.overlay_image | default: page.header.image | default: page.header.teaser | default: site.og_image -%}
 <script>
-window.__currentPost = { title: {{ page.title | jsonify }}, url: "{{ page.url | absolute_url }}" };
+window.__currentPost = {
+  title: {{ page.title | jsonify }},
+  url: "{{ page.url | absolute_url }}",
+  description: {{ page.description | default: page.excerpt | markdownify | strip_html | strip_newlines | strip | truncate: 150 | jsonify }},
+  image: {% if share_image %}{{ share_image | absolute_url | jsonify }}{% else %}""{% endif %}
+};
 </script>
 {% endif %}
 <script src="{{ '/assets/js/reading-progress.js' | relative_url }}"></script>
