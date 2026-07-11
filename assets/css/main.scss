@@ -334,6 +334,12 @@ html[data-theme="light"] .post-url-btn:hover {
    ========================================================================== */
 
 .post-share {
+  /* 테마의 .page__share와 동일하게 float를 클리어해 본문 하단 전체 폭으로 배치.
+     미적용 시 float된 .page__content 옆에 끼어 "오른쪽에 붙은" 것처럼 렌더됨. */
+  position: relative;
+  float: inline-start;
+  width: 100%;
+  clear: both;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
