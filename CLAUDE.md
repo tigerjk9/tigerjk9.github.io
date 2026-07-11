@@ -42,6 +42,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 - 데이터: Liquid 템플릿 `knowledge-graph.json`이 **노드(포스트)만** 출력 (노드 id = `date+slug`로 고유화, url은 링크 전용). 구버전의 O(N²) 엣지 이중루프와 `graph-data.json`(dead code)은 제거됨 → 페이로드 5MB→236KB
 - 엣지·군집은 전부 클라이언트 계산: 엣지 = 태그 IDF 가중 + 노드당 top-K(8) 가지치기(흔한 허브 태그 디스카운트) / 색·분류 = 연결 구조 Louvain 군집 탐지(클라 직접 구현, 자동 라벨 = 군집내 태그빈도×IDF 상위). forceLink 레이아웃 + degree 비례 노드 반경 + 동적 centroid 라벨 칩
 - 검증 하네스 `.omc/kg-eval/`(gitignore, Ruby 부재 환경에서 Python 산출 재현 + gstack browse 헤드리스). 설계·품질 루브릭은 메모리 `project_knowledge_graph` 참고
+- **미니 그래프 뷰** (`assets/js/post-graph.js`, 2026-07-11): 모든 포스트 우측 sticky 사이드바 "On this page" **위**에 현재 글 + 태그 IDF top-8 이웃을 표시 (Quartz 스타일). D3 무의존 vanilla 포스 시뮬레이션(동기 260 iter 후 정적 SVG), `/knowledge-graph.json`을 `requestIdleCallback`으로 유휴 fetch. 엣지 스코어링은 KG 페이지 `buildEdges`와 동일(IDF 합산, 카테고리 fallback 포함), 이웃 간 엣지는 노드당 top-2. 노드 클릭 → 해당 글 이동, 헤더 확장 아이콘 → `/knowledge-graph/`. 현재 글 미매칭·이웃 0이면 위젯 자동 숨김, 모바일(<1024px) 숨김. sticky 컬럼 뷰포트 초과 방지 위해 그래프 존재 시 `.toc__menu` max-height를 260px 축소(`main.scss`). `single.html`은 `page.toc or page.date`로 aside를 렌더
 
 **리서치 허브** (`/research/`):
 - 페이지: `research.md` (layout `default` — 사이트 내비·푸터 유지, 저자 사이드바 없음). 자체 완결 `<style>`/`<script>`, `#rh-app` 스코프. 테마 대응(다크 기본 + `html[data-theme="light"] #rh-app` 오버라이드). 스크립트는 `{% raw %}` 래핑(Liquid 안전)
@@ -68,6 +69,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 **Custom Sidebar** (`_includes/sidebar/`):
 - `categories.html` — 카테고리별 포스트 수
 - `tag_cloud.html` — 태그 클라우드
+- `recent-posts.html` — 최근 방문 포스트 (localStorage `recentPosts`, MAX 8개, `window.__currentPost` 소비)
 - `_config.yml`의 `sidebar` 키에서 설정
 
 ### Theme Customization
@@ -85,6 +87,8 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 모바일 사이드바 테마 토글 | `assets/js/sidebar-toggle.js` (`injectMobileSidebarHeader`) |
 | 본문 복사 버튼 (상단) | `assets/js/post-copy.js`, `_layouts/single.html` |
 | 소셜 공유 패널 (카카오톡·X·링크드인·페이스북·스레드·링크복사) | `_includes/post-share.html`, `assets/js/post-share.js`, `assets/css/main.scss`, `_config.yml`(kakao_js_key) |
+| 포스트 미니 그래프 뷰 (TOC 위 sticky, Quartz 스타일) | `assets/js/post-graph.js`, `_layouts/single.html`, `assets/css/main.scss` |
+| 최근 방문 포스트 사이드바 (localStorage, 8개) | `_includes/sidebar/recent-posts.html`, `assets/css/main.scss` |
 | 사이드바 섹션 접기/펼치기 | `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html` |
 | 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
 | 리서치 허브 (논문 탐색+AI 검색) | `research.md`, `scripts/build_research_db.py`, `scripts/build_embeddings.py`, `assets/research-*.json` |

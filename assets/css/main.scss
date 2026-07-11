@@ -1338,6 +1338,108 @@ html[data-theme="light"] .recent-posts__empty {
   color: #999;
 }
 
+
+/* ==========================================================================
+   포스트 미니 그래프 뷰 (우측 사이드바 "On this page" 위, Quartz 스타일)
+   ========================================================================== */
+
+#post-graph {
+  margin-bottom: 1em;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.post-graph__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 11px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.post-graph__title {
+  margin: 0;
+  font-size: 0.72em;
+  font-weight: 700;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  i { margin-right: 4px; }
+}
+
+#post-graph .post-graph__expand {
+  color: #888;
+  font-size: 0.75em;
+  text-decoration: none;
+
+  &:hover { color: #42a5f5; }
+}
+
+.post-graph__canvas { display: block; }
+
+.pg-svg {
+  display: block;
+  width: 100%;
+  height: 210px;
+}
+
+.pg-edge { stroke: #5a6572; }
+
+.pg-node {
+  cursor: pointer;
+
+  circle {
+    fill: #7d8b99;
+    stroke: rgba(255, 255, 255, 0.25);
+    stroke-width: 1;
+    transition: fill 0.15s ease;
+  }
+
+  .pg-label {
+    fill: #9aa5b1;
+    font-size: 8.5px;
+    pointer-events: none;
+  }
+
+  &:hover circle { fill: #42a5f5; }
+  &:hover .pg-label { fill: #cfd8e3; }
+}
+
+.pg-node--center {
+  cursor: default;
+
+  circle { fill: #42a5f5; stroke: rgba(255, 255, 255, 0.4); }
+  .pg-label { fill: #d7e3f0; font-weight: 700; }
+}
+
+html[data-theme="light"] {
+  #post-graph { border-color: rgba(0, 0, 0, 0.12); background: rgba(0, 0, 0, 0.02); }
+  .post-graph__header { border-bottom-color: rgba(0, 0, 0, 0.08); }
+  .post-graph__title { color: #666; }
+  #post-graph .post-graph__expand { color: #999; &:hover { color: #0078c8; } }
+  .pg-edge { stroke: #b6c2cd; }
+  .pg-node circle { fill: #8fa0b0; stroke: rgba(0, 0, 0, 0.15); }
+  .pg-node .pg-label { fill: #666e77; }
+  .pg-node:hover circle { fill: #0078c8; }
+  .pg-node--center circle { fill: #0078c8; }
+  .pg-node--center .pg-label { fill: #223344; }
+}
+
+/* sticky 컬럼이 뷰포트를 넘지 않도록 그래프 높이만큼 TOC 내부 스크롤 영역 축소 */
+@media (min-width: 1024px) {
+  .sidebar__right.sticky #post-graph ~ .toc .toc__menu {
+    max-height: calc(100vh - 7em - 260px);
+  }
+}
+
+/* 모바일: 우측 사이드바가 본문 상단 인라인로 밀리므로 그래프는 숨김 (TOC 드로어 별도 존재) */
+@media (max-width: 1023px) {
+  #post-graph { display: none; }
+}
+
 // ──────────────────────────────────────────────────────────────
 // Wellbeing 기능 스타일
 // ──────────────────────────────────────────────────────────────

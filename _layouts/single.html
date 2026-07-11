@@ -50,12 +50,23 @@ layout: default
       </div>
 
       <section class="page__content" itemprop="text">
-        {% if page.toc %}
-          <aside class="sidebar__right {% if page.toc_sticky %}sticky{% endif %}">
+        {% if page.toc or page.date %}
+          <aside class="sidebar__right {% if page.toc_sticky or page.date %}sticky{% endif %}">
+            {% if page.date %}
+            <div id="post-graph">
+              <header class="post-graph__header">
+                <h4 class="post-graph__title"><i class="fas fa-project-diagram"></i> 그래프 뷰</h4>
+                <a href="/knowledge-graph/" class="post-graph__expand" title="전체 그래프 보기" aria-label="전체 지식그래프 페이지 열기"><i class="fas fa-expand-alt"></i></a>
+              </header>
+              <div class="post-graph__canvas" id="post-graph-canvas"></div>
+            </div>
+            {% endif %}
+            {% if page.toc %}
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "On this page" }}</h4></header>
               {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
             </nav>
+            {% endif %}
           </aside>
         {% endif %}
         {{ content }}
