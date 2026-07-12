@@ -2,7 +2,7 @@
 title: K-12 AI 교육, 컴퓨팅 사고를 어떻게 통합할 것인가?
 date: 2026-07-12 14:27:41 +0900
 categories: [AI디지털기반교육혁신, 교육공학]
-tags: [컴퓨팅사고, AI교육, 미래교육, PBL, 교사전문성, 평가혁신]
+tags: [논문리뷰, 컴퓨팅사고, AI교육, 미래교육, PBL, 교사전문성, 평가혁신]
 header:
   teaser: /assets/integrating-computational-thinking-thumb.jpg
 permalink: /post/integrating-computational-thinking/
