@@ -4,17 +4,27 @@ layout: archive
 
 {{ content }}
 
-<h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
+{% assign total_posts = site.posts | size %}
+
+<h3 class="archive__subtitle recent-posts__heading">
+  <span>{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</span>
+  <span class="recent-posts__total">총 {{ total_posts }}편</span>
+</h3>
 
 {% if paginator %}
   {% assign posts = paginator.posts %}
+  {% assign seq_offset = paginator.page | minus: 1 | times: paginator.per_page %}
 {% else %}
   {% assign posts = site.posts %}
+  {% assign seq_offset = 0 %}
 {% endif %}
 
 {% assign entries_layout = page.entries_layout | default: 'list' %}
-<div class="entries-{{ entries_layout }}">
-  {% include documents-collection.html entries=posts type=entries_layout %}
+<div class="entries-{{ entries_layout }} recent-posts">
+  {%- for post in posts -%}
+    {% assign entry_seq = total_posts | minus: seq_offset | minus: forloop.index0 %}
+    {% include archive-single.html type=entries_layout seq=entry_seq %}
+  {%- endfor -%}
 </div>
 
 {% include paginator.html %}

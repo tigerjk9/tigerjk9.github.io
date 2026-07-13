@@ -2300,5 +2300,331 @@ html[data-theme="light"] .wb-footer-grid {
   overflow: hidden;
 }
 
+// ──────────────────────────────────────────────────────────────
+// 프로필 아바타 — 닷커넥터 궤도 프레임 (2026-07-13)
+// 얇은 링 + 파랑 혜성 아크 + 파랑·앰버 점 2개(그래프 노드 은유).
+// 호버 시 궤도가 한 번 회전. 데스크톱(≥1024px)에서만 적용.
+// ──────────────────────────────────────────────────────────────
+
+@media screen and (min-width: 1024px) {
+  .author__avatar {
+    position: relative;
+    padding: 13px;
+
+    a {
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+    }
+
+    img {
+      padding: 0;
+      border: none;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    a:hover img {
+      transform: scale(1.025);
+    }
+
+    /* 링 + 혜성 아크 (링 형태로 마스킹) */
+    a::before {
+      content: "";
+      position: absolute;
+      inset: -13px;
+      border-radius: 50%;
+      background:
+        conic-gradient(from 240deg,
+          rgba(66, 165, 245, 0) 0deg,
+          rgba(66, 165, 245, 0.06) 30deg,
+          rgba(66, 165, 245, 0.75) 116deg,
+          rgba(66, 165, 245, 0) 121deg),
+        conic-gradient(rgba(66, 165, 245, 0.16) 0turn 1turn);
+      -webkit-mask: radial-gradient(circle closest-side,
+        transparent calc(100% - 5.5px), #000 calc(100% - 4.5px),
+        #000 calc(100% - 3.5px), transparent calc(100% - 2.5px));
+      mask: radial-gradient(circle closest-side,
+        transparent calc(100% - 5.5px), #000 calc(100% - 4.5px),
+        #000 calc(100% - 3.5px), transparent calc(100% - 2.5px));
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    /* 궤도 위의 점 2개 — 링 원주(반지름의 94%) 위에 배치 */
+    a::after {
+      content: "";
+      position: absolute;
+      inset: -13px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle 4px at 50% 2.94%, #42a5f5 3px, rgba(66, 165, 245, 0) 4px),
+        radial-gradient(circle 3px at 83.3% 83.3%, #e8a13a 2.2px, rgba(232, 161, 58, 0) 3px);
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    a:hover::before,
+    a:hover::after {
+      transform: rotate(160deg);
+    }
+  }
+}
+
+html[data-theme="light"] .author__avatar a::before {
+  background:
+    conic-gradient(from 240deg,
+      rgba(0, 120, 200, 0) 0deg,
+      rgba(0, 120, 200, 0.05) 30deg,
+      rgba(0, 120, 200, 0.7) 116deg,
+      rgba(0, 120, 200, 0) 121deg),
+    conic-gradient(rgba(0, 120, 200, 0.18) 0turn 1turn);
+}
+
+html[data-theme="light"] .author__avatar a::after {
+  background:
+    radial-gradient(circle 4px at 50% 2.94%, #0078c8 3px, rgba(0, 120, 200, 0) 4px),
+    radial-gradient(circle 3px at 83.3% 83.3%, #d98a1f 2.2px, rgba(217, 138, 31, 0) 3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .author__avatar img,
+  .author__avatar a::before,
+  .author__avatar a::after {
+    transition: none;
+  }
+
+  .author__avatar a:hover img,
+  .author__avatar a:hover::before,
+  .author__avatar a:hover::after {
+    transform: none;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// 홈 최근 포스트 리스트 — 인덱스(장부)형 재디자인 (2026-07-13)
+// 왼쪽 아웃라인 넘버 컬럼 + 카테고리·날짜 아이브로우 + 태그 행.
+// 넘버는 Georgia 올드스타일 숫자(로딩 비용 0)로 에디토리얼 무드.
+// ──────────────────────────────────────────────────────────────
+
+.recent-posts__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.recent-posts__total {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 0.78em;
+  letter-spacing: 0.03em;
+  color: rgba(66, 165, 245, 0.9);
+  white-space: nowrap;
+}
+
+html[data-theme="light"] .recent-posts__total {
+  color: #0078c8;
+}
+
+.recent-posts .list__item {
+  border-bottom: 1px solid rgba(234, 234, 234, 0.09);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+html[data-theme="light"] .recent-posts .list__item {
+  border-bottom-color: rgba(37, 42, 52, 0.1);
+}
+
+.recent-posts .archive__item {
+  display: grid;
+  grid-template-columns: 3.2em minmax(0, 1fr);
+  column-gap: 1.3em;
+  padding: 1.45em 0 1.35em;
+}
+
+/* 아웃라인 넘버 — 호버 시 액센트로 채워짐 */
+.recent-posts .entry-seq {
+  align-self: start;
+  padding-top: 0.08em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.65em;
+  line-height: 1;
+  text-align: right;
+  letter-spacing: 0.03em;
+  color: rgba(234, 234, 234, 0.28);
+  transition: color 0.3s ease, -webkit-text-stroke-color 0.3s ease;
+}
+
+@supports (-webkit-text-stroke: 1px #000) {
+  .recent-posts .entry-seq {
+    color: transparent;
+    -webkit-text-stroke: 1.1px rgba(234, 234, 234, 0.38);
+  }
+}
+
+.recent-posts .archive__item:hover .entry-seq {
+  color: #42a5f5;
+  -webkit-text-stroke-color: #42a5f5;
+}
+
+html[data-theme="light"] .recent-posts .entry-seq {
+  color: rgba(37, 42, 52, 0.3);
+}
+
+@supports (-webkit-text-stroke: 1px #000) {
+  html[data-theme="light"] .recent-posts .entry-seq {
+    color: transparent;
+    -webkit-text-stroke: 1.1px rgba(37, 42, 52, 0.35);
+  }
+}
+
+html[data-theme="light"] .recent-posts .archive__item:hover .entry-seq {
+  color: #0078c8;
+  -webkit-text-stroke-color: #0078c8;
+}
+
+/* 아이브로우 — 카테고리 점 마커 + 날짜 */
+.recent-posts .entry-eyebrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3em 0.9em;
+  margin: 0 0 0.15em;
+  font-size: 0.72em;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+.recent-posts .entry-eyebrow__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 700;
+  color: #7fbdf0;
+
+  &::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #42a5f5;
+    flex-shrink: 0;
+  }
+}
+
+html[data-theme="light"] .recent-posts .entry-eyebrow__cat {
+  color: #0d6cb0;
+
+  &::before {
+    background: #0078c8;
+  }
+}
+
+.recent-posts .entry-eyebrow__date {
+  color: rgba(234, 234, 234, 0.45);
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-theme="light"] .recent-posts .entry-eyebrow__date {
+  color: #8a929c;
+}
+
+/* 제목 */
+.recent-posts .archive__item-title {
+  margin: 0.1em 0 0.3em;
+  font-size: 1.13em;
+  line-height: 1.42;
+  letter-spacing: -0.015em;
+
+  a {
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+}
+
+.recent-posts .archive__item:hover .archive__item-title a,
+.recent-posts .archive__item:hover .archive__item-title a:visited {
+  color: #42a5f5;
+}
+
+html[data-theme="light"] .recent-posts .archive__item:hover .archive__item-title a,
+html[data-theme="light"] .recent-posts .archive__item:hover .archive__item-title a:visited {
+  color: #0078c8;
+}
+
+/* 발췌 */
+.recent-posts .archive__item-excerpt {
+  margin-top: 0.15em;
+  line-height: 1.65;
+}
+
+/* 태그 행 */
+.recent-posts .entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em 0.95em;
+  margin: 0.55em 0 0;
+  font-size: 0.74em;
+  letter-spacing: 0.02em;
+}
+
+.recent-posts .entry-tags__tag {
+  color: rgba(234, 234, 234, 0.42);
+  transition: color 0.25s ease;
+}
+
+.recent-posts .archive__item:hover .entry-tags__tag {
+  color: rgba(234, 234, 234, 0.62);
+}
+
+html[data-theme="light"] .recent-posts .entry-tags__tag {
+  color: #9aa2ac;
+}
+
+html[data-theme="light"] .recent-posts .archive__item:hover .entry-tags__tag {
+  color: #6b7480;
+}
+
+/* 페이지 로드 시 스태거 등장 */
+@media (prefers-reduced-motion: no-preference) {
+  .recent-posts .list__item {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rp-rise 0.55s cubic-bezier(0.25, 1, 0.35, 1) forwards;
+  }
+
+  @for $i from 1 through 10 {
+    .recent-posts .list__item:nth-child(#{$i}) {
+      animation-delay: #{($i - 1) * 0.045}s;
+    }
+  }
+}
+
+@keyframes rp-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 모바일 */
+@media (max-width: 600px) {
+  .recent-posts .archive__item {
+    grid-template-columns: 2.5em minmax(0, 1fr);
+    column-gap: 0.85em;
+    padding: 1.2em 0 1.1em;
+  }
+
+  .recent-posts .entry-seq {
+    font-size: 1.3em;
+    padding-top: 0.2em;
+  }
+}
+
 @import "lectures";
 
