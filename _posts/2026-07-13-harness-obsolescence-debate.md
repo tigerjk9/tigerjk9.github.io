@@ -4,9 +4,15 @@ date: 2026-07-13 15:37:41 +0900
 categories: [AI, 소프트웨어개발]
 tags: [AI, LLM, 프롬프트엔지니어링, 에이전트, 소프트웨어공학, AI혁신, 기술]
 permalink: /post/harness-obsolescence-debate/
+header:
+  teaser: /assets/harness-obsolescence-debate-thumb.jpg
 ---
 
 최근 인공지능 업계에서 '하네스 무용론'이라는 주장이 확산하고 있다. OpenAI와 Google의 고위 임원들이 차세대 모델이 현재의 하네스를 무용지물로 만들 것이라고 언급하며 이러한 논의에 불을 붙였다. 그러나 하네스에 대한 이런 단순한 해석은 오해를 부르며, 실제 상황은 더욱 복잡하다.
+
+<figure>
+<img src="/assets/harness-obsolescence-debate-thumb.jpg" alt="AI 하네스 무용론의 진실: 사라지는 것과 더 중요해지는 것">
+</figure>
 
 ## AI 하네스 무용론, 정말인가
 

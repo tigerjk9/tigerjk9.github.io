@@ -4,8 +4,14 @@ date: 2026-07-13 15:37:36 +0900
 categories: [AI, 디지털 리터러시]
 tags: [AI윤리, 디지털윤리, 온라인예절, 디지털미디어, 자기조절, 개인정보보호, 프롬프트엔지니어링, 디지털시민성]
 permalink: /post/ai-digital-literacy-worksheets/
+header:
+  teaser: /assets/ai-digital-literacy-worksheets-thumb.webp
 ---
 오늘날 우리는 온라인 공간에서 소통하고 인공지능과 함께 문제를 해결하는 시대를 살아간다. 이러한 디지털 환경에서 개인의 책임 있는 태도는 더욱 중요해진다. 올바른 온라인 예절, 미디어 사용 조절 능력, 그리고 인공지능을 현명하게 활용하는 방법은 디지털 시민으로서 갖추어야 할 핵심 역량이다.
+
+<figure>
+<img src="/assets/ai-digital-literacy-worksheets-thumb.webp" alt="디지털 시민의 책임: 온라인 소통부터 AI 활용까지">
+</figure>
 
 ## 디지털 소통과 윤리
 

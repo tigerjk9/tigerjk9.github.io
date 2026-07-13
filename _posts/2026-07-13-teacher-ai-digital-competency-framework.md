@@ -4,8 +4,14 @@ date: 2026-07-13 15:37:39 +0900
 categories: [교육, 교육정책]
 tags: [AI, 에듀테크, 교육혁신, 교사전문성, 미래교육, 디지털교육, AI윤리, 전문적학습공동체]
 permalink: /post/teacher-ai-digital-competency-framework/
+header:
+  teaser: /assets/teacher-ai-digital-competency-framework-thumb.jpg
 ---
 AI와 디지털 기술이 급변하는 시대, 교사에게 필요한 역량은 무엇일까. 교육부는 교원이 AI·디지털 기술을 교육적 목적에 맞게 활용해 학생 성장을 지원하도록 **교원 AI·디지털 교육 역량체계 및 연수 예시안**을 개발했다. 이 자료는 교사의 AI·디지털 기반 수업 역량 강화를 위한 지침이자 참고 자료로 기능한다.
+
+<figure>
+<img src="/assets/teacher-ai-digital-competency-framework-thumb.jpg" alt="교원 AI 디지털 교육 역량체계 교육 혁신 방향">
+</figure>
 
 ## 교원 AI·디지털 교육 역량체계 구조
 
