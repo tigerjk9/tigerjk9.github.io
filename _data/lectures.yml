@@ -120,6 +120,27 @@
     - AI윤리
     - 지도자료
 
+- slug: student-question-assessment
+  title: "학생 질문 중심 수업과 평가 — 초등 선도교원 연수"
+  subtitle: "질문 교육 내용 체계 · QFT · 수업 모형 · 서·논술형 평가 · 10편"
+  audience: "초등 교사·교육 관계자"
+  slide_count: 249
+  chapter_count: 10
+  date: "2026-07-15"
+  hub_url: /lectures/student-question-assessment/
+  locked: true
+  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtDLJ8DAVWH9/HE4IrkepdDbbiNoHkW0d2nsXTEA=="
+  thumbnail: /assets/lectures/student-question-assessment/cover.jpg
+  author: "교육부 · 경상북도교육청 (원본 연수자료)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "10편 연수 슬라이드 전체를 편별 요약과 함께 정리"
+  tags:
+    - 학생질문
+    - 질문중심수업
+    - 과정중심평가
+    - 서논술형평가
+    - 교원연수
+
 - slug: aiep-account-tutorial
   title: "AIEP 학교 담당자 계정 관리 안내"
   subtitle: "학생 계정 일괄생성 · 비밀번호 일괄변경 · 전입 처리 · 6단계 로드맵"
