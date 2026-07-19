@@ -239,6 +239,9 @@ AI·교육 논문리뷰 **147편**을 태그·연도·키워드로 탐색하는 
 | 맨 위로 버튼 | `back-to-top.js` |
 | 조회수 카운터 | `myhits.vercel.app` 배지 |
 | 웰빙 코너 | `wellbeing.js` (모듈별 try/catch 격리) |
+| NE 수업 디자이너 | `tools/ne-designer/` — 책·인물·곤란을 입력하면 노벨 엔지니어링 7단계 수업 계획과 Gems 캐릭터 프롬프트(안전 가드레일 포함)를 만들어 주는 정적 단독 페이지 |
+
+`tools/<슬러그>/index.html`은 front matter 없이 정적 파일로 그대로 배포되어, 테마 CSS·사이드바 스크립트의 간섭 없이 자체 완결 도구를 올릴 수 있다.
 
 상단 네비게이션은 `_data/navigation.yml`에서 외부 서비스([쉼표](https://comma-for-wellbeing.vercel.app/) · [기록 대화](https://dotconnector-log.vercel.app/) · [말씀의 길](https://malsseum-ui.vercel.app/))로 직접 연결된다.
 

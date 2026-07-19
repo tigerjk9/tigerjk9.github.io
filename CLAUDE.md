@@ -96,6 +96,9 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 강의자료 아카이브 (강의+도서 허브) | `_pages/lectures.md`, `_data/lectures.yml`, `_data/books.yml`, `scripts/gen_book_covers.py`, `_sass/_lectures.scss` |
 | AI에게 묻기 (RAG 챗봇, 주인장 키 + 방문자 BYOK) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
 | 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
+| NE 수업 디자이너 (노벨 엔지니어링 수업 설계기) | `tools/ne-designer/index.html` (front matter 없는 정적 단독 HTML) |
+
+**`tools/` 정적 단독 페이지**: front matter 없는 `tools/<슬러그>/index.html`은 Jekyll이 정적 파일로 그대로 복사한다(exclude 목록에 없음). 테마 CSS·`sidebar-toggle.js`가 로드되지 않아 라이트모드 앵커 색·플로팅 ☰ 버튼 함정이 원천 차단된다 — layout default 커스텀 페이지에 필요한 `#앱ID` 스코핑도 불필요. 첫 사례가 NE 수업 디자이너(`/tools/ne-designer/`). 검증은 스크래치패드 복사 후 Edge 헤드리스 `#demo` 해시 렌더 캡처(메모리 `project_tools_static_pages`).
 
 **다크/라이트 모드**: `html[data-theme="light"]` CSS 레이어 방식. 컴파일된 dark skin 위에 light 오버라이드 덮기. anti-FOUC 인라인 스크립트를 `_includes/head.html` CSS `<link>` 이전에 삽입. `theme-toggle.js`는 이벤트 위임 방식 — masthead와 모바일 사이드바의 `.theme-toggle` 버튼 모두 처리.
 
