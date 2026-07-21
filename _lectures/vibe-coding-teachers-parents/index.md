@@ -94,10 +94,10 @@ leaflet.js로 만드는 인터랙티브 역사 지도다. 성취기준 [10한사
 
 ## 출처와 크레딧
 
-- 원작 워크숍: math-tong — 「교사와 학부모를 위한 바이브코딩」 (Padlet)
-- 책: 《교사와 학부모를 위한 바이브 코딩》 황건호·신종환·김형규·김명휘 · 씨마스21
-- 프롬프트 갤러리·템플릿: vibecoding25 (Notion)
-- 실습 안내: joo.is/vibe0707
+- 원작 워크숍: [math-tong](https://blog.naver.com/math-tong){:target="_blank"} — [「교사와 학부모를 위한 바이브코딩」 Padlet](https://padlet.com/mathtong/padlet-xvjce8nx396tj4j7){:target="_blank"}
+- 책: [《교사와 학부모를 위한 바이브 코딩》](https://product.kyobobook.co.kr/detail/S000220363390){:target="_blank"} 황건호·신종환·김형규·김명휘 · 씨마스21 ([예스24](https://www.yes24.com/product/goods/192876161){:target="_blank"})
+- 프롬프트 갤러리·템플릿: [vibecoding25 (Notion)](https://vibecoding25.notion.site/template?source=copy_link){:target="_blank"}
+- 실습 안내: [joo.is/vibe0707](https://joo.is/vibe0707){:target="_blank"}
 - 큐레이션: 김진관 (닷커넥터) — 원작자의 워크숍을 강의 슬라이드로 다시 정리한 버전
 
 {% raw %}
