@@ -6,6 +6,24 @@ author_profile: false
 toc: false
 ---
 
+## 닷커넥터의 서재 — 출간 도서
+
+교실과 AI를 잇는 기록. 닷커넥터(김진관)가 쓰고 함께 지은 정식 출간 도서 {{ site.data.published_books | size }}권이다. 표지를 누르면 서점 상세 페이지로 이동한다.
+
+<div class="pub-book-grid">
+{% for pb in site.data.published_books %}
+  {% if pb.url %}<a href="{{ pb.url }}" class="pub-book-card" target="_blank" rel="noopener">{% else %}<div class="pub-book-card">{% endif %}
+    <div class="pub-cover"><img src="{{ pb.cover }}" alt="{{ pb.title }} 표지" loading="lazy"></div>
+    {% if pb.badge %}<span class="pub-badge">{{ pb.badge }}</span>{% endif %}
+    {% if pb.series %}<span class="pub-series">{{ pb.series }}</span>{% elsif pb.edition %}<span class="pub-series">{{ pb.edition }}</span>{% endif %}
+    <div class="pub-title">{{ pb.title }}</div>
+    {% if pb.subtitle %}<div class="pub-sub">{{ pb.subtitle }}</div>{% endif %}
+    <div class="pub-meta">{{ pb.authors }}{% if pb.publisher %} · {{ pb.publisher }}{% endif %}{% if pb.year %} · {{ pb.year }}{% endif %}</div>
+    {% if pb.url %}<div class="pub-buy">{{ pb.store }}에서 보기 ↗</div>{% endif %}
+  {% if pb.url %}</a>{% else %}</div>{% endif %}
+{% endfor %}
+</div>
+
 ## 워크숍 강의
 
 {% if site.data.lectures.size == 0 %}

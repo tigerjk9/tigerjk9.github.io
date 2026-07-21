@@ -1,0 +1,88 @@
+# 닷커넥터의 서재 — 정식 출간(공저 포함) 도서 10권. /lectures/ 허브 최상단 섹션에서 소비.
+# 표지: 서점 공식 표지(교보·알라딘·테크빌) 6권 + 서재 이미지 크롭 4권(고화질 확보 시 교체).
+# url 없는 항목(개정판·교육르네상스·인사이트·교실혁명 초등편)은 서지 확보 시 보강한다.
+# 순서는 "닷커넥터의 서재" 이미지 배열 그대로 (윗줄 좌→우, 아랫줄 좌→우).
+- slug: ai-tool-library-revised
+  title: "교육자를 위한 디지털 AI 도구 라이브러리"
+  edition: "개정판"
+  publisher: "박영스토리"
+  authors: "김진관 외 7인"
+  badge: "NEW"
+  cover: /assets/lectures/pubbooks/ai-tool-library-revised.jpg
+
+- slug: edu-renaissance
+  title: "대한민국 교육르네상스"
+  subtitle: "대전환시대 교육의 본질을 탐하다"
+  authors: "김진관 외 공저"
+  cover: /assets/lectures/pubbooks/edu-renaissance.jpg
+
+- slug: classroom-ai-insight
+  title: "교실 속 AI 디지털 교육 인사이트"
+  publisher: "박영스토리"
+  authors: "김진관 외 공저"
+  cover: /assets/lectures/pubbooks/classroom-ai-insight.jpg
+
+- slug: ai-lesson-design-guide
+  title: "요즘 교사를 위한 AI 디지털 수업 설계 가이드"
+  subtitle: "with 2022 개정 교육과정"
+  publisher: "한빛미디어"
+  year: "2025"
+  authors: "김진관·김상섭·이대형·이상선·윤신영"
+  url: "https://product.kyobobook.co.kr/detail/S000217326655"
+  store: "교보문고"
+  cover: /assets/lectures/pubbooks/ai-lesson-design-guide.jpg
+
+- slug: ai-tool-library-2025
+  title: "2025 교육자를 위한 디지털 AI 도구 라이브러리"
+  publisher: "박영스토리"
+  year: "2025"
+  authors: "김진관 외 7인"
+  url: "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=362803391"
+  store: "알라딘"
+  cover: /assets/lectures/pubbooks/ai-tool-library-2025.jpg
+
+- slug: chatgpt-ai-project-class
+  title: "챗GPT로 시작하는 생성형 AI 프로젝트 수업"
+  subtitle: "2022 개정 교육과정 기반"
+  publisher: "테크빌교육"
+  authors: "김진관 외 공저"
+  url: "https://shop.teacherville.co.kr/goods/view?no=1181933"
+  store: "테크빌교육"
+  cover: /assets/lectures/pubbooks/chatgpt-ai-project-class.jpg
+
+- slug: classroom-revolution-sped
+  title: "교사가 이끄는 교실혁명 — 에듀테크 100% 활용하기"
+  series: "특수교육편"
+  publisher: "박영스토리"
+  authors: "김진관 외 공저"
+  url: "https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000011555746"
+  store: "교보문고"
+  cover: /assets/lectures/pubbooks/classroom-revolution-sped.jpg
+
+- slug: classroom-revolution-mid
+  title: "교사가 이끄는 교실혁명 — AI 디지털교과서 100% 활용하기"
+  series: "중등편"
+  publisher: "박영스토리"
+  year: "2024"
+  authors: "정제영·김진관 외 6인"
+  url: "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=349748523"
+  store: "알라딘"
+  cover: /assets/lectures/pubbooks/classroom-revolution-mid.jpg
+
+- slug: classroom-revolution-elem
+  title: "교사가 이끄는 교실혁명 — AI 디지털교과서 100% 활용하기"
+  series: "초등편"
+  publisher: "박영스토리"
+  year: "2024"
+  authors: "김진관 외 공저"
+  cover: /assets/lectures/pubbooks/classroom-revolution-elem.jpg
+
+- slug: detective-jun-ai-note
+  title: "명탐정 준의 AI 파란노트"
+  subtitle: "AI 스토리텔링 교육 입문서"
+  publisher: "에이블북스"
+  year: "2023"
+  authors: "김진관·반창모·신나라·이병훈·조민국·한호석"
+  url: "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=330260167"
+  store: "알라딘"
+  cover: /assets/lectures/pubbooks/detective-jun-ai-note.jpg
