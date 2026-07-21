@@ -27,6 +27,7 @@ AI에게 자연어로 지시해 소프트웨어를 만드는 바이브코딩을,
 ## 자료 내려받기
 
 - **[슬라이드 전체 내려받기 (PDF · 28장 · 약 2MB)](/assets/lectures/vibe-coding-teachers-parents/slides.pdf){:target="_blank"}**
+- **[편집용 파워포인트 내려받기 (PPTX · 28장 · 약 0.5MB)](/assets/lectures/vibe-coding-teachers-parents/slides.pptx){:target="_blank"}** — 학교·수업에 맞게 자유롭게 수정
 
 ## 도입 — 말이 결과를 만든다
 
