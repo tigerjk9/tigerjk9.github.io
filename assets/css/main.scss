@@ -237,6 +237,33 @@ $max-width: 100%;
   }
 }
 
+/* --- 저서 미니 위젯 (사이드바, 출간 도서 상위 3권) --- */
+.books-widget__covers {
+  display: flex;
+  gap: 6px;
+}
+.books-widget__covers a {
+  flex: 1;
+  min-width: 0;
+  line-height: 0;
+}
+.books-widget__covers img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+.books-widget__covers a:hover img { transform: translateY(-2px); }
+.books-widget__more {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.72em;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 @media screen and (max-width: 1023px) {
   .sidebar.sticky {
     position: fixed;

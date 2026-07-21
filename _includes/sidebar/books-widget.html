@@ -1,0 +1,8 @@
+<div class="books-widget">
+  <div class="books-widget__covers">
+    {% for pb in site.data.published_books limit: 3 %}
+    <a href="{{ pb.url }}" target="_blank" rel="noopener" title="{{ pb.title }}{% if pb.edition %} ({{ pb.edition }}){% endif %}"><img src="{{ pb.cover }}" alt="{{ pb.title }} 표지" loading="lazy"></a>
+    {% endfor %}
+  </div>
+  <a class="books-widget__more" href="/lectures/">닷커넥터의 서재 — 출간 도서 {{ site.data.published_books | size }}권 →</a>
+</div>

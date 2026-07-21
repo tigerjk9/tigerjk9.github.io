@@ -108,6 +108,8 @@ sidebar:
     html: sidebar/tag_cloud.html
   - title: "최근 방문"
     html: sidebar/recent-posts.html
+  - title: "저서"
+    html: sidebar/books-widget.html
 
 head_scripts:
   - /assets/js/wellbeing.js
