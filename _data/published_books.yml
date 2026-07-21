@@ -1,6 +1,5 @@
 # 닷커넥터의 서재 — 정식 출간(공저 포함) 도서 10권. /lectures/ 허브 최상단 섹션에서 소비.
-# 표지: 서점 공식 표지(교보·알라딘·테크빌) 6권 + 서재 이미지 크롭 4권(고화질 확보 시 교체).
-# url 없는 항목(개정판·교육르네상스·인사이트·교실혁명 초등편)은 서지 확보 시 보강한다.
+# 표지: 전권 서점 공식 표지(교보·알라딘·테크빌·예스24 CDN). 서점 링크 전권 완비.
 # 순서는 "닷커넥터의 서재" 이미지 배열 그대로 (윗줄 좌→우, 아랫줄 좌→우).
 - slug: ai-tool-library-revised
   title: "교육자를 위한 디지털 AI 도구 라이브러리"
@@ -8,18 +7,25 @@
   publisher: "박영스토리"
   authors: "김진관 외 7인"
   badge: "NEW"
+  url: "https://www.yes24.com/product/goods/179700202"
+  store: "예스24"
   cover: /assets/lectures/pubbooks/ai-tool-library-revised.jpg
 
 - slug: edu-renaissance
   title: "대한민국 교육르네상스"
   subtitle: "대전환시대 교육의 본질을 탐하다"
+  publisher: "앤써북"
   authors: "김진관 외 공저"
+  url: "https://www.yes24.com/product/goods/167476779"
+  store: "예스24"
   cover: /assets/lectures/pubbooks/edu-renaissance.jpg
 
 - slug: classroom-ai-insight
   title: "교실 속 AI 디지털 교육 인사이트"
   publisher: "박영스토리"
   authors: "김진관 외 공저"
+  url: "https://www.yes24.com/product/goods/157771127"
+  store: "예스24"
   cover: /assets/lectures/pubbooks/classroom-ai-insight.jpg
 
 - slug: ai-lesson-design-guide
@@ -74,7 +80,9 @@
   series: "초등편"
   publisher: "박영스토리"
   year: "2024"
-  authors: "김진관 외 공저"
+  authors: "정제영·김진관 외 공저"
+  url: "https://www.yes24.com/product/goods/126810583"
+  store: "예스24"
   cover: /assets/lectures/pubbooks/classroom-revolution-elem.jpg
 
 - slug: detective-jun-ai-note
