@@ -1,3 +1,24 @@
+- slug: vibe-coding-teachers-parents
+  title: "교사와 학부모를 위한 바이브코딩"
+  subtitle: "Gemini로 만드는 학습 웹앱 · 곱셈·지도·튜터·챗봇 · 28장"
+  audience: "교사·학부모·입문자"
+  slide_count: 28
+  chapter_count: 3
+  date: "2026-07-21"
+  hub_url: /lectures/vibe-coding-teachers-parents/
+  locked: true
+  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtCa9rDU1bBJbfCIB1keZTAPPmN4GsWFVpnsXTTGE="
+  thumbnail: /assets/lectures/vibe-coding-teachers-parents/cover.jpg
+  author: "math-tong (교사와 학부모를 위한 바이브코딩 워크숍)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "원작 워크숍을 강의 슬라이드로 다시 정리한 큐레이션 버전"
+  tags:
+    - 바이브코딩
+    - 생성형AI
+    - Gemini
+    - 교사·학부모
+    - 교원연수
+
 - slug: claude-code-edu
   title: "Claude Code 실무 활용 — 교육자 워크숍"
   subtitle: "22개 기능 · Basic/Advanced 트랙 · 120분"
