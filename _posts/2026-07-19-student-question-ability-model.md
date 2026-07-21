@@ -142,3 +142,4 @@ permalink: /post/student-question-ability-model/
 
 ## 출처
 - 학생의 질문 능력 계발을 위한 질문 중심 수업 모델 (교육부 '학생이 질문하는 학교' 연구 자료집 1).
+- 자료집 원문 PDF: [내려받기](/assets/student-question-ability-model.pdf) (150쪽)

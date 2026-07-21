@@ -113,3 +113,4 @@ permalink: /post/student-question-diverse-model/
 
 ## 출처
 - 다양한 학생을 고려한 질문 중심 수업 모델 (교육부 '학생이 질문하는 학교' 연구 자료집 3).
+- 자료집 원문 PDF: [내려받기](/assets/student-question-diverse-model.pdf) (148쪽)

@@ -88,3 +88,4 @@ permalink: /post/elementary-inquiry-question-lessons/
 
 ## 출처
 - 2025 초등 깊이있는 수업을 위한 질문기반 탐구수업 자료집 (2022 개정 교육과정 연계 교육 자료).
+- 자료집 원문 PDF: [내려받기](/assets/elementary-inquiry-question-lessons.pdf) (72쪽)

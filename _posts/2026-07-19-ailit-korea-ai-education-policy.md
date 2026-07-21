@@ -58,3 +58,4 @@ permalink: /post/ailit-korea-ai-education-policy/
 
 ## 출처
 - 국회입법조사처 (2026). 재점검이 필요한 학교 AI 교육의 방향과 방식 — OECD·EU 공동 AILit 프레임워크와 국내 교육정책 비교를 중심으로. 「이슈와 논점」 제2508호 (2026. 7. 13.).
+- 원문 보고서 PDF: [내려받기](/assets/ailit-korea-ai-education-policy.pdf) (4쪽)
