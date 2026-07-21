@@ -34,13 +34,24 @@ LINE = (51, 65, 85)
 
 BOOKS = [
     {
+        "volume": 8,
+        "slug": "book-08",
+        "accent": (34, 211, 238),   # cyan-400
+        "eyebrow": "한빛미디어 신간",
+        "footer": "이상선 · 김진관 · 김상섭 · 이대형 · 윤신영 지음",
+        "title_lines": ["바이브 코딩", "교사를 위한 웹앱 만들기"],
+        "subtitle": "PRD·MVP에서 API·AI·Supabase·로컬 배포까지, 코드 없이 웹앱 만들기",
+        "chips": ["4부 8장 + 부록", "교사 · 비개발자"],
+        "status": "최신",
+    },
+    {
         "volume": 7,
         "slug": "book-07",
         "accent": (96, 165, 250),   # blue-400
         "title_lines": ["교육자를 위한", "에이전트 엔지니어링"],
         "subtitle": "프롬프트에서 하네스까지, 교육 에이전트 설계·운영 실전 가이드",
         "chips": ["13장 + 부록 A~C", "교사 · 강사 · 교수"],
-        "status": "최신",
+        "status": None,
     },
     {
         "volume": 6,
@@ -173,8 +184,10 @@ def draw_cover(book: dict) -> Path:
     # Eyebrow
     y = 84
     d.rectangle([x, y + 6, x + 36, y + 10], fill=accent)
-    d.text((x + 50, y), "DOT CONNECTOR BOOKS", font=font("Bold", 16), fill=accent)
-    d.text((x + 50 + 245, y), f"·  제{book['volume']}권", font=font("Medium", 16), fill=INK_DIM)
+    eyebrow = book.get("eyebrow", "DOT CONNECTOR BOOKS")
+    d.text((x + 50, y), eyebrow, font=font("Bold", 16), fill=accent)
+    ebw = text_width(d, eyebrow, font("Bold", 16))
+    d.text((x + 50 + ebw + 18, y), f"·  제{book['volume']}권", font=font("Medium", 16), fill=INK_DIM)
 
     # Title — line 1 accent, line 2 main ink (both autofit)
     f1 = fit_font(d, book["title_lines"][0], "Black", 66, max_w)
@@ -203,7 +216,8 @@ def draw_cover(book: dict) -> Path:
 
     # Footer
     d.line([70, H - 70, W - 70, H - 70], fill=LINE, width=1)
-    d.text((70, H - 52), "집필 닷커넥터 김진관 · AI 멀티에이전트 파이프라인", font=font("Medium", 16), fill=INK_DIM)
+    footer = book.get("footer", "집필 닷커넥터 김진관 · AI 멀티에이전트 파이프라인")
+    d.text((70, H - 52), footer, font=font("Medium", 16), fill=INK_DIM)
     right = "tigerjk9.github.io  /  lectures"
     f = font("SemiBold", 16)
     tw = text_width(d, right, f)
@@ -216,7 +230,12 @@ def draw_cover(book: dict) -> Path:
 
 
 def main() -> None:
+    import sys
+
+    want = {int(a) for a in sys.argv[1:] if a.isdigit()}
     for book in BOOKS:
+        if want and book["volume"] not in want:
+            continue
         out = draw_cover(book)
         print(f"[OK] {out.relative_to(ROOT)}  ({out.stat().st_size // 1024} KB)")
 
