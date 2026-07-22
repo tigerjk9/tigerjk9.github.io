@@ -353,6 +353,29 @@ py scripts/weekly_digest.py --days 14   # 기간 변경
 
 ---
 
+## 네이버 블로그 크로스포스팅 (`/naver`)
+
+`scripts/naver_crosspost.py`가 `_posts/` 포스트를 네이버 블로그(blog.naver.com/dot_connector)에 자동 발행한다.
+네이버 글쓰기 API는 2020년 종료 → **Playwright(전용 프로필) + 스마트에디터 ONE 브라우저 자동화**.
+Claude Code에서는 `/naver` 슬래시 커맨드로 호출한다 (`.claude/commands/naver.md` — 옵션·QA·운영 규칙 상세).
+
+```bash
+py -u scripts/naver_crosspost.py --limit 5     # 미게시 5편 발행 (기본, 하루 1회 권장)
+py -u scripts/naver_crosspost.py --dry-run     # 대상·분류 미리보기
+py -u scripts/naver_crosspost.py --login       # 로그인 쿠키 갱신 (풀렸을 때)
+```
+
+- **범위**: `2026-05-14-measuring-ai-ability...md` 이후 ~ 최신 (BASELINE_FILENAME 상수), 주간다이제스트 제외. 게시 이력 `scripts/naver_crosspost_state.json`(커밋 대상)
+- **카테고리 자동 분류**: 인공지능교육 인사이트(26)/뇌기반 학습 과학(84)/생각하는 교실, 깊이있는 학습(87). Gemini 일괄 분류가 `scripts/naver_category_overrides.json`에 캐시(수동 교정 우선). categoryNo는 `postwrite?categoryNo=N` URL로 사전 선택
+- **마루부리 15 구현 (실측)**: 붙여넣기 HTML의 인라인 `font-size:15px` → 에디터 `se-fs15` 자동 매핑(소제목 h2는 19 유지). 서체는 Ctrl+A 후 고정 툴바 버튼(`button.se-font-family-toolbar-button[data-group='propertyToolbar']`) → 드롭다운 `se-toolbar-option-text-button` 마루부리 클릭 — **서체만 바꾸면 크기는 요소별 보존됨**
+- **발행 팝업 셀렉터 (실측)**: 상단 `button[class*='publish_btn']`(has-text('발행')는 숨은 예약발행 버튼을 잡으므로 금지) → 카테고리 라벨 `selectbox_button__` → 태그 input `placeholder*='태그'` → 최종 `button[class*='confirm_btn']`. 발행 후 URL은 `logNo=` 형식도 매칭
+- **로그인 쿠키 함정**: NID_AUT/NID_SES는 세션 쿠키라 persistent 프로필로도 브라우저 종료 시 소실 → 로그인 감지 즉시 `scripts/.naver_profile/cookies.json`으로 백업하고 매 실행 시 `add_cookies` 재주입. 프로필·쿠키·스크린샷 디렉토리는 gitignore (쿠키 커밋 절대 금지)
+- **한글 입력**: 제목은 `keyboard.insert_text`(IME 우회), 본문은 clipboard API(text/html) + Ctrl+V. 표·볼드·소제목·링크가 네이티브 컴포넌트로 변환됨
+- **가독성 여백 (필수)**: 네이버 에디터는 문단 여백이 없어 변환 HTML 그대로면 벽글이 됨(첫 발행에서 실측) → `md_to_html`이 블록 요소 사이에 빈 문단 `<p><br></p>`을 자동 삽입(소제목 앞 여백, 소제목 뒤는 밀착). 기존 글 재포맷은 `--update <logNo> --post <파일>`(본문만 교체, 제목·카테고리·태그 유지)
+- **운영 (자동)**: Windows 작업 스케줄러 `NaverCrosspost`가 매일 10:00·16:00에 5편씩 자동 발행 (2026-07-23부터, 로그 `scripts/naver_task.log`). PC 꺼져 있으면 다음 부팅 시 실행. 로그인 풀리면 로그에 "로그인 쿠키가 없습니다"가 찍히고 건너뛰므로 `--login` 재실행. 첫 며칠 네이버 검색 노출 확인, 누락 시 하루 5편 감속. 게시일은 실행일(원 작성일은 글 말미 표기). 자동화는 네이버 약관 회색지대 — 본인 계정 유지. 백필 완료 후에도 새 포스트가 자동으로 대상에 포함되어 계속 크로스포스팅됨
+
+---
+
 ## 교원 연수 자료 자동화 (`/yeonsu`)
 
 `scripts/lecture_script.py`가 다양한 입력(YouTube/웹/PDF/파일)을 교원 연수용 자료로 자동 변환한다.
