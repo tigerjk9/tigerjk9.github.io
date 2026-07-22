@@ -116,7 +116,6 @@ permalink: /post/fan-metacognitive-laziness/
 
 ## 출처
 
-[논문 식별자 — 자동 추출 실패]
-이 논문의 arXiv ID와 DOI가 확인되지 않았다.
+DOI: 10.1111/bjet.13544
 
-- Fan, Y., Tang, L., Le, H., Shen, K., Tan, S., Zhao, Y., Shen, Y., Li, X., & Gasevic, D. (2024). *Beware of Metacognitive Laziness: Effects of Generative Artificial Intelligence on Learning Motivation, Processes, and Performance*. 미상 저널.
+- Fan, Y., Tang, L., Le, H., Shen, K., Tan, S., Zhao, Y., Shen, Y., Li, X., & Gašević, D. (2025). Beware of metacognitive laziness: Effects of generative artificial intelligence on learning motivation, processes, and performance. *British Journal of Educational Technology, 56*(2), 489–530. https://doi.org/10.1111/bjet.13544
