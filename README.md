@@ -9,7 +9,7 @@
 
 <br>
 
-[![Live](https://img.shields.io/badge/blog-tigerjk9.github.io-2ec4cc?style=for-the-badge&logo=jekyll&logoColor=white)](https://tigerjk9.github.io) [![Posts](https://img.shields.io/badge/posts-439-4c9aff?style=for-the-badge)](https://tigerjk9.github.io) [![Research](https://img.shields.io/badge/papers-147-8e75b2?style=for-the-badge)](https://tigerjk9.github.io/research/) [![Last commit](https://img.shields.io/github/last-commit/tigerjk9/tigerjk9.github.io?style=for-the-badge&color=555)](https://github.com/tigerjk9/tigerjk9.github.io/commits/main) [![License](https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge)](LICENSE)
+[![Live](https://img.shields.io/badge/blog-tigerjk9.github.io-2ec4cc?style=for-the-badge&logo=jekyll&logoColor=white)](https://tigerjk9.github.io) [![Posts](https://img.shields.io/badge/posts-500-4c9aff?style=for-the-badge)](https://tigerjk9.github.io) [![Research](https://img.shields.io/badge/papers-162-8e75b2?style=for-the-badge)](https://tigerjk9.github.io/research/) [![Last commit](https://img.shields.io/github/last-commit/tigerjk9/tigerjk9.github.io?style=for-the-badge&color=555)](https://github.com/tigerjk9/tigerjk9.github.io/commits/main) [![License](https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge)](LICENSE)
 
 <br>
 
@@ -35,10 +35,10 @@
 
 | | 기능 | 한 줄 소개 |
 |---|------|-----------|
-| 🔎 | **[리서치 허브](https://tigerjk9.github.io/research/)** | AI·교육 논문리뷰 147편을 태그·연도·키워드로 걸러 발견·시사점까지 카드에서 바로 읽는다. 의미 기반 AI 검색 포함 |
+| 🔎 | **[리서치 허브](https://tigerjk9.github.io/research/)** | AI·교육 논문리뷰 162편을 태그·연도·키워드로 걸러 발견·시사점까지 카드에서 바로 읽는다. 의미 기반 AI 검색 포함 |
 | 💬 | **[AI에게 묻기](https://tigerjk9.github.io/ask/)** | 논문리뷰 코퍼스를 근거로 답하는 RAG 챗봇. 방문자가 본인 Gemini 키를 넣으면 누구나 대화 가능(BYOK) |
 | 🕸️ | **[지식 그래프](https://tigerjk9.github.io/knowledge-graph/)** | 태그 IDF 가중 엣지 + Louvain 군집을 클라이언트에서 계산하는 D3 포스 그래프 |
-| 🤖 | **자동화 파이프라인** | 논문·영상·웹·연수자료를 한국어 포스트로 바꾸는 스크립트 6종 + 주간 다이제스트 cron |
+| 🤖 | **자동화 파이프라인** | 논문·영상·웹·연수자료를 한국어 포스트로 바꾸는 스크립트 6종 + 주간 다이제스트 cron + 네이버 블로그 자동 크로스포스팅 |
 
 ---
 
@@ -55,6 +55,7 @@ Claude Code에서 슬래시 커맨드로 호출하면 각 스크립트가 콘텐
 | `/edit-*` | 위와 동일 | 주인장 목소리 강화 버전 | 〃 |
 | `/plain-*` | 웹·YouTube | 교육 앵커링 없는 담백한 전달 | 〃 |
 | `/digest` | 지난 7일 포스트 | 주간 다이제스트 (cron 자동) | gemini-2.5-flash |
+| `/naver` | `_posts/` 마크다운 | 네이버 블로그 크로스포스팅 (스케줄러 일 2회 자동) | Playwright (분류만 gemini) |
 
 ### 공통 출력 품질 규칙
 
@@ -192,13 +193,35 @@ py scripts/weekly_digest.py --days 14   # 기간 변경
 
 </details>
 
+<details>
+<summary><b>/naver — 네이버 블로그 크로스포스팅 (완전 자동)</b></summary>
+
+<br>
+
+`_posts/`의 포스트를 [네이버 블로그](https://blog.naver.com/dot_connector)에 자동 발행한다. 네이버 글쓰기 API가 2020년에 종료되어, **Playwright가 로그인된 브라우저로 스마트에디터 ONE을 직접 조작**한다. Windows 작업 스케줄러가 매일 10:00·16:00에 5편씩 자동 실행.
+
+```bash
+py -u scripts/naver_crosspost.py --limit 5     # 미게시 5편 발행
+py -u scripts/naver_crosspost.py --dry-run     # 대상·분류 미리보기
+py -u scripts/naver_crosspost.py --login       # 최초 1회 수동 로그인 (쿠키 백업)
+py -u scripts/naver_crosspost.py --update <logNo> --post <파일>  # 기존 글 본문 교체
+```
+
+- **카테고리 자동 분류**: Gemini가 전체 포스트를 3개 카테고리(인공지능교육 인사이트·뇌기반 학습 과학·생각하는 교실, 깊이있는 학습)로 일괄 의미 분류해 캐시. 수동 교정 우선
+- **마루부리 15 서체**: 붙여넣기 HTML의 인라인 `font-size:15px`가 에디터 크기로 매핑되고(소제목 19 유지), 전체 선택 후 서체 드롭다운으로 마루부리 적용
+- **가독성 여백**: 네이버 에디터는 문단 여백이 없어 블록 요소 사이에 빈 문단을 자동 삽입
+- 표·볼드·소제목·이미지가 에디터 네이티브 컴포넌트로 변환, 글 끝에 원 작성일 + 원문 링크 자동 삽입
+- 발행 이력 상태 파일로 중복 방지, 발행 URL은 모바일 API 제목 대조로 자동 기록
+
+</details>
+
 ---
 
 ## 🧩 커스텀 기능 상세
 
 ### 🔎 리서치 허브 — `/research/`
 
-AI·교육 논문리뷰 **147편**을 태그·연도·키워드로 탐색하는 전용 페이지. 그라디언트 히어로 + 통계 행(논문리뷰·원문 링크·태그·연도 범위) + 카드 인라인 확장 UI.
+AI·교육 논문리뷰 **162편**을 태그·연도·키워드로 탐색하는 전용 페이지. 그라디언트 히어로 + 통계 행(논문리뷰·원문 링크·태그·연도 범위) + 카드 인라인 확장 UI.
 
 - **데이터**: `scripts/build_research_db.py`가 논문리뷰 포스트를 2계층(고정 6섹션 / 자유 구조)으로 파싱해 `assets/research-db.json` 정적 생성
 - **카드 확장**: 연구 목적·주요 발견·시사점·탐구 질문을 원문 이동 없이 읽고 arXiv/DOI 원문으로 바로 이동
