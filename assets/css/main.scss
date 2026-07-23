@@ -798,14 +798,32 @@ html[data-theme="light"] blockquote {
 }
 
 /* Tables */
+html[data-theme="light"] table {
+  border-color: #dde1e7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] thead {
+  background-color: #eef2f7;
+  border-bottom-color: #0078c8;
+}
+
 html[data-theme="light"] table th {
-  background-color: #f0f3f7;
+  background-color: #eef2f7;
   color: #252a34;
 }
 
 html[data-theme="light"] table td,
 html[data-theme="light"] table th {
   border-color: #dde1e7;
+}
+
+html[data-theme="light"] table tbody tr:nth-child(even) {
+  background-color: #f5f8fb;
+}
+
+html[data-theme="light"] table tbody tr:hover {
+  background-color: #eaf4ff;
 }
 
 /* Forms / inputs */

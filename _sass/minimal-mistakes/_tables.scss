@@ -4,32 +4,53 @@
 
 table {
   display: block;
-  margin-bottom: 1em;
+  margin-bottom: 1.75em;
   width: 100%;
   font-family: $global-font-family;
-  font-size: $type-size-6;
-  border-collapse: collapse;
+  font-size: $type-size-5;
+  line-height: 1.6;
+  border-collapse: separate;
+  border-spacing: 0;
   overflow-x: auto;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 
   & + table {
-    margin-top: 1em;
+    margin-top: 1.75em;
   }
 }
 
 thead {
-  background-color: $border-color;
-  border-bottom: 2px solid mix(#000, $border-color, 25%);
+  background-color: mix(#fff, $background-color, 10%);
+  border-bottom: 2px solid $primary-color;
 }
 
 th {
-  padding: 0.5em;
+  padding: 0.85em 1.1em;
   font-weight: bold;
   text-align: start;
 }
 
 td {
-  padding: 0.5em;
-  border-bottom: 1px solid mix(#000, $border-color, 25%);
+  padding: 0.8em 1.1em;
+  border-bottom: 1px solid $border-color;
+}
+
+tbody tr:nth-child(even) {
+  background-color: mix(#fff, $background-color, 4%);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr {
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: mix($primary-color, $background-color, 12%);
+  }
 }
 
 tr,
