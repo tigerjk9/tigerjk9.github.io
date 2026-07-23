@@ -289,10 +289,18 @@ COOKIE_FILE = PROFILE_DIR / "cookies.json"
 
 
 def save_cookies(ctx):
-    """NID_AUT 등 세션 쿠키는 브라우저 종료 시 폐기되므로 파일로 백업한다."""
+    """NID_AUT 등 세션 쿠키는 브라우저 종료 시 폐기되므로 파일로 백업한다.
+
+    로그아웃 상태(NID_AUT 부재)면 기존 백업을 덮어쓰지 않는다 —
+    실패한 실행이 마지막 정상 백업을 파괴하는 것을 방지.
+    """
     try:
+        cookies = ctx.cookies()
+        if not any(c["name"] == "NID_AUT" for c in cookies):
+            print("  [warn] NID_AUT 없음 — 쿠키 백업 건너뜀 (기존 백업 보존)")
+            return
         COOKIE_FILE.write_text(
-            json.dumps(ctx.cookies(), ensure_ascii=False), encoding="utf-8")
+            json.dumps(cookies, ensure_ascii=False), encoding="utf-8")
     except Exception as e:
         print(f"  [warn] 쿠키 백업 실패: {e}")
 
@@ -333,9 +341,36 @@ def is_logged_in(ctx) -> bool:
     return any(c["name"] == "NID_AUT" for c in ctx.cookies("https://naver.com"))
 
 
+def verify_login(page) -> bool:
+    """서버 기준 세션 유효성 확인. 쿠키가 있어도 서버가 만료시켰으면 무효.
+
+    만료 세션으로 postwrite에 진입하면 nidlogin.login으로 리다이렉트되고,
+    유효하면 에디터 URL에 머무른다 (2026-07-23 양방향 실측).
+    nidlogin.login 직접 방문은 로그인 상태와 무관하게 폼에 머물러 판별 불가.
+    """
+    try:
+        page.goto(f"https://blog.naver.com/{BLOG_ID}/postwrite",
+                  wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_timeout(3000)
+        return "nidlogin" not in page.url
+    except Exception as e:
+        print(f"  [warn] 세션 검증 실패: {e}")
+        return False
+
+
 def do_login(ctx):
     page = ctx.pages[0] if ctx.pages else ctx.new_page()
     page.goto("https://nid.naver.com/nidlogin.login?url=https://blog.naver.com/" + BLOG_ID)
+    try:
+        page.check("#keep", timeout=5000)  # 로그인 상태 유지 — 세션 수명 연장의 핵심
+        print("'로그인 상태 유지'를 자동 체크했습니다.")
+    except Exception:
+        try:
+            # 스타일 스위치가 input을 가려 가시성 검사에 걸리면 JS로 직접 토글
+            page.eval_on_selector("#keep", "el => { if (!el.checked) el.click() }")
+            print("'로그인 상태 유지'를 자동 체크했습니다 (JS).")
+        except Exception:
+            print("'로그인 상태 유지' 자동 체크 실패 — 브라우저에서 직접 체크해 주세요.")
     print("브라우저에서 네이버 로그인을 완료해 주세요 (로그인 상태 유지 체크 권장).")
     print("로그인이 감지되면 자동으로 종료됩니다. 최대 5분 대기...")
     for _ in range(150):
@@ -651,6 +686,8 @@ def main():
     except Exception:
         pass
 
+    print(f"\n=== 실행 {time.strftime('%Y-%m-%d %H:%M:%S')} ===")
+
     state = load_json(STATE_FILE, {"posted": {}})
     overrides = load_json(OVERRIDES_FILE, {})
     pending = collect_pending(state, args.post)
@@ -691,7 +728,13 @@ def main():
                 return
             if not is_logged_in(ctx):
                 print("로그인 쿠키가 없습니다. 먼저 실행: py scripts/naver_crosspost.py --login")
-                return
+                raise SystemExit(2)
+
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            if not verify_login(page):
+                print("[EXPIRED] 네이버 세션 만료 — 쿠키는 있으나 서버가 거부했습니다.")
+                print("조치: py scripts/naver_crosspost.py --login  (로그인 상태 유지 자동 체크됨)")
+                raise SystemExit(2)
 
             if args.update:
                 if not args.post or not pending:
