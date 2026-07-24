@@ -5,13 +5,13 @@ main:
     url: /categories/
   - title: "Tags"
     url: /tags/
-  - title: "리서치 허브"
+  - title: "리서치"
     url: /research/
   - title: "지식그래프"
     url: /knowledge-graph/
-  - title: "바이브코딩 콜렉션"
+  - title: "바이브코딩"
     url: https://vibe-project-collection.vercel.app/
   - title: "강의자료"
     url: /lectures/
-  - title: "프롬프트 라이브러리"
+  - title: "프롬프트"
     url: /prompts/

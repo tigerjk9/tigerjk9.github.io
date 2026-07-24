@@ -555,6 +555,20 @@ html[data-theme="light"] .greedy-nav__toggle {
   color: #252a34;
 }
 
+/* ── 데스크톱 상단 메뉴 과밀 완화 (2026-07-24) ──
+   내비 항목이 7개+hits로 늘어 greedy-nav가 뒷 항목(프롬프트 등)을 숨김 메뉴로
+   밀어내던 문제. `.masthead__inner-wrap` 320px 사이드바 패딩으로 데스크톱 nav 폭이
+   좁으므로, 링크 폰트·좌우 여백을 축소해 모든 항목이 한 줄에 들어오게 한다.
+   모바일(<=1023px)의 44px 터치 타깃 규칙과는 브레이크포인트가 달라 충돌 없음. */
+@media screen and (min-width: 1024px) {
+  .greedy-nav .visible-links .masthead__menu-item > a {
+    font-size: 0.78rem;
+    padding-inline: 0.45rem;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+}
+
 html[data-theme="light"] .hidden-links {
   background: #fff;
   border-color: #dde1e7;
