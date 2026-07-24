@@ -83,6 +83,23 @@ $max-width: 100%;
 
 /* 모바일: 오버레이 방식 */
 @media screen and (max-width: 1023px) {
+  /* 플로팅 사이드바 토글: 상단(마스트헤드·제목과 겹쳐 지저분) 대신 좌하단 FAB로.
+     콘텐츠 헤딩을 가리지 않고 엄지 접근성이 좋다. (2026-07-24) */
+  .sidebar-toggle {
+    top: auto;
+    bottom: 18px;
+    left: 12px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 17px;
+    opacity: 0.9;
+  }
+
   .sidebar {
     position: fixed;
     left: 0;
@@ -238,6 +255,11 @@ $max-width: 100%;
 }
 
 /* --- 저서 미니 위젯 (사이드바, 출간 도서 상위 3권) --- */
+/* '저서' 섹션 제목과 표지 이미지 사이 위아래 여백 (딱 붙어 보이는 문제) */
+.books-widget {
+  margin-top: 12px;
+  margin-bottom: 14px;
+}
 .books-widget__covers {
   display: flex;
   gap: 6px;
@@ -1281,15 +1303,21 @@ html[data-theme="light"] .sidebar-mobile-header__title {
     justify-content: center;
   }
 
-  /* 돋보기·테마토글 아이콘 터치 타겟 */
+  /* 돋보기·테마토글 아이콘 터치 타겟 — 과대 확장 금지(마스트헤드 한 줄 수용) */
   .search__toggle,
   .theme-toggle {
-    min-width: 40px;
-    min-height: 44px;
+    min-width: 36px;
+    min-height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
+
+  /* 마스트헤드 가로 넘침 방지 — 버튼 좌우 여백 축소.
+     넘치면 row 자체가 뷰포트보다 넓어져 햄버거가 화면 밖으로 밀림(실측). */
+  .greedy-nav .search__toggle { margin-inline: 0.25rem; }
+  .greedy-nav .greedy-nav__toggle { margin-inline-start: 0.25rem; }
+  .greedy-nav a.site-title { margin-inline-end: 0.5rem; }
 
   /* 숨김 드롭다운 — 오른쪽 끝 정렬, 그림자 강화 */
   .greedy-nav .hidden-links {
@@ -1314,8 +1342,9 @@ html[data-theme="light"] .sidebar-mobile-header__title {
 @media screen and (max-width: 1023px) {
   .greedy-nav a.site-title {
     white-space: nowrap !important;
-    /* 우측 버튼 영역(테마토글+검색+햄버거+패딩 ≈ 155px) 을 제외한 최대 폭 */
-    max-width: calc(100vw - 155px) !important;
+    /* 우측 버튼 영역(테마토글 44 + 검색 44 + 햄버거 52 + 패딩·여백 ≈ 180px) 제외 최대 폭.
+       155px 예약은 실측보다 작아 row가 뷰포트를 넘어 햄버거가 화면 밖으로 밀렸음(2026-07-24). */
+    max-width: calc(100vw - 200px) !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     flex-shrink: 1 !important;
