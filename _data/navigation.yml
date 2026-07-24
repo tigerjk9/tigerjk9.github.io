@@ -13,3 +13,5 @@ main:
     url: https://vibe-project-collection.vercel.app/
   - title: "강의자료"
     url: /lectures/
+  - title: "프롬프트 라이브러리"
+    url: /prompts/
