@@ -50,6 +50,9 @@ tmp/
 # API keys / secrets
 .env
 
+# 프롬프트 라이브러리 빌드 캐시 (번역 증분용, 커밋 불필요)
+scripts/.prompt_library_cache.json
+
 # PDF 원본은 로컬에만 임시로 두고 커밋하지 않는다
 # (pdf_to_post.py가 처리 후 자동 삭제)
 _papers/*.pdf
