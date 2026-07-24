@@ -361,21 +361,28 @@ def verify_login(page) -> bool:
 def do_login(ctx):
     page = ctx.pages[0] if ctx.pages else ctx.new_page()
     page.goto("https://nid.naver.com/nidlogin.login?url=https://blog.naver.com/" + BLOG_ID)
-    try:
-        page.check("#keep", timeout=5000)  # 로그인 상태 유지 — 세션 수명 연장의 핵심
-        print("'로그인 상태 유지'를 자동 체크했습니다.")
-    except Exception:
-        try:
-            # 스타일 스위치가 input을 가려 가시성 검사에 걸리면 JS로 직접 토글
-            page.eval_on_selector("#keep", "el => { if (!el.checked) el.click() }")
-            print("'로그인 상태 유지'를 자동 체크했습니다 (JS).")
-        except Exception:
-            print("'로그인 상태 유지' 자동 체크 실패 — 브라우저에서 직접 체크해 주세요.")
-    print("브라우저에서 네이버 로그인을 완료해 주세요 (로그인 상태 유지 체크 권장).")
+    print("브라우저에서 네이버 로그인을 완료해 주세요.")
+    print("'로그인 상태 유지'는 자동으로 체크됩니다 (세션 수명 연장의 핵심).")
     print("로그인이 감지되면 자동으로 종료됩니다. 최대 5분 대기...")
+    # 로그인 폼이 떠 있는 동안 매 루프 '로그인 상태 유지'를 강제 체크한다.
+    # (폼 지연 로딩·QR/간편로그인 우선 탭 때문에 goto 직후 1회 체크는 자주 실패)
+    keep_ok = False
     for _ in range(150):
+        if not keep_ok:
+            try:
+                # 이미 체크돼 있으면 건드리지 않아 수동 체크를 되돌리지 않는다
+                keep_ok = bool(page.eval_on_selector(
+                    "#keep",
+                    "el => { if (!el.checked) el.click(); return el.checked; }"))
+                if keep_ok:
+                    print("'로그인 상태 유지'를 자동 체크했습니다.")
+            except Exception:
+                pass  # 폼 미로딩 또는 이미 로그인 완료 화면 — 다음 루프 재시도
         time.sleep(2)
         if is_logged_in(ctx):
+            if not keep_ok:
+                print("  [warn] '로그인 상태 유지' 자동 체크 실패 — "
+                      "다음 로그인 때 브라우저에서 직접 체크해 주세요.")
             save_cookies(ctx)
             print("로그인 확인 완료. 쿠키가 저장되었습니다.")
             time.sleep(2)
