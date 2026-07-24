@@ -105,6 +105,25 @@ def h(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
 
 
+def clean_prompt(text: str) -> str:
+    """prompts.chat 웹 UI용 ${변수} 자리표시자 정리 + 과잉 빈 줄 정돈.
+
+    ${...}는 원 사이트의 변수 채우기 위젯 문법이라 카드에 그대로 노출되면
+    사용자가 뜻 모를 코드로 오인한다. 문장이 깨지지 않게 3단계로 처리:
+    ①`${이름:기본값}` → 기본값 인라인 치환 ②단독 라인 `${이름}` → 라인 제거
+    ③인라인 `${이름}` → `[이름]` 입력란 표기.
+    """
+    import re
+    text = text or ""
+    text = re.sub(r"\$\{([^}:\n]*):([^}\n]*)\}",
+                  lambda m: m.group(2).strip(), text)
+    text = re.sub(r"^[ \t]*\$\{[^}\n]*\}[ \t]*$", "", text, flags=re.M)
+    text = re.sub(r"\$\{([^}\n]*)\}", lambda m: "[" + m.group(1).strip() + "]", text)
+    text = re.sub(r"[ \t]+\n", "\n", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
 PROMPT_TMPL = """당신은 한국 교육 현장을 잘 아는 프롬프트 큐레이터다.
 아래 영어 프롬프트(원문, CC0)를 한국 교사·교육 관계자가 그대로 복사해 쓸 수 있도록 한국어로 번안한다.
 
@@ -209,8 +228,8 @@ def main():
             "category": cat,
             "title_ko": c.get("title_ko", act),
             "desc_ko": c.get("desc_ko", ""),
-            "prompt_ko": c.get("prompt_ko", ""),
-            "prompt_en": row["prompt"],
+            "prompt_ko": clean_prompt(c.get("prompt_ko", "")),
+            "prompt_en": clean_prompt(row["prompt"]),
             "tags": c.get("tags", []),
             "contributor": contrib,
             "type": row.get("type", "TEXT"),

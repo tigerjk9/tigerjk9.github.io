@@ -6,6 +6,8 @@
         <img src="/assets/logo.jpg" alt="{{ site.name }} 로고" style="width:100%;display:block;">
       </a>
       <p class="page__footer-copyright" style="font-size:0.9em;line-height:1.6;margin-top:0.6rem;">&copy; {% assign site_time = site.time | date: '%Y' %}{% if site.footer.since and site_time != site.footer.since %}{{ site.footer.since }} - {% endif %}{{ site_time }} <a href="{{ site.copyright_url | default: site.url }}">{{ site.copyright | default: site.title | escape_once | strip }}</a>.<br>Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</p>
+      {%- comment -%} 사이트 전체 hits 배지 — 상단 메뉴에서 이동(모바일 greedy-nav 배치 붕괴 방지, PC·모바일 공통 노출) {%- endcomment -%}
+      <p style="margin-top:0.4rem;"><a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/https%3A%2F%2Ftigerjk9.github.io?color=yellow&label=hits&size=medium&base_count=0" alt="hits" style="height:20px;width:auto;vertical-align:middle;"></a></p>
     </div>
 
   </footer>

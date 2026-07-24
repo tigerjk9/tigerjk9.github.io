@@ -123,11 +123,12 @@ description: "교육 현장에서 바로 쓰는 큐레이션 AI 프롬프트. pr
   #pl-app .pl-by a { color: var(--pl-faint); text-decoration: none; }
   #pl-app .pl-by a:hover { color: var(--pl-accent); text-decoration: underline; }
 
-  /* 복사되는 한글 프롬프트 — 읽기 좋은 본문 스타일(강조 테두리) */
+  /* 복사되는 한글 프롬프트 — 읽기 좋은 본문 스타일(강조 테두리).
+     원본의 연속 빈 줄은 JS에서 압축해 표시(복사는 원본 그대로) */
   #pl-app .pl-ko {
     margin-top: .8em; background: var(--pl-accent-soft); border: 1px solid var(--pl-accent-line);
     border-radius: 8px; padding: .85em; font-size: .92em; color: var(--pl-text);
-    line-height: 1.65; white-space: pre-wrap; word-break: break-word;
+    line-height: 1.5; white-space: pre-wrap; word-break: break-word;
     max-height: 340px; overflow-y: auto;
   }
   #pl-app .pl-en {
@@ -177,6 +178,11 @@ description: "교육 현장에서 바로 쓰는 큐레이션 AI 프롬프트. pr
     });
   }
 
+  // 표시용 공백 압축 — 연속 빈 줄을 한 줄바꿈으로 (복사는 원본 데이터를 사용)
+  function squeeze(s) {
+    return (s || '').replace(/\r\n/g, '\n').replace(/\n{2,}/g, '\n').trim();
+  }
+
   function matches(p) {
     if (activeCat !== '전체' && p.category !== activeCat) return false;
     if (query) {
@@ -219,8 +225,8 @@ description: "교육 현장에서 바로 쓰는 큐레이션 AI 프롬프트. pr
         '<button class="pl-btn pl-ghost" data-en="' + esc(p.id) + '">영어 원문</button>' +
         by +
       '</div>' +
-      '<div class="pl-ko" id="ko-' + esc(p.id) + '" hidden>' + esc(p.prompt_ko) + '</div>' +
-      '<pre class="pl-en" id="en-' + esc(p.id) + '" hidden>' + esc(p.prompt_en) + '</pre>' +
+      '<div class="pl-ko" id="ko-' + esc(p.id) + '" hidden>' + esc(squeeze(p.prompt_ko)) + '</div>' +
+      '<pre class="pl-en" id="en-' + esc(p.id) + '" hidden>' + esc(squeeze(p.prompt_en)) + '</pre>' +
     '</div>';
   }
 
