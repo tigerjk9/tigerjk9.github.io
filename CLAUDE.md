@@ -373,7 +373,7 @@ py -X utf8 scripts/cardnews.py <URL|PDF> --cards 8   # 기본. 출력: 바탕화
 py -X utf8 scripts/cardnews.py <입력> --dry-run       # 카피 JSON만
 ```
 
-- **디자인**: 2026-07-19 수신 레퍼런스를 닷커넥터 브랜딩으로 번안 — 아이보리 배경, 로고(`assets/logo.jpg` mix-blend multiply)+날짜, 2줄 헤드라인(둘째 줄 `#f8de49` 형광, 마침표 제거), 라운드 16:9 이미지, 2줄 본문(**존칭체 — 블로그와 반대**), 출처·페이지 푸터. 템플릿 `scripts/cardnews_template.html`, 폰트 `.fonts/Pretendard-*`(없으면 Malgun 폴백)
+- **디자인**: 2026-07-19 수신 레퍼런스를 닷커넥터 브랜딩으로 번안 — 아이보리 배경, 로고(`prep_logo()`가 `assets/logo.jpg`를 밝기 기반 알파로 배경 제거 + 하단 슬로건 띠를 연속 런 20% 기준 블록 삭제해 'Dot Connector' 스크립트만 남긴 투명 `logo.png`, 72px. 행 잉크 총량 기준은 굵은 획을 띠로 오탐하니 금지 — 크림색 JPG 배경은 mix-blend multiply로도 상자가 남아 교체)+날짜, 2줄 헤드라인(둘째 줄 `#f8de49` 형광, 마침표 제거), 라운드 16:9 이미지, 2줄 본문(**존칭체 — 블로그와 반대**), 출처·페이지 푸터. 템플릿 `scripts/cardnews_template.html`, 폰트 `.fonts/Pretendard-*`(없으면 Malgun 폴백)
 - **카피**: `cardnews_prompt_template.txt` → gemini-2.5-flash JSON 모드. 카드1 후킹→전개→마지막 실행 제안. headline_top+highlight 이어읽기 한 문장 구조
 - **이미지**: YouTube → 실프레임(yt-dlp+cv2, 균등 분포, 푸터에 실측 타임스탬프 "화면 MM:SS" — 시각 환각 금지) / 논문·기사 → **`gemini-2.5-flash-image` 생성**(16:9 aspectRatio는 `generationConfig.imageConfig`, REST 직접 호출 — 2026-07-24 실증). 생성 실패 시 노란 텍스트 패널 폴백
 - **추출 재사용**: web_to_post `fetch_content` / yt_to_post 자막 체인 import. 본문 200자 미만이면 생성 중단(환각 방지)

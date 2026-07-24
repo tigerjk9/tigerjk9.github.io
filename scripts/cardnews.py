@@ -217,6 +217,57 @@ def esc(s: str) -> str:
     return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def prep_logo(render_dir: Path) -> None:
+    """logo.jpg → 배경·슬로건 띠 제거한 투명 logo.png ('Dot Connector' 스크립트만).
+
+    크림색 배경은 밝기 기반 알파(잉크=불투명, 배경=투명, 중간 선형 보간)로 제거해
+    안티앨리어싱을 보존한다. 하단 "배움, 나눔, 성장…" 슬로건 띠는 잉크의 **연속 런**이
+    행 폭 20%를 넘는 행(실측: 띠 269px vs 스크립트 획 최대 96px — 행 잉크 총량 기준은
+    굵은 브러시 획을 오탐해 로고 중간 행을 지우는 사고가 있었음)으로 찾고, 띠 내부의
+    흰 글자 행은 런이 짧아 개별 탐지가 안 되므로 첫 탐지 행~끝 탐지 행 블록 전체를
+    ±2행 여유로 제거한 뒤 남은 잉크의 bbox로 크롭한다. Pillow 부재 등 실패 시 원본
+    jpg를 그대로 복사(템플릿이 logo.png를 참조 — Chromium은 내용 스니핑으로 렌더).
+    """
+    src = REPO_ROOT / "assets" / "logo.jpg"
+    dst = render_dir / "logo.png"
+    try:
+        from PIL import Image
+        im = Image.open(src).convert("L")
+        w, h = im.size
+        corners = [im.getpixel(p) for p in ((2, 2), (w - 3, 2), (2, h - 3), (w - 3, h - 3))]
+        bg = sum(corners) / 4
+        lo, hi = 40, max(bg - 12, 80)
+        gpx = im.load()
+        alpha = [[(255 if g <= lo else 0 if g >= hi else int(255 * (hi - g) / (hi - lo)))
+                  for g in (gpx[x, y] for x in range(w))] for y in range(h)]
+
+        def longest_run(row):
+            best = cur = 0
+            for a in row:
+                cur = cur + 1 if a > 60 else 0
+                best = max(best, cur)
+            return best
+
+        bar_rows = [y for y in range(h) if longest_run(alpha[y]) > w * 0.2]
+        drop = (set(range(max(0, bar_rows[0] - 2), min(h, bar_rows[-1] + 3)))
+                if bar_rows else set())
+        out = Image.new("RGBA", im.size, (0, 0, 0, 0))
+        opx = out.load()
+        for y in range(h):
+            if y in drop:
+                continue
+            for x, a in enumerate(alpha[y]):
+                if a:
+                    opx[x, y] = (28, 28, 28, a)
+        bbox = out.getchannel("A").getbbox()
+        if bbox:
+            out = out.crop(bbox)
+        out.save(dst)
+    except Exception:
+        import shutil
+        shutil.copy(src, dst)
+
+
 def render_cards(doc: dict, outdir: Path, images: "list[Path | None]") -> "list[Path]":
     template = (SCRIPT_DIR / "cardnews_template.html").read_text(encoding="utf-8")
     render_dir = outdir / "render"
@@ -224,7 +275,7 @@ def render_cards(doc: dict, outdir: Path, images: "list[Path | None]") -> "list[
 
     # 로고·폰트를 렌더 디렉토리로 복사 (file:// 상대 참조)
     import shutil
-    shutil.copy(REPO_ROOT / "assets" / "logo.jpg", render_dir / "logo.jpg")
+    prep_logo(render_dir)
     fonts_dir = REPO_ROOT / ".fonts"
     font_css = ""
     if (fonts_dir / "Pretendard-Bold.ttf").exists():

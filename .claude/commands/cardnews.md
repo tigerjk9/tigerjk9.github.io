@@ -43,8 +43,11 @@ py -X utf8 scripts/cardnews.py <입력> --cards 8
 5. **글자 넘침**: 헤드라인·본문이 잘리거나 줄바꿈이 어색한 카드 확인
 
 ## 재렌더 (카피 수정 후)
-cards.json을 수정한 뒤 전체 재실행 없이 render/ 폴더의 HTML을 직접 수정하거나,
-같은 입력으로 재실행(--out 동일 폴더). 프레임·생성 이미지는 render/에 남아 재사용 가능.
+cards.json을 수정한 뒤 짧은 파이썬 스크립트로 `cardnews.render_cards(doc, outdir, images)`를
+직접 호출한다 — `scripts`를 sys.path에 넣고 cards.json을 로드, images는 render/의
+`frame-NN.jpg`(유튜브) 또는 `gen-NN.png`(생성) 경로 목록. Gemini 재호출 없이 기존
+프레임·생성 이미지를 재사용해 수 초 내 전 카드가 다시 나온다 (2026-07-24 검증).
+**같은 입력으로 재실행하면 카피가 새로 생성돼 cards.json 수정분을 덮어쓰므로 금지.**
 
 ## 알려진 특성
 - 유튜브 자막 없는 영상은 description으로 폴백 → 카피가 얕아질 수 있음 (본문 200자
