@@ -123,6 +123,13 @@ description: "교육 현장에서 바로 쓰는 큐레이션 AI 프롬프트. pr
   #pl-app .pl-by a { color: var(--pl-faint); text-decoration: none; }
   #pl-app .pl-by a:hover { color: var(--pl-accent); text-decoration: underline; }
 
+  /* 복사되는 한글 프롬프트 — 읽기 좋은 본문 스타일(강조 테두리) */
+  #pl-app .pl-ko {
+    margin-top: .8em; background: var(--pl-accent-soft); border: 1px solid var(--pl-accent-line);
+    border-radius: 8px; padding: .85em; font-size: .92em; color: var(--pl-text);
+    line-height: 1.65; white-space: pre-wrap; word-break: break-word;
+    max-height: 340px; overflow-y: auto;
+  }
   #pl-app .pl-en {
     margin-top: .8em; background: var(--pl-code); border: 1px solid var(--pl-border);
     border-radius: 8px; padding: .8em; font-size: .82em; color: var(--pl-muted);
@@ -208,9 +215,11 @@ description: "교육 현장에서 바로 쓰는 큐레이션 AI 프롬프트. pr
       '<div class="pl-tags">' + tags + '</div>' +
       '<div class="pl-actions">' +
         '<button class="pl-btn" data-copy="' + esc(p.id) + '">프롬프트 복사</button>' +
+        '<button class="pl-btn pl-ghost" data-ko="' + esc(p.id) + '">프롬프트 보기</button>' +
         '<button class="pl-btn pl-ghost" data-en="' + esc(p.id) + '">영어 원문</button>' +
         by +
       '</div>' +
+      '<div class="pl-ko" id="ko-' + esc(p.id) + '" hidden>' + esc(p.prompt_ko) + '</div>' +
       '<pre class="pl-en" id="en-' + esc(p.id) + '" hidden>' + esc(p.prompt_en) + '</pre>' +
     '</div>';
   }
@@ -228,12 +237,34 @@ description: "교육 현장에서 바로 쓰는 큐레이션 AI 프롬프트. pr
 
     Array.prototype.forEach.call(gridEl.querySelectorAll('[data-copy]'), function (btn) {
       btn.addEventListener('click', function () {
-        var p = byId[btn.getAttribute('data-copy')];
+        var id = btn.getAttribute('data-copy');
+        var p = byId[id];
         var txt = p.prompt_ko || p.prompt_en;
-        var done = function () { btn.textContent = '복사됨 ✓'; setTimeout(function () { btn.textContent = '프롬프트 복사'; }, 1400); };
+        // 복사한 내용을 바로 볼 수 있도록 한글 프롬프트를 자동으로 펼친다
+        var koEl = document.getElementById('ko-' + id);
+        var koBtn = gridEl.querySelector('[data-ko="' + id + '"]');
+        var reveal = function () {
+          if (koEl && koEl.hasAttribute('hidden')) {
+            koEl.removeAttribute('hidden');
+            if (koBtn) koBtn.textContent = '접기';
+          }
+        };
+        var done = function () {
+          reveal();
+          btn.textContent = '복사됨 ✓';
+          setTimeout(function () { btn.textContent = '프롬프트 복사'; }, 1400);
+        };
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(txt).then(done, function () { fallbackCopy(txt); done(); });
         } else { fallbackCopy(txt); done(); }
+      });
+    });
+    Array.prototype.forEach.call(gridEl.querySelectorAll('[data-ko]'), function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById('ko-' + btn.getAttribute('data-ko'));
+        var show = el.hasAttribute('hidden');
+        if (show) { el.removeAttribute('hidden'); btn.textContent = '접기'; }
+        else { el.setAttribute('hidden', ''); btn.textContent = '프롬프트 보기'; }
       });
     });
     Array.prototype.forEach.call(gridEl.querySelectorAll('[data-en]'), function (btn) {
