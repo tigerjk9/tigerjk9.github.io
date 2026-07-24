@@ -42,7 +42,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 - 데이터: Liquid 템플릿 `knowledge-graph.json`이 **노드(포스트)만** 출력 (노드 id = `date+slug`로 고유화, url은 링크 전용). 구버전의 O(N²) 엣지 이중루프와 `graph-data.json`(dead code)은 제거됨 → 페이로드 5MB→236KB
 - 엣지·군집은 전부 클라이언트 계산: 엣지 = 태그 IDF 가중 + 노드당 top-K(8) 가지치기(흔한 허브 태그 디스카운트) / 색·분류 = 연결 구조 Louvain 군집 탐지(클라 직접 구현, 자동 라벨 = 군집내 태그빈도×IDF 상위). forceLink 레이아웃 + degree 비례 노드 반경 + 동적 centroid 라벨 칩
 - 검증 하네스 `.omc/kg-eval/`(gitignore, Ruby 부재 환경에서 Python 산출 재현 + gstack browse 헤드리스). 설계·품질 루브릭은 메모리 `project_knowledge_graph` 참고
-- **미니 그래프 뷰** (`assets/js/post-graph.js`, 2026-07-11): 모든 포스트 우측 sticky 사이드바 "On this page" **위**에 현재 글 + 태그 IDF top-8 이웃을 표시 (Quartz 스타일). D3 무의존 vanilla 포스 시뮬레이션(동기 300 iter 후 정적 SVG), `/knowledge-graph.json`을 `requestIdleCallback`으로 유휴 fetch. 엣지 스코어링은 KG 페이지 `buildEdges`와 동일(IDF 합산, 카테고리 fallback 포함), 이웃 간 엣지는 노드당 top-2. 노드 클릭 → 해당 글 이동, 헤더 확장 아이콘 → `/knowledge-graph/`, 헤더 돋보기(`#post-graph-zoom`) → **확대 모달**(`#pg-modal`, JS lazy-build — 같은 로컬 그래프를 대형 캔버스에 재레이아웃, 라벨 18자·13px, Esc/바깥 클릭/✕ 닫기, body 스크롤 락). 현재 글 미매칭·이웃 0이면 위젯 자동 숨김, 모바일(<1024px) 숨김. sticky 컬럼 뷰포트 초과 방지 위해 그래프 존재 시 `.toc__menu` max-height를 290px 축소(`main.scss`). `single.html`은 `page.toc or page.date`로 aside를 렌더
+- **미니 그래프 뷰** (`assets/js/post-graph.js`, 2026-07-11): 모든 포스트 우측 sticky 사이드바 "On this page" **위**에 현재 글 + 태그 IDF top-8 이웃을 표시 (Quartz 스타일). D3 무의존 vanilla 포스 시뮬레이션(동기 300 iter 후 정적 SVG), `/knowledge-graph.json`을 `requestIdleCallback`으로 유휴 fetch. 엣지 스코어링은 KG 페이지 `buildEdges`와 동일(IDF 합산, 카테고리 fallback 포함), 이웃 간 엣지는 노드당 top-2. 노드 클릭 → 해당 글 이동, 헤더 확장 아이콘 → `/knowledge-graph/`, 헤더 돋보기(`#post-graph-zoom`) → **확대 모달**(`#pg-modal`, JS lazy-build — 같은 로컬 그래프를 대형 캔버스에 재레이아웃, 라벨 18자·13px, Esc/바깥 클릭/✕ 닫기, body 스크롤 락). 현재 글 미매칭·이웃 0이면 위젯 자동 숨김. 모바일(<1024px)에서도 본문 상단 전체폭 카드로 노출(2026-07-24 — JS가 컨테이너 실측 폭으로 렌더하므로 CSS 숨김 해제만으로 동작). sticky 컬럼 뷰포트 초과 방지 위해 그래프 존재 시 `.toc__menu` max-height를 290px 축소(`main.scss`). `single.html`은 `page.toc or page.date`로 aside를 렌더
 - **미니 그래프 가독성 원칙 (2026-07-11 재설계)**: ① viewBox는 컨테이너 **실측 폭 1:1 px 매핑**(고정 200 viewBox는 사이드바 300px에서 레터박스+블러 유발) ② 라벨은 halo 필수(`paint-order: stroke` + 배경색 stroke 3px — 엣지 선 위에서 판독) ③ 라벨은 4방향(아래/위/우/좌) 그리디 배치 — 이미 놓인 라벨 + **노드 원을 장애물로 등록**하고 겹침 면적·경계 이탈 비용 최소 위치 선택 (상하 플립만으론 중심 라벨·3중 겹침을 못 풀어 교체) ④ 라벨 10.5px·12자 잘림(모달 13px·18자) ⑤ hover는 `transform-box: fill-box` + scale(1.3) ⑥ 모달 대형 캔버스는 중력을 스케일 반비례(0.01/s)로 완화해야 가운데 뭉침이 풀림. 검증: DOM 스텁 하네스 + **독립 HTML(평탄화 CSS+합성 데이터+fetch 오버라이드) → Edge 헤드리스 스크린샷**으로 시각 확인(스크래치패드 pg-test.html 패턴)
 
 **리서치 허브** (`/research/`):
@@ -66,6 +66,13 @@ bundle exec rake version        # 버전 일괄 업데이트
 - **주인장 전용 모드 (2026-07-03, API 비용 통제)**: Vercel env `ASK_ACCESS_KEY` 설정 시 embed/ask는 `X-Ask-Key` 헤더 필수(401), health가 `authRequired`/`authorized`를 반환. 블로그 UI는 미인증 방문자에게 AI 토글·CTA를 숨기고, `/ask/` 방문 시 잠금 안내+키 입력 폼 표시. **키는 `.env`의 `ASK_ACCESS_KEY`** — 주인장이 기기당 1회 `/ask/`에서 입력하면 localStorage(`dc_ask_key`) 저장, 허브 AI 검색도 같은 키 공유. 허브 키워드 탐색은 전면 공개 유지(클라이언트 연산, 비용 0). 키 제거하면 공개 모드로 복귀. 로컬 하네스는 키 자동 첨부(`--no-key`로 미인증 시뮬레이션). **Vercel env를 Sensitive로 저장하면 `vercel env pull`이 빈 값을 내려 복구 불가** — 실제로 최초 키가 Sensitive라 복구가 안 돼 2026-07-03 새 키로 교체(일반 Encrypted로 저장, `.env`와 동기화)했다. 접근 키는 Sensitive로 만들지 말 것
 - **방문자 BYOK 모드 (2026-07-03 추가)**: 잠금 상태여도 방문자가 `/ask/`에서 **본인 Gemini API 키**(Google AI Studio 무료 발급)를 입력하면 이용 가능. 프론트가 Google `models` 엔드포인트로 키를 직접 검증(우리 서버 미경유) 후 localStorage(`dc_gemini_key`) 저장 → embed/ask 요청에 `X-Gemini-Key` 헤더 첨부 → 서버가 접근 키 검사 우회 + 해당 요청의 Gemini 호출을 방문자 키로 수행(비용 방문자 부담). BYOK 요청은 일일 총량(주인장 키 보호)에서 제외, 분당 IP 제한은 유지. 키 무효(400/401/403)는 401 `bad_gemini_key`(프론트가 키 자동 삭제), 할당량 소진(429)은 `gemini_quota`로 구분 응답. **프론트는 health의 `byok` 플래그를 확인한 뒤에만 키 입력 UI를 노출**(구버전 배포와 새 프론트가 섞여도 안전). 허브는 미인증이어도 `byok`면 "AI에게 묻기" CTA를 노출해 입구를 열어 둔다. 키 형식 검증 regex `AIza[0-9A-Za-z_-]{30,80}` (프론트·백엔드 동일)
 - 로컬 E2E: `node research-ask/test/local-harness.mjs "질문"` (`--embed`·`--health`·`--byok` 모드 지원, .env 키 자동 로드, 블로그 fetch를 로컬 파일로 몽키패치). `--byok`는 잠금 강제 후 무키 401 / 무효키 401 / 본인키 200 3종 검증
+
+**프롬프트 라이브러리** (`/prompts/`, 2026-07-24):
+- 페이지: `prompt-library.md` (layout `default`, `#pl-app` 스코프 — research.md와 동일 패턴). 데이터: `assets/prompt-library.json`
+- 빌드: `py scripts/build_prompt_library.py` — prompts.chat(CC0 1.0) 원본 `prompts.csv`에서 스크립트 내 `WHITELIST`(act명+교육 카테고리, 현재 32개·7카테고리)로 선별 → Gemini 한국어 번안(텍스트 해시 증분 캐시 `scripts/.prompt_library_cache.json`, gitignore) → JSON. **항목 추가 = WHITELIST에 (act, 카테고리) 추가 후 재실행·JSON 커밋**
+- `clean_prompt`: prompts.chat 변수 문법 정리 — `${이름:기본값}`→기본값 치환, 단독 라인 `${이름}`→제거, 인라인→`[이름]`. 기여자 필드는 이메일·다중어절 제거(GitHub 아이디만 공개 JSON에 유지 — 개인정보)
+- UI: 카테고리 필터+검색+**프롬프트 복사**(복사 시 한글 프롬프트 블록 자동 펼침)+영어 원문 토글. 표시 블록은 연속 빈 줄을 squeeze(복사는 원본 유지)
+- 격리: front matter에 `categories`/`tags` 없음 → 사이드바·지식그래프·카테고리/태그 페이지 침투 0. 확장 설계는 `scripts/prompt-library-hub-prd.md`
 
 **Custom Sidebar** (`_includes/sidebar/`):
 - `categories.html` — 카테고리별 포스트 수
@@ -93,6 +100,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 사이드바 섹션 접기/펼치기 | `assets/js/sidebar-toggle.js` (`initSectionCollapse`), `_includes/sidebar.html` |
 | 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
 | 리서치 허브 (논문 탐색+AI 검색) | `research.md`, `scripts/build_research_db.py`, `scripts/build_embeddings.py`, `assets/research-*.json` |
+| 프롬프트 라이브러리 (교육자용 큐레이션) | `prompt-library.md`(`/prompts/`), `scripts/build_prompt_library.py`, `assets/prompt-library.json` |
 | 강의자료 아카이브 (강의+도서 허브) | `_pages/lectures.md`, `_data/lectures.yml`, `_data/books.yml`, `scripts/gen_book_covers.py`, `_sass/_lectures.scss` |
 | AI에게 묻기 (RAG 챗봇, 주인장 키 + 방문자 BYOK) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
 | 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
@@ -122,7 +130,9 @@ bundle exec rake version        # 버전 일괄 업데이트
 - **네비게이션** (`_data/navigation.yml`): 쉼표(comma-for-wellbeing.vercel.app), 기록 대화(dotconnector-log.vercel.app), 말씀의 길(malsseum-ui.vercel.app) 외부 링크 포함
 
 **모바일 최적화** (`assets/css/main.scss` `@media (max-width: 1023px)` 블록):
-- 사이트 제목 한 줄 고정: `max-width: calc(100vw - 155px)` + `overflow: hidden` + `text-overflow: ellipsis` + `flex-shrink: 1` (이전 `overflow: visible` 방식 폐기)
+- 사이트 제목 한 줄 고정: `max-width: calc(100vw - 200px)` + `overflow: hidden` + `text-overflow: ellipsis` + `flex-shrink: 1`. **예약폭 함정(2026-07-24)**: 155px 가정은 실측 버튼 영역(테마토글44+검색44+햄버거52+패딩·여백≈180px)보다 작아 masthead row가 뷰포트를 넘고 맨 끝 햄버거가 화면 밖으로 밀렸음 — 우측에 버튼을 추가하면 이 예약폭도 함께 늘려야 한다. 모바일 토글은 36/40으로 축소
+- hits 배지: 상단 메뉴가 아니라 **푸터**(로고·저작권 아래)에 배치 — 메뉴에 넣으면 이미지 로드 폭 변동으로 greedy-nav 배치가 무너짐(실측 사고 2회)
+- 플로팅 사이드바 토글(파란 ☰): 모바일에선 **좌하단 원형 FAB**(44px) — 상단(top 80px)은 제목·헤딩과 겹쳐 지저분
 - 테이블 가로 스크롤: `.page__content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch }`
 - 코드 블록 가로 스크롤: `.page__content pre, .highlight { overflow-x: auto }`
 - 이미지 뷰포트 이탈 방지: `.page__content img { max-width: 100%; height: auto }`
