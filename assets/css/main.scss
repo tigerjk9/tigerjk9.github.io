@@ -569,6 +569,14 @@ html[data-theme="light"] .greedy-nav__toggle {
   }
 }
 
+/* hits 배지 이미지 크기 고정 — 로드 전후 폭 변동(레이아웃 점프)과
+   greedy-nav 너비 계산 오염을 방지. PC·모바일 공통. */
+.masthead__menu-hits img {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+}
+
 html[data-theme="light"] .hidden-links {
   background: #fff;
   border-color: #dde1e7;
@@ -1117,10 +1125,9 @@ html[data-theme="light"] .clipboard-copy-button:active {
 
 @media screen and (max-width: 1023px) {
 
-  /* --- hits 배지 모바일 숨김 (greedy-nav 너비 계산 오염 방지) --- */
-  .masthead__menu-hits {
-    display: none !important;
-  }
+  /* --- hits 배지: 모바일 햄버거 메뉴 안에서도 노출 (이미지 크기는 아래 전역
+         규칙으로 고정해 greedy-nav 너비 계산 오염을 방지) --- */
+  .masthead__menu-hits a { padding: 12px 10px; }
 
   /* --- 햄버거 드롭다운 뷰포트 이탈 수정 --- */
   .greedy-nav .hidden-links {
@@ -1617,9 +1624,13 @@ html[data-theme="light"] {
   }
 }
 
-/* 모바일: 우측 사이드바가 본문 상단 인라인로 밀리므로 그래프는 숨김 (TOC 드로어 별도 존재) */
+/* 모바일: 우측 사이드바가 본문 상단 전체폭 블록으로 밀린다.
+   그래프 뷰도 그 자리에 카드로 노출한다 (JS가 컨테이너 실측 폭으로 렌더). */
 @media (max-width: 1023px) {
-  #post-graph { display: none; }
+  #post-graph {
+    display: block;
+    margin: 0 0 1.5em;
+  }
 }
 
 // ──────────────────────────────────────────────────────────────
