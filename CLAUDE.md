@@ -105,6 +105,18 @@ bundle exec rake version        # 버전 일괄 업데이트
 | AI에게 묻기 (RAG 챗봇, 주인장 키 + 방문자 BYOK) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
 | 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
 | NE 수업 디자이너 (노벨 엔지니어링 수업 설계기) | `tools/ne-designer/index.html` (front matter 없는 정적 단독 HTML) |
+| 포스트 번호 표시 (홈·단일·검색 공통 넘버링) | `_layouts/single.html`, `_includes/archive-single.html`, `assets/js/lunr/lunr-store.js`·`lunr-en.js`, `assets/css/main.scss` |
+| 검색 키보드 단축키 (`/`·`Ctrl/Cmd+K`) | `assets/js/search-shortcut.js`, `_includes/search/search_form.html`, `_includes/scripts.html` |
+| 이미 읽은 글 표시 (localStorage `readPosts`) | `assets/js/read-tracker.js`, `_includes/scripts.html`, `assets/css/main.scss` |
+
+**독자 편의 UI (2026-07-25)** — 기조(다크 에디토리얼·블루 액센트·미니멀) 유지하며 추가:
+- **포스트 넘버링**: 홈 리스트(`archive-single.html` seq)·단일 글(`single.html` 헤더, `page.collection == 'posts'` 게이트 후 `site.posts`에서 위치 탐색)·검색 결과 모두 **`전체수 − index0`** 동일 공식(최신글=총편수, 3자리 zero-pad). 검색은 `lunr-store.js`가 **`site.posts` 순회**로 seq·date를 스토어에 담아야 정확(컬렉션 docs 순서 아님) → `lunr-en.js`가 홈과 동일 카드(`.recent-posts` 상속, `.search-results` 래퍼)로 렌더
+- **페이지네이션**: `paginator-v1.html` 노출 창 ±2→±3, 임계값 5로 인접 페이지 사이 가짜 `…` 제거. `.pagination--numbered` 클래스로 숫자형만 스코프(단일 글 `.pagination--pager`와 분리), 중앙정렬 개별 라운드 칩
+- **검색 단축키**: `/`·`Ctrl/Cmd+K`로 오버레이 열기(`.search__toggle` click 재사용). 자동 포커스·Esc 닫기는 테마 `main.min.js`가 이미 처리, 입력 중이면 무시. 오버레이에 `.search-hint` kbd 힌트
+- **읽은 글 표시**: 방문 글을 `readPosts` localStorage에 기록(기존 `recentPosts`는 8개 한정이라 **별도 키**). 리스트·검색에서 `.is-read` + 넘버 옅게 채움 + `.entry-read` "읽음" 배지. 검색 결과는 `MutationObserver`로 비동기 렌더 대응
+- **본문 이미지 지연 로딩**: `single.html`에서 `{{ content | replace: '<img ', '<img loading="lazy" decoding="async" ' }}` **빌드타임 주입**. end-of-body JS로는 이미 로드가 시작돼 늦으므로 Liquid 필터로 처리(508편 수정·재빌드 불필요)
+- **프로필**(`_includes/author-profile.html`): 이메일은 mailto 링크 대신 주소(`faithfuljk@naver.com`) 표시 + 클릭 복사(onclick, no-JS mailto 폴백). 소셜 링크(Website·Facebook·GitHub·Instagram = `author.links`)에 `target="_blank"` → 새 탭
+- **모바일 사이드바 토글**: `@media max-width:1023px` 안에 좌하단 FAB(2026-07-24) 뒤로 남아 있던 `.sidebar-toggle { top:70px }` 스테일 오버라이드 제거 → FAB가 상단으로 튀어 포스트 번호와 겹치던 문제 해소
 
 **`tools/` 정적 단독 페이지**: front matter 없는 `tools/<슬러그>/index.html`은 Jekyll이 정적 파일로 그대로 복사한다(exclude 목록에 없음). 테마 CSS·`sidebar-toggle.js`가 로드되지 않아 라이트모드 앵커 색·플로팅 ☰ 버튼 함정이 원천 차단된다 — layout default 커스텀 페이지에 필요한 `#앱ID` 스코핑도 불필요. 첫 사례가 NE 수업 디자이너(`/tools/ne-designer/`). 검증은 스크래치패드 복사 후 Edge 헤드리스 `#demo` 해시 렌더 캡처(메모리 `project_tools_static_pages`).
 
