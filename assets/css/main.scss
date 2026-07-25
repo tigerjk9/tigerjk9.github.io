@@ -2715,5 +2715,195 @@ html[data-theme="light"] .recent-posts .archive__item:hover .entry-tags__tag {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   포스트 번호 (단일 글) — 홈 리스트 넘버링과 시각 언어 통일
+   ══════════════════════════════════════════════════════════════ */
+.post-seq {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+  margin: 0 0 0.4em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  line-height: 1;
+}
+
+.post-seq__num {
+  font-size: 2.15em;
+  letter-spacing: 0.02em;
+  color: #42a5f5;
+  font-variant-numeric: tabular-nums;
+}
+
+.post-seq__total {
+  font-size: 0.95em;
+  color: rgba(234, 234, 234, 0.42);
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-theme="light"] .post-seq__num { color: #0078c8; }
+html[data-theme="light"] .post-seq__total { color: #8a929c; }
+
+@media (max-width: 600px) {
+  .post-seq__num { font-size: 1.8em; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   검색 결과 — 홈 최근 포스트 리스트와 동일한 에디토리얼 카드
+   (.search-results 는 .recent-posts 스타일을 그대로 상속)
+   ══════════════════════════════════════════════════════════════ */
+.results__found {
+  margin: 0.5em 0 0.75em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 0.9em;
+  color: rgba(66, 165, 245, 0.9);
+}
+
+html[data-theme="light"] .results__found { color: #0078c8; }
+
+.search-results {
+  margin-top: 0.5em;
+}
+
+/* 오버레이 검색(.search-content)의 테마 기본 규칙(width 50%, margin 2em)을 눌러
+   그리드 카드 레이아웃을 복원한다 */
+.search-content .search-results .archive__item,
+.search-results .archive__item {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* 넘버 없는 결과(강의·페이지)의 빈 자리도 그리드 정렬 유지 */
+.search-results .entry-seq--empty::before {
+  content: "·";
+  color: rgba(234, 234, 234, 0.25);
+}
+
+html[data-theme="light"] .search-results .entry-seq--empty::before {
+  color: rgba(37, 42, 52, 0.25);
+}
+
+/* 검색은 타이핑마다 재렌더 → 등장 애니메이션 비활성(깜빡임 방지) */
+.search-results .list__item {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   페이지네이션 (숫자형) — 넓고 체계적인 페이지 이동
+   중앙 정렬 · 개별 라운드 칩 · 넓은 탭 타깃
+   ══════════════════════════════════════════════════════════════ */
+.pagination.pagination--numbered {
+  float: none;
+  clear: both;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2.5em;
+  padding-top: 1.5em;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4em;
+  }
+
+  li {
+    display: block;
+    float: none;
+    margin: 0;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.7em;
+      margin-bottom: 0;
+      padding: 0.5em 0.85em;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: rgba(234, 234, 234, 0.72);
+      background: transparent;
+      border: 1px solid rgba(234, 234, 234, 0.16);
+      border-radius: 9px !important;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+      &:hover {
+        color: #fff;
+        border-color: #42a5f5;
+        background: rgba(66, 165, 245, 0.16);
+      }
+
+      &.current,
+      &.current.disabled {
+        color: #fff;
+        border-color: #42a5f5;
+        background: #42a5f5;
+      }
+
+      &.disabled {
+        color: rgba(234, 234, 234, 0.3);
+        border-color: transparent;
+        background: transparent;
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+
+  /* Prev/Next 는 방향 라벨이라 살짝 넓게 */
+  li:first-child a,
+  li:last-child a {
+    padding-inline: 1.1em;
+    font-weight: 700;
+  }
+}
+
+html[data-theme="light"] .pagination.pagination--numbered li a {
+  color: #4a5560;
+  border-color: rgba(37, 42, 52, 0.16);
+
+  &:hover {
+    color: #fff;
+    border-color: #0078c8;
+    background: rgba(0, 120, 200, 0.12);
+  }
+
+  &.current,
+  &.current.disabled {
+    color: #fff;
+    border-color: #0078c8;
+    background: #0078c8;
+  }
+
+  &.disabled {
+    color: rgba(37, 42, 52, 0.32);
+    border-color: transparent;
+    background: transparent;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagination.pagination--numbered {
+    margin-top: 2em;
+
+    ul { gap: 0.3em; }
+
+    li a {
+      min-width: 2.3em;
+      padding: 0.45em 0.6em;
+      font-size: 14px;
+    }
+
+    li:first-child a,
+    li:last-child a { padding-inline: 0.85em; }
+  }
+}
+
 @import "lectures";
 

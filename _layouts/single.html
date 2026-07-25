@@ -32,6 +32,22 @@ layout: default
     <div class="page__inner-wrap">
       {% unless page.header.overlay_color or page.header.overlay_image %}
         <header>
+          {%- assign post_seq = 0 -%}
+          {%- if page.collection == 'posts' -%}
+            {%- for p in site.posts -%}
+              {%- if p.url == page.url -%}
+                {%- assign post_seq = site.posts.size | minus: forloop.index0 -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if post_seq > 0 -%}
+            {%- if post_seq > 999 -%}{%- assign post_seq_str = post_seq -%}{%- else -%}{%- assign post_seq_str = post_seq | prepend: "000" | slice: -3, 3 -%}{%- endif -%}
+          <p class="post-seq" aria-label="전체 {{ site.posts.size }}편 중 {{ post_seq }}번째 글">
+            <span class="post-seq__num">{{ post_seq_str }}</span>
+            <span class="post-seq__total">／ {{ site.posts.size }}</span>
+          </p>
+          {%- endif -%}
           {% if page.title -%}
           <h1 id="page-title" class="page__title" itemprop="headline">
             <a href="{{ page.url | absolute_url }}" itemprop="url">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</a>

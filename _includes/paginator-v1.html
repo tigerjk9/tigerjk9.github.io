@@ -1,5 +1,5 @@
 {% if paginator.total_pages > 1 %}
-<nav class="pagination">
+<nav class="pagination pagination--numbered" aria-label="페이지 탐색">
   {% assign paginate_path_last = site.paginate_path | split: '/' | last %}
   {% assign first_page_path = paginator.first_page_path | default: site.paginate_path | replace: paginate_path_last, '' | replace: '//', '/' | relative_url %}
   <ul>
@@ -22,16 +22,16 @@
     {% endif %}
 
     {% assign page_start = 2 %}
-    {% if paginator.page > 4 %}
-      {% assign page_start = paginator.page | minus: 2 %}
+    {% if paginator.page > 5 %}
+      {% assign page_start = paginator.page | minus: 3 %}
       {% comment %} Ellipsis for truncated links {% endcomment %}
       <li><a href="#" class="disabled">&hellip;</a></li>
     {% endif %}
 
     {% assign page_end = paginator.total_pages | minus: 1 %}
     {% assign pages_to_end = paginator.total_pages | minus: paginator.page %}
-    {% if pages_to_end > 4 %}
-      {% assign page_end = paginator.page | plus: 2 %}
+    {% if pages_to_end > 5 %}
+      {% assign page_end = paginator.page | plus: 3 %}
     {% endif %}
 
     {% for index in (page_start..page_end) %}
@@ -49,7 +49,7 @@
     {% endfor %}
 
     {% comment %} Ellipsis for truncated links {% endcomment %}
-    {% if pages_to_end > 3 %}
+    {% if pages_to_end > 5 %}
       <li><a href="#" class="disabled">&hellip;</a></li>
     {% endif %}
 
