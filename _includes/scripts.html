@@ -42,6 +42,12 @@
 <!-- Post Mini Graph View -->
 <script src="{{ '/assets/js/post-graph.js' | relative_url }}"></script>
 
+<!-- Search Keyboard Shortcut ( / , Ctrl/Cmd+K ) -->
+<script src="{{ '/assets/js/search-shortcut.js' | relative_url }}"></script>
+
+<!-- Read Tracker (이미 읽은 글 표시) -->
+<script src="{{ '/assets/js/read-tracker.js' | relative_url }}"></script>
+
 {% if site.after_footer_scripts %}
   {% for script in site.after_footer_scripts %}
     <script src="{{ script | relative_url }}"></script>

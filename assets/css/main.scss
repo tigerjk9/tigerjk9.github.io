@@ -2918,5 +2918,77 @@ html[data-theme="light"] .author__email.is-copied .label {
   color: #0078c8;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   이미 읽은 글 — 리스트·검색에서 방문 항목을 은은하게 구분
+   ══════════════════════════════════════════════════════════════ */
+.entry-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  margin-inline-start: auto; /* eyebrow 오른쪽 끝으로 밀착 */
+  color: rgba(234, 234, 234, 0.42);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.entry-read .fa-check {
+  font-size: 0.82em;
+}
+
+html[data-theme="light"] .entry-read {
+  color: #8a929c;
+}
+
+.is-read .archive__item-title a {
+  color: rgba(234, 234, 234, 0.58);
+}
+
+html[data-theme="light"] .is-read .archive__item-title a {
+  color: #6b7480;
+}
+
+/* 읽은 글은 아웃라인 넘버를 옅게 채워 '완료' 느낌 */
+.is-read .entry-seq {
+  -webkit-text-stroke-width: 0;
+  color: rgba(234, 234, 234, 0.2);
+}
+
+html[data-theme="light"] .is-read .entry-seq {
+  color: rgba(37, 42, 52, 0.22);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   검색 오버레이 — 단축키 힌트
+   ══════════════════════════════════════════════════════════════ */
+.search-hint {
+  margin: 0.6em 0 0;
+  font-size: 0.72em;
+  letter-spacing: 0.02em;
+  color: rgba(234, 234, 234, 0.4);
+}
+
+.search-hint kbd {
+  display: inline-block;
+  padding: 0.05em 0.45em;
+  margin: 0 0.1em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: rgba(234, 234, 234, 0.72);
+  background: rgba(234, 234, 234, 0.08);
+  border: 1px solid rgba(234, 234, 234, 0.18);
+  border-radius: 5px;
+}
+
+html[data-theme="light"] .search-hint {
+  color: #8a929c;
+}
+
+html[data-theme="light"] .search-hint kbd {
+  color: #4a5560;
+  background: rgba(37, 42, 52, 0.05);
+  border-color: rgba(37, 42, 52, 0.15);
+}
+
 @import "lectures";
 
