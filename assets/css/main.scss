@@ -2900,5 +2900,23 @@ html[data-theme="light"] .pagination.pagination--numbered li a {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   프로필 이메일 — mailto 링크 대신 주소 노출 + 클릭 복사
+   ══════════════════════════════════════════════════════════════ */
+.author__email .label {
+  overflow-wrap: anywhere;
+}
+
+.author__email.is-copied,
+.author__email.is-copied .label {
+  color: #42a5f5;
+  transition: color 0.2s ease;
+}
+
+html[data-theme="light"] .author__email.is-copied,
+html[data-theme="light"] .author__email.is-copied .label {
+  color: #0078c8;
+}
+
 @import "lectures";
 

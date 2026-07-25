@@ -49,9 +49,13 @@
 
       {% if author.email %}
         <li>
-          <a href="mailto:{{ author.email }}" rel="me" class="u-email">
+          <a href="mailto:{{ author.email }}" rel="me" class="u-email author__email"
+             data-email="{{ author.email }}"
+             aria-label="이메일 주소 {{ author.email }} — 클릭하면 복사됩니다"
+             title="클릭하면 이메일 주소가 복사됩니다"
+             onclick="event.preventDefault();var a=this,e=a.getAttribute('data-email'),l=a.querySelector('.label'),done=function(){var o=l.textContent;l.textContent='주소가 복사됐습니다';a.classList.add('is-copied');setTimeout(function(){l.textContent=e;a.classList.remove('is-copied');},1600);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(e).then(done).catch(function(){});}else{var t=document.createElement('textarea');t.value=e;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy');done();}catch(err){}document.body.removeChild(t);}return false;">
             <meta itemprop="email" content="{{ author.email }}" />
-            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">{{ site.data.ui-text[site.locale].email_label | default: "Email" }}</span>
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">{{ author.email }}</span>
           </a>
         </li>
       {% endif %}
