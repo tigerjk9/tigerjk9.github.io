@@ -669,6 +669,16 @@ def apply_font(page):
         return False
 
 
+def _norm_label(s: str) -> str:
+    """네이버 UI 라벨 비교용 정규화.
+
+    발행 팝업의 카테고리 라벨은 공백을 non-breaking space(\\xa0)로 내려준다.
+    그대로 비교하면 '생각하는 교실, 깊이있는 학습'이 항상 불일치로 잡혀
+    매 발행마다 [warn] + 불필요한 드롭다운 조작을 유발했다(2026-07-22~26 로그).
+    """
+    return re.sub(r"\s+", " ", s or "").strip()
+
+
 def goto_editor(page, url: str, attempts: int = 3):
     """에디터 진입. 직전 발행의 지연 리다이렉트와 겹치면 goto가 죽는다.
 
@@ -744,8 +754,9 @@ def write_post(page, post: dict, cat_key: str, html: str, tags: list[str],
 
     # 카테고리 확인 - URL categoryNo로 이미 선택돼 있어야 정상
     try:
-        sel_label = page.locator("button[class*='selectbox_button']").first.inner_text()
-        if cat["name"] not in sel_label:
+        sel_label = _norm_label(
+            page.locator("button[class*='selectbox_button']").first.inner_text())
+        if _norm_label(cat["name"]) not in sel_label:
             print(f"  [warn] 팝업 카테고리 불일치({sel_label!r}), 직접 선택 시도")
             page.locator("button[class*='selectbox_button']").first.click()
             time.sleep(0.7)
