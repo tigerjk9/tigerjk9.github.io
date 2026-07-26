@@ -1,3 +1,23 @@
+- slug: ai-leading-teacher-2026
+  title: "2026 인공지능 활용 선도교사 원격 연수"
+  subtitle: "교육의 본질 · AI 윤리 · 백워드 설계 · 과정중심평가 · 7과정"
+  audience: "초등 교사"
+  chapter_count: 7
+  date: "2026-07-26"
+  hub_url: /lectures/ai-leading-teacher-2026/
+  locked: true
+  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtHq8kBAVZD5vYAcosgOJRC/7xaMCxGgI0"
+  thumbnail: /assets/lectures/ai-leading-teacher-2026/cover.jpg
+  author: "2026 인공지능 활용 선도교사 원격 연수 (초등)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "7과정 Padlet 보드를 과정별 설계와 자료로 정리한 큐레이션 버전"
+  tags:
+    - 인공지능선도교사
+    - AI디지털교육
+    - 백워드설계
+    - 과정중심평가
+    - 교원연수
+
 - slug: vibe-coding-teachers-parents
   title: "교사와 학부모를 위한 바이브코딩"
   subtitle: "Gemini로 만드는 학습 웹앱 · 곱셈·지도·튜터·챗봇 · 28장"

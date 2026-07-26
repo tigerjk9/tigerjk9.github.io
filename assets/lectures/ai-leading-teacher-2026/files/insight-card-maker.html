@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 수업 1원칙 — 시사점 카드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#13142b; --panel:#1c1e3d; --ivory:#f3eee3; --slate:#9ca1c2;
+    --ember:#e0793c; --vermilion:#c8442e; --line:rgba(243,238,227,.13);
+    --ui-bg:#eceaf2; --ui-card:#ffffff; --ui-ink:#1e2147; --ui-line:#dcdbe8; --ui-muted:#71748f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Pretendard',-apple-system,'Malgun Gothic',sans-serif;
+    background:var(--ui-bg);color:var(--ui-ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:30px 20px 90px;}
+  .masthead{margin-bottom:26px;}
+  .masthead .kick{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--ember);text-transform:uppercase;}
+  .masthead h1{font-size:25px;font-weight:800;letter-spacing:-.5px;margin-top:6px;color:var(--ui-ink);}
+  .masthead p{font-size:13.5px;color:var(--ui-muted);margin-top:6px;}
+
+  .layout{display:grid;grid-template-columns:minmax(320px,1fr) auto;gap:30px;align-items:start;}
+  @media(max-width:980px){.layout{grid-template-columns:1fr;}}
+
+  /* ---------- form ---------- */
+  .form{background:var(--ui-card);border:1px solid var(--ui-line);border-radius:18px;padding:24px 24px 26px;box-shadow:0 6px 24px rgba(30,33,71,.06);}
+  .form .grp{margin-bottom:20px;}
+  .form label{display:block;font-size:13px;font-weight:700;color:var(--ui-ink);margin-bottom:7px;}
+  .form label .sub{font-weight:500;color:var(--ui-muted);font-size:11.5px;margin-left:4px;}
+  .form label .req{color:var(--ember);}
+  .field{
+    width:100%;font-family:inherit;font-size:14.5px;color:var(--ui-ink);background:#fbfbfe;
+    border:1.5px solid var(--ui-line);border-radius:11px;padding:11px 13px;outline:none;resize:vertical;
+    transition:border-color .14s,box-shadow .14s;
+  }
+  .field:focus{border-color:var(--ember);box-shadow:0 0 0 3px rgba(224,121,60,.13);background:#fff;}
+  textarea.field{line-height:1.55;}
+  .declare{font-size:16px;font-weight:600;min-height:64px;}
+  .strat-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
+  .strat-row .nbox{
+    flex:none;width:30px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:13px;color:var(--ember);background:rgba(224,121,60,.1);border:1px solid rgba(224,121,60,.22);
+  }
+  .strat-row .field{flex:1;min-height:42px;}
+  .meta2{display:flex;gap:12px;}
+  .meta2 .grp{flex:1;margin-bottom:0;}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:9px;margin-top:6px;padding-top:18px;border-top:1px solid var(--ui-line);}
+  .btn{font-family:inherit;font-size:13.5px;font-weight:700;border:none;border-radius:11px;padding:11px 16px;cursor:pointer;transition:transform .1s,opacity .14s,background .14s;}
+  .btn:active{transform:scale(.97);}
+  .btn-fill{background:var(--ui-ink);color:#fff;}
+  .btn-ember{background:var(--ember);color:#fff;}
+  .btn-soft{background:#eceaf2;color:var(--ui-ink);}
+  .btn-line{background:transparent;color:var(--ui-muted);border:1.5px solid var(--ui-line);}
+  .theme-switch{display:flex;gap:10px;margin-bottom:4px;}
+  .theme-switch button{
+    flex:1;border:1.5px solid var(--ui-line);background:#fbfbfe;border-radius:12px;
+    font-family:inherit;padding:12px 10px;cursor:pointer;transition:all .14s;
+    display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;position:relative;
+  }
+  .theme-switch button .sw{width:100%;height:26px;border-radius:7px;display:block;}
+  .theme-switch .sw-mid{background:radial-gradient(120% 100% at 0% 0%,#1a1c3c 0%,#13142b 60%);border:1px solid rgba(0,0,0,.1);}
+  .theme-switch .sw-ivo{background:linear-gradient(160deg,#f6f1e6,#efe8d9);border:1px solid #e3dcc9;}
+  .theme-switch button .nm{font-size:13px;font-weight:700;color:var(--ui-ink);}
+  .theme-switch button small{font-size:10.5px;color:var(--ui-muted);}
+  .theme-switch button:hover{border-color:#c4c2d4;}
+  .theme-switch button.on{border-color:var(--ember);box-shadow:0 0 0 3px rgba(224,121,60,.14);background:#fff;}
+  .theme-switch button.on::after{
+    content:"✓ 선택됨";position:absolute;top:-9px;right:8px;background:var(--ember);color:#fff;
+    font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:999px;
+  }
+
+  /* ---------- card preview ---------- */
+  .stage{display:flex;justify-content:center;}
+  #card{
+    width:600px;min-height:812px;border-radius:20px;overflow:hidden;position:relative;
+    display:flex;flex-direction:column;padding:54px 52px 44px;
+    box-shadow:0 26px 60px rgba(19,20,43,.34);
+    background:radial-gradient(130% 100% at 0% 0%, #1a1c3c 0%, var(--ink) 58%);
+    color:var(--ivory);
+  }
+  #card.theme-ivory{
+    background:linear-gradient(160deg,#f6f1e6 0%, #efe8d9 100%);
+    color:#1a1c38;box-shadow:0 26px 60px rgba(120,110,90,.28);
+  }
+  #card.theme-ivory{--ivory:#1a1c38;--slate:#7d7560;--line:rgba(30,30,60,.12);}
+
+  .c-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid var(--line);}
+  .c-eyebrow .en{font-size:11px;font-weight:700;letter-spacing:2.5px;color:var(--ember);text-transform:uppercase;}
+  .c-eyebrow .ko{font-size:13px;font-weight:600;color:var(--slate);margin-top:3px;letter-spacing:.5px;}
+  .c-no{text-align:right;}
+  .c-no .lab{font-size:10px;letter-spacing:1.5px;color:var(--slate);text-transform:uppercase;}
+  .c-no .big{font-family:'Nanum Myeongjo',serif;font-size:30px;font-weight:800;line-height:1;color:var(--ivory);}
+
+  .c-quote{font-family:'Nanum Myeongjo',serif;font-size:64px;line-height:.5;color:var(--ember);margin:30px 0 2px;height:34px;}
+  .c-declare{
+    font-family:'Nanum Myeongjo',serif;font-size:31px;font-weight:700;line-height:1.5;letter-spacing:-.3px;
+    color:var(--ivory);word-break:keep-all;min-height:46px;
+  }
+  .c-declare.ghost{color:var(--slate);opacity:.55;font-weight:400;}
+
+  .c-rule{width:54px;height:2px;background:var(--ember);margin:26px 0 22px;border-radius:2px;}
+
+  .c-sec{margin-bottom:24px;}
+  .c-sec .slabel{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+  .c-sec .slabel .en{font-size:10.5px;font-weight:700;letter-spacing:2px;color:var(--ember);text-transform:uppercase;}
+  .c-sec .slabel .ko{font-size:12.5px;font-weight:600;color:var(--slate);}
+  .c-sec .slabel .hr{flex:1;height:1px;background:var(--line);}
+  .c-reason{font-family:'Nanum Myeongjo',serif;font-size:15px;line-height:1.85;color:var(--ivory);opacity:.94;word-break:keep-all;}
+  .c-reason.ghost{color:var(--slate);opacity:.5;}
+
+  .c-strat{display:flex;gap:14px;padding:9px 0;align-items:flex-start;}
+  .c-strat .n{
+    flex:none;font-family:'Nanum Myeongjo',serif;font-size:15px;font-weight:800;color:var(--ember);
+    width:26px;padding-top:1px;letter-spacing:.5px;
+  }
+  .c-strat .tx{flex:1;font-size:14.5px;line-height:1.6;color:var(--ivory);opacity:.95;word-break:keep-all;}
+  .c-strat + .c-strat{border-top:1px solid var(--line);}
+  .c-strat.ghost .tx{color:var(--slate);opacity:.5;}
+
+  .c-foot{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);display:flex;align-items:center;gap:16px;}
+  .seal{
+    flex:none;width:54px;height:54px;border-radius:11px;background:var(--vermilion);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+    transform:rotate(-4deg);box-shadow:0 4px 12px rgba(200,68,46,.35);border:1.5px solid rgba(255,255,255,.25);
+  }
+  .seal span{font-family:'Nanum Myeongjo',serif;font-size:17px;font-weight:800;color:#f7ece4;line-height:1;}
+  .c-sign{flex:1;}
+  .c-sign .who{font-size:15px;font-weight:700;color:var(--ivory);}
+  .c-sign .who .ghost-name{color:var(--slate);font-weight:400;}
+  .c-sign .date{font-size:12px;color:var(--slate);margin-top:2px;}
+  .c-course{text-align:right;}
+  .c-course .l1{font-family:'Nanum Myeongjo',serif;font-size:12.5px;color:var(--slate);font-style:italic;line-height:1.4;}
+  .c-course .l2{font-size:9.5px;color:var(--slate);opacity:.7;margin-top:4px;letter-spacing:.3px;}
+
+  .stage-note{text-align:center;font-size:12px;color:var(--ui-muted);margin-top:14px;}
+  @media(max-width:660px){
+    #card{width:100%;min-height:auto;padding:40px 30px 34px;}
+    .c-declare{font-size:25px;}
+    .masthead h1{font-size:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="masthead">
+    <div class="kick">My One Principle · 시사점 카드</div>
+    <h1>나만의 수업 1원칙 수립하기</h1>
+    <p>오늘 연수에서 얻은 시사점을 한 문장의 선언으로 새기고, PNG·PDF 한 장으로 간직하세요.</p>
+  </div>
+
+  <div class="layout">
+    <!-- form -->
+    <div class="form">
+      <div class="grp">
+        <label>카드 색상 테마 <span class="sub">카드 배경색을 골라보세요</span></label>
+        <div class="theme-switch">
+          <button id="th-mid" class="on" onclick="setTheme('midnight')">
+            <span class="sw sw-mid"></span>
+            <span class="nm">심야 먹빛</span>
+            <small>어두운 배경 · 화면·공유용</small>
+          </button>
+          <button id="th-ivo" onclick="setTheme('ivory')">
+            <span class="sw sw-ivo"></span>
+            <span class="nm">상아 선언</span>
+            <small>밝은 배경 · 인쇄용</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="grp">
+        <label>나의 교육 1원칙 선언 <span class="req">*</span><span class="sub">한 문장으로</span></label>
+        <textarea class="field declare" id="inDeclare" rows="2" placeholder="예) 나는 데이터의 결론보다 아이의 과정을 먼저 읽는 교사가 된다."></textarea>
+      </div>
+
+      <div class="grp">
+        <label>이 원칙을 세운 이유 <span class="req">*</span></label>
+        <textarea class="field" id="inReason" rows="4" placeholder="이 원칙이 나에게 왜 중요한지, 어떤 장면에서 비롯되었는지 적어보세요."></textarea>
+      </div>
+
+      <div class="grp">
+        <label>구체적 실천 전략 <span class="sub">1가지 이상 ~ 3가지 이하 · 1번은 필수</span></label>
+        <div class="strat-row"><div class="nbox">01</div><textarea class="field" id="inStrat1" rows="1" placeholder="실천 전략 1 (필수)"></textarea></div>
+        <div class="strat-row"><div class="nbox">02</div><textarea class="field" id="inStrat2" rows="1" placeholder="실천 전략 2 (선택)"></textarea></div>
+        <div class="strat-row"><div class="nbox">03</div><textarea class="field" id="inStrat3" rows="1" placeholder="실천 전략 3 (선택)"></textarea></div>
+      </div>
+
+      <div class="meta2">
+        <div class="grp"><label>이름 <span class="sub">선택</span></label><input class="field" id="inName" type="text" placeholder="작성자"></div>
+        <div class="grp"><label>날짜 <span class="sub">선택</span></label><input class="field" id="inDate" type="text" placeholder="비우면 오늘 날짜"></div>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn btn-ember" id="pngBtn">🖼️ 사진(PNG)으로 저장</button>
+        <button class="btn btn-fill" id="pdfBtn">📄 PDF로 저장</button>
+        <button class="btn btn-soft" id="exBtn">예시로 채우기</button>
+        <button class="btn btn-line" id="clrBtn">비우기</button>
+      </div>
+    </div>
+
+    <!-- preview -->
+    <div>
+      <div class="stage">
+        <div id="card" class="theme-midnight">
+          <div class="c-top">
+            <div class="c-eyebrow">
+              <div class="en">My One Principle</div>
+              <div class="ko">나의 수업 1원칙 · 선언</div>
+            </div>
+          </div>
+
+          <div class="c-quote">“</div>
+          <div class="c-declare ghost" id="cDeclare">여기에 나의 1원칙 선언 문장이 새겨집니다.</div>
+
+          <div class="c-rule"></div>
+
+          <div class="c-sec">
+            <div class="slabel"><span class="en">Why</span><span class="ko">이 원칙을 세운 이유</span><span class="hr"></span></div>
+            <div class="c-reason ghost" id="cReason">원칙을 세운 이유가 이 자리에 담깁니다.</div>
+          </div>
+
+          <div class="c-sec">
+            <div class="slabel"><span class="en">In Practice</span><span class="ko">실천 전략</span><span class="hr"></span></div>
+            <div id="cStrats">
+              <div class="c-strat ghost"><div class="n">01</div><div class="tx">첫 번째 실천 전략</div></div>
+            </div>
+          </div>
+
+          <div class="c-foot">
+            <div class="seal"><span>原</span><span>則</span></div>
+            <div class="c-sign">
+              <div class="who" id="cName"><span class="ghost-name">작성자</span></div>
+              <div class="date" id="cDate"></div>
+            </div>
+            <div class="c-course">
+              <div class="l1">사례로 읽는<br>AI 수업 설계의 본질</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage-note">↑ 실시간 미리보기 — 입력하는 그대로 카드에 반영됩니다</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ---------- 테마 ---------- */
+function setTheme(t){
+  const card = $('card');
+  card.classList.remove('theme-midnight','theme-ivory');
+  card.classList.add('theme-'+t);
+  $('th-mid').classList.toggle('on', t==='midnight');
+  $('th-ivo').classList.toggle('on', t==='ivory');
+}
+
+/* ---------- 실시간 렌더 ---------- */
+function todayKR(){
+  const d = new Date();
+  return `${d.getFullYear()}. ${String(d.getMonth()+1).padStart(2,'0')}. ${String(d.getDate()).padStart(2,'0')}`;
+}
+function render(){
+  // 선언
+  const dec = $('inDeclare').value.trim();
+  const cd = $('cDeclare');
+  if(dec){ cd.textContent = dec; cd.classList.remove('ghost'); }
+  else { cd.textContent = '여기에 나의 1원칙 선언 문장이 새겨집니다.'; cd.classList.add('ghost'); }
+
+  // 이유
+  const rs = $('inReason').value.trim();
+  const cr = $('cReason');
+  if(rs){ cr.textContent = rs; cr.classList.remove('ghost'); }
+  else { cr.textContent = '원칙을 세운 이유가 이 자리에 담깁니다.'; cr.classList.add('ghost'); }
+
+  // 실천 전략 (채워진 것만)
+  const strats = [$('inStrat1').value.trim(), $('inStrat2').value.trim(), $('inStrat3').value.trim()].filter(s=>s);
+  const box = $('cStrats');
+  box.innerHTML = '';
+  if(strats.length === 0){
+    box.innerHTML = '<div class="c-strat ghost"><div class="n">01</div><div class="tx">첫 번째 실천 전략</div></div>';
+  } else {
+    strats.forEach((s,i)=>{
+      const row = document.createElement('div');
+      row.className = 'c-strat';
+      row.innerHTML = `<div class="n">${String(i+1).padStart(2,'0')}</div><div class="tx">${escapeHtml(s)}</div>`;
+      box.appendChild(row);
+    });
+  }
+
+  // 이름 / 날짜
+  const nm = $('inName').value.trim();
+  $('cName').innerHTML = nm ? escapeHtml(nm) : '<span class="ghost-name">작성자</span>';
+  const dt = $('inDate').value.trim();
+  $('cDate').textContent = dt ? dt : todayKR();
+}
+function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+['inDeclare','inReason','inStrat1','inStrat2','inStrat3','inName','inDate']
+  .forEach(id => $(id).addEventListener('input', render));
+
+/* textarea 자동 높이 */
+document.querySelectorAll('textarea.field').forEach(t=>{
+  const grow = ()=>{ t.style.height='auto'; t.style.height=(t.scrollHeight+2)+'px'; };
+  t.addEventListener('input', grow);
+});
+
+/* ---------- 예시 / 비우기 ---------- */
+$('exBtn').onclick = ()=>{
+  $('inDeclare').value = '나는 데이터의 결론보다 아이의 과정을 먼저 읽는 교사가 된다.';
+  $('inReason').value = "AI가 내린 '상위 15%'라는 진단도, 교실에서 내가 매일 관찰한 아이의 불안도 모두 진실의 일부다. 최종 판단의 권한과 책임은 데이터가 아니라, 아이를 마주한 나에게 있다.";
+  $('inStrat1').value = "AI 리포트를 받으면 점수보다 '풀이 과정·소요 시간·재시도 기록'을 먼저 확인한다.";
+  $('inStrat2').value = '성취가 낮은 아이에게는 능력이 아닌 방법과 노력으로 귀인하도록 피드백한다.';
+  $('inStrat3').value = '데이터와 내 관찰이 충돌하면, 아이와의 대화로 한 번 더 확인한 뒤 판단한다.';
+  $('inName').value = '';
+  document.querySelectorAll('textarea.field').forEach(t=>{t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px';});
+  render();
+};
+$('clrBtn').onclick = ()=>{
+  if(!confirm('작성한 내용을 모두 비울까요?')) return;
+  ['inDeclare','inReason','inStrat1','inStrat2','inStrat3','inName','inDate'].forEach(id=>$(id).value='');
+  document.querySelectorAll('textarea.field').forEach(t=>t.style.height='auto');
+  render();
+};
+
+/* ---------- 저장 검증 ---------- */
+function validate(){
+  if(!$('inDeclare').value.trim()){ alert('나의 1원칙 선언 문장을 입력해 주세요.'); $('inDeclare').focus(); return false; }
+  if(!$('inReason').value.trim()){ alert('원칙을 세운 이유를 입력해 주세요.'); $('inReason').focus(); return false; }
+  if(!$('inStrat1').value.trim()){ alert('실천 전략을 최소 1가지(1번) 입력해 주세요.'); $('inStrat1').focus(); return false; }
+  return true;
+}
+function safeName(){
+  const t = ($('inDeclare').value.trim() || '나의_1원칙').replace(/[\\/:*?"<>|\n]/g,'_').slice(0,30);
+  return t + '_수업1원칙카드';
+}
+async function capture(){
+  await document.fonts.ready;
+  const card = $('card');
+  const isIvory = card.classList.contains('theme-ivory');
+  return await html2canvas(card, {scale:2, backgroundColor: isIvory ? '#f3ecdd' : '#13142b', useCORS:true});
+}
+
+/* PNG */
+$('pngBtn').onclick = async ()=>{
+  if(!validate()) return;
+  const canvas = await capture();
+  const a = document.createElement('a');
+  a.download = safeName()+'.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+};
+
+/* PDF — 한 페이지에 카드 1장 (한글은 이미지로 삽입) */
+$('pdfBtn').onclick = async ()=>{
+  if(!validate()) return;
+  const canvas = await capture();
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p','mm','a4');
+  const pw = pdf.internal.pageSize.getWidth();
+  const ph = pdf.internal.pageSize.getHeight();
+  const margin = 12;
+  const availW = pw - margin*2, availH = ph - margin*2;
+  const ratio = canvas.width / canvas.height;
+  let w = availW, h = w / ratio;
+  if(h > availH){ h = availH; w = h * ratio; }      // 한 페이지에 맞춰 축소
+  const x = (pw - w)/2, y = (ph - h)/2;
+  pdf.addImage(canvas.toDataURL('image/png'),'PNG', x, y, w, h);
+  pdf.save(safeName()+'.pdf');
+};
+
+render();
+</script>
+</body>
+</html>

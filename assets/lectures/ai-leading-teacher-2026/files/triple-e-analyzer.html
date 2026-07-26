@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triple E 프레임워크 수업 평가 도구</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --navy:#1e2147; --navy2:#2b3068; --ink:#1f2433; --muted:#6b7280;
+    --line:#e6e8f0; --bg:#f4f5fb; --card:#ffffff;
+    --eng:#2563eb; --enh:#7c3aed; --ext:#059669;
+    --orange:#f97316;
+    --good:#059669; --mid:#d97706; --low:#dc2626;
+    --good-bg:#ecfdf5; --mid-bg:#fffbeb; --low-bg:#fef2f2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 80px;}
+
+  /* ---- header ---- */
+  .topbar{
+    background:linear-gradient(135deg,var(--navy),var(--navy2));
+    color:#fff;border-radius:20px;padding:26px 26px 24px;margin-bottom:22px;
+    box-shadow:0 12px 30px rgba(30,33,71,.18);
+  }
+  .badge{
+    display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.4px;
+    background:rgba(255,255,255,.16);padding:5px 12px;border-radius:999px;margin-bottom:12px;
+  }
+  .topbar h1{font-size:24px;font-weight:800;letter-spacing:-.4px;}
+  .topbar p{font-size:13.5px;opacity:.82;margin-top:7px;}
+  .topbar .src{font-size:11.5px;opacity:.6;margin-top:12px;border-top:1px solid rgba(255,255,255,.14);padding-top:10px;}
+
+  /* ---- title input ---- */
+  .titlebox{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;margin-bottom:20px;box-shadow:0 4px 14px rgba(30,33,71,.04);
+  }
+  .titlebox label{font-size:12.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:8px;}
+  .titlebox label .req{color:var(--orange);}
+  .meta-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .meta-row .field{flex:1;min-width:160px;}
+  input[type=text]{
+    width:100%;font-family:inherit;font-size:15px;color:var(--ink);
+    border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;outline:none;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  input[type=text]:focus{border-color:var(--navy2);box-shadow:0 0 0 3px rgba(43,48,104,.12);}
+  #classTitle{font-size:17px;font-weight:700;}
+
+  /* ---- dimension cards ---- */
+  .dim{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    margin-bottom:18px;overflow:hidden;box-shadow:0 4px 14px rgba(30,33,71,.05);
+  }
+  .dim-head{padding:18px 22px;display:flex;align-items:center;gap:14px;color:#fff;}
+  .dim.eng .dim-head{background:linear-gradient(120deg,#2563eb,#3b82f6);}
+  .dim.enh .dim-head{background:linear-gradient(120deg,#7c3aed,#9333ea);}
+  .dim.ext .dim-head{background:linear-gradient(120deg,#059669,#10b981);}
+  .dim-num{
+    width:42px;height:42px;flex:none;border-radius:12px;background:rgba(255,255,255,.2);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;
+  }
+  .dim-head .t{flex:1;}
+  .dim-head .t .en{font-size:12.5px;font-weight:700;opacity:.85;letter-spacing:.3px;}
+  .dim-head .t .ko{font-size:19px;font-weight:800;letter-spacing:-.3px;}
+  .dim-sub{
+    background:rgba(255,255,255,.18);border-radius:10px;padding:6px 12px;text-align:center;flex:none;
+  }
+  .dim-sub b{font-size:19px;font-weight:800;display:block;line-height:1.1;}
+  .dim-sub span{font-size:10.5px;opacity:.85;}
+  .dim-core{
+    font-size:13px;color:var(--muted);padding:13px 22px;background:#fafbff;
+    border-bottom:1px solid var(--line);
+  }
+  .dim-core b{color:var(--ink);}
+
+  /* ---- question ---- */
+  .q{padding:18px 22px;border-bottom:1px solid var(--line);}
+  .q:last-child{border-bottom:none;}
+  .q-text{display:flex;gap:11px;margin-bottom:13px;}
+  .q-no{
+    flex:none;font-size:12px;font-weight:800;color:#fff;border-radius:7px;
+    padding:3px 9px;height:fit-content;margin-top:2px;
+  }
+  .dim.eng .q-no{background:var(--eng);}
+  .dim.enh .q-no{background:var(--enh);}
+  .dim.ext .q-no{background:var(--ext);}
+  .q-body{font-size:14.5px;color:var(--ink);font-weight:500;}
+  .q-hint{font-size:12px;color:var(--muted);margin-top:3px;}
+  .opts{display:flex;gap:8px;}
+  .opt{
+    flex:1;text-align:center;border:1.5px solid var(--line);border-radius:11px;
+    padding:9px 6px;cursor:pointer;transition:all .13s;background:#fff;user-select:none;
+  }
+  .opt .pt{font-size:16px;font-weight:800;color:var(--muted);}
+  .opt .lb{font-size:11.5px;color:var(--muted);margin-top:1px;}
+  .opt:hover{border-color:#c4c8da;background:#fafbff;}
+  .opt.sel{border-color:transparent;color:#fff;}
+  .dim.eng .opt.sel{background:var(--eng);}
+  .dim.enh .opt.sel{background:var(--enh);}
+  .dim.ext .opt.sel{background:var(--ext);}
+  .opt.sel .pt,.opt.sel .lb{color:#fff;}
+
+  /* ---- sticky result bar ---- */
+  .scorebar{
+    position:sticky;bottom:14px;background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:14px 18px;margin-top:22px;
+    box-shadow:0 10px 30px rgba(30,33,71,.14);display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .sb-prog{flex:1;min-width:150px;}
+  .sb-prog .lab{font-size:12px;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between;}
+  .sb-prog .lab b{color:var(--ink);}
+  .track{height:8px;background:var(--line);border-radius:999px;overflow:hidden;}
+  .fill{height:100%;width:0;background:linear-gradient(90deg,var(--navy2),var(--orange));border-radius:999px;transition:width .3s;}
+  .sb-total{text-align:center;flex:none;}
+  .sb-total .big{font-size:26px;font-weight:800;color:var(--navy);line-height:1;}
+  .sb-total .lab{font-size:11px;color:var(--muted);}
+  .btn{
+    font-family:inherit;font-size:14.5px;font-weight:700;border:none;border-radius:12px;
+    padding:12px 20px;cursor:pointer;transition:transform .1s,opacity .15s;white-space:nowrap;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-ghost{background:#eef0f8;color:var(--navy);}
+  .btn-orange{background:var(--orange);color:#fff;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  /* ---- report overlay ---- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(20,22,45,.6);backdrop-filter:blur(3px);
+    display:none;align-items:flex-start;justify-content:center;overflow-y:auto;z-index:50;padding:24px 14px 60px;
+  }
+  .overlay.open{display:flex;}
+  .modal{max-width:660px;width:100%;}
+  .modal-actions{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;justify-content:center;}
+
+  /* ---- the report card (capture target) ---- */
+  #report{
+    background:#fff;border-radius:18px;overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.3);
+  }
+  .r-head{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:26px 30px;}
+  .r-head .tag{font-size:12px;font-weight:700;letter-spacing:.5px;opacity:.8;}
+  .r-head h2{font-size:22px;font-weight:800;margin-top:6px;letter-spacing:-.4px;word-break:keep-all;}
+  .r-head .rmeta{font-size:12.5px;opacity:.78;margin-top:10px;display:flex;gap:18px;flex-wrap:wrap;}
+  .r-score{padding:26px 30px;text-align:center;}
+  .r-tier{display:inline-block;font-size:14px;font-weight:800;padding:7px 18px;border-radius:999px;margin-bottom:14px;}
+  .r-num{font-size:54px;font-weight:800;line-height:1;}
+  .r-num span{font-size:22px;color:var(--muted);font-weight:700;}
+  .r-tier-desc{font-size:13.5px;color:var(--muted);margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;word-break:keep-all;}
+  .r-dims{padding:4px 30px 8px;}
+  .r-dim{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line);}
+  .r-dim .dot{width:11px;height:11px;border-radius:50%;flex:none;}
+  .r-dim .nm{flex:none;width:120px;font-size:13.5px;font-weight:700;}
+  .r-dim .nm small{display:block;font-size:10.5px;color:var(--muted);font-weight:600;}
+  .r-bar{flex:1;height:9px;background:var(--line);border-radius:999px;overflow:hidden;}
+  .r-bar i{display:block;height:100%;border-radius:999px;}
+  .r-dim .sc{flex:none;font-size:14px;font-weight:800;width:48px;text-align:right;}
+  .r-detail{padding:14px 30px 8px;border-top:1px solid var(--line);}
+  .r-detail h3{font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:10px;}
+  .r-qrow{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:5px 0;color:var(--ink);}
+  .r-qrow .qn{color:var(--muted);font-weight:700;flex:none;width:34px;}
+  .r-qrow .qq{flex:1;word-break:keep-all;}
+  .r-qrow .qv{flex:none;font-weight:800;width:74px;text-align:right;}
+  .r-foot{background:#fafbff;padding:14px 30px 18px;border-top:1px solid var(--line);}
+  .r-foot p{font-size:10.5px;color:var(--muted);line-height:1.5;}
+  .closebtn{background:rgba(255,255,255,.15);color:#fff;}
+
+  .hint-warn{font-size:12px;color:var(--low);margin-top:8px;text-align:center;width:100%;display:none;}
+  @media(max-width:560px){
+    .topbar h1{font-size:21px;}
+    .r-num{font-size:46px;}
+    .r-dim .nm{width:96px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="badge">AI 활용 수업 분석 · CHAPTER 02</span>
+    <h1>Triple E 프레임워크 수업 평가 도구</h1>
+    <p>참여(Engagement) · 향상(Enhancement) · 확장(Extension) 9개 문항으로 AI 활용 수업을 진단합니다.</p>
+    <div class="src">출처 : Kolb, L. (2017). <i>Learning First, Technology Second</i>. ISTE.</div>
+  </div>
+
+  <div class="titlebox">
+    <label>수업 제목 <span class="req">*</span></label>
+    <input type="text" id="classTitle" placeholder="예) 독도 탐험 — AI 챗봇과 함께하는 사회 탐구 수업">
+    <div class="meta-row" style="margin-top:14px;">
+      <div class="field">
+        <label>평가자 (선택)</label>
+        <input type="text" id="evaluator" placeholder="이름 또는 모둠명">
+      </div>
+      <div class="field">
+        <label>평가일 (선택)</label>
+        <input type="text" id="evalDate" placeholder="예) 2026-06-28">
+      </div>
+    </div>
+  </div>
+
+  <div id="dims"></div>
+
+  <div class="scorebar">
+    <div class="sb-prog">
+      <div class="lab"><span>응답 진행도</span><b id="progTxt">0 / 9 문항</b></div>
+      <div class="track"><div class="fill" id="progFill"></div></div>
+    </div>
+    <div class="sb-total">
+      <div class="big" id="liveScore">0<span style="font-size:15px;color:var(--muted);">/18</span></div>
+      <div class="lab">현재 합산 점수</div>
+    </div>
+    <button class="btn btn-ghost" id="resetBtn">초기화</button>
+    <button class="btn btn-primary" id="reportBtn">📊 결과 보고서 만들기</button>
+    <div class="hint-warn" id="warnTxt">⚠ 아직 응답하지 않은 문항이 있어요. (미응답은 0점으로 계산됩니다)</div>
+  </div>
+</div>
+
+<!-- report overlay -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-actions">
+      <button class="btn btn-orange" id="pngBtn">🖼️ 사진(PNG) 저장</button>
+      <button class="btn btn-orange" id="pdfBtn">📄 PDF 저장</button>
+      <button class="btn closebtn" id="closeBtn">닫기</button>
+    </div>
+    <div id="report"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- 데이터: PPT 38~42쪽 트리플 E 문항 ---------- */
+const DIMS = [
+  {
+    key:"eng", num:"E1", en:"ENGAGEMENT", ko:"참여", color:"#2563eb",
+    core:"기술이 학생들이 학습 목표에 집중하고 능동적으로 참여하도록 돕는가?",
+    qs:[
+      {no:"Q1", t:"기술 도구가 학생들이 주의 산만을 줄이고 과제·활동·학습 목표에 집중할 수 있도록 돕는가?", hint:"과업 집중 시간 (Time on Task)"},
+      {no:"Q2", t:"기술 도구가 학생들이 학습 과정을 시작하도록 능동적인 동기를 부여하는가?", hint:""},
+      {no:"Q3", t:"기술 도구가 학생의 행동 변화를 유도하여, 수동적 학습자에서 능동적·협력적인 사회적 학습자로 전환되게 하는가?", hint:"공동 사용 또는 상호 참여 유도"}
+    ]
+  },
+  {
+    key:"enh", num:"E2", en:"ENHANCEMENT", ko:"향상", color:"#7c3aed",
+    core:"기술이 종이와 연필로는 불가능했던 깊이 있는 이해를 가능하게 하는가?",
+    qs:[
+      {no:"Q4", t:"기술 도구가 학생들이 고차원적 사고 능력을 활용하여 학습 목표·지식을 더 정교하고 깊이 있게 이해·증명하도록 돕는가?", hint:""},
+      {no:"Q5", t:"기술 도구가 어려운 개념·아이디어를 쉽게 이해하도록 맞춤형 학습 지원 체계(비계, Scaffold)를 제공하는가?", hint:"예) 수준별 학습 차별화, 개인화"},
+      {no:"Q6", t:"기술 도구가 학생들이 전통적 도구(지필 평가 등)로는 불가능했던 새로운 방식으로 이해도를 표현할 수 있는 경로를 만들어 주는가?", hint:""}
+    ]
+  },
+  {
+    key:"ext", num:"E3", en:"EXTENSION", ko:"확장", color:"#059669",
+    core:"기술이 교실 밖의 실제 세상(Real-world)과 배움을 연결해 주는가?",
+    qs:[
+      {no:"Q7", t:"기술 도구가 학생들이 일과 시간(등교 시간) 외에도 스스로 학습할 기회를 만드는가?", hint:"시간·공간 제약 없는 24/7 연계"},
+      {no:"Q8", t:"기술 도구가 학생의 학교 학습과 일상의 현실 세계 경험을 연결하는 가교 역할을 하는가?", hint:"학습 목표와 일상 경험의 연계"},
+      {no:"Q9", t:"기술 도구가 학생들이 실생활에서 바로 활용할 수 있는 삶의 소프트 스킬(소통·협업 등)을 배양하도록 돕는가?", hint:""}
+    ]
+  }
+];
+const OPTS = [
+  {v:0, lab:"아니요"}, {v:1, lab:"어느 정도"}, {v:2, lab:"그렇다"}
+];
+const TIERS = [
+  {min:13, max:18, name:"탁월한 연계", emoji:"🏆", color:"#059669", bg:"#ecfdf5",
+   desc:"도입하려는 기술 도구와 학습 목표가 매우 정교하게 결합되어 있습니다. 수업에 적극적으로 도입하기를 강력히 권장합니다."},
+  {min:7, max:12, name:"중간 수준의 연계", emoji:"⚖️", color:"#d97706", bg:"#fffbeb",
+   desc:"기술 도구가 학습 목표와 일부 연결되어 있습니다. 도구의 사용 목적을 더 명확히 하거나 가이드라인(비계 설정 등)을 추가하여 기술의 효과를 극대화할 필요가 있습니다."},
+  {min:0, max:6, name:"낮은 연계", emoji:"⚠️", color:"#dc2626", bg:"#fef2f2",
+   desc:"기술 도구와 학습 목표 간의 유기적 연결이 부족합니다. 단순히 '재미'나 '신기함' 때문에 기술을 도입하는 것은 아닌지 재검토가 필요하며, 전통적 교수·학습 방법이 더 효과적일 수 있습니다."}
+];
+
+/* answers[dimIdx][qIdx] = 0|1|2|null */
+const answers = DIMS.map(d => d.qs.map(()=>null));
+
+/* ---------- 카드 렌더 ---------- */
+const dimsEl = document.getElementById('dims');
+DIMS.forEach((d, di) => {
+  const card = document.createElement('div');
+  card.className = 'dim ' + d.key;
+  card.innerHTML = `
+    <div class="dim-head">
+      <div class="dim-num">${d.num}</div>
+      <div class="t"><div class="en">${d.en}</div><div class="ko">${d.ko}</div></div>
+      <div class="dim-sub"><b id="sub-${di}">0</b><span>/ 6 점</span></div>
+    </div>
+    <div class="dim-core">핵심 질문 — <b>${d.core}</b></div>
+    <div id="qs-${di}"></div>`;
+  dimsEl.appendChild(card);
+  const qWrap = card.querySelector('#qs-'+di);
+  d.qs.forEach((q, qi) => {
+    const qEl = document.createElement('div');
+    qEl.className = 'q';
+    qEl.innerHTML = `
+      <div class="q-text">
+        <span class="q-no">${q.no}</span>
+        <div><div class="q-body">${q.t}</div>${q.hint?`<div class="q-hint">↳ ${q.hint}</div>`:''}</div>
+      </div>
+      <div class="opts" id="opts-${di}-${qi}"></div>`;
+    qWrap.appendChild(qEl);
+    const optWrap = qEl.querySelector('#opts-'+di+'-'+qi);
+    OPTS.forEach(o => {
+      const b = document.createElement('div');
+      b.className = 'opt';
+      b.innerHTML = `<div class="pt">${o.v}</div><div class="lb">${o.lab}</div>`;
+      b.onclick = () => {
+        answers[di][qi] = o.v;
+        optWrap.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+        b.classList.add('sel');
+        update();
+      };
+      optWrap.appendChild(b);
+    });
+  });
+});
+
+/* ---------- 합산 & UI 업데이트 ---------- */
+function dimScore(di){ return answers[di].reduce((s,v)=> s + (v||0), 0); }
+function totalScore(){ return DIMS.reduce((s,_,di)=> s + dimScore(di), 0); }
+function answeredCount(){ return answers.flat().filter(v=>v!==null).length; }
+
+function update(){
+  DIMS.forEach((_,di)=> document.getElementById('sub-'+di).textContent = dimScore(di));
+  const total = totalScore(), n = answeredCount();
+  document.getElementById('liveScore').innerHTML = total + '<span style="font-size:15px;color:var(--muted);">/18</span>';
+  document.getElementById('progTxt').textContent = n + ' / 9 문항';
+  document.getElementById('progFill').style.width = (n/9*100) + '%';
+  document.getElementById('warnTxt').style.display = (n>0 && n<9) ? 'block' : 'none';
+}
+update();
+
+function getTier(score){ return TIERS.find(t => score>=t.min && score<=t.max); }
+
+/* ---------- 보고서 생성 ---------- */
+function buildReport(){
+  const title = document.getElementById('classTitle').value.trim() || '(수업 제목 미입력)';
+  const evaluator = document.getElementById('evaluator').value.trim();
+  const date = document.getElementById('evalDate').value.trim() || new Date().toLocaleDateString('ko-KR');
+  const total = totalScore();
+  const tier = getTier(total);
+
+  let dimRows = '';
+  DIMS.forEach((d,di)=>{
+    const s = dimScore(di), pct = (s/6*100);
+    dimRows += `
+      <div class="r-dim">
+        <span class="dot" style="background:${d.color}"></span>
+        <div class="nm">${d.ko}<small>${d.en}</small></div>
+        <div class="r-bar"><i style="width:${pct}%;background:${d.color}"></i></div>
+        <div class="sc" style="color:${d.color}">${s}<span style="color:#9ca3af;font-weight:700;font-size:12px;"> /6</span></div>
+      </div>`;
+  });
+
+  let qRows = '';
+  DIMS.forEach((d,di)=>{
+    d.qs.forEach((q,qi)=>{
+      const v = answers[di][qi];
+      const lab = v===null ? '미응답' : OPTS[v].lab;
+      const col = v===null ? '#9ca3af' : d.color;
+      qRows += `<div class="r-qrow"><span class="qn">${q.no}</span><span class="qq">${q.t}</span><span class="qv" style="color:${col}">${v===null?'-':v}점 · ${lab}</span></div>`;
+    });
+  });
+
+  document.getElementById('report').innerHTML = `
+    <div class="r-head">
+      <div class="tag">TRIPLE E FRAMEWORK · 수업 평가 결과 보고서</div>
+      <h2>${title}</h2>
+      <div class="rmeta">
+        ${evaluator?`<span>👤 평가자 : ${evaluator}</span>`:''}
+        <span>🗓️ 평가일 : ${date}</span>
+      </div>
+    </div>
+    <div class="r-score">
+      <div class="r-tier" style="color:${tier.color};background:${tier.bg}">${tier.emoji} ${tier.name}</div>
+      <div class="r-num" style="color:${tier.color}">${total}<span> / 18점</span></div>
+      <div class="r-tier-desc">${tier.desc}</div>
+    </div>
+    <div class="r-dims">${dimRows}</div>
+    <div class="r-detail">
+      <h3>문항별 응답 내역</h3>
+      ${qRows}
+    </div>
+    <div class="r-foot">
+      <p><b>채점 기준</b> : 각 문항 0점(아니요) · 1점(어느 정도) · 2점(그렇다) / 총 9문항 · 최대 18점<br>
+      <b>해석 기준</b> : 13~18점 탁월한 연계 · 7~12점 중간 수준의 연계 · 6점 이하 낮은 연계<br>
+      출처 : Kolb, L. (2017). Learning First, Technology Second. ISTE.</p>
+    </div>`;
+}
+
+/* ---------- 이벤트 ---------- */
+const overlay = document.getElementById('overlay');
+document.getElementById('reportBtn').onclick = ()=>{
+  if(!document.getElementById('classTitle').value.trim()){
+    if(!confirm('수업 제목이 비어 있습니다. 그래도 보고서를 만들까요?')) {
+      document.getElementById('classTitle').focus(); return;
+    }
+  }
+  buildReport();
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+};
+document.getElementById('closeBtn').onclick = ()=> overlay.classList.remove('open');
+overlay.onclick = (e)=>{ if(e.target===overlay) overlay.classList.remove('open'); };
+
+document.getElementById('resetBtn').onclick = ()=>{
+  if(!confirm('모든 응답을 초기화할까요?')) return;
+  answers.forEach(a=>a.fill(null));
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  update();
+};
+
+/* 파일명 안전 처리 */
+function safeName(){
+  const t = (document.getElementById('classTitle').value.trim() || 'TripleE_평가');
+  return t.replace(/[\\/:*?"<>|]/g,'_').slice(0,40) + '_TripleE';
+}
+
+/* PNG 저장 */
+document.getElementById('pngBtn').onclick = async ()=>{
+  const canvas = await html2canvas(document.getElementById('report'), {scale:2, backgroundColor:'#ffffff', useCORS:true});
+  const a = document.createElement('a');
+  a.download = safeName() + '.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+};
+
+/* PDF 저장 (한글: 이미지로 변환해 삽입) */
+document.getElementById('pdfBtn').onclick = async ()=>{
+  const { jsPDF } = window.jspdf;
+  const canvas = await html2canvas(document.getElementById('report'), {scale:2, backgroundColor:'#ffffff', useCORS:true});
+  const img = canvas.toDataURL('image/png');
+  const pdf = new jsPDF('p','mm','a4');
+  const pw = pdf.internal.pageSize.getWidth();
+  const ph = pdf.internal.pageSize.getHeight();
+  const margin = 8;
+  const w = pw - margin*2;
+  const h = canvas.height * w / canvas.width;
+  if(h <= ph - margin*2){
+    pdf.addImage(img, 'PNG', margin, margin, w, h);
+  } else {
+    // 여러 페이지로 분할
+    let remaining = h, position = margin;
+    let pageHeight = ph - margin*2;
+    let srcY = 0;
+    const ratio = canvas.width / w; // px per mm
+    while(remaining > 0){
+      const sliceH_mm = Math.min(pageHeight, remaining);
+      const sliceH_px = sliceH_mm * ratio;
+      const c2 = document.createElement('canvas');
+      c2.width = canvas.width; c2.height = sliceH_px;
+      const ctx = c2.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c2.width,c2.height);
+      ctx.drawImage(canvas, 0, srcY, canvas.width, sliceH_px, 0, 0, canvas.width, sliceH_px);
+      pdf.addImage(c2.toDataURL('image/png'),'PNG', margin, margin, w, sliceH_mm);
+      remaining -= sliceH_mm; srcY += sliceH_px;
+      if(remaining > 0) pdf.addPage();
+    }
+  }
+  pdf.save(safeName() + '.pdf');
+};
+</script>
+</body>
+</html>
