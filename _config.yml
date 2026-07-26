@@ -224,6 +224,14 @@ defaults:
     values:
       layout: single
       author_profile: true
+  # _lectures — 강의자료 아카이브는 블로그 사이드바 없이 전체 폭을 쓴다.
+  # 중첩 레이아웃(lecture -> single)에서는 layout.standalone이 상위 레이아웃까지
+  # 전달되지 않으므로, 컬렉션 기본값으로 page.standalone을 확실히 심는다.
+  - scope:
+      path: ""
+      type: lectures
+    values:
+      standalone: true
 
 # Archives
 category_archive:

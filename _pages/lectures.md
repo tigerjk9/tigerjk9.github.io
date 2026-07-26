@@ -4,11 +4,10 @@ permalink: /lectures/
 layout: single
 author_profile: false
 toc: false
+standalone: true
 ---
 
-## 닷커넥터의 서재 — 출간 도서
-
-교실과 AI를 잇는 기록. 닷커넥터(김진관)가 쓰고 함께 지은 정식 출간 도서 {{ site.data.published_books | size }}권이다. 표지를 누르면 서점 상세 페이지로 이동한다.
+## 닷커넥터의 서재 <span class="lec-count">{{ site.data.published_books | size }}</span>
 
 <div class="pub-book-grid">
 {% for pb in site.data.published_books %}
@@ -16,55 +15,64 @@ toc: false
     <div class="pub-cover"><img src="{{ pb.cover }}" alt="{{ pb.title }} 표지" loading="lazy"></div>
     {% if pb.badge %}<span class="pub-badge">{{ pb.badge }}</span>{% endif %}
     {% if pb.series %}<span class="pub-series">{{ pb.series }}</span>{% elsif pb.edition %}<span class="pub-series">{{ pb.edition }}</span>{% endif %}
-    <div class="pub-title">{{ pb.title }}</div>
-    {% if pb.subtitle %}<div class="pub-sub">{{ pb.subtitle }}</div>{% endif %}
-    <div class="pub-meta">{{ pb.authors }}{% if pb.publisher %} · {{ pb.publisher }}{% endif %}{% if pb.year %} · {{ pb.year }}{% endif %}</div>
-    {% if pb.url %}<div class="pub-buy">{{ pb.store }}에서 보기 ↗</div>{% endif %}
+    <div class="pub-body">
+      <div class="pub-title">{{ pb.title }}</div>
+      {% if pb.subtitle %}<div class="pub-sub">{{ pb.subtitle }}</div>{% endif %}
+      <div class="pub-meta">{{ pb.authors }}{% if pb.publisher %} · {{ pb.publisher }}{% endif %}{% if pb.year %} · {{ pb.year }}{% endif %}</div>
+    </div>
+    {% if pb.url %}<div class="pub-buy">{{ pb.store }}에서 보기 <span aria-hidden="true">↗</span></div>{% endif %}
   {% if pb.url %}</a>{% else %}</div>{% endif %}
 {% endfor %}
 </div>
 
-## 워크숍 강의
+## 워크숍 강의 <span class="lec-count">{{ site.data.lectures | size }}</span>
 
 {% if site.data.lectures.size == 0 %}
-<p>아직 등록된 강의가 없습니다.</p>
+<p class="lec-empty">아직 등록된 강의가 없다.</p>
 {% else %}
 <div class="lecture-card-grid">
 {% for lecture in site.data.lectures %}
-  <a href="{% if lecture.locked %}#{% else %}{{ lecture.hub_url }}{% endif %}" class="lecture-card"{% if lecture.locked %} data-locked="{{ lecture.locked_payload }}"{% endif %}>
-    {% if lecture.thumbnail %}<img src="{{ lecture.thumbnail }}" alt="{{ lecture.title }}">{% endif %}
+  <a href="{% if lecture.locked %}#{% else %}{{ lecture.hub_url }}{% endif %}" class="lecture-card lecture-card--media{% if lecture.locked %} is-locked{% endif %}"{% if lecture.locked %} data-locked="{{ lecture.locked_payload }}"{% endif %}>
+    {% if lecture.thumbnail %}<div class="card-thumb"><img src="{{ lecture.thumbnail }}" alt="{{ lecture.title }}" loading="lazy"></div>{% endif %}
     {% if lecture.curator %}<span class="card-badge">교육자 큐레이션</span>{% endif %}
-    <div class="card-title">{{ lecture.title }}</div>
-    <div class="card-meta">
-      <span>{{ lecture.audience }}</span>{% if lecture.duration_min %} · <span>{{ lecture.duration_min }}분</span>{% endif %}{% if lecture.feature_count %} · <span>{{ lecture.feature_count }}개 기능</span>{% elsif lecture.slide_count %} · <span>{{ lecture.slide_count }}장 · {{ lecture.chapter_count }}챕터</span>{% elsif lecture.chapter_count %} · <span>{{ lecture.chapter_count }}개 장</span>{% endif %}{% if lecture.locked %} · <span class="lock-note">비밀번호 보호</span>{% endif %}
+    <div class="card-body">
+      <div class="card-title">{{ lecture.title }}</div>
+      {% if lecture.subtitle %}<div class="card-sub">{{ lecture.subtitle }}</div>{% endif %}
+      <div class="card-meta">
+        <span>{{ lecture.audience }}</span>{% if lecture.duration_min %} <span class="dot"></span> <span>{{ lecture.duration_min }}분</span>{% endif %}{% if lecture.feature_count %} <span class="dot"></span> <span>{{ lecture.feature_count }}개 기능</span>{% elsif lecture.slide_count %} <span class="dot"></span> <span>{{ lecture.slide_count }}장 · {{ lecture.chapter_count }}챕터</span>{% elsif lecture.chapter_count %} <span class="dot"></span> <span>{{ lecture.chapter_count }}개 장</span>{% endif %}
+      </div>
+      {% if lecture.locked %}<div class="lock-note"><i class="fas fa-lock" aria-hidden="true"></i> 비밀번호 보호</div>{% endif %}
     </div>
     {% if lecture.curator %}
     <div class="card-credit">
-      <div><span class="credit-label">원작</span> {{ lecture.author }}</div>
-      <div><span class="credit-label credit-curator">큐레이션</span> {{ lecture.curator }}</div>
+      <div><span class="credit-label">원작</span> <span class="credit-name">{{ lecture.author }}</span></div>
+      <div><span class="credit-label credit-curator">큐레이션</span> <span class="credit-name">{{ lecture.curator }}</span></div>
     </div>
     {% elsif lecture.author %}
-    <div class="card-credit"><div><span class="credit-label">원작</span> {{ lecture.author }}</div></div>
+    <div class="card-credit"><div><span class="credit-label">원작</span> <span class="credit-name">{{ lecture.author }}</span></div></div>
     {% endif %}
   </a>
 {% endfor %}
 </div>
 {% endif %}
 
-## 도서 원고
+## 도서 원고 <span class="lec-count">{{ site.data.books | size }}</span>
 
 <div class="lecture-card-grid">
 {% for book in site.data.books %}
-  <a href="{% if book.locked %}#{% else %}{{ book.url }}{% endif %}" class="lecture-card book-card"{% if book.locked %} data-locked="{{ book.locked_payload }}"{% elsif book.external %} target="_blank" rel="noopener"{% endif %}>
-    <img src="{{ book.cover }}" alt="{{ book.title }} 표지">
+  <a href="{% if book.locked %}#{% else %}{{ book.url }}{% endif %}" class="lecture-card lecture-card--media book-card{% if book.locked %} is-locked{% endif %}"{% if book.locked %} data-locked="{{ book.locked_payload }}"{% elsif book.external %} target="_blank" rel="noopener"{% endif %}>
+    <div class="card-thumb"><img src="{{ book.cover }}" alt="{{ book.title }} 표지" loading="lazy"></div>
     {% if book.status == "최신" %}<span class="card-badge">최신</span>
     {% elsif book.status %}<span class="card-badge badge-muted">{{ book.status }}</span>{% endif %}
-    <div class="card-id">제{{ book.volume }}권{% if book.external %} · 웹 도서 ↗{% endif %}{% if book.locked %} · <span class="lock-note">비밀번호 보호</span>{% endif %}</div>
-    <div class="card-title">{{ book.title }}</div>
-    <div class="card-meta">{{ book.audience }}</div>
-    <div class="card-meta">{{ book.structure }}</div>
+    <div class="card-body">
+      <div class="card-id">제{{ book.volume }}권{% if book.external %} <span class="dot"></span> 웹 도서 ↗{% endif %}</div>
+      <div class="card-title">{{ book.title }}</div>
+      <div class="card-meta">{{ book.audience }}</div>
+      <div class="card-meta">{{ book.structure }}</div>
+      {% if book.locked %}<div class="lock-note"><i class="fas fa-lock" aria-hidden="true"></i> 비밀번호 보호</div>{% endif %}
+    </div>
     {% if book.author %}
-    <div class="card-credit"><div><span class="credit-label">저자</span> {{ book.author }}</div></div>
+    <div class="card-credit"><div><span class="credit-label">저자</span> <span class="credit-name">{{ book.author }}</span></div></div>
     {% endif %}
   </a>
 {% endfor %}

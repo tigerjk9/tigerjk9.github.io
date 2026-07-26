@@ -7,6 +7,10 @@ share: true
 comments: false
 read_time: false
 ---
+{%- comment %}
+  standalone(사이드바 없는 전체 폭)은 _config.yml의 lectures 컬렉션 기본값으로 지정한다.
+  중첩 레이아웃에서는 layout.standalone이 single.html까지 전달되지 않기 때문이다.
+{% endcomment -%}
 
 <nav class="lecture-breadcrumb" aria-label="breadcrumb">
   <ol>

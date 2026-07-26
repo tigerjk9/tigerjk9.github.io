@@ -1,4 +1,9 @@
-{% if page.author_profile or layout.author_profile or page.sidebar or site.sidebar %}
+{% comment %}
+  standalone(page 또는 layout) 페이지는 블로그 사이드바를 렌더하지 않는다.
+  강의자료 아카이브처럼 본문이 넓어야 하는 큐레이션 페이지용 opt-out.
+{% endcomment %}
+{% if page.standalone or layout.standalone %}
+{% elsif page.author_profile or layout.author_profile or page.sidebar or site.sidebar %}
   <div class="sidebar sticky">
     {% if page.author_profile or layout.author_profile %}{% include author-profile.html %}{% endif %}
 

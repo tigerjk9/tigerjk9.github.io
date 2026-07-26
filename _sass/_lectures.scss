@@ -1,111 +1,315 @@
-// 강의자료 큐레이션 — 격리 스타일
+// ==========================================================================
+//  강의자료 아카이브 — 격리 스타일
+//  전 요소 Pretendard 통일 + 하나의 카드 토큰 체계.
+//  적용 범위는 standalone 페이지(.page--standalone)와 강의 관련 컴포넌트로 한정한다.
+// ==========================================================================
+
+// --- 디자인 토큰 ---------------------------------------------------------
+$lec-font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+  "Segoe UI", "Malgun Gothic", sans-serif;
+
+$lec-radius: 14px;
+$lec-radius-sm: 9px;
+$lec-pad: 1.05rem;
+$lec-gap: 1.15rem;
+
+$lec-line: rgba(127, 127, 127, 0.26);
+$lec-line-strong: rgba(127, 127, 127, 0.45);
+$lec-surface: rgba(127, 127, 127, 0.05);
+$lec-accent: #60a5fa;
+$lec-amber: #fbbf24;
+$lec-rose: #e11d48;
+$lec-sky: #0ea5e9;
+
+// --- 폰트 통일 -----------------------------------------------------------
+// 강의 페이지 안의 모든 텍스트를 Pretendard로. 코드/모노는 예외로 둔다.
+.page--standalone,
+.lecture-card,
+.pub-book-card,
 .lecture-breadcrumb {
-  font-size: 0.85em;
-  margin-bottom: 1em;
-  ol { list-style: none; padding: 0; display: flex; gap: 0.5em; flex-wrap: wrap; }
-  li + li::before { content: "▸ "; margin-right: 0.5em; opacity: 0.5; }
+  font-family: $lec-font;
+  // 한글은 음절 단위로 끊으면 '교육르네상/스'처럼 흉하게 잘린다. 어절 단위로 넘긴다.
+  word-break: keep-all;
+  overflow-wrap: break-word;
+
+  h1, h2, h3, h4, h5, h6,
+  p, li, td, th, a, span, div, button, figcaption, blockquote, summary {
+    font-family: $lec-font;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  code, kbd, samp, pre, pre * {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    word-break: normal;
+  }
 }
 
-.lecture-feature {
-  .feature-header { border-bottom: 2px solid var(--accent, #d65a31); padding-bottom: 0.8em; margin-bottom: 1.5em; }
-  .feature-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; background: #eee; font-size: 0.7em; margin-right: 6px; }
-  .feature-badge.track-basic { background: #e6e6e6; }
-  .feature-badge.track-advanced { background: #1a1a1a; color: #fff; }
+// --- standalone 레이아웃 (블로그 사이드바 없음) ---------------------------
+@media (min-width: 1024px) {
+  // 사이드바가 없으므로 본문이 폭 전체를 쓴다.
+  // TOC가 있는 상세 페이지는 테마의 오른쪽 여백(padding-inline-end)을 그대로 둔다.
+  .page--standalone { width: 100%; }
 
-  .slide-excerpt { border: 1px solid #ddd; border-radius: 6px; padding: 1em; margin: 1em 0; }
-  .slide-excerpt img { max-width: 100%; height: auto; border-radius: 4px; }
-  .slide-excerpt .slide-text { font-size: 0.9em; color: var(--muted, #444); margin-top: 0.5em; }
+  // TOC까지 없는 허브는 여백을 지우고, 사이트가 $max-width:100%라
+  // 초광폭에서 카드가 끝없이 늘어나므로 가운데 정렬 + 상한을 준다.
+  .page--standalone.page--full {
+    float: none;
+    max-width: 1400px;
+    margin-inline: auto;
+    padding-inline-end: 0;
+  }
 }
 
-.lecture-card {
-  position: relative;
-  display: block;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1em;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  text-decoration: none;
-  color: inherit;
-  &:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
-  .card-id { font-family: monospace; color: var(--accent, #d65a31); font-size: 0.8em; }
-  .card-title { font-weight: 600; margin: 0.4em 0; line-height: 1.35; }
-  .card-track { font-size: 0.7em; padding: 2px 8px; border-radius: 10px; background: #eee; }
-  .card-meta { font-size: 0.82em; color: var(--muted, #666); }
-  .lock-note { color: #d97706; font-weight: 600; }
-
-  .card-badge {
-    position: absolute;
-    top: 1.4em;
-    right: 1.4em;
-    font-size: 0.65em;
+// --- 섹션 헤딩 -----------------------------------------------------------
+.page--standalone .page__content {
+  > h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 2.6rem 0 0.2rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid $lec-line;
+    font-size: 1.32rem;
     font-weight: 700;
-    letter-spacing: 0.4px;
-    padding: 3px 9px;
+    letter-spacing: -0.01em;
+
+    &:first-child { margin-top: 0.6rem; }
+  }
+
+  .lec-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    padding: 0 0.45rem;
     border-radius: 999px;
-    background: #fbbf24;
-    color: #1f2937;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.18);
-  }
-
-  .card-credit {
-    margin-top: 0.7em;
-    padding-top: 0.6em;
-    border-top: 1px dashed rgba(127,127,127,0.35);
-    font-size: 0.78em;
-    color: var(--muted, #555);
-    line-height: 1.55;
-
-    .credit-label {
-      display: inline-block;
-      min-width: 3.5em;
-      font-size: 0.78em;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      color: #94a3b8;
-      margin-right: 0.4em;
-    }
-    .credit-label.credit-curator { color: #d97706; }
+    background: rgba(96, 165, 250, 0.16);
+    color: $lec-accent;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
   }
 }
 
-.book-card {
-  img { display: block; width: 100%; height: auto; border-radius: 6px; margin-bottom: 0.6em; }
-  .card-badge.badge-muted { background: #64748b; color: #f1f5f9; }
-  .card-meta + .card-meta { margin-top: 0.2em; }
+.lec-empty {
+  padding: 1.6rem;
+  border: 1px dashed $lec-line;
+  border-radius: $lec-radius;
+  color: var(--muted, #777);
+  text-align: center;
 }
 
+// --- 그리드 --------------------------------------------------------------
 .lecture-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1em;
-  margin: 1.5em 0;
+  grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+  gap: $lec-gap;
+  margin: 1.3rem 0 2.6rem;
 }
 
-// 닷커넥터의 서재 — 출간 도서 (published_books.yml)
 .pub-book-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1em;
-  margin: 1.2em 0 2.4em;
+  grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
+  gap: $lec-gap;
+  margin: 1.3rem 0 2.6rem;
 }
 
-.pub-book-card {
+// --- 카드 공통 -----------------------------------------------------------
+%lec-card-base {
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(127, 127, 127, 0.3);
-  border-radius: 10px;
-  padding: 0.7em;
+  border: 1px solid $lec-line;
+  border-radius: $lec-radius;
+  background: $lec-surface;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  overflow: hidden;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
 
-  &:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14); }
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(96, 165, 250, 0.55);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+  }
+  &:focus-visible {
+    outline: 2px solid $lec-accent;
+    outline-offset: 3px;
+  }
+}
+
+.lecture-card {
+  @extend %lec-card-base;
+  padding: $lec-pad;
+
+  // 카드 본문이 늘어나도 크레딧은 바닥에 붙는다 → 그리드 행 정렬이 흐트러지지 않음
+  .card-body { flex: 1 0 auto; }
+
+  .card-id {
+    font-family: $lec-font;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: $lec-accent;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-title {
+    font-weight: 700;
+    font-size: 0.97rem;
+    line-height: 1.42;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.28rem;
+  }
+
+  .card-sub,
+  .card-def {
+    font-size: 0.79rem;
+    line-height: 1.5;
+    color: var(--muted, #8a8a8a);
+    margin-bottom: 0.4rem;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--muted, #8a8a8a);
+
+    + .card-meta { margin-top: 0.12rem; }
+  }
+
+  .dot {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .card-track {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: rgba(127, 127, 127, 0.16);
+  }
+
+  .lock-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    margin-top: 0.5rem;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: rgba(217, 119, 6, 0.14);
+    color: #d97706;
+    font-size: 0.71rem;
+    font-weight: 600;
+
+    i { font-size: 0.66rem; }
+  }
+
+  .card-credit {
+    margin-top: 0.75rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid $lec-line;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--muted, #8a8a8a);
+
+    > div {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .credit-label {
+      flex: 0 0 auto;
+      min-width: 3.6em;
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .credit-label.credit-curator { color: #d97706; }
+    .credit-name { flex: 1 1 auto; }
+  }
+}
+
+// 썸네일이 있는 카드 — 이미지는 카드 폭 전체를 쓰고 패딩은 본문에만
+.lecture-card--media {
+  padding: 0;
+
+  .card-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: rgba(127, 127, 127, 0.12);
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    // 밝은 표지가 어두운 카드 위에서 떠 보이지 않도록 가장자리를 잡아 준다
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(127, 127, 127, 0.22);
+      pointer-events: none;
+    }
+  }
+
+  .card-body { padding: 0.85rem $lec-pad 0; }
+  .card-credit { margin: 0.75rem $lec-pad $lec-pad; padding-top: 0.6rem; }
+  .card-body:last-child { padding-bottom: $lec-pad; }
+}
+
+// --- 배지 ----------------------------------------------------------------
+.lecture-card .card-badge,
+.pub-book-card .pub-badge,
+.pub-book-card .pub-series {
+  position: absolute;
+  z-index: 2;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.lecture-card .card-badge {
+  top: 0.65rem;
+  right: 0.65rem;
+  background: $lec-amber;
+  color: #1f2937;
+
+  &.badge-muted { background: #64748b; color: #f1f5f9; }
+}
+
+// --- 출간 도서 카드 ------------------------------------------------------
+.pub-book-card {
+  @extend %lec-card-base;
+  padding: 0.6rem 0.6rem 0.75rem;
 
   .pub-cover {
     aspect-ratio: 3 / 4.2;
-    border-radius: 6px;
+    border-radius: $lec-radius-sm;
     overflow: hidden;
     background: rgba(127, 127, 127, 0.1);
     display: flex;
@@ -115,59 +319,129 @@
     img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
   }
 
-  .pub-badge {
-    position: absolute;
-    top: 1.1em;
-    left: 1.1em;
-    font-size: 0.62em;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: #e11d48;
-    color: #fff;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-  }
+  .pub-badge { top: 1rem; left: 1rem; background: $lec-rose; color: #fff; }
+  .pub-series { top: 1rem; right: 1rem; background: $lec-sky; color: #fff; }
 
-  .pub-series {
-    position: absolute;
-    top: 1.1em;
-    right: 1.1em;
-    font-size: 0.62em;
+  .pub-body { flex: 0 0 auto; padding: 0 0.25rem; }
+
+  .pub-title {
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 999px;
-    background: #0ea5e9;
-    color: #fff;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin: 0.6rem 0 0.18rem;
   }
+  .pub-sub  { font-size: 0.73rem; line-height: 1.45; color: var(--muted, #8a8a8a); }
+  .pub-meta { font-size: 0.72rem; line-height: 1.5; color: var(--muted, #8a8a8a); margin-top: 0.35rem; }
 
-  .pub-title { font-weight: 600; font-size: 0.82em; line-height: 1.35; margin: 0.6em 0 0.15em; }
-  .pub-sub { font-size: 0.7em; color: var(--muted, #777); line-height: 1.4; }
-  .pub-meta { font-size: 0.7em; color: var(--muted, #666); line-height: 1.45; margin-top: 0.35em; }
-  .pub-buy { margin-top: auto; padding-top: 0.5em; font-size: 0.72em; font-weight: 700; color: #d65a31; }
+  // margin-top:auto — 제목 줄 수가 달라도 구매 링크는 카드 바닥에 정렬된다
+  .pub-buy {
+    margin-top: auto;
+    padding: 0.7rem 0.25rem 0;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: $lec-accent;
+  }
 }
 
-// 슬라이드 갤러리 (슬라이드형 강의)
+// --- 브레드크럼 ----------------------------------------------------------
+.lecture-breadcrumb {
+  font-size: 0.8rem;
+  margin-bottom: 1.2em;
+
+  ol { list-style: none; padding: 0; margin: 0; display: flex; gap: 0.45em; flex-wrap: wrap; }
+  li + li::before { content: "▸"; margin-right: 0.45em; opacity: 0.45; }
+  a { text-decoration: none; }
+  a:hover { text-decoration: underline; }
+}
+
+// --- 강의 상세 본문 ------------------------------------------------------
+.lecture-feature {
+  .feature-header {
+    border-bottom: 2px solid $lec-accent;
+    padding-bottom: 0.8em;
+    margin-bottom: 1.5em;
+  }
+  .feature-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(127, 127, 127, 0.18);
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .feature-badge.track-basic { background: rgba(127, 127, 127, 0.18); }
+  .feature-badge.track-advanced { background: #1a1a1a; color: #fff; }
+
+  .slide-excerpt {
+    border: 1px solid $lec-line;
+    border-radius: $lec-radius-sm;
+    padding: 1em;
+    margin: 1em 0;
+
+    img { max-width: 100%; height: auto; border-radius: 4px; }
+    .slide-text { font-size: 0.9em; color: var(--muted, #888); margin-top: 0.5em; }
+  }
+}
+
+// 아카이브 본문의 표·figure를 카드 언어에 맞춘다
+.page--standalone .page__content {
+  // 테마에 table 폭 규칙이 없어 넓은 본문에서 표가 내용 폭만큼만 줄어든다.
+  // 아카이브는 표가 많아 폭이 제각각이면 바로 지저분해 보이므로 전부 100%로 맞춘다.
+  table {
+    width: 100%;
+    border-radius: $lec-radius-sm;
+    overflow: hidden;
+    font-size: 0.86rem;
+  }
+  th { font-weight: 700; letter-spacing: -0.01em; }
+  td, th { line-height: 1.55; }
+  // 첫 열(항목·과정·구분 등 라벨)이 쓸데없이 넓어지지 않게
+  td:first-child, th:first-child { width: 1%; white-space: nowrap; }
+  td:first-child { font-weight: 600; }
+
+  figure {
+    border: 1px solid $lec-line;
+    border-radius: $lec-radius;
+    padding: 0.7rem;
+    background: $lec-surface;
+
+    img { border-radius: $lec-radius-sm; }
+    figcaption {
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: var(--muted, #8a8a8a);
+      padding: 0.55rem 0.25rem 0.1rem;
+      text-align: left;
+    }
+  }
+}
+
+// --- 슬라이드 갤러리 -----------------------------------------------------
 .slide-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 9px;
   margin: 1.2em 0 2em;
 
   img {
     width: 100%;
     height: auto;
-    border-radius: 4px;
-    border: 1px solid rgba(127, 127, 127, 0.25);
+    border-radius: $lec-radius-sm;
+    border: 1px solid $lec-line;
     background: #111;
     cursor: zoom-in;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
   }
-  img:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); }
+  img:hover {
+    transform: translateY(-2px);
+    border-color: rgba(96, 165, 250, 0.55);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
+  }
 }
 
-// 라이트박스 오버레이 (JS 주입 DOM)
+// --- 라이트박스 오버레이 (JS 주입 DOM) -----------------------------------
 .slb-overlay {
   position: fixed;
   inset: 0;
@@ -200,17 +474,46 @@
 .slb-close { top: 3vh; right: 3vw; }
 .slb-prev  { left: 2vw; top: 50%; transform: translateY(-50%); }
 .slb-next  { right: 2vw; top: 50%; transform: translateY(-50%); }
-.slb-counter { position: fixed; bottom: 3vh; left: 50%; transform: translateX(-50%); color: #ddd; font-size: 0.9rem; letter-spacing: 0.5px; }
+.slb-counter {
+  position: fixed;
+  bottom: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ddd;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
 
 @media (max-width: 600px) {
   .slb-prev, .slb-next { width: 40px; height: 40px; font-size: 1.4rem; }
 }
 
-// 다크 모드 대응
+@media (max-width: 600px) {
+  .lecture-card-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .pub-book-grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+  .page--standalone .page__content > h2 { font-size: 1.16rem; }
+}
+
+// --- 라이트 모드 ---------------------------------------------------------
+// 전역 `html[data-theme="light"] a { color: #0078c8 }`(특이성 0,1,1)가
+// 카드 앵커 텍스트를 덮는 함정 방어 — 카드 셀렉터를 같거나 높은 특이성으로 고정한다.
 html[data-theme="light"] {
-  .lecture-feature .slide-excerpt { background: #fafafa; }
-  // 라이트모드 전역 a 색상(#0078c8)이 카드 텍스트를 덮는 함정 방어
   a.pub-book-card,
-  a.pub-book-card:visited { color: #333; }
-  a.pub-book-card .pub-buy { color: #d65a31; }
+  a.pub-book-card:visited,
+  a.lecture-card,
+  a.lecture-card:visited { color: #333; }
+
+  a.pub-book-card .pub-buy { color: #0369a1; }
+  a.lecture-card .card-id { color: #0369a1; }
+
+  .lecture-card,
+  .pub-book-card { background: rgba(255, 255, 255, 0.7); }
+
+  .lecture-feature .slide-excerpt { background: #fafafa; }
+
+  .page--standalone .page__content {
+    figure { background: #fafafa; }
+    .lec-count { background: rgba(3, 105, 161, 0.12); color: #0369a1; }
+  }
 }
