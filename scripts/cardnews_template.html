@@ -7,99 +7,135 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: 1080px; height: 1350px; overflow: hidden; }
 body {
-  background: #f2f1e9;
+  background: #121116;
+  background-image:
+    radial-gradient(120% 78% at 6% 4%, rgba(120,115,135,0.20) 0%, rgba(60,58,70,0.10) 38%, rgba(0,0,0,0) 72%),
+    linear-gradient(168deg, #232128 0%, #1d1c22 34%, #17161b 62%, #0f0e12 100%);
   font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
-  color: #1c1c1c;
+  color: #f6f3ea;
   position: relative;
   word-break: keep-all;
+  overflow-wrap: anywhere;
 }
-.header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 46px 64px 0;
-}
-.header .logo img { height: 72px; display: block; }
-.header .date { font-size: 30px; font-weight: 700; color: #1c1c1c; letter-spacing: 0.02em; }
-.header-rule {
-  border: 0; border-top: 2px solid #d8d6c9;
-  margin: 26px 64px 0;
-}
+
+/* ---------------- header ---------------- */
+.logo { position: absolute; left: 82px; top: 71px; height: 27px; }
+.logo img { height: 100%; display: block; }
+.mark { position: absolute; right: 73px; top: 60px; width: 84px; height: 54px; }
+.mark line { stroke: rgba(245,225,78,0.42); stroke-width: 1; }
+.mark circle { fill: #f5e14e; }
+
+/* ---------------- copy ---------------- */
+.copy { position: absolute; left: 77px; top: 155px; width: 926px; }
 .headline {
-  margin-top: 62px;
-  text-align: center;
-  line-height: 1.5;
+  font-family: 'BlackHanSans', 'Pretendard', 'Malgun Gothic', sans-serif;
+  font-weight: 400;
+  font-size: 122px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
 }
-.headline .top {
-  font-size: 46px; font-weight: 700; color: #161616;
+.headline .top { color: #f6f3ea; }
+.headline .main { color: #f5e14e; }
+.body {
+  margin-top: 40px;
+  padding-left: 27px;
+  border-left: 4px solid #f5e14e;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.58;
+  letter-spacing: 0.01em;
+  color: #a8a399;
 }
-.headline .hl {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 48px; font-weight: 700; color: #161616;
-  background: #f8de49;
-  padding: 4px 26px 8px;
-}
+
+/* ---------------- photo ---------------- */
 .photo {
-  width: 864px; height: 508px;
-  margin: 56px auto 0;
-  border-radius: 26px;
+  position: absolute; left: 77px; top: 655px;
+  width: 926px; height: 509px;
+  border-radius: 18px;
   overflow: hidden;
-  background: #e6e4d8;
+  background: #1b1a20;
 }
 .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 논문 figure처럼 비율이 제각각인 자료는 종이색 패널이 그림에 딱 붙게 띄운다 */
+.photo.contain { background: transparent; border-radius: 0;
+                 display: flex; align-items: center; justify-content: center; }
+.photo.contain img {
+  width: auto; height: auto; max-width: 100%; max-height: 100%;
+  padding: 20px; background: #f4f2ec; border-radius: 18px;
+}
+/* 세로가 긴 사진: 잘라내지 않고 어두운 박스 안에 그대로 앉힌다 */
+.photo.fit { background: #15141a; }
+.photo.fit img { object-fit: contain; }
+/* 이미지를 하나도 못 구했을 때만 쓰는 최후 폴백 패널 */
 .quote-panel {
   display: flex; align-items: center; justify-content: center;
-  background: #faf6e3;
-  border: 2px solid #eee4b8;
-  padding: 60px;
+  padding: 56px 76px;
+  background:
+    radial-gradient(circle at 22% 26%, rgba(245,225,78,0.07), rgba(0,0,0,0) 62%),
+    linear-gradient(150deg, #23222a 0%, #191820 100%);
+  border: 1px solid rgba(245,225,78,0.16);
 }
 .quote-panel span {
-  font-size: 52px; font-weight: 700; color: #3a3830;
-  text-align: center; line-height: 1.6;
+  font-family: 'BlackHanSans', 'Pretendard', sans-serif;
+  font-size: 54px; line-height: 1.32; color: #f6f3ea; text-align: center;
 }
-.divider {
-  border: 0; border-top: 2px solid #d8d6c9;
-  width: 812px; margin: 58px auto 0;
+.quote-panel span::before {
+  content: ''; display: block; width: 58px; height: 4px;
+  background: #f5e14e; margin: 0 auto 30px;
 }
-.body-copy {
-  margin-top: 46px;
-  text-align: center;
-  font-size: 35px; font-weight: 500; color: #2c2c2a;
-  line-height: 1.7;
+
+/* ---------------- footer ---------------- */
+.rule { position: absolute; left: 77px; top: 1188px; width: 926px; height: 1px;
+        background: rgba(255,255,255,0.13); }
+.page {
+  position: absolute; left: 77px; top: 1214px;
+  font-weight: 900; font-size: 84px; line-height: 1;
+  color: #363436; letter-spacing: 0.01em; white-space: nowrap;
 }
-.divider2 { margin-top: 46px; }
-.footer {
-  position: absolute; left: 0; right: 0; bottom: 56px;
-  padding: 0 64px;
-  text-align: center;
-  font-size: 26px; font-weight: 500; color: #8e8d84;
-}
-.footer .page {
-  position: absolute; right: 64px; top: 0;
-  color: #7f7e76;
+.page .of { font-weight: 600; font-size: 34px; color: #a8a399; margin-left: 10px; }
+.source {
+  position: absolute; right: 77px; top: 1265px;
+  font-size: 26px; font-weight: 600; line-height: 1; color: #a8a399;
 }
 </style>
 </head>
 <body>
-  <div class="header">
-    <span class="logo"><img src="logo.png" alt="Dot Connector"></span>
-    <span class="date">{{DATE}}</span>
-  </div>
-  <hr class="header-rule">
+  <span class="logo"><img src="logo.png" alt="Dot Connector"></span>
+  <svg class="mark" viewBox="0 0 84 54"><g><line x1="36.8" y1="9.3" x2="58.3" y2="9.6"/><line x1="36.8" y1="9.3" x2="23.8" y2="12.8"/><line x1="36.8" y1="9.3" x2="41.7" y2="16.6"/><line x1="58.3" y1="9.6" x2="65.5" y2="13.0"/><line x1="65.5" y1="13.0" x2="71.6" y2="25.5"/><line x1="71.6" y1="25.5" x2="74.4" y2="30.7"/><line x1="74.4" y1="30.7" x2="63.0" y2="42.4"/><line x1="63.0" y1="42.4" x2="54.0" y2="43.5"/><line x1="63.0" y1="42.4" x2="57.0" y2="32.0"/><line x1="54.0" y1="43.5" x2="33.0" y2="46.2"/><line x1="54.0" y1="43.5" x2="57.0" y2="32.0"/><line x1="54.0" y1="43.5" x2="46.1" y2="35.0"/><line x1="33.0" y1="46.2" x2="24.7" y2="44.0"/><line x1="24.7" y1="44.0" x2="13.9" y2="32.8"/><line x1="24.7" y1="44.0" x2="27.3" y2="32.4"/><line x1="13.9" y1="32.8" x2="9.0" y2="28.1"/><line x1="13.9" y1="32.8" x2="27.3" y2="32.4"/><line x1="9.0" y1="28.1" x2="15.5" y2="15.1"/><line x1="15.5" y1="15.1" x2="23.8" y2="12.8"/><line x1="23.8" y1="12.8" x2="28.5" y2="25.1"/><line x1="51.5" y1="20.9" x2="57.0" y2="32.0"/><line x1="51.5" y1="20.9" x2="41.7" y2="16.6"/><line x1="51.5" y1="20.9" x2="42.0" y2="27.0"/><line x1="57.0" y1="32.0" x2="46.1" y2="35.0"/><line x1="46.1" y1="35.0" x2="42.0" y2="27.0"/><line x1="27.3" y1="32.4" x2="28.5" y2="25.1"/><line x1="28.5" y1="25.1" x2="42.0" y2="27.0"/><line x1="41.7" y1="16.6" x2="42.0" y2="27.0"/></g><g><circle cx="36.8" cy="9.3" r="1.7"/><circle cx="58.3" cy="9.6" r="1.7"/><circle cx="65.5" cy="13.0" r="1.7"/><circle cx="71.6" cy="25.5" r="1.7"/><circle cx="74.4" cy="30.7" r="1.7"/><circle cx="63.0" cy="42.4" r="1.7"/><circle cx="54.0" cy="43.5" r="1.7"/><circle cx="33.0" cy="46.2" r="1.7"/><circle cx="24.7" cy="44.0" r="1.7"/><circle cx="13.9" cy="32.8" r="1.7"/><circle cx="9.0" cy="28.1" r="1.7"/><circle cx="15.5" cy="15.1" r="1.7"/><circle cx="23.8" cy="12.8" r="1.7"/><circle cx="51.5" cy="20.9" r="1.7"/><circle cx="57.0" cy="32.0" r="1.7"/><circle cx="46.1" cy="35.0" r="1.7"/><circle cx="27.3" cy="32.4" r="1.7"/><circle cx="28.5" cy="25.1" r="1.7"/><circle cx="41.7" cy="16.6" r="1.7"/><circle cx="42.0" cy="27.0" r="1.7"/></g></svg>
 
-  <div class="headline">
-    <div class="top">{{HEADLINE_TOP}}</div>
-    <span class="hl">{{HEADLINE_HL}}</span>
+  <div class="copy" id="copy">
+    <div class="headline" id="headline">
+      <div class="top">{{HEADLINE_TOP}}</div>
+      <div class="main">{{HEADLINE_HL}}</div>
+    </div>
+    <div class="body" id="body">{{BODY}}</div>
   </div>
 
   {{IMAGE_BLOCK}}
 
-  <hr class="divider">
-  <div class="body-copy">{{BODY1}}<br>{{BODY2}}</div>
-  <hr class="divider divider2">
+  <div class="rule"></div>
+  <span class="page">{{PAGE}}<span class="of">/{{TOTAL}}</span></span>
+  <span class="source">{{SOURCE}}</span>
 
-  <div class="footer">
-    <span>{{FOOTER_NOTE}}</span>
-    <span class="page">{{PAGE}}</span>
-  </div>
+<script>
+/* 헤드라인·본문 블록이 사진(top 655) 위 여백 안에 들어오도록 자동 축소.
+   레퍼런스 카드는 글자 수에 따라 헤드라인이 122px~60px 사이에서 변한다. */
+(function () {
+  var LIMIT = 626;                     // 본문 블록 하단 최대 y (사진 top 655 위 여백)
+  var head = document.getElementById('headline');
+  var body = document.getElementById('body');
+  var fs = 122, bfs = 36;
+  function bottom() { return body.getBoundingClientRect().bottom; }
+  while (fs > 58 && bottom() > LIMIT) {
+    fs -= 2;
+    head.style.fontSize = fs + 'px';
+  }
+  while (bfs > 29 && bottom() > LIMIT) {
+    bfs -= 1;
+    body.style.fontSize = bfs + 'px';
+  }
+  document.documentElement.setAttribute('data-fit', fs + '/' + bfs);
+})();
+</script>
 </body>
 </html>
