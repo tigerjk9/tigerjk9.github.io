@@ -174,7 +174,16 @@ def extract_pdf(path: Path) -> dict:
     if m:
         source = f"arXiv:{m.group(1)}"
     else:
-        source = re.split(r"[:：]", title)[0].strip()[:26].rstrip(" ,.-") or "논문"
+        # 제목 앞부분을 쓰되 단어 중간에서 자르지 않는다 ("Experiential Versus Instru" 방지)
+        head = re.split(r"[:：]", title)[0].strip()
+        source = head if len(head) <= 30 else ""
+        if not source:
+            for w in head.split():
+                nxt = f"{source} {w}".strip()
+                if len(nxt) > 30:
+                    break
+                source = nxt
+        source = source.rstrip(" ,.-") or "논문"
     return {"title": title, "source_name": source, "content": text}
 
 
@@ -856,6 +865,10 @@ def main() -> None:
     elif kind == "pdf":
         pdf_path = ensure_local_pdf(args.source, tmpdir)
         data = extract_pdf(pdf_path)
+        # 입력이 arXiv URL이면 ID가 확실하므로 출처 라벨로 쓴다 (PDF 스탬프 추출 실패 대비)
+        m = re.search(r"arxiv\.org/(?:abs|pdf)/(\d{4}\.\d{4,5})", args.source, re.I)
+        if m:
+            data["source_name"] = f"arXiv:{m.group(1)}"
     else:
         data = extract_web(args.source)
     if len(data["content"]) < 200:
