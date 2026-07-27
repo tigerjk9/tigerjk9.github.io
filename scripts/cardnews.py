@@ -517,6 +517,64 @@ def gemini_copy(model_name: str, prompt: str) -> dict:
     return json.loads(resp.text)
 
 
+# 카피 자동 검사 규칙 — 프롬프트에 써 두어도 Gemini가 자주 어겨서 코드로 잡는다
+COPY_RULES: "list[tuple[str, str]]" = [
+    (r"(습니다|합니다|입니다|였습니다|했습니다|십시오|하세요|예요|에요|을까요|나요|군요)",
+     "존칭체 사용 — 단정체(~다/~이다/~한다)로 바꿀 것"),
+    (r"(해야 한다|해야만|하라\b|하자\b|합시다|명심|잊지 말)",
+     "훈계조 — 독자에게 지시하지 말고 사실을 알려 줄 것"),
+    (r"(를 통해|을 통해|을 넘어|를 넘어|결론적으로|시사하는 바|혁신적|패러다임|새로운 지평|"
+     r"중요하다|중요합니다|필수적|주목할 만|부각)",
+     "AI 티 나는 금지 표현"),
+]
+
+
+def validate_cards(cards: "list[dict]") -> "list[dict]":
+    """규칙 위반 카드를 찾아 [{index, issues}] 로 돌려준다."""
+    out = []
+    for i, c in enumerate(cards):
+        text = " ".join([c.get("headline_top", ""), c.get("headline_highlight", "")]
+                        + list(c.get("body") or []))
+        issues = [msg for pat, msg in COPY_RULES if re.search(pat, text)]
+        hl = (c.get("headline_highlight") or "").strip().rstrip(". !?")
+        if hl and not hl.endswith("다"):
+            issues.append("headline_highlight가 서술어로 끝나지 않음 — ~다로 끝나는 완결된 단언으로")
+        if issues:
+            out.append({"index": i, "issues": issues})
+    return out
+
+
+def repair_cards(model_name: str, cards: "list[dict]", bad: "list[dict]") -> "list[dict]":
+    """위반 카드만 Gemini에 되돌려 다시 쓰게 한다 (내용은 유지, 표현만 교정)."""
+    import google.generativeai as genai
+    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+    payload = [{"index": b["index"], "위반": b["issues"], "카드": cards[b["index"]]} for b in bad]
+    prompt = (
+        "아래 카드뉴스 카피가 규칙을 어겼다. 담긴 사실과 논지는 그대로 두고 표현만 고쳐라.\n\n"
+        "규칙\n"
+        "- 종결은 단정체(~다, ~이다, ~한다). 존칭체 금지. 친절함은 존댓말이 아니라 쉬운 설명에서 나온다.\n"
+        "- headline_highlight는 ~다로 끝나는 완결된 단언. 명사형 라벨·질문·훈계 금지. 20자 이내.\n"
+        "- 훈계조(~해야 한다, ~하라, ~하자) 금지. 독자가 할 일도 사실을 알려 주는 문장으로 쓴다.\n"
+        "- 금지어: ~를 통해, ~을 넘어, 결론적으로, 시사하는 바, 혁신적, 패러다임, 중요하다,\n"
+        "  필수적, 주목할 만, 부각, 이모지, 따옴표, 콜론 제목.\n"
+        "- body는 각 줄 32자 이내, 2~3줄. 전문 용어는 괄호로 풀어 준다.\n"
+        "- 원문에 없는 수치·사실을 새로 만들지 않는다.\n\n"
+        + json.dumps(payload, ensure_ascii=False, indent=1)
+        + '\n\n출력은 JSON만: {"cards": [{"index": n, "headline_top": "...", '
+          '"headline_highlight": "...", "body": ["...", "..."]}, ...]}'
+    )
+    model = genai.GenerativeModel(model_name)
+    resp = model.generate_content(
+        prompt, generation_config={"response_mime_type": "application/json", "temperature": 0.4})
+    for fix in json.loads(resp.text).get("cards", []):
+        i = fix.get("index")
+        if isinstance(i, int) and 0 <= i < len(cards):
+            for k in ("headline_top", "headline_highlight", "body"):
+                if fix.get(k):
+                    cards[i][k] = fix[k]
+    return cards
+
+
 def match_images(model_name: str, cards: "list[dict]", cands: "list[dict]") -> "list[int | None]":
     """후보 이미지를 직접 보고 카드마다 가장 맞는 것을 배정. 실패 시 순서대로."""
     fallback: "list[int | None]" = [i if i < len(cands) else None for i in range(len(cards))]
@@ -634,6 +692,49 @@ def fmt_ts(sec: float) -> str:
 
 def esc(s: str) -> str:
     return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def wrap_body(lines: "list[str]", max_len: int = 32, max_lines: int = 4) -> "list[str]":
+    """본문을 줄 길이가 고른 2~4줄로 다시 나눈다.
+
+    Gemini가 32자 제한을 자주 어기는데, 긴 줄은 CSS가 알아서 접으면서 "늘었다." 같은
+    한 어절짜리 고아 줄을 만든다. 어절 단위 DP로 줄당 길이 편차를 최소화하고,
+    문장이 끝나는 자리(마침표)에서 끊기면 가산점을 준다.
+    """
+    words = " ".join(l.strip() for l in lines if l and l.strip()).split()
+    if not words:
+        return []
+    total = sum(len(w) for w in words) + len(words) - 1
+    n = min(max(1, -(-total // max_len)), max_lines)
+    if n <= 1:
+        return [" ".join(words)]
+
+    def seg(i: int, j: int) -> str:
+        return " ".join(words[i:j])
+
+    INF = float("inf")
+    # best[k][i] = words[i:]를 k줄로 나눌 때 최소 비용
+    best = [[INF] * (len(words) + 1) for _ in range(n + 1)]
+    take = [[0] * (len(words) + 1) for _ in range(n + 1)]
+    best[0][len(words)] = 0
+    for k in range(1, n + 1):
+        for i in range(len(words), -1, -1):
+            for j in range(i + 1, len(words) + 1):
+                if best[k - 1][j] == INF:
+                    continue
+                s = seg(i, j)
+                cost = (max_len - len(s)) ** 2 + (900 if len(s) > max_len else 0)
+                if s.endswith((".", "?", "!")):
+                    cost -= 40
+                if cost + best[k - 1][j] < best[k][i]:
+                    best[k][i] = cost + best[k - 1][j]
+                    take[k][i] = j
+    out, i = [], 0
+    for k in range(n, 0, -1):
+        j = take[k][i]
+        out.append(seg(i, j))
+        i = j
+    return out
 
 
 def prep_logo(render_dir: Path, ink: "tuple[int, int, int]" = (246, 243, 234)) -> None:
@@ -811,6 +912,30 @@ def render_cards(doc: dict, outdir: Path, images: "list[dict | None]") -> "list[
 
 # ---------------------------------------------------------------- main
 
+def load_existing_images(outdir: Path) -> "list[dict]":
+    """이전 실행의 이미지를 후보로 되살린다 (카피만 다시 뽑을 때 재촬영·재생성 방지)."""
+    cands: "list[dict]" = []
+    seen: "set[str]" = set()
+    cj = outdir / "cards.json"
+    if cj.exists():
+        doc = json.loads(cj.read_text(encoding="utf-8"))
+        for e in doc.get("images") or []:
+            path = Path(e["path"]) if isinstance(e, dict) else Path(str(e))
+            if not path.exists() or str(path) in seen:
+                continue
+            seen.add(str(path))
+            cands.append({"path": path, "label": f"{path.stem} {(e or {}).get('note', '')}".strip(),
+                          "note": e.get("note", "") if isinstance(e, dict) else "",
+                          "fit": e.get("fit", "cover") if isinstance(e, dict) else "cover"})
+    for p in sorted((outdir / "render").glob("*")):
+        if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp") and str(p) not in seen \
+                and p.name != "logo.png" and not p.name.startswith("card-"):
+            seen.add(str(p))
+            cands.append({"path": p, "label": p.stem, "note": "", "fit": "cover"})
+    print(f"[INFO] 기존 이미지 {len(cands)}개 재사용")
+    return cands
+
+
 def rerender(outdir: Path) -> None:
     """cards.json을 고친 뒤 Gemini 재호출 없이 카드만 다시 그린다."""
     doc = json.loads((outdir / "cards.json").read_text(encoding="utf-8"))
@@ -839,6 +964,8 @@ def main() -> None:
     ap.add_argument("--no-imggen", action="store_true", help="Gemini 이미지 생성 생략")
     ap.add_argument("--no-search", action="store_true", help="DDG 이미지 검색 폴백 생략")
     ap.add_argument("--no-outro", action="store_true", help="브랜드 아웃트로 카드 생략")
+    ap.add_argument("--keep-images", action="store_true",
+                    help="--out 폴더의 기존 이미지를 재사용하고 카피만 다시 생성")
     ap.add_argument("--model", default="gemini-2.5-flash", help="카피 생성 모델")
     args = ap.parse_args()
 
@@ -896,14 +1023,31 @@ def main() -> None:
     if not cards:
         print("[ERROR] 카피 생성 실패")
         sys.exit(1)
+    # 문체 규칙 자동 검사 → 위반 카드만 다시 쓰게 (최대 2회)
+    for attempt in range(2):
+        bad = validate_cards(cards)
+        if not bad:
+            break
+        print(f"[INFO] 문체 규칙 위반 {len(bad)}장 - 재작성 요청 ({attempt+1}/2)")
+        for b in bad:
+            print(f"       카드 {b['index']+1}: {'; '.join(b['issues'])}")
+        try:
+            cards = repair_cards(args.model, cards, bad)
+        except Exception as e:
+            print(f"[WARN] 카피 교정 실패: {e}")
+            break
+    left = validate_cards(cards)
+    if left:
+        print(f"[WARN] 교정 후에도 규칙 위반 {len(left)}장 남음 - 수동 확인 필요: "
+              f"{[b['index']+1 for b in left]}")
+
     quotes = str.maketrans("", "", "\"'“”‘’")   # 카피에 따옴표 금지 (프롬프트 규칙 강제)
     for c in cards:
         for k in ("headline_top", "headline_highlight"):
             c[k] = (c.get(k) or "").translate(quotes).rstrip(". ")
         if isinstance(c.get("body"), str):
             c["body"] = [c["body"]]
-        c["body"] = [str(x).translate(quotes)
-                     for x in (c.get("body") or []) if str(x).strip()][:3]
+        c["body"] = wrap_body([str(x).translate(quotes) for x in (c.get("body") or [])])
     print(f"[INFO] 카드 {len(cards)}장 카피 확보")
 
     if args.dry_run:
@@ -917,8 +1061,10 @@ def main() -> None:
     render_dir = outdir / "render"
     render_dir.mkdir(exist_ok=True)
 
-    # ---- 1순위: 원자료에서 이미지 캡처
-    if kind == "youtube":
+    # ---- 1순위: 원자료에서 이미지 캡처 (--keep-images면 이전 실행 결과를 그대로 후보로)
+    if args.keep_images:
+        cands = load_existing_images(outdir)
+    elif kind == "youtube":
         cands = collect_youtube_frames(args.source, render_dir, len(cards))
     elif kind == "pdf":
         cands = collect_pdf_figures(pdf_path, render_dir)
