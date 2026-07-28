@@ -1,16 +1,38 @@
+- slug: ai-leading-teacher-2026-onsite
+  title: "2026 인공지능 활용 선도교사 집합 연수"
+  subtitle: "튜닝 프로토콜 · 마이크로티칭 · 데이터 진단 · 성장 로드맵 · 8~13과정"
+  audience: "초등 교사"
+  slide_count: 365
+  chapter_count: 6
+  date: "2026-07-28"
+  hub_url: /lectures/ai-leading-teacher-2026-onsite/
+  locked: true
+  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtHq8kBAVZD5vYAcosgOJRC/7xaMCxGgI2lMXUVjrfIA=="
+  thumbnail: /assets/lectures/ai-leading-teacher-2026-onsite/cover.jpg
+  author: "2026 인공지능 활용 선도교사 집합 연수 (초등)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "원격 7과정에 이어지는 집합 6과정 교안을 과정별 설계로 정리한 큐레이션 버전"
+  tags:
+    - 인공지능선도교사
+    - 마이크로티칭
+    - 과정중심평가
+    - 학습데이터분석
+    - 교원연수
+
 - slug: ai-leading-teacher-2026
   title: "2026 인공지능 활용 선도교사 원격 연수"
-  subtitle: "교육의 본질 · AI 윤리 · 백워드 설계 · 과정중심평가 · 7과정"
+  subtitle: "교육의 본질 · AI 윤리 · 백워드 설계 · 과정중심평가 · 1~7과정"
   audience: "초등 교사"
+  slide_count: 481
   chapter_count: 7
-  date: "2026-07-26"
+  date: "2026-07-28"
   hub_url: /lectures/ai-leading-teacher-2026/
   locked: true
   locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtHq8kBAVZD5vYAcosgOJRC/7xaMCxGgI0"
   thumbnail: /assets/lectures/ai-leading-teacher-2026/cover.jpg
   author: "2026 인공지능 활용 선도교사 원격 연수 (초등)"
   curator: "김진관 (닷커넥터)"
-  curation_note: "7과정 Padlet 보드를 과정별 설계와 자료로 정리한 큐레이션 버전"
+  curation_note: "7과정 교안 481장을 챕터·시간 배분·활동 지시문까지 복원한 큐레이션 버전"
   tags:
     - 인공지능선도교사
     - AI디지털교육
