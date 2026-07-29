@@ -2,6 +2,8 @@
 title: "학생 질문 중심 수업과 평가 — 초등 선도교원 연수"
 layout: lecture
 permalink: /lectures/student-question-assessment/
+sitemap: false
+noindex: true
 date: 2026-07-15
 author_profile: false
 toc: true

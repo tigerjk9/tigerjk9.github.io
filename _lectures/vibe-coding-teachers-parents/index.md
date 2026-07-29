@@ -2,6 +2,8 @@
 title: "교사와 학부모를 위한 바이브코딩"
 layout: lecture
 permalink: /lectures/vibe-coding-teachers-parents/
+sitemap: false
+noindex: true
 date: 2026-07-21
 author_profile: false
 toc: true

@@ -2,6 +2,8 @@
 title: "똑똑한 AI 디지털 도구 활용으로 살아나는 아날로그 수업"
 layout: lecture
 permalink: /lectures/digital-analog-class/
+sitemap: false
+noindex: true
 date: 2026-06-27
 author_profile: false
 toc: true

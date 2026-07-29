@@ -2,6 +2,8 @@
 title: "바이브 코딩 신간 — 교사를 위한 웹앱 만들기 (정리본)"
 layout: lecture
 permalink: /lectures/vibecode-for-teacher/
+sitemap: false
+noindex: true
 date: 2026-07-21
 author_profile: false
 toc: true

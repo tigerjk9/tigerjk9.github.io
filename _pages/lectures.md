@@ -81,11 +81,25 @@ standalone: true
 {% raw %}
 <script>
 (function () {
+  // 잠금 카드 복호화: PBKDF2-HMAC-SHA256(20만회) + AES-256-GCM.
+  // payload(base64) = [ver=2][salt:16][iv:12][ciphertext+tag]. 카드마다 salt/iv가 달라
+  // 동일 URL이라도 암호문이 다르며, 틀린 비번은 GCM 인증 실패로 복호화 자체가 거부된다.
   function b64ToBytes(b64) {
     var bin = atob(b64);
     var a = new Uint8Array(bin.length);
     for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
     return a;
+  }
+  async function unlock(payloadB64, pw) {
+    var raw = b64ToBytes(payloadB64);
+    if (raw[0] !== 2) throw new Error('format');
+    var salt = raw.slice(1, 17), iv = raw.slice(17, 29), ct = raw.slice(29);
+    var pwKey = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+    var key = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: salt, iterations: 200000, hash: 'SHA-256' },
+      pwKey, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    var pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, ct);
+    return new TextDecoder().decode(pt);
   }
   document.querySelectorAll('.lecture-card[data-locked]').forEach(function (card) {
     card.addEventListener('click', function (e) {
@@ -93,18 +107,14 @@ standalone: true
       var pw = window.prompt('비공개 자료입니다. 비밀번호를 입력하세요.');
       if (!pw) return;
       pw = pw.replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).trim();
-      var payload = b64ToBytes(card.getAttribute('data-locked'));
-      crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw)).then(function (buf) {
-        var key = new Uint8Array(buf);
-        var out = new Uint8Array(payload.length);
-        for (var i = 0; i < payload.length; i++) out[i] = payload[i] ^ key[i % key.length];
-        var url = '';
-        try { url = new TextDecoder().decode(out); } catch (err) {}
+      unlock(card.getAttribute('data-locked'), pw).then(function (url) {
         if (/^https:\/\/[\x21-\x7e]+$/.test(url)) {
           window.open(url, '_blank', 'noopener');
         } else {
           alert('비밀번호가 올바르지 않습니다.');
         }
+      }).catch(function () {
+        alert('비밀번호가 올바르지 않습니다.');
       });
     });
   });

@@ -28,8 +28,8 @@
   date: "2026-07-28"
   hub_url: /lectures/ai-leading-teacher-2026/
   locked: true
-  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtHq8kBAVZD5vYAcosgOJRC/7xaMCxGgI0"
-  thumbnail: /assets/lectures/ai-leading-teacher-2026/cover.jpg
+  locked_payload: "AlZAvw9akpKqR8FmSk+IDTJQmeLmzmrksp2d/abCC1trVgyudI1T0KeerfBw20akHIWwyNDyWsQJUQkYrQltMDReOp6d/6NGhYaBFJRT6vKj8f8YIYoqDArI4TIe59DMFrLgdsaxNeHA"
+  thumbnail: /assets/lectures/covers/d3313c14e8f7ad02.jpg
   author: "2026 인공지능 활용 선도교사 원격 연수 (초등)"
   curator: "김진관 (닷커넥터)"
   curation_note: "7과정 교안 481장을 챕터·시간 배분·활동 지시문까지 복원한 큐레이션 버전"
@@ -49,8 +49,8 @@
   date: "2026-07-21"
   hub_url: /lectures/vibe-coding-teachers-parents/
   locked: true
-  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtCa9rDU1bBJbfCIB1keZTAPPmN4GsWFVpnsXTTGE="
-  thumbnail: /assets/lectures/vibe-coding-teachers-parents/cover.jpg
+  locked_payload: "AgLpuJ/ayDPwtcpXsNtLy+qoYEodk/Vt3+y/gKLHU0UgPmR2FT1aY0OI68kMKnYcO49+3Gjf+bzifDfUmeVmJUUOvPsh2ZyQlldN68QKBsNBMNRHQewE/peJfttvoBFZ4h1cqbDg3OmarsxabZo="
+  thumbnail: /assets/lectures/covers/92c1d91845e1c333.jpg
   author: "math-tong (교사와 학부모를 위한 바이브코딩 워크숍)"
   curator: "김진관 (닷커넥터)"
   curation_note: "원작 워크숍을 강의 슬라이드로 다시 정리한 큐레이션 버전"
@@ -107,8 +107,8 @@
   date: "2026-06-27"
   hub_url: /lectures/digital-analog-class/
   locked: true
-  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtG69uARRZB9/XCIY0iuQfAPfiNoGu"
-  thumbnail: /assets/lectures/digital-analog-class/cover.jpg
+  locked_payload: "Au3hvRxfDBTCX16IW9THG9v4KetBv2BtLtwyD2b8BJXj7KvHT0XkFFv50qKCyU/D+E8LrqKzAvQ3hzUfinbaD6PWn/09ppKt26UEqIQlMX3wB/6gaWAgGOILJyl5EAjtu+QhDztx"
+  thumbnail: /assets/lectures/covers/c18f9195f4a10f2e.jpg
   author: "김진관 (닷커넥터)"
   tags:
     - AI 디지털 수업
@@ -192,8 +192,8 @@
   date: "2026-07-15"
   hub_url: /lectures/student-question-assessment/
   locked: true
-  locked_payload: "Js57cgz8JkcUUQyXxAyMYcvkWxfz9ifc6Ecbd57I00o833wtDLJ8DAVWH9/HE4IrkepdDbbiNoHkW0d2nsXTEA=="
-  thumbnail: /assets/lectures/student-question-assessment/cover.jpg
+  locked_payload: "AnJnA/04WLN3XZJPXY6r7FCWs3FtceHk2ZDLwl/DBwnZ9Wyp9UNXZ2jjy9yd/534m9dAAdP+iqpGpY5bRtt3bjXf/v67FVPHOBBcwg51WMFp5YHs1l4GEgTZAK+heHdoYPA/V0WHt1nIO+aCvQ=="
+  thumbnail: /assets/lectures/covers/926f10110fced6a1.jpg
   author: "교육부 · 경상북도교육청 (원본 연수자료)"
   curator: "김진관 (닷커넥터)"
   curation_note: "10편 연수 슬라이드 전체를 편별 요약과 함께 정리"
@@ -210,8 +210,8 @@
   audience: "학교 AIEP 담당 교사"
   date: "2026-07-02"
   locked: true
-  locked_payload: "Js57cgz8JkcBUQ6CmxKSLIrxWwL3rTOX80tRd9XK109h"
-  thumbnail: /assets/lectures/aiep-account-tutorial/cover.jpg
+  locked_payload: "Aix3UyWHf7yGKak52csi2X5+zJjTEGggvwdpE/+xZ3fMRiKNqdXegiK4uyFpsY0g1XBJ5IJM4eaLLHFxymL3JLPANYFJuZAvo/214Uqo"
+  thumbnail: /assets/lectures/covers/20a892b2dad259a1.jpg
   author: "대전교육정보원 (원본 교육자료)"
   curator: "김진관 (닷커넥터)"
   curation_note: "원본 PDF 교육자료를 단계별 웹 튜토리얼로 재구성"

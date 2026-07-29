@@ -2,6 +2,8 @@
 title: "2026 인공지능 활용 선도교사 원격 연수 — 7과정 아카이브"
 layout: lecture
 permalink: /lectures/ai-leading-teacher-2026/
+sitemap: false
+noindex: true
 date: 2026-07-28
 author_profile: false
 toc: true
