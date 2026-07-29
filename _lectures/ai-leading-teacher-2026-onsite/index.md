@@ -2,6 +2,8 @@
 title: "2026 인공지능 활용 선도교사 집합 연수 — 8~13과정 아카이브"
 layout: lecture
 permalink: /lectures/ai-leading-teacher-2026-onsite/
+sitemap: false
+noindex: true
 date: 2026-07-28
 author_profile: false
 toc: true
