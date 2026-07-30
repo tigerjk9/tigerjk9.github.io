@@ -249,18 +249,19 @@ $max-width: 100%;
   }
 }
 
-/* --- 저서 미니 위젯 (사이드바, 출간 도서 상위 3권) --- */
+/* --- 저서 미니 위젯 (사이드바, 출간 도서 전체 미니 서재) --- */
 /* '저서' 섹션 제목과 표지 이미지 사이 위아래 여백 (딱 붙어 보이는 문제) */
 .books-widget {
   margin-top: 12px;
   margin-bottom: 14px;
 }
+/* 좁은 사이드바에 출간 도서 전체를 담는 5열 그리드(10권 = 5×2). 표지는 색·형태로 라이브러리를 한눈에 조망 */
 .books-widget__covers {
-  display: flex;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
 }
 .books-widget__covers a {
-  flex: 1;
   min-width: 0;
   line-height: 0;
 }
