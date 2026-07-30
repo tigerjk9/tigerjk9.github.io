@@ -78,6 +78,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 - `categories.html` — 카테고리별 포스트 수
 - `tag_cloud.html` — 태그 클라우드
 - `recent-posts.html` — 최근 방문 포스트 (localStorage `recentPosts`, MAX 8개, `window.__currentPost` 소비)
+- `books-widget.html` — 저서 미니 서재 ("최근 방문" 아래). `site.data.published_books` **전체**(현재 10권)를 표지 그리드로 노출 + "닷커넥터의 서재 →" 링크(`/lectures/`). CSS는 `main.scss`의 `.books-widget__covers` = `display:grid; grid-template-columns:repeat(5,1fr)`(5열×2행 미니 서재, 2026-07-30 기존 `limit:3`·flex 한 줄에서 확장). 좁은 사이드바에서도 2행 높이로 라이브러리 전체 조망. 후보(3권/5×2/4열/auto-fill) Edge 헤드리스 실측 비교로 5×2 채택
 - `_config.yml`의 `sidebar` 키에서 설정
 
 ### Theme Customization
