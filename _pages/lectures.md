@@ -102,7 +102,7 @@ standalone: true
     return new TextDecoder().decode(pt);
   }
   // window.prompt는 모바일에서 비율·타이포가 깨져 보여 커스텀 모달로 교체 (스타일: _sass/_lectures.scss)
-  var overlay = null, dialog, input, errEl, submitBtn, pendingPayload = null, busy = false;
+  var overlay = null, dialog, nameEl, input, errEl, submitBtn, pendingPayload = null, busy = false;
 
   function buildModal() {
     overlay = document.createElement('div');
@@ -111,6 +111,7 @@ standalone: true
       '<form class="lec-pw-dialog" role="dialog" aria-modal="true" aria-labelledby="lec-pw-title">' +
         '<div class="lec-pw-icon"><i class="fas fa-lock" aria-hidden="true"></i></div>' +
         '<h2 class="lec-pw-title" id="lec-pw-title">비공개 자료</h2>' +
+        '<p class="lec-pw-name" hidden></p>' +
         '<p class="lec-pw-desc">비밀번호를 입력하세요.</p>' +
         '<input class="lec-pw-input" type="password" autocomplete="off" placeholder="비밀번호" aria-label="비밀번호">' +
         '<p class="lec-pw-error" hidden>비밀번호가 올바르지 않습니다.</p>' +
@@ -121,6 +122,7 @@ standalone: true
       '</form>';
     document.body.appendChild(overlay);
     dialog = overlay.querySelector('.lec-pw-dialog');
+    nameEl = overlay.querySelector('.lec-pw-name');
     input = overlay.querySelector('.lec-pw-input');
     errEl = overlay.querySelector('.lec-pw-error');
     submitBtn = overlay.querySelector('.lec-pw-submit');
@@ -130,9 +132,11 @@ standalone: true
     dialog.addEventListener('submit', function (e) { e.preventDefault(); tryUnlock(); });
   }
 
-  function openModal(payload) {
+  function openModal(payload, title) {
     if (!overlay) buildModal();
     pendingPayload = payload;
+    nameEl.textContent = title || '';
+    nameEl.hidden = !title;
     input.value = '';
     errEl.hidden = true;
     overlay.classList.add('open');
@@ -187,7 +191,8 @@ standalone: true
   document.querySelectorAll('.lecture-card[data-locked]').forEach(function (card) {
     card.addEventListener('click', function (e) {
       e.preventDefault();
-      openModal(card.getAttribute('data-locked'));
+      var titleEl = card.querySelector('.card-title');
+      openModal(card.getAttribute('data-locked'), titleEl ? titleEl.textContent.trim() : '');
     });
   });
 })();

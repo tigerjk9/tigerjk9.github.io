@@ -500,28 +500,42 @@ body.lec-pw-lock { overflow: hidden; }
   align-items: center;
   justify-content: center;
   padding: 1.1rem;
-  background: rgba(6, 8, 12, 0.62);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(5, 7, 11, 0.66);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 
-  &.open { display: flex; }
+  &.open {
+    display: flex;
+    animation: lec-pw-fade 0.18s ease;
+  }
+
+  &.open .lec-pw-dialog { animation: lec-pw-pop 0.22s cubic-bezier(0.2, 0.85, 0.3, 1.15); }
+  &.open .lec-pw-dialog.shake { animation: lec-pw-shake 0.4s ease; }
+}
+
+@keyframes lec-pw-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lec-pw-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: none; }
 }
 
 .lec-pw-dialog {
-  width: min(400px, 100%);
+  width: min(420px, 100%);
   box-sizing: border-box;
   margin: 0;
-  border: 1px solid $lec-line-strong;
-  border-radius: $lec-radius;
-  background: #181a20;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #1d2027 0%, #14161b 100%);
   color: #e5e7eb;
-  padding: 1.5rem 1.35rem 1.25rem;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
+  padding: 1.75rem 1.5rem 1.4rem;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   font-family: $lec-font;
   text-align: center;
   word-break: keep-all;
-
-  &.shake { animation: lec-pw-shake 0.4s ease; }
 }
 
 @keyframes lec-pw-shake {
@@ -531,30 +545,43 @@ body.lec-pw-lock { overflow: hidden; }
 }
 
 .lec-pw-icon {
-  width: 46px;
-  height: 46px;
-  margin: 0 auto 0.75rem;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(217, 119, 6, 0.16);
-  color: #f59e0b;
-  font-size: 1.05rem;
+  background: radial-gradient(circle at 35% 30%, rgba(251, 191, 36, 0.3), rgba(217, 119, 6, 0.12));
+  box-shadow: 0 0 0 7px rgba(217, 119, 6, 0.07);
+  color: #fbbf24;
+  font-size: 1.15rem;
 }
 
 .lec-pw-title {
-  margin: 0 0 0.3rem;
+  margin: 0;
   font-family: $lec-font;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   border: 0;
   padding: 0;
 }
 
+// 어느 자료를 여는지 카드 제목을 한 줄로 보여 준다 (JS가 textContent 주입, 없으면 hidden)
+.lec-pw-name {
+  margin: 0.35rem 0 0;
+  max-width: 100%;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $lec-accent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .lec-pw-desc {
-  margin: 0 0 1rem;
+  margin: 0.4rem 0 1.15rem;
   font-size: 0.84rem;
   line-height: 1.6;
   color: #9ca3af;
@@ -563,15 +590,17 @@ body.lec-pw-lock { overflow: hidden; }
 .lec-pw-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 0.68rem 0.85rem;
+  padding: 0.75rem 0.85rem;
   border: 1px solid $lec-line-strong;
-  border-radius: 10px;
-  background: rgba(127, 127, 127, 0.1);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.26);
   color: inherit;
+  caret-color: $lec-accent;
   font-family: $lec-font;
   font-size: 16px; // 16px 미만이면 iOS가 포커스 시 화면을 확대해 버린다
   letter-spacing: 0.1em;
   text-align: center;
+  transition: border-color 0.14s ease, box-shadow 0.14s ease;
 
   &:focus {
     outline: none;
@@ -590,12 +619,12 @@ body.lec-pw-lock { overflow: hidden; }
 .lec-pw-actions {
   display: flex;
   gap: 0.6rem;
-  margin-top: 1.1rem;
+  margin-top: 1.15rem;
 
   .lec-pw-btn {
     flex: 1 1 0;
-    padding: 0.62rem 0.5rem;
-    border-radius: 10px;
+    padding: 0.7rem 0.5rem;
+    border-radius: 12px;
     border: 1px solid $lec-line-strong;
     background: transparent;
     color: inherit;
@@ -603,19 +632,34 @@ body.lec-pw-lock { overflow: hidden; }
     font-size: 0.87rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.14s ease, border-color 0.14s ease, opacity 0.14s ease;
+    transition: background 0.14s ease, border-color 0.14s ease, opacity 0.14s ease,
+      transform 0.14s ease, box-shadow 0.14s ease;
 
     &:hover { background: rgba(127, 127, 127, 0.14); }
   }
 
   .lec-pw-submit {
     border-color: transparent;
-    background: $lec-accent;
-    color: #0b1220;
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    color: #fff;
 
-    &:hover { background: #79b1f7; }
-    &:disabled { opacity: 0.6; cursor: default; }
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.35);
+    }
+    &:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lec-pw-overlay.open,
+  .lec-pw-overlay.open .lec-pw-dialog,
+  .lec-pw-overlay.open .lec-pw-dialog.shake { animation: none; }
 }
 
 // --- 교안 내려받기·미리보기 버튼 (문해력 등 다운로드형 강의 페이지) --------
@@ -724,18 +768,20 @@ html[data-theme="light"] {
   // 비밀번호 모달 라이트 팔레트
   .lec-pw-overlay { background: rgba(15, 23, 42, 0.45); }
   .lec-pw-dialog {
-    background: #fff;
+    background: linear-gradient(180deg, #ffffff 0%, #f6f8fb 100%);
+    border-color: rgba(15, 23, 42, 0.1);
     color: #1f2937;
-    box-shadow: 0 22px 60px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25), inset 0 1px 0 #fff;
   }
+  .lec-pw-name { color: #0369a1; }
   .lec-pw-desc { color: #6b7280; }
-  .lec-pw-input { background: #f3f4f6; color: #1f2937; }
+  .lec-pw-input { background: #f1f5f9; color: #1f2937; }
   .lec-pw-error { color: #dc2626; }
   .lec-pw-actions .lec-pw-submit {
-    background: #0369a1;
+    background: linear-gradient(135deg, #0284c7, #0369a1);
     color: #fff;
 
-    &:hover { background: #0284c7; }
+    &:hover { box-shadow: 0 6px 18px rgba(3, 105, 161, 0.3); }
   }
 
   // 전역 `html[data-theme="light"] a { color:#0078c8 }`(0,1,2)가 버튼형 앵커를 덮는 함정 방어
