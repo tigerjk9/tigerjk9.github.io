@@ -101,21 +101,93 @@ standalone: true
     var pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, ct);
     return new TextDecoder().decode(pt);
   }
+  // window.prompt는 모바일에서 비율·타이포가 깨져 보여 커스텀 모달로 교체 (스타일: _sass/_lectures.scss)
+  var overlay = null, dialog, input, errEl, submitBtn, pendingPayload = null, busy = false;
+
+  function buildModal() {
+    overlay = document.createElement('div');
+    overlay.className = 'lec-pw-overlay';
+    overlay.innerHTML =
+      '<form class="lec-pw-dialog" role="dialog" aria-modal="true" aria-labelledby="lec-pw-title">' +
+        '<div class="lec-pw-icon"><i class="fas fa-lock" aria-hidden="true"></i></div>' +
+        '<h2 class="lec-pw-title" id="lec-pw-title">비공개 자료</h2>' +
+        '<p class="lec-pw-desc">비밀번호를 입력하세요.</p>' +
+        '<input class="lec-pw-input" type="password" autocomplete="off" placeholder="비밀번호" aria-label="비밀번호">' +
+        '<p class="lec-pw-error" hidden>비밀번호가 올바르지 않습니다.</p>' +
+        '<div class="lec-pw-actions">' +
+          '<button type="button" class="lec-pw-btn lec-pw-cancel">취소</button>' +
+          '<button type="submit" class="lec-pw-btn lec-pw-submit">열기</button>' +
+        '</div>' +
+      '</form>';
+    document.body.appendChild(overlay);
+    dialog = overlay.querySelector('.lec-pw-dialog');
+    input = overlay.querySelector('.lec-pw-input');
+    errEl = overlay.querySelector('.lec-pw-error');
+    submitBtn = overlay.querySelector('.lec-pw-submit');
+    overlay.querySelector('.lec-pw-cancel').addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+    overlay.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+    dialog.addEventListener('submit', function (e) { e.preventDefault(); tryUnlock(); });
+  }
+
+  function openModal(payload) {
+    if (!overlay) buildModal();
+    pendingPayload = payload;
+    input.value = '';
+    errEl.hidden = true;
+    overlay.classList.add('open');
+    document.body.classList.add('lec-pw-lock');
+    setTimeout(function () { input.focus(); }, 60);
+  }
+
+  function closeModal() {
+    if (busy) return;
+    overlay.classList.remove('open');
+    document.body.classList.remove('lec-pw-lock');
+    pendingPayload = null;
+  }
+
+  function setBusy(on) {
+    busy = on;
+    submitBtn.disabled = on;
+    submitBtn.textContent = on ? '확인 중…' : '열기';
+  }
+
+  function showError() {
+    errEl.hidden = false;
+    dialog.classList.remove('shake');
+    void dialog.offsetWidth; // reflow로 shake 애니메이션 재시작
+    dialog.classList.add('shake');
+    input.select();
+    input.focus();
+  }
+
+  function tryUnlock() {
+    if (busy || !pendingPayload) return;
+    var pw = input.value.replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).trim();
+    if (!pw) { input.focus(); return; }
+    setBusy(true);
+    errEl.hidden = true;
+    unlock(pendingPayload, pw).then(function (url) {
+      setBusy(false);
+      if (/^https:\/\/[\x21-\x7e]+$/.test(url)) {
+        closeModal();
+        // features에 'noopener'를 주면 성공해도 null이 와서 팝업 차단 폴백 판정이 불가 → 핸들로 opener만 끊는다
+        var w = window.open(url, '_blank');
+        if (w) { w.opener = null; } else { window.location.href = url; }
+      } else {
+        showError();
+      }
+    }, function () {
+      setBusy(false);
+      showError();
+    });
+  }
+
   document.querySelectorAll('.lecture-card[data-locked]').forEach(function (card) {
     card.addEventListener('click', function (e) {
       e.preventDefault();
-      var pw = window.prompt('비공개 자료입니다. 비밀번호를 입력하세요.');
-      if (!pw) return;
-      pw = pw.replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).trim();
-      unlock(card.getAttribute('data-locked'), pw).then(function (url) {
-        if (/^https:\/\/[\x21-\x7e]+$/.test(url)) {
-          window.open(url, '_blank', 'noopener');
-        } else {
-          alert('비밀번호가 올바르지 않습니다.');
-        }
-      }).catch(function () {
-        alert('비밀번호가 올바르지 않습니다.');
-      });
+      openModal(card.getAttribute('data-locked'));
     });
   });
 })();

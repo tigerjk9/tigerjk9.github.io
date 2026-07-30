@@ -489,10 +489,214 @@ $lec-sky: #0ea5e9;
   .slb-prev, .slb-next { width: 40px; height: 40px; font-size: 1.4rem; }
 }
 
+// --- 잠금 카드 비밀번호 모달 (JS 주입 DOM, body 직속이라 자체 완결 스타일) ---
+body.lec-pw-lock { overflow: hidden; }
+
+.lec-pw-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.1rem;
+  background: rgba(6, 8, 12, 0.62);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  &.open { display: flex; }
+}
+
+.lec-pw-dialog {
+  width: min(400px, 100%);
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid $lec-line-strong;
+  border-radius: $lec-radius;
+  background: #181a20;
+  color: #e5e7eb;
+  padding: 1.5rem 1.35rem 1.25rem;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
+  font-family: $lec-font;
+  text-align: center;
+  word-break: keep-all;
+
+  &.shake { animation: lec-pw-shake 0.4s ease; }
+}
+
+@keyframes lec-pw-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-7px); }
+  40%, 80% { transform: translateX(7px); }
+}
+
+.lec-pw-icon {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(217, 119, 6, 0.16);
+  color: #f59e0b;
+  font-size: 1.05rem;
+}
+
+.lec-pw-title {
+  margin: 0 0 0.3rem;
+  font-family: $lec-font;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border: 0;
+  padding: 0;
+}
+
+.lec-pw-desc {
+  margin: 0 0 1rem;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: #9ca3af;
+}
+
+.lec-pw-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.68rem 0.85rem;
+  border: 1px solid $lec-line-strong;
+  border-radius: 10px;
+  background: rgba(127, 127, 127, 0.1);
+  color: inherit;
+  font-family: $lec-font;
+  font-size: 16px; // 16px 미만이면 iOS가 포커스 시 화면을 확대해 버린다
+  letter-spacing: 0.1em;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+    border-color: $lec-accent;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.22);
+  }
+}
+
+.lec-pw-error {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #f87171;
+}
+
+.lec-pw-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+
+  .lec-pw-btn {
+    flex: 1 1 0;
+    padding: 0.62rem 0.5rem;
+    border-radius: 10px;
+    border: 1px solid $lec-line-strong;
+    background: transparent;
+    color: inherit;
+    font-family: $lec-font;
+    font-size: 0.87rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.14s ease, border-color 0.14s ease, opacity 0.14s ease;
+
+    &:hover { background: rgba(127, 127, 127, 0.14); }
+  }
+
+  .lec-pw-submit {
+    border-color: transparent;
+    background: $lec-accent;
+    color: #0b1220;
+
+    &:hover { background: #79b1f7; }
+    &:disabled { opacity: 0.6; cursor: default; }
+  }
+}
+
+// --- 교안 내려받기·미리보기 버튼 (문해력 등 다운로드형 강의 페이지) --------
+.gyoan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.1rem 0 0.7rem;
+}
+
+.gyoan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.66rem 1.05rem;
+  border-radius: 10px;
+  border: 1px solid $lec-line-strong;
+  background: rgba(127, 127, 127, 0.08);
+  color: inherit;
+  font-family: $lec-font;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.14s ease, border-color 0.14s ease, transform 0.14s ease;
+
+  i { font-size: 0.8rem; }
+
+  .gyoan-btn__meta {
+    font-size: 0.73rem;
+    font-weight: 600;
+    opacity: 0.72;
+  }
+
+  &:hover { transform: translateY(-1px); }
+}
+
+button.gyoan-btn--preview:hover { background: rgba(127, 127, 127, 0.16); }
+
+// 라이트모드 전역 `a { color }` 함정(특이성 0,1,2) 방어를 위해 라이트 블록에서도 재선언한다
+a.gyoan-btn--download,
+a.gyoan-btn--download:visited {
+  border-color: transparent;
+  background: $lec-accent;
+  color: #0b1220;
+  text-decoration: none;
+
+  &:hover { background: #79b1f7; }
+}
+
+.gyoan-preview-slot {
+  display: none;
+  margin: 0.4rem 0 1rem;
+
+  &.open { display: block; }
+
+  iframe {
+    width: 100%;
+    height: 74vh;
+    border: 1px solid $lec-line;
+    border-radius: $lec-radius-sm;
+    background: #fff;
+  }
+}
+
+// 모바일 브라우저는 iframe PDF를 렌더하지 못하고 다운로드를 트리거하므로 미리보기 자체를 숨긴다
+@media (max-width: 1023px) {
+  .gyoan-btn--preview { display: none; }
+}
+
 @media (max-width: 600px) {
-  .lecture-card-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-  .pub-book-grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+  .lecture-card-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; }
+  .pub-book-grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 0.85rem; }
   .page--standalone .page__content > h2 { font-size: 1.16rem; }
+
+  // 키보드가 올라오면 세로 중앙 모달이 가려지므로 상단 고정 배치로 바꾼다
+  .lec-pw-overlay { align-items: flex-start; padding-top: 14vh; }
+  .lec-pw-dialog { padding: 1.25rem 1.05rem 1.05rem; }
+
+  .gyoan-actions { flex-direction: column; align-items: stretch; }
+  .gyoan-btn { justify-content: center; }
 }
 
 // --- 라이트 모드 ---------------------------------------------------------
@@ -516,4 +720,31 @@ html[data-theme="light"] {
     figure { background: #fafafa; }
     .lec-count { background: rgba(3, 105, 161, 0.12); color: #0369a1; }
   }
+
+  // 비밀번호 모달 라이트 팔레트
+  .lec-pw-overlay { background: rgba(15, 23, 42, 0.45); }
+  .lec-pw-dialog {
+    background: #fff;
+    color: #1f2937;
+    box-shadow: 0 22px 60px rgba(15, 23, 42, 0.25);
+  }
+  .lec-pw-desc { color: #6b7280; }
+  .lec-pw-input { background: #f3f4f6; color: #1f2937; }
+  .lec-pw-error { color: #dc2626; }
+  .lec-pw-actions .lec-pw-submit {
+    background: #0369a1;
+    color: #fff;
+
+    &:hover { background: #0284c7; }
+  }
+
+  // 전역 `html[data-theme="light"] a { color:#0078c8 }`(0,1,2)가 버튼형 앵커를 덮는 함정 방어
+  a.gyoan-btn--download,
+  a.gyoan-btn--download:visited {
+    background: #0369a1;
+    color: #fff;
+
+    &:hover { background: #0284c7; }
+  }
+  button.gyoan-btn--preview { background: rgba(15, 23, 42, 0.05); color: #1f2937; }
 }

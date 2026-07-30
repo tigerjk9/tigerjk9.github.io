@@ -27,11 +27,33 @@ header:
 
 ## 자료 내려받기
 
-- **[교안 전체 내려받기 (PDF · 86장 · 약 10MB)](/assets/lectures/literacy-reading-muscle/gyoan.pdf){:target="_blank"}**
+<div class="gyoan-actions">
+  <a class="gyoan-btn gyoan-btn--download" href="/assets/lectures/literacy-reading-muscle/gyoan.pdf" download="문해력-읽기근육-수업-교안.pdf"><i class="fas fa-download" aria-hidden="true"></i> 교안 내려받기 <span class="gyoan-btn__meta">PDF · 86장 · 약 10MB</span></a>
+  <button type="button" class="gyoan-btn gyoan-btn--preview" id="gyoan-preview-btn"><i class="fas fa-eye" aria-hidden="true"></i> <span class="gyoan-btn__label">미리보기 열기</span></button>
+</div>
 
-<iframe src="/assets/lectures/literacy-reading-muscle/gyoan.pdf" title="교안 미리보기" loading="lazy" style="width:100%; height:70vh; border:1px solid #d0d0d0; border-radius:8px; margin-top:0.5rem;"></iframe>
+<div id="gyoan-preview-slot" class="gyoan-preview-slot" data-pdf="/assets/lectures/literacy-reading-muscle/gyoan.pdf"></div>
 
-미리보기가 열리지 않는 브라우저(특히 모바일)에서는 위 링크로 내려받아 열면 된다.
+교안은 내려받기 버튼을 눌렀을 때에만 다운로드된다. 미리보기는 PDF를 화면에 그릴 수 있는 데스크톱 브라우저에서 제공하고, 모바일에서는 내려받기 버튼으로 받아 열면 된다.
+
+<script>
+(function () {
+  var btn = document.getElementById('gyoan-preview-btn');
+  var slot = document.getElementById('gyoan-preview-slot');
+  if (!btn || !slot) return;
+  btn.addEventListener('click', function () {
+    var open = slot.classList.toggle('open');
+    btn.querySelector('.gyoan-btn__label').textContent = open ? '미리보기 닫기' : '미리보기 열기';
+    // iframe을 클릭 시점에 만들어야 모바일 브라우저가 페이지 진입만으로 PDF 다운로드를 시작하지 않는다
+    if (open && !slot.querySelector('iframe')) {
+      var f = document.createElement('iframe');
+      f.src = slot.getAttribute('data-pdf');
+      f.title = '교안 미리보기';
+      slot.appendChild(f);
+    }
+  });
+})();
+</script>
 
 ## 왜 지금 문해력인가
 
