@@ -1,3 +1,24 @@
+- slug: literacy-reading-muscle
+  title: "디지털 시대, 우리 아이들의 읽기근육을 키우는 문해력 수업"
+  subtitle: "문해력 위기 · 아날로그 정독 · AI 튜터 러니 · 4대영역 · 86장"
+  audience: "초·중·고 교사"
+  slide_count: 86
+  chapter_count: 2
+  date: "2026-07-30"
+  hub_url: /lectures/literacy-reading-muscle/
+  locked: true
+  locked_payload: "AoER7xQfDG5OVjbm8WdN4d/QY0GSJHVG+NRv1P6wAwa6qsNkvzxdZ7PFJAyARD49XQUbQ0Z9EsWHIg7rvfirr8h6wMLPKMkn+D+NESHxCI7CGEd8qp/dZm3xsJ6OBa+jVgOxCnLM3t4p"
+  thumbnail: /assets/lectures/covers/250a2b76a38ff276.jpg
+  author: "권희린 (사서교사) · AI 미래교육연구회"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "2차시 문해력 연수 교안 86장을 하나의 이야기로 정리한 큐레이션 버전"
+  tags:
+    - 문해력
+    - 독서교육
+    - AI에듀테크
+    - 러니
+    - 교원연수
+
 - slug: ai-leading-teacher-2026-onsite
   title: "2026 인공지능 활용 선도교사 집합 연수"
   subtitle: "튜닝 프로토콜 · 마이크로티칭 · 데이터 진단 · 성장 로드맵 · 8~13과정"
