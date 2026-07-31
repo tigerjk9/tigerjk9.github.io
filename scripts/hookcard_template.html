@@ -117,7 +117,9 @@ body {
     for (var i = 0; i < ls.length; i++) w = Math.max(w, ls[i].scrollWidth);
     return w;
   }
-  while (fs > 60 && (widest() > MAXW || copy.getBoundingClientRect().top < TOPLIMIT)) {
+  /* 하한 46px — 긴 문장을 헤드라인으로 지정하는 경우가 있어 60px에서 내렸다.
+     하한에 걸리면 nowrap 때문에 캔버스 밖으로 잘려 나가므로 힘이 빠지더라도 맞추는 쪽이 낫다. */
+  while (fs > 46 && (widest() > MAXW || copy.getBoundingClientRect().top < TOPLIMIT)) {
     fs -= 2;
     head.style.fontSize = fs + 'px';
   }
