@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+{{FONT_FACES}}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1350px; overflow: hidden; }
+body {
+  background: #0B0C0E;
+  font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+  color: #f6f3ea;
+  position: relative;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------- 사진 (실측: left 32 / top 140 / 1016x1082) ---------------- */
+.photo {
+  position: absolute; left: 32px; top: 140px;
+  width: 1016px; height: 1082px;
+  overflow: hidden; background: #15161a;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 세로로 긴 사진은 잘라내지 않고 어두운 박스 안에 앉힌다 */
+.photo.fit { background: #121317; }
+.photo.fit img { object-fit: contain; }
+/* 논문 figure처럼 흰 바탕 도표는 종이 패널로 띄운다 */
+.photo.contain { background: #101115; display: flex; align-items: center; justify-content: center; }
+.photo.contain img {
+  width: auto; height: auto; max-width: 100%; max-height: 100%;
+  padding: 24px; background: #f4f2ec;
+}
+/* 이미지를 하나도 못 구했을 때의 폴백 */
+.photo.empty {
+  background:
+    radial-gradient(circle at 26% 24%, rgba(240,178,75,0.10), rgba(0,0,0,0) 58%),
+    linear-gradient(158deg, #24232b 0%, #17171d 55%, #0e0e12 100%);
+}
+
+/* 하단 스크림 — 어떤 사진이 와도 카피가 읽히게 만드는 핵심 장치.
+   레퍼런스는 원본이 이미 어두웠지만, 밝은 사진이 들어오면 흰 헤드라인이 날아간다. */
+.scrim {
+  position: absolute; left: 32px; top: 140px; width: 1016px; height: 1082px;
+  background: linear-gradient(180deg,
+    rgba(8,9,11,0) 30%,
+    rgba(8,9,11,0.42) 52%,
+    rgba(8,9,11,0.80) 70%,
+    rgba(8,9,11,0.95) 86%,
+    rgba(8,9,11,0.99) 100%);
+}
+/* 상단도 살짝 눌러 프레임 여백과 자연스럽게 잇는다 */
+.scrim-top {
+  position: absolute; left: 32px; top: 140px; width: 1016px; height: 300px;
+  background: linear-gradient(180deg, rgba(8,9,11,0.70) 0%, rgba(8,9,11,0) 100%);
+}
+
+/* ---------------- 카피 (실측: 좌우 패딩 96 / 블록 하단 y1185) ---------------- */
+.copy { position: absolute; left: 96px; right: 96px; bottom: 165px; }
+.eyebrow { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
+.eyebrow i { display: block; width: 66px; height: 6px; background: #f0b24b; flex: none; }
+.eyebrow span {
+  font-size: 30px; font-weight: 600; letter-spacing: 0.02em;
+  color: #e9e5db; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.headline {
+  font-family: 'BlackHanSans', 'Pretendard', 'Malgun Gothic', sans-serif;
+  font-weight: 400;
+  font-size: 160px;
+  line-height: 0.92;
+  letter-spacing: -0.012em;
+}
+/* nowrap 필수 — 줄바꿈이 허용되면 아래 자동 축소 루프가 폭 초과를 감지하지 못해
+   헤드라인이 3~4행으로 깨진다(실측 사고). 폭 조절은 오직 font-size로 한다. */
+.headline div { white-space: nowrap; text-shadow: 0 4px 34px rgba(0,0,0,0.55); }
+.headline .l1 { color: #f6f3ea; }
+.headline .l2 { color: #f0b24b; }
+
+/* ---------------- 푸터 (실측: 두 요소 모두 y1229~1281) ---------------- */
+.logo { position: absolute; left: 96px; bottom: 69px; height: 52px; }
+.logo img { height: 100%; display: block; }
+.source {
+  position: absolute; right: 96px; bottom: 69px; max-width: 520px;
+  text-align: right; font-size: 24px; font-weight: 500;
+  line-height: 1.30; color: #b9b4ac;
+}
+</style>
+</head>
+<body>
+  <div class="photo {{FIT}}">{{IMG}}</div>
+  <div class="scrim-top"></div>
+  <div class="scrim"></div>
+
+  <div class="copy" id="copy">
+    <div class="eyebrow"><i></i><span>{{EYEBROW}}</span></div>
+    <div class="headline" id="headline">
+      <div class="l1">{{LINE1}}</div>
+      <div class="l2">{{LINE2}}</div>
+    </div>
+  </div>
+
+  <span class="logo"><img src="logo.png" alt="Dot Connector"></span>
+  <div class="source">{{SOURCE}}</div>
+
+<script>
+/* 헤드라인은 글자 수가 매번 달라 CSS 고정 크기로는 반드시 넘친다.
+   좌우 여백(888px) 안에 들어오고 사진 상단부를 침범하지 않을 때까지 2px씩 줄인다.
+   레퍼런스 실측이 약 160px(2행 피치 147px)이라 그 값을 상한으로 둔다. */
+(function () {
+  var head = document.getElementById('headline');
+  var copy = document.getElementById('copy');
+  var MAXW = 888;   // 1080 - 96*2
+  var TOPLIMIT = 520;  // 카피 블록 상단이 이보다 위로 올라가면 사진이 다 가려진다
+  var fs = 160;
+  function widest() {
+    var w = 0, ls = head.children;
+    for (var i = 0; i < ls.length; i++) w = Math.max(w, ls[i].scrollWidth);
+    return w;
+  }
+  while (fs > 60 && (widest() > MAXW || copy.getBoundingClientRect().top < TOPLIMIT)) {
+    fs -= 2;
+    head.style.fontSize = fs + 'px';
+  }
+  document.documentElement.setAttribute('data-fit', fs);
+})();
+</script>
+</body>
+</html>
