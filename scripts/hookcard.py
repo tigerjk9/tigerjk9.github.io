@@ -132,6 +132,10 @@ def validate_copy(card: dict) -> "list[str]":
     if tail.endswith("?") and re.search(r"(다|음|임|함)\?$", tail):
         issues.append(f"'{tail}' — 단정체 어미에 물음표를 붙여 비문이 됨. "
                       "의문형으로 쓰려면 '~인가?/~일까?/~하는가?'로 어미까지 바꿀 것")
+    # 출처 제목을 어중간하게 잘라 조각을 남기는 실패가 잦다(말줄임표·중간 절단).
+    src = (card.get("source") or "")
+    if "..." in src or "…" in src:
+        issues.append("출처 제목이 말줄임표로 끊김 — 짧고 완결된 제목으로 다시 쓸 것")
     return issues
 
 
