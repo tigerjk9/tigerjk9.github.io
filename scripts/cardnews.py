@@ -626,8 +626,12 @@ def match_images(model_name: str, cards: "list[dict]", cands: "list[dict]") -> "
         return fallback
 
 
-def gemini_image(prompt: str, out_path: Path) -> bool:
-    """Gemini 이미지 생성. 성공 시 out_path 저장 후 True."""
+def gemini_image(prompt: str, out_path: Path, aspect: str = "16:9") -> bool:
+    """Gemini 이미지 생성. 성공 시 out_path 저장 후 True.
+
+    aspect 는 넣을 슬롯의 비율에 맞춘다. 카드뉴스 사진 슬롯은 926x509 가로라 16:9가 맞지만,
+    세로 슬롯에 16:9를 넣으면 좌우가 크게 잘리고 피사체가 아래로 몰린다(후킹 카드 실측).
+    """
     requests = _requests()
     key = os.environ["GEMINI_API_KEY"]
     for model in IMG_MODEL_CANDIDATES:
@@ -635,7 +639,7 @@ def gemini_image(prompt: str, out_path: Path) -> bool:
         body = {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {"responseModalities": ["IMAGE"],
-                                 "imageConfig": {"aspectRatio": "16:9"}},
+                                 "imageConfig": {"aspectRatio": aspect}},
         }
         try:
             r = requests.post(url, json=body, verify=False, timeout=180)

@@ -36,6 +36,17 @@ ACCENT = "#f0b24b"
 
 DEFAULT_OUT = Path.home() / "Desktop" / "hookcard"
 
+# cardnews.STYLE_SUFFIX 는 "16:9 wide composition"을 명시해 가로 슬롯을 전제한다.
+# 후킹 카드는 세로 슬롯이고 아래 3분의 1을 헤드라인이 덮으므로, 피사체를 위쪽에 두라고
+# 프롬프트 단계에서 못 박는다(사후 크롭보다 이쪽이 화질 손실이 없다).
+STYLE_SUFFIX = (
+    "Cinematic still, dark moody atmosphere, deep shadows, single dramatic light source, "
+    "desaturated palette with warm amber accent, shallow depth of field, photorealistic, "
+    "square composition. Place the main subject in the UPPER HALF of the frame; "
+    "leave the bottom third dark, empty and free of any important detail. "
+    "No text, no letters, no numbers, no logos, no watermark, no charts."
+)
+
 # 후킹 카드는 의문형이 정답이라 cardnews의 "~다로 끝나야 함" 규칙은 적용하지 않는다.
 # 존칭체·훈계조·AI 티 표현만 코드로 잡는다.
 COPY_RULES = cn.COPY_RULES
@@ -115,6 +126,12 @@ def validate_copy(card: dict) -> "list[str]":
             issues.append(f"{key}가 {len(v)}자 — 8자 내외로 줄일 것 (길면 글자가 작아짐)")
     if ":" in (card.get("line1", "") + card.get("line2", "")):
         issues.append("헤드라인에 콜론 사용 — 콜론 없이 다시 쓸 것")
+    # 단정체 종결에 물음표를 붙이면 비문이 된다(실측 반복: '모른다?', '실천이다?').
+    # 의문형은 권장하지만 어미까지 의문형이어야 한다.
+    tail = (card.get("line2") or "").strip()
+    if tail.endswith("?") and re.search(r"(다|음|임|함)\?$", tail):
+        issues.append(f"'{tail}' — 단정체 어미에 물음표를 붙여 비문이 됨. "
+                      "의문형으로 쓰려면 '~인가?/~일까?/~하는가?'로 어미까지 바꿀 것")
     return issues
 
 
@@ -171,6 +188,7 @@ def pick_image(card: dict, doc: dict, src: str, outdir: Path,
         else:
             dst = render_dir / f"hero{mp.suffix.lower()}"
             shutil.copy(mp, dst)
+            _recompose(dst)
             return {"path": str(dst), "fit": _fit_for(dst), "note": "수동 지정"}
 
     # 1) 원자료에서 직접 캡처.
@@ -196,15 +214,19 @@ def pick_image(card: dict, doc: dict, src: str, outdir: Path,
         best = cands[0]
         bp = Path(best["path"])
         print(f"[INFO] 원자료 이미지 사용: {bp.name}")
+        _recompose(bp)
         return {"path": str(bp), "fit": _fit_for(bp), "note": best.get("label", "원자료")}
 
-    # 2) 생성
+    # 2) 생성 — 사진 슬롯이 세로(0.939)라 1:1로 뽑는다.
+    #    카드뉴스 기본값 16:9를 그대로 쓰면 좌우가 크게 잘리고 피사체가 아래로 몰려
+    #    헤드라인과 겹친다(실측). 1:1이 이 박스에 가장 가깝다.
     hint = card.get("image_hint") or card.get("image_query") or doc.get("title", "")
     gen = render_dir / "hero-gen.png"
-    print("[INFO] 이미지 생성 시도 중...")
+    print("[INFO] 이미지 생성 시도 중 (1:1)...")
     try:
-        if cn.gemini_image(f"{hint}. {cn.STYLE_SUFFIX}", gen) and gen.exists():
+        if cn.gemini_image(f"{hint}. {STYLE_SUFFIX}", gen, aspect="1:1") and gen.exists():
             _trim_letterbox(gen)
+            _recompose(gen)
             return {"path": str(gen), "fit": _fit_for(gen), "note": "생성"}
     except Exception as e:
         print(f"[WARN] 이미지 생성 실패: {e}")
@@ -215,6 +237,7 @@ def pick_image(card: dict, doc: dict, src: str, outdir: Path,
     print(f"[INFO] 이미지 검색 시도: {q}")
     try:
         if cn.search_image(q, found) and found.exists():
+            _recompose(found)
             return {"path": str(found), "fit": _fit_for(found), "note": "검색"}
     except Exception as e:
         print(f"[WARN] 이미지 검색 실패: {e}")
@@ -258,17 +281,21 @@ def _trim_letterbox(p: Path, thr: int = 14) -> None:
         def dark_col(x):
             return all(sum(px[x, y]) / 3 <= thr for y in range(0, h, max(1, h // 60)))
 
+        # 비율 보정용 띠는 대개 얇다. 한도를 두지 않으면 다크 시네마틱 이미지의
+        # 의도된 어두운 여백(프롬프트로 '하단 3분의 1을 비우라'고 요청한 영역)까지
+        # 깎아내 해상도만 잃는다(실측: 1024 -> 783).
+        capv, caph = int(h * 0.12), int(w * 0.12)
         top = 0
-        while top < h // 3 and dark_row(top):
+        while top < capv and dark_row(top):
             top += 1
         bot = h - 1
-        while bot > h * 2 // 3 and dark_row(bot):
+        while bot > h - 1 - capv and dark_row(bot):
             bot -= 1
         left = 0
-        while left < w // 3 and dark_col(left):
+        while left < caph and dark_col(left):
             left += 1
         right = w - 1
-        while right > w * 2 // 3 and dark_col(right):
+        while right > w - 1 - caph and dark_col(right):
             right -= 1
 
         if (top, left) == (0, 0) and (bot, right) == (h - 1, w - 1):
@@ -277,6 +304,103 @@ def _trim_letterbox(p: Path, thr: int = 14) -> None:
         print(f"[INFO] 생성 이미지 레터박스 제거: {w}x{h} -> {right - left + 1}x{bot - top + 1}")
     except Exception:
         pass
+
+
+BOX_W, BOX_H = 1016, 1082
+BOX_RATIO = BOX_W / BOX_H          # 0.939 — 사진 박스는 세로형이다
+TEXT_TOP_FRAC = 0.66               # 이 아래는 아이브로우·헤드라인이 덮는 구역
+MAX_UPSCALE = 1.35                 # 박스로 늘릴 때 허용할 최대 확대율 — 화질 보호
+
+
+def _subject_band(im) -> "tuple[int, int, int]":
+    """밝기 질량으로 피사체의 세로 구간(top, bottom)과 가로 중심을 추정한다.
+
+    가장 밝은 행에서 **연결된 구간만** 넓힌다. 단순히 '문턱을 넘는 모든 행'으로 잡으면
+    화면 맨 아래 바닥 반사·조명 띠까지 피사체로 묶여 구간이 100%까지 늘어난다(실측).
+    """
+    W, H = im.size
+    px = im.load()
+
+    def lum(c):
+        return 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]
+
+    step = max(1, W // 160)
+    xs = range(0, W, step)
+    # '밝기 합'이 아니라 '아주 밝은 픽셀 수'로 센다. 합계를 쓰면 어둡지만 폭이 넓은
+    # 바닥 반사 띠가 작고 강한 실제 피사체(광원·얼굴)를 이긴다(실측: 오브 대신 바닥이 피크).
+    samples = sorted(lum(px[x, y]) for y in range(0, H, max(1, H // 120)) for x in xs)
+    hi = samples[int(len(samples) * 0.96)] if samples else 200
+    hi = max(hi, 110)
+    rows = [sum(1 for x in xs if lum(px[x, y]) >= hi) for y in range(H)]
+    # 가벼운 평활화 — 한 줄짜리 잡음으로 구간이 끊기지 않게
+    k = max(1, H // 100)
+    sm = [sum(rows[max(0, y - k):min(H, y + k + 1)]) / len(rows[max(0, y - k):min(H, y + k + 1)])
+          for y in range(H)]
+    peak_y = max(range(H), key=lambda y: sm[y])
+    thr = sm[peak_y] * 0.38
+
+    top = peak_y
+    while top > 0 and sm[top - 1] > thr:
+        top -= 1
+    bot = peak_y
+    while bot < H - 1 and sm[bot + 1] > thr:
+        bot += 1
+
+    cols = [sum(max(0.0, lum(px[x, y]) - 45) for y in range(top, bot + 1, step)) for x in range(W)]
+    tot = sum(cols) or 1.0
+    cx = int(sum(x * v for x, v in enumerate(cols)) / tot)
+    return top, bot, cx
+
+
+def _recompose(p: Path) -> None:
+    """피사체가 헤드라인 구역으로 내려앉지 않도록 박스 비율로 다시 잘라낸다.
+
+    cover는 이미지를 박스에 꽉 채우므로, 가로로 긴 원본은 **세로 여백이 0**이 되어
+    `object-position`으로는 위아래로 1px도 못 움직인다(실측). 그래서 CSS가 아니라
+    파일 자체를 박스 비율(0.939)로 다시 잘라 피사체를 위로 올린다.
+    확대 한도(MIN_KEEP)를 두어 화질이 뭉개지는 것보다는 덜 올라가는 쪽을 택한다.
+    """
+    try:
+        from PIL import Image
+        im = Image.open(p).convert("RGB")
+        W, H = im.size
+        top, bot, cx = _subject_band(im)
+
+        # 화질 하한: 박스 높이를 MAX_UPSCALE 이내로 채울 수 있는 최소 crop 높이.
+        # 원본이 이미 그보다 작으면(=이미 확대해 쓰는 중이면) 세로로는 더 자르지 않는다.
+        floor_h = int(BOX_H / MAX_UPSCALE)
+        if H <= floor_h:
+            print(f"[INFO] 재배치 생략 — 원본 높이 {H}px, 이미 확대 사용 중(하한 {floor_h}px)")
+            return
+
+        # 피사체 아래가 텍스트 구역을 침범하지 않는 crop 높이를 찾는다.
+        below = H - bot                      # 피사체 아래로 남은 여백
+        want = int(below / max(1e-6, (1 - TEXT_TOP_FRAC)))   # 이 높이면 bot이 딱 TEXT_TOP_FRAC
+        hc = max(floor_h, min(H, want))
+        wc = int(round(hc * BOX_RATIO))
+        if wc > W:                            # 원본이 이미 세로로 길면 폭이 기준
+            wc = W
+            hc = min(H, int(round(wc / BOX_RATIO)))
+
+        y0 = int(round(bot - hc * TEXT_TOP_FRAC))
+        y0 = max(0, min(H - hc, y0))
+        x0 = max(0, min(W - wc, cx - wc // 2))
+
+        if (wc, hc) == (W, H):
+            return
+
+        # 잘라도 별로 안 올라간다면 그냥 둔다 — 확대만 하고 개선이 없으면 화질만 손해다.
+        oldbot = bot / H
+        newbot = (bot - y0) / hc
+        if oldbot - newbot < 0.05:
+            print(f"[INFO] 재배치 생략 — 개선 폭이 작음 (하단 {oldbot:.0%}, 확대만 손해)")
+            return
+
+        im.crop((x0, y0, x0 + wc, y0 + hc)).save(p)
+        print(f"[INFO] 피사체 재배치: {W}x{H} -> {wc}x{hc} "
+              f"(피사체 하단 {oldbot:.0%} -> {newbot:.0%})")
+    except Exception as e:
+        print(f"[WARN] 재배치 건너뜀: {e}")
 
 
 def _photo_like(p: Path) -> bool:
