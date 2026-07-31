@@ -204,6 +204,7 @@ def pick_image(card: dict, doc: dict, src: str, outdir: Path,
     print("[INFO] 이미지 생성 시도 중...")
     try:
         if cn.gemini_image(f"{hint}. {cn.STYLE_SUFFIX}", gen) and gen.exists():
+            _trim_letterbox(gen)
             return {"path": str(gen), "fit": _fit_for(gen), "note": "생성"}
     except Exception as e:
         print(f"[WARN] 이미지 생성 실패: {e}")
@@ -238,6 +239,46 @@ def _post_images(post: Path, render_dir: Path) -> "list[dict]":
     return out
 
 
+def _trim_letterbox(p: Path, thr: int = 14) -> None:
+    """생성 이미지 가장자리의 균일한 검은 레터박스 띠를 잘라낸다.
+
+    gemini 이미지 모델이 16:9를 맞추느라 위아래에 순수 검정 띠를 넣어 보내는 경우가 있다
+    (실측: 1344x768 결과 상단 50px가 (0,0,0)). cover로 깔면 그 띠가 사진 상단의
+    가로 이음매로 그대로 보인다.
+    """
+    try:
+        from PIL import Image
+        im = Image.open(p).convert("RGB")
+        w, h = im.size
+        px = im.load()
+
+        def dark_row(y):
+            return all(sum(px[x, y]) / 3 <= thr for x in range(0, w, max(1, w // 60)))
+
+        def dark_col(x):
+            return all(sum(px[x, y]) / 3 <= thr for y in range(0, h, max(1, h // 60)))
+
+        top = 0
+        while top < h // 3 and dark_row(top):
+            top += 1
+        bot = h - 1
+        while bot > h * 2 // 3 and dark_row(bot):
+            bot -= 1
+        left = 0
+        while left < w // 3 and dark_col(left):
+            left += 1
+        right = w - 1
+        while right > w * 2 // 3 and dark_col(right):
+            right -= 1
+
+        if (top, left) == (0, 0) and (bot, right) == (h - 1, w - 1):
+            return
+        im.crop((left, top, right + 1, bot + 1)).save(p)
+        print(f"[INFO] 생성 이미지 레터박스 제거: {w}x{h} -> {right - left + 1}x{bot - top + 1}")
+    except Exception:
+        pass
+
+
 def _photo_like(p: Path) -> bool:
     """히어로로 쓸 만한 '사진'인지. 흰 바탕 도표·스크린샷류는 탈락시킨다."""
     if cn._is_paper(p):
@@ -258,16 +299,14 @@ def _photo_like(p: Path) -> bool:
 
 
 def _fit_for(p: Path) -> str:
-    """사진 박스(1016x1082, 세로형)에 어떻게 앉힐지 결정."""
-    try:
-        from PIL import Image
-        with Image.open(p) as im:
-            w, h = im.size
-    except Exception:
-        return ""
-    # 박스가 세로로 길어(0.94) 가로가 아주 긴 그림은 cover하면 위아래가 다 잘린다
-    if w / max(h, 1) > 1.9:
-        return "fit"
+    """항상 cover(빈 문자열)로 채운다.
+
+    후킹 카드의 사진은 '전부 보여줄 자료'가 아니라 헤드라인을 받치는 **배경**이다.
+    가로로 긴 이미지를 contain으로 앉히면 위아래에 빈 띠가 생겨 사진 상단에
+    가로 이음매처럼 보인다(실측 사고: 레터박스를 잘라 비율이 1.99가 되자
+    가로형 판정 문턱을 넘어 contain으로 바뀌면서 오히려 띠가 생겼다).
+    과감히 잘리더라도 프레임을 꽉 채우는 쪽이 항상 낫다.
+    """
     return ""
 
 
