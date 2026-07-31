@@ -132,6 +132,23 @@ def validate_copy(card: dict) -> "list[str]":
     if tail.endswith("?") and re.search(r"(다|음|임|함)\?$", tail):
         issues.append(f"'{tail}' — 단정체 어미에 물음표를 붙여 비문이 됨. "
                       "의문형으로 쓰려면 '~인가?/~일까?/~하는가?'로 어미까지 바꿀 것")
+    head = f"{card.get('line1', '')} {card.get('line2', '')}".strip()
+
+    # 주제를 되묻기만 하고 아무 정보도 주지 않는 공허한 질문.
+    # 수치가 들어 있으면 최소한의 정보는 있는 것으로 보고 통과시킨다.
+    if re.search(r"(어떠한가|어떤가|무엇인가|무엇일까|어떻게 되는가|의미는|본질은)\s*\??$", head) \
+            and not re.search(r"\d", head):
+        issues.append(f"'{head}' — 주제를 되묻기만 하고 알게 되는 것이 없음. "
+                      "자료의 날카로운 사실(통념 반박·수치·구체물)로 다시 쓸 것")
+
+    # 추상어만으로 이루어진 헤드라인 — 만질 수 있거나 셀 수 있는 말이 하나도 없다.
+    ABSTRACT = ("비용", "가치", "의미", "변화", "미래", "본질", "역할", "가능성",
+                "중요성", "필요성", "방향", "과제", "영향", "실천", "전환")
+    if any(a in head for a in ABSTRACT) and not re.search(r"[\dA-Za-z]", head) \
+            and len(head) <= 18:
+        issues.append(f"'{head}' — 추상어 위주라 손에 잡히지 않음. "
+                      "구체물·수치·고유명 중 하나는 반드시 넣을 것")
+
     # 출처 제목을 어중간하게 잘라 조각을 남기는 실패가 잦다(말줄임표·중간 절단).
     src = (card.get("source") or "")
     if "..." in src or "…" in src:
@@ -141,11 +158,16 @@ def validate_copy(card: dict) -> "list[str]":
 
 def repair_copy(model: str, card: dict, issues: "list[str]", doc: dict) -> dict:
     prompt = (
-        "아래 후킹 카드 카피가 규칙을 어겼다. 지적된 부분만 고쳐 같은 JSON 스키마로 다시 출력한다.\n\n"
+        "아래 후킹 카드 카피가 규칙을 어겼다. 지적된 부분을 고쳐 같은 JSON 스키마로 다시 출력한다.\n\n"
         f"[현재 카피]\n{json.dumps(card, ensure_ascii=False, indent=2)}\n\n"
         f"[위반]\n- " + "\n- ".join(issues) + "\n\n"
         f"[원문 제목]\n{doc.get('title','')}\n\n"
-        "line1+line2는 이어 읽어 한 문장이 되고, 각 행 8자 내외, 단정체(의문형 허용), "
+        f"[원문 발췌]\n{(doc.get('content') or '')[:4000]}\n\n"
+        "헤드라인은 주제를 되풀이하지 말고 자료의 **날카로운 사실**(통념 반박·놀라운 수치·"
+        "이름 붙일 수 있는 구체물·대가와 역설)에서 만든다. 다음 세 시험을 모두 통과해야 한다.\n"
+        "① 같은 주제의 다른 글에 올려도 말이 되면 실패 ② 읽고 알게 되는 것이 있어야 함"
+        "(질문만 남기면 실패) ③ 만질 수 있거나 셀 수 있는 말이 최소 하나.\n"
+        "line1+line2는 이어 읽어 한 문장, 각 행 8자 내외, 단정체(의문형은 어미까지 의문형), "
         "존칭체·훈계조·콜론 금지. JSON 객체 하나만 출력한다."
     )
     try:
