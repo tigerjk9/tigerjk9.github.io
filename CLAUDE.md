@@ -386,6 +386,7 @@ py -X utf8 scripts/cardnews.py <URL|PDF> --cards 10   # 기본(아웃트로 포�
 py -X utf8 scripts/cardnews.py <입력> --dry-run        # 카피 JSON만
 py -X utf8 scripts/cardnews.py --rerender <출력폴더>    # cards.json 수정 후 재렌더(Gemini 재호출 없음)
 py -X utf8 scripts/cardnews.py <입력> --keep-images --out <기존폴더>  # 이미지 재사용, 카피만 재생성
+py -X utf8 scripts/cardnews.py --style diagram --topic "..."          # 밝은 개념 다이어그램(journey)
 ```
 
 - **디자인 (2026-07-27 다크 시네마틱으로 전면 리뉴얼)**: 짙은 차콜 그라디언트 배경 + 좌상단 흰 스크립트 로고(`prep_logo(ink=…)`가 `assets/logo.jpg`를 밝기 기반 알파로 배경 제거 + 하단 슬로건 띠를 연속 런 20% 기준 블록 삭제 → 투명 `logo.png`를 **흰 잉크**로 칠함. 행 잉크 총량 기준은 굵은 획을 띠로 오탐하니 금지) + 우상단 노란 닷네트워크 SVG 마크, 헤드라인 2단(흰 주제 라벨 + `#f5e14e` 핵심 주장, 마침표 없음), 노란 세로 바 본문 2~3줄(**단정체 — 구버전 존칭체에서 뒤집힘**), 라운드 16:9 이미지(top 655·926×509), 큰 페이지 번호 + `출처: OOO`. **마지막 장은 고정 브랜드 아웃트로**(`cardnews_outro.html` — 닷커넥터·@Dot_Connector·linktr.ee 필 버튼·소셜 3종 simple-icons 경로. 문구는 `cardnews.py`의 `BRAND` dict)
@@ -396,6 +397,7 @@ py -X utf8 scripts/cardnews.py <입력> --keep-images --out <기존폴더>  # �
 - **표시 방식 3종**: 흰 바탕 도표(`_is_paper` — 가장자리 흰색 75% 판정)는 종이 패널 `contain`, 세로로 긴 사진은 어두운 박스 `fit`, 나머지는 `cover`. `cards.json`의 `images[]`가 `{path, fit, note}`라 `--rerender`가 그대로 복원한다
 - **추출 재사용**: web_to_post `fetch_content` / yt_to_post 자막 체인 import. 본문 200자 미만이면 생성 중단(환각 방지). arXiv `abs` URL은 `pdf`로 자동 치환, 출처의 arXiv ID는 **추출된 값만** 사용(첫 8000자 검색 — 세로 스탬프라 앞 120줄만 보면 놓침)
 - **후처리 QA**: cards.json 사실성 대조·이미지 육안 확인 필수 (`.claude/commands/cardnews.md` 체크리스트). **논문 출처(source_label)는 저자·연도·제목을 원문에서 verbatim 확인 — 요약·의역해 짧은 제목 지어내기 금지, arXiv/DOI는 추출값만**(hook-image 스킬과 동일 환각방지 원칙, 2026-08-01)
+- **밝은 다이어그램 스타일 (`--style diagram`, 2026-08-02)**: 다크 시네마틱과 별개 경로. 밝은 크래프트지 배경 + 손그림 개념 다이어그램 1장(v1 아키타입 = **journey**: 기대=직선+핀 vs 현실=위빙 경로+노드). **다이어그램은 이미지 생성이 아니라 SVG로 그려 한글이 안 깨진다**(이미지 모델 한글 파손 회피 — hook/cardnews가 텍스트를 오버레이하는 것과 같은 이유). 기존 `_shot`(Edge 캡처)·`_font_css` 재사용, 과금은 스펙 카피 1회뿐. 입력은 `--topic "주제"` 직접 또는 URL/PDF 추출 **둘 다**. LLM은 `{archetype, ideal_title, reality_title, start, end, nodes[]}` 스펙만 내고(`cardnews_diagram_prompt_template.txt`, 단정체·환각금지 상속), 파이썬 `render_journey_svg`가 Catmull-Rom 위빙 경로+노드+라벨 충돌회피로 렌더(`cardnews_diagram_template.html`). 라벨은 명사·7자 이내(길면 폰트 자동 축소). 아웃트로 없이 하단 `@Dot_Connector` 푸터. `cards.json`에 `style:diagram` 저장 → `--rerender`가 스펙만으로 무과금 재렌더(`nodes` 수정 후). **cinematic(기본값)은 완전 무영향**(라이브 URL dry-run 비회귀 검증). 신규 파일 2개(template·prompt) + `cardnews.py` 함수군(`render_journey_svg`·`_catmull_rom`·`_pin_svg`·`normalize_diagram_cards`·`validate_diagram`·`render_diagram_cards`·`run_diagram`). 색: 크림 `#f3f0e9`·네이비선 `#2b2d3a`·오렌지 `#e8631f`. 레퍼런스는 손그림 자기교차 루프였으나 현재는 clean 위빙 웨이브(승인된 프로토타입 룩). 확장 로드맵: 비교(vs)·순환·단계·사분면 아키타입
 
 ## 후킹 이미지 카드 (`/hook`, 2026-07-31)
 

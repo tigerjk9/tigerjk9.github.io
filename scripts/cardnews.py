@@ -914,6 +914,238 @@ def render_cards(doc: dict, outdir: Path, images: "list[dict | None]") -> "list[
     return pngs
 
 
+# ---------------------------------------------------------------- diagram style (밝은 개념 다이어그램)
+# 다크 시네마틱과 별개 경로. 손그림 개념 다이어그램을 SVG로 그려 밝은 크래프트지에 얹는다.
+# 한글은 이미지 생성이 아니라 SVG 텍스트라 깨지지 않는다. v1 아키타입 = "journey"(기대 vs 현실).
+
+DIAG_BG = "#f3f0e9"       # 크래프트지 크림
+DIAG_INK = "#2b2b2b"      # 제목·직선
+DIAG_LINE = "#2b2d3a"     # 현실 경로(네이비)
+DIAG_ACCENT = "#e8631f"   # 핀·노드·화살표(오렌지)
+
+
+def _fit_font(text: str, base: int, drops: "list[tuple[int, int]]") -> int:
+    """글자 수가 임계값 이상이면 폰트를 단계적으로 줄인다 (뒤 항목이 우선)."""
+    size = base
+    for thresh, val in drops:
+        if len(text) >= thresh:
+            size = val
+    return size
+
+
+def _catmull_rom(pts: "list[tuple[float, float]]") -> str:
+    """점들을 부드러운 큐빅 베지어로 잇는 SVG path d (Catmull-Rom, tension 1/6)."""
+    if len(pts) < 2:
+        return ""
+    d = f"M {pts[0][0]:.1f} {pts[0][1]:.1f}"
+    n = len(pts)
+    for i in range(n - 1):
+        p0 = pts[i - 1] if i > 0 else pts[0]
+        p1, p2 = pts[i], pts[i + 1]
+        p3 = pts[i + 2] if i + 2 < n else pts[i + 1]
+        c1x, c1y = p1[0] + (p2[0] - p0[0]) / 6.0, p1[1] + (p2[1] - p0[1]) / 6.0
+        c2x, c2y = p2[0] - (p3[0] - p1[0]) / 6.0, p2[1] - (p3[1] - p1[1]) / 6.0
+        d += f" C {c1x:.1f} {c1y:.1f} {c2x:.1f} {c2y:.1f} {p2[0]:.1f} {p2[1]:.1f}"
+    return d
+
+
+def _pin_svg(cx: int) -> str:
+    """목적지 핀(오렌지 물방울 + 크림 속점). tip이 y=356(직선 y=372 바로 위)에 닿는다."""
+    return (
+        f'<path d="M{cx} 356 C{cx-12} 356 {cx-20} 346 {cx-20} 335 '
+        f'C{cx-20} 322 {cx} 306 {cx} 306 C{cx} 306 {cx+20} 322 {cx+20} 335 '
+        f'C{cx+20} 346 {cx+12} 356 {cx} 356 Z" fill="{DIAG_ACCENT}"/>'
+        f'<circle cx="{cx}" cy="333" r="6" fill="{DIAG_BG}"/>'
+    )
+
+
+def render_journey_svg(card: dict, footer: str = "") -> str:
+    """journey 스펙 → 전체 SVG(1080x1350). 위: 기대(직선+핀), 아래: 현실(위빙 경로+노드)."""
+    ideal_title = str(card.get("ideal_title") or "우리가 생각하는 방식").strip()
+    reality_title = str(card.get("reality_title") or "실제로 진행되는 방식").strip()
+    start = str(card.get("start") or "시작").strip()
+    end = str(card.get("end") or "완성").strip()
+    nodes = [str(x).strip() for x in (card.get("nodes") or []) if str(x).strip()][:8]
+
+    p: "list[str]" = ['<svg width="1080" height="1350" viewBox="0 0 1080 1350" '
+                      'xmlns="http://www.w3.org/2000/svg">']
+    p.append('<defs><filter id="paper" x="0" y="0" width="100%" height="100%">'
+             '<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/>'
+             '<feColorMatrix in="n" type="matrix" '
+             'values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"/></filter></defs>')
+    p.append(f'<rect x="0" y="0" width="1080" height="1350" fill="{DIAG_BG}"/>')
+    p.append('<rect x="0" y="0" width="1080" height="1350" filter="url(#paper)"/>')
+
+    # ---- 위: 기대(직선)
+    p.append(f'<text class="title" x="540" y="252" text-anchor="middle" '
+             f'font-size="{_fit_font(ideal_title, 56, [(11, 50), (13, 44)])}">{esc(ideal_title)}</text>')
+    p.append(f'<line x1="170" y1="372" x2="910" y2="372" stroke="{DIAG_INK}" '
+             'stroke-width="4" stroke-linecap="round"/>')
+    p.append(_pin_svg(200))
+    p.append(_pin_svg(880))
+    p.append(f'<text class="label" x="200" y="418" text-anchor="middle" font-size="27">{esc(start)}</text>')
+    p.append(f'<text class="label" x="880" y="418" text-anchor="middle" font-size="27">{esc(end)}</text>')
+
+    # ---- 아래: 현실(위빙 경로)
+    p.append(f'<text class="title" x="540" y="602" text-anchor="middle" '
+             f'font-size="{_fit_font(reality_title, 56, [(11, 50), (13, 44)])}">{esc(reality_title)}</text>')
+    up_y, down_y = 772, 936
+    sx, sy = 150, 882          # 시작 노드
+    ex, ey = 892, 852          # 경로 끝(화살표 base)
+    node_pts: "list[tuple[float, float]]" = []
+    n = len(nodes)
+    if n:
+        x0, x1 = 258, 800
+        dx = (x1 - x0) / (n - 1) if n > 1 else 0
+        for i in range(n):
+            x = x0 + dx * i + (((i * 37) % 19) - 9)          # 기계적으로 보이지 않게 결정적 지터
+            y = (up_y if i % 2 == 0 else down_y) + (((i * 53) % 17) - 8)
+            node_pts.append((x, y))
+    p.append(f'<path d="{_catmull_rom([(sx, sy)] + node_pts + [(ex, ey)])}" fill="none" '
+             f'stroke="{DIAG_LINE}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>')
+    p.append(f'<polygon points="{ex-6},{ey-14} {ex+28},{ey} {ex-6},{ey+14}" fill="{DIAG_ACCENT}"/>')
+
+    p.append(f'<circle cx="{sx}" cy="{sy}" r="15" fill="{DIAG_ACCENT}"/>')
+    p.append(f'<text class="label" x="{sx}" y="{sy+58}" text-anchor="middle" font-size="27">{esc(start)}</text>')
+    p.append(f'<text class="endcap" x="935" y="815" text-anchor="start" font-size="29">{esc(end)}</text>')
+
+    # 노드 + 라벨. 라벨은 곡선 바깥쪽(위 노드→위, 아래 노드→아래)에 두고,
+    # 같은 쪽 이전 라벨과 가로로 겹치면 한 단 더 바깥으로 밀어 충돌을 피한다.
+    last = {"up": None, "down": None}
+    for i, (x, y) in enumerate(node_pts):
+        p.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="9" fill="{DIAG_ACCENT}"/>')
+        fs = _fit_font(nodes[i], 27, [(6, 24), (8, 21)])
+        half = len(nodes[i]) * fs * 0.62 / 2
+        up = i % 2 == 0
+        side = "up" if up else "down"
+        ly = (y - 24) if up else (y + 38)
+        prev = last[side]
+        if prev and not (x + half < prev[0] or x - half > prev[1]):
+            ly = (y - 56) if up else (y + 70)
+        last[side] = (x - half, x + half)
+        p.append(f'<text class="label" x="{x:.1f}" y="{ly:.1f}" text-anchor="middle" '
+                 f'font-size="{fs}">{esc(nodes[i])}</text>')
+
+    p.append(f'<text class="foot" x="540" y="1288" text-anchor="middle" font-size="26">'
+             f'{esc(footer.strip() or BRAND["handle"])}</text>')
+    p.append('</svg>')
+    return "\n".join(p)
+
+
+def normalize_diagram_cards(cards: "list") -> "list[dict]":
+    """따옴표·콜론·마침표 제거, 노드 8개로 클램프, 필드 보강."""
+    quotes = str.maketrans("", "", "\"'“”‘’")
+    out: "list[dict]" = []
+    for c in cards:
+        if not isinstance(c, dict):
+            continue
+        c = dict(c)
+        for k in ("ideal_title", "reality_title", "start", "end"):
+            c[k] = str(c.get(k) or "").translate(quotes).strip().rstrip(":：. ")
+        nodes = [str(x).translate(quotes).strip().rstrip(":：. ") for x in (c.get("nodes") or [])]
+        c["nodes"] = [x for x in nodes if x][:8]
+        c.setdefault("archetype", "journey")
+        out.append(c)
+    return out
+
+
+def validate_diagram(cards: "list[dict]") -> "list[str]":
+    """스펙 경고 목록 (렌더는 계속되되 수동 확인용)."""
+    warns: "list[str]" = []
+    for i, c in enumerate(cards):
+        nd = c.get("nodes") or []
+        if len(nd) < 4:
+            warns.append(f"카드 {i+1}: 중간 노드 {len(nd)}개 (6~8개 권장)")
+        for k in ("ideal_title", "reality_title", "start", "end"):
+            if not c.get(k):
+                warns.append(f"카드 {i+1}: {k} 비어 있음(기본값으로 대체됨)")
+        for lab in [c.get("start", ""), c.get("end", "")] + list(nd):
+            if len(lab) > 9:
+                warns.append(f"카드 {i+1}: 라벨 '{lab}' {len(lab)}자 — 7자 이내 권장(폰트 자동 축소)")
+    return warns
+
+
+def render_diagram_cards(doc: dict, outdir: Path) -> "list[Path]":
+    """diagram 스펙 카드들을 밝은 템플릿에 렌더한다."""
+    template = (SCRIPT_DIR / "cardnews_diagram_template.html").read_text(encoding="utf-8")
+    render_dir = outdir / "render"
+    render_dir.mkdir(parents=True, exist_ok=True)
+    font_css = _font_css(render_dir)
+    edge = next((p for p in EDGE_PATHS if Path(p).exists()), None)
+    if not edge:
+        print("[ERROR] Edge 브라우저를 찾을 수 없습니다")
+        sys.exit(1)
+    pngs: "list[Path]" = []
+    for i, card in enumerate(doc.get("cards", [])):
+        svg = render_journey_svg(card)
+        html = template.replace("{{FONT_FACES}}", font_css).replace("{{SVG}}", svg)
+        hp = render_dir / f"card-{i+1:02d}.html"
+        hp.write_text(html, encoding="utf-8")
+        png = outdir / f"card-{i+1:02d}.png"
+        if _shot(edge, hp, png):
+            pngs.append(png)
+            print(f"  [OK] {png.name}")
+        else:
+            print(f"  [FAIL] {png.name} 렌더 실패")
+    return pngs
+
+
+def run_diagram(args, today) -> None:
+    """--style diagram 경로: 주제/원문 → journey 스펙 → 밝은 다이어그램 카드."""
+    if args.topic:
+        title = content = args.topic.strip()
+        src_name = "닷커넥터 자체 정리"
+        print(f"[INFO] 직접 주제 입력: {title[:60]}")
+    else:
+        kind = detect_kind(args.source)
+        print(f"[INFO] 입력 유형: {kind}")
+        tmpdir = Path(tempfile.mkdtemp(prefix="cardnews-"))
+        if kind == "youtube":
+            data = extract_youtube(args.source)
+        elif kind == "pdf":
+            data = extract_pdf(ensure_local_pdf(args.source, tmpdir))
+        else:
+            data = extract_web(args.source)
+        if len(data["content"]) < 200:
+            print("[ERROR] 본문 추출 실패 또는 너무 짧음 - 중단 (환각 방지)")
+            sys.exit(1)
+        title, content, src_name = data["title"], data["content"], data["source_name"]
+        print(f"[INFO] 제목: {title[:60]}")
+
+    tmpl = (SCRIPT_DIR / "cardnews_diagram_prompt_template.txt").read_text(encoding="utf-8")
+    prompt = (tmpl.replace("{TITLE}", title)
+                  .replace("{SOURCE_NAME}", src_name)
+                  .replace("{CONTENT}", content[:45000]))
+    print(f"[INFO] Gemini 다이어그램 스펙 생성 중 ({args.model})...")
+    doc = gemini_copy(args.model, prompt)
+    cards = normalize_diagram_cards(doc.get("cards", []))[:2]
+    if not cards:
+        print("[ERROR] 스펙 생성 실패")
+        sys.exit(1)
+    doc["cards"] = cards
+    doc["style"] = "diagram"
+    doc["date"] = today.strftime("%Y.%m.%d")
+    doc["outro"] = False
+    label = (doc.get("source_label") or src_name).strip()
+    doc["source_label"] = re.sub(r"^\s*출처\s*[:：]\s*", "", label)
+    for w in validate_diagram(cards):
+        print(f"[WARN] {w}")
+    print(f"[INFO] 다이어그램 카드 {len(cards)}장 스펙 확보 (archetype=journey)")
+
+    if args.dry_run:
+        print(json.dumps(doc, ensure_ascii=False, indent=2))
+        return
+    slug = re.sub(r"[^a-z0-9-]", "",
+                  (doc.get("slug") or "diagram").lower().replace(" ", "-"))[:40] or "diagram"
+    outdir = Path(args.out) if args.out else Path.home() / "Desktop" / "cardnews" / f"{today:%Y%m%d}-{slug}"
+    outdir.mkdir(parents=True, exist_ok=True)
+    print("[INFO] 다이어그램 렌더링 중...")
+    pngs = render_diagram_cards(doc, outdir)
+    (outdir / "cards.json").write_text(json.dumps(doc, ensure_ascii=False, indent=2),
+                                       encoding="utf-8")
+    print(f"\n완료! {len(pngs)}장 생성: {outdir}")
+
+
 # ---------------------------------------------------------------- main
 
 def load_existing_images(outdir: Path) -> "list[dict]":
@@ -943,6 +1175,10 @@ def load_existing_images(outdir: Path) -> "list[dict]":
 def rerender(outdir: Path) -> None:
     """cards.json을 고친 뒤 Gemini 재호출 없이 카드만 다시 그린다."""
     doc = json.loads((outdir / "cards.json").read_text(encoding="utf-8"))
+    if doc.get("style") == "diagram":
+        pngs = render_diagram_cards(doc, outdir)
+        print(f"\n재렌더 완료! {len(pngs)}장: {outdir}")
+        return
     images: "list[dict | None]" = []
     for entry in doc.get("images") or []:
         if isinstance(entry, dict) and Path(entry.get("path", "")).exists():
@@ -971,13 +1207,18 @@ def main() -> None:
     ap.add_argument("--keep-images", action="store_true",
                     help="--out 폴더의 기존 이미지를 재사용하고 카피만 다시 생성")
     ap.add_argument("--model", default="gemini-2.5-flash", help="카피 생성 모델")
+    ap.add_argument("--style", choices=["cinematic", "diagram"], default="cinematic",
+                    help="cinematic(기본 다크 사진 카드) 또는 diagram(밝은 개념 다이어그램)")
+    ap.add_argument("--topic", default=None,
+                    help="diagram 모드에서 URL/PDF 대신 개념·주제를 직접 입력")
     args = ap.parse_args()
 
     if args.rerender:
         rerender(Path(args.rerender))
         return
-    if not args.source:
-        ap.error("입력(URL/PDF) 또는 --rerender 중 하나는 있어야 합니다")
+    if not args.source and not (args.style == "diagram" and args.topic):
+        ap.error("입력(URL/PDF) 또는 --rerender 중 하나는 있어야 합니다 "
+                 "(diagram 모드는 --topic '주제'로도 가능)")
 
     _load_dotenv()
     if not os.environ.get("GEMINI_API_KEY"):
@@ -985,6 +1226,9 @@ def main() -> None:
         sys.exit(1)
 
     today = _dt.date.today()
+    if args.style == "diagram":
+        run_diagram(args, today)
+        return
     n_content = max(args.cards - (0 if args.no_outro else 1), 1)
 
     kind = detect_kind(args.source)
