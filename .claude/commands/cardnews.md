@@ -62,28 +62,38 @@ AI 티 나는 상투어는 금지. 이 규칙들은 프롬프트만으로는 지
 없으면 자동으로 내려받는다.
 
 ## 밝은 다이어그램 스타일 (`--style diagram`, 2026-08-02)
-사진 카드 대신 **밝은 크래프트지 배경 + 손그림 개념 다이어그램** 한 장을 만든다. "기대 vs 현실"
-여정(깔끔한 직선 vs 헤매는 구불선)을 시각화하는 journey 아키타입이 v1이다. 다이어그램은 이미지
-생성이 아니라 **SVG로 그려 한글이 깨지지 않는다**(기존 Edge 캡처 파이프라인 재사용, 과금은 카피
-스펙 1회뿐).
+사진 카드 대신 **밝은 크래프트지 배경 + 손그림 개념 다이어그램** 한 장을 만든다. 다이어그램은 이미지
+생성이 아니라 **SVG로 그려 한글이 깨지지 않는다**(기존 Edge 캡처 파이프라인 재사용, 과금은 스펙 1회뿐).
+
+**아키타입 5종** (`--archetype`, 기본 `auto`면 LLM이 내용에 맞게 선택):
+
+| 아키타입 | 언제 | 스펙 필드 |
+|----------|------|-----------|
+| `journey` | 기대 vs 현실, 과정·성장·시행착오 궤적 | ideal_title, reality_title, start, end, nodes[6~8] |
+| `comparison` | 두 대상 A vs B, 장단점, 전후 | title, left{label,items[3~5]}, right{label,items} |
+| `cycle` | 끝이 처음으로 도는 반복(PDCA, 피드백) | title, nodes[3~6] |
+| `steps` | 순서 있는 선형 절차·N단계·로드맵 | title, steps[{label,desc?} 3~5] |
+| `quadrant` | 두 축 2×2 매트릭스(우선순위, 분류) | title, x_axis{label,low,high}, y_axis{...}, quadrants[4] |
 
 ```bash
-py -X utf8 scripts/cardnews.py --style diagram --topic "목표 달성의 실제 과정"   # 주제 직접 입력
-py -X utf8 scripts/cardnews.py --style diagram <URL|PDF>                          # 원문에서 여정 추출
-py -X utf8 scripts/cardnews.py --style diagram --topic "..." --dry-run            # 스펙 JSON만
+py -X utf8 scripts/cardnews.py --style diagram --topic "목표 달성의 실제 과정"          # auto 선택
+py -X utf8 scripts/cardnews.py --style diagram <URL|PDF>                                 # 원문에서 추출
+py -X utf8 scripts/cardnews.py --style diagram --archetype comparison --topic "A vs B"   # 강제 지정
+py -X utf8 scripts/cardnews.py --style diagram --topic "..." --dry-run                   # 스펙 JSON만
 ```
 
-- LLM은 `{archetype, ideal_title, reality_title, start, end, nodes[]}` 스펙만 만들고(단정체·환각금지
-  상속), 파이썬이 SVG로 렌더한다. 라벨은 명사·7자 이내 권장(길면 폰트 자동 축소).
-- 출력·`--rerender`·`cards.json`은 동일(스펙의 `nodes`를 고쳐 무과금 재렌더). 아웃트로 없이 각 장
-  하단에 `@Dot_Connector` 푸터. 파일: `cardnews_diagram_template.html`·`cardnews_diagram_prompt_template.txt`
-  + `cardnews.py`의 `render_journey_svg`. **cinematic(기본값)은 무영향.**
-- QA: 노드 라벨이 원문 여정과 맞는지, 라벨 겹침·넘침이 없는지 PNG 육안 확인. 어긋나면 cards.json의
-  `nodes`를 고쳐 `--rerender`.
+- LLM은 고른 아키타입의 스펙 JSON만 만들고(단정체·환각금지 상속), 파이썬이 SVG로 렌더한다.
+  라벨은 명사·짧게(길면 폰트 자동 축소). 라벨 충돌은 배치 로직이 회피.
+- 출력·`--rerender`·`cards.json`은 동일(`cards[].`스펙 필드를 고쳐 무과금 재렌더). 아웃트로 없이 각 장
+  하단 `@Dot_Connector` 푸터. 파일: `cardnews_diagram_template.html`·`cardnews_diagram_prompt_template.txt`
+  + `cardnews.py`의 `render_diagram_svg`(디스패처)·`render_{journey,comparison,cycle,steps,quadrant}_svg`.
+  **cinematic(기본값)은 무영향.**
+- QA: 라벨이 원문/주제와 맞는지, 겹침·넘침이 없는지 PNG 육안 확인. 어긋나면 cards.json 스펙을 고쳐 `--rerender`.
 
 ## 옵션
 - `--style {cinematic,diagram}` : 기본 cinematic(다크 사진 카드). `diagram`은 밝은 개념 다이어그램
 - `--topic "주제"` : diagram 모드에서 URL/PDF 대신 개념·주제를 직접 입력
+- `--archetype {auto,journey,comparison,cycle,steps,quadrant}` : diagram 아키타입 (기본 auto=LLM 선택)
 - `--cards N` : **총** 카드 수 (기본 10 — 아웃트로 포함이라 본문은 9장). diagram 모드는 무시(1장)
 - `--dry-run` : 카피 JSON만 출력 (렌더 없음 — 카피 검토용)
 - `--no-imggen` : Gemini 이미지 생성 생략

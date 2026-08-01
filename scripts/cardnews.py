@@ -32,6 +32,7 @@ import base64
 import datetime as _dt
 import hashlib
 import json
+import math
 import os
 import re
 import ssl
@@ -916,7 +917,8 @@ def render_cards(doc: dict, outdir: Path, images: "list[dict | None]") -> "list[
 
 # ---------------------------------------------------------------- diagram style (밝은 개념 다이어그램)
 # 다크 시네마틱과 별개 경로. 손그림 개념 다이어그램을 SVG로 그려 밝은 크래프트지에 얹는다.
-# 한글은 이미지 생성이 아니라 SVG 텍스트라 깨지지 않는다. v1 아키타입 = "journey"(기대 vs 현실).
+# 한글은 이미지 생성이 아니라 SVG 텍스트라 깨지지 않는다.
+# 아키타입 5종: journey(기대 vs 현실)·comparison(비교)·cycle(순환)·steps(단계)·quadrant(사분면).
 
 DIAG_BG = "#f3f0e9"       # 크래프트지 크림
 DIAG_INK = "#2b2b2b"      # 제목·직선
@@ -957,6 +959,72 @@ def _pin_svg(cx: int) -> str:
         f'C{cx+20} 346 {cx+12} 356 {cx} 356 Z" fill="{DIAG_ACCENT}"/>'
         f'<circle cx="{cx}" cy="333" r="6" fill="{DIAG_BG}"/>'
     )
+
+
+def _diag_open() -> "list[str]":
+    """모든 다이어그램 공통 시작: 캔버스 + 종이 노이즈 배경."""
+    return [
+        '<svg width="1080" height="1350" viewBox="0 0 1080 1350" xmlns="http://www.w3.org/2000/svg">',
+        '<defs><filter id="paper" x="0" y="0" width="100%" height="100%">'
+        '<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/>'
+        '<feColorMatrix in="n" type="matrix" '
+        'values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"/></filter></defs>',
+        f'<rect x="0" y="0" width="1080" height="1350" fill="{DIAG_BG}"/>',
+        '<rect x="0" y="0" width="1080" height="1350" filter="url(#paper)"/>',
+    ]
+
+
+def _diag_close(parts: "list[str]", footer: str = "") -> str:
+    """공통 마무리: 하단 핸들 푸터 + </svg>."""
+    parts.append(f'<text class="foot" x="540" y="1288" text-anchor="middle" font-size="26">'
+                 f'{esc(footer.strip() or BRAND["handle"])}</text>')
+    parts.append('</svg>')
+    return "\n".join(parts)
+
+
+def _title(text: str, y: int, size: int = 56) -> str:
+    """가운데 정렬 제목 (글자 수에 따라 폰트 축소)."""
+    return (f'<text class="title" x="540" y="{y}" text-anchor="middle" '
+            f'font-size="{_fit_font(text, size, [(11, 50), (13, 44)])}">{esc(text)}</text>')
+
+
+def _arrowhead(x: float, y: float, theta: float, color: str, size: int = 16) -> str:
+    """(x,y)에서 theta 방향을 가리키는 삼각형 화살촉."""
+    ct, st = math.cos(theta), math.sin(theta)
+    tip = (x + size * ct, y + size * st)
+    bl = (x - size * 0.5 * ct - size * 0.62 * st, y - size * 0.5 * st + size * 0.62 * ct)
+    br = (x - size * 0.5 * ct + size * 0.62 * st, y - size * 0.5 * st - size * 0.62 * ct)
+    return (f'<polygon points="{tip[0]:.1f},{tip[1]:.1f} {bl[0]:.1f},{bl[1]:.1f} '
+            f'{br[0]:.1f},{br[1]:.1f}" fill="{color}"/>')
+
+
+def _wrap_kr(text: str, maxchars: int, max_lines: int = 2) -> "list[str]":
+    """라벨을 maxchars 기준으로 최대 max_lines줄로 줄바꿈 (공백 우선, 없으면 하드 분할)."""
+    text = text.strip()
+    if len(text) <= maxchars:
+        return [text]
+    if " " in text:
+        lines, cur = [], ""
+        for w in text.split(" "):
+            if cur and len(cur) + 1 + len(w) > maxchars:
+                lines.append(cur)
+                cur = w
+            else:
+                cur = (cur + " " + w).strip()
+        if cur:
+            lines.append(cur)
+        return lines[:max_lines]
+    return [text[i:i + maxchars] for i in range(0, len(text), maxchars)][:max_lines]
+
+
+def _put_lines(parts: "list[str]", cx: float, cy: float, lines: "list[str]", fs: int,
+               fill: str, weight: int = 500, anchor: str = "middle") -> None:
+    """여러 줄 텍스트를 (cx,cy) 세로 중앙에 배치."""
+    lh = fs * 1.16
+    y0 = cy - lh * len(lines) / 2 + fs * 0.82
+    for i, ln in enumerate(lines):
+        parts.append(f'<text x="{cx:.1f}" y="{y0 + i * lh:.1f}" text-anchor="{anchor}" '
+                     f'font-size="{fs}" font-weight="{weight}" fill="{fill}">{esc(ln)}</text>')
 
 
 def render_journey_svg(card: dict, footer: str = "") -> str:
@@ -1032,36 +1100,222 @@ def render_journey_svg(card: dict, footer: str = "") -> str:
     return "\n".join(p)
 
 
+def render_comparison_svg(card: dict, footer: str = "") -> str:
+    """비교: 좌우 2패널(헤더 밴드 + 항목 목록) + 가운데 VS 배지."""
+    title = str(card.get("title") or "비교").strip()
+    left, right = card.get("left") or {}, card.get("right") or {}
+    p = _diag_open()
+    p.append(_title(title, 214))
+    pw, py, ph = 456, 322, 806
+    for px, accent, side in ((64, DIAG_LINE, left), (560, DIAG_ACCENT, right)):
+        label = str(side.get("label") or "").strip()
+        items = [str(x).strip() for x in (side.get("items") or []) if str(x).strip()][:5]
+        p.append(f'<rect x="{px}" y="{py}" width="{pw}" height="{ph}" rx="26" '
+                 f'fill="#faf8f3" stroke="#e4ddcf" stroke-width="2"/>')
+        p.append(f'<path d="M{px} {py+26} a26 26 0 0 1 26 -26 h{pw-52} a26 26 0 0 1 26 26 '
+                 f'v70 h-{pw} z" fill="{accent}"/>')
+        lf = _fit_font(label, 42, [(8, 36), (11, 30)])
+        p.append(f'<text x="{px+pw//2}" y="{py+63}" text-anchor="middle" font-size="{lf}" '
+                 f'font-weight="700" fill="#faf8f3">{esc(label)}</text>')
+        iy = py + 162
+        for it in items:
+            fsz = _fit_font(it, 30, [(12, 26), (16, 22)])
+            p.append(f'<circle cx="{px+40}" cy="{iy-9}" r="6" fill="{accent}"/>')
+            p.append(f'<text x="{px+64}" y="{iy}" text-anchor="start" font-size="{fsz}" '
+                     f'fill="#3a3a3a">{esc(it)}</text>')
+            iy += 132
+    vy = py + ph // 2
+    p.append(f'<circle cx="540" cy="{vy}" r="46" fill="{DIAG_INK}"/>')
+    p.append(f'<text x="540" y="{vy+13}" text-anchor="middle" font-size="36" '
+             f'font-weight="700" fill="{DIAG_BG}">VS</text>')
+    return _diag_close(p, footer)
+
+
+def render_cycle_svg(card: dict, footer: str = "") -> str:
+    """순환: 원둘레에 노드 배치 + 시계방향 호 화살표 루프."""
+    title = str(card.get("title") or "순환").strip()
+    nodes = [str(x).strip() for x in (card.get("nodes") or []) if str(x).strip()][:6] or ["시작"]
+    p = _diag_open()
+    p.append(_title(title, 214))
+    cx, cy, R, dr = 540, 812, 300, 76
+    n = len(nodes)
+    pos = []
+    for i in range(n):
+        ang = -math.pi / 2 + 2 * math.pi * i / n
+        pos.append((cx + R * math.cos(ang), cy + R * math.sin(ang), ang))
+    if n > 1:
+        gap = (dr + 16) / R
+        for i in range(n):
+            a1 = pos[i][2] + gap
+            a2 = pos[(i + 1) % n][2] - gap
+            x1, y1 = cx + R * math.cos(a1), cy + R * math.sin(a1)
+            x2, y2 = cx + R * math.cos(a2), cy + R * math.sin(a2)
+            p.append(f'<path d="M{x1:.1f} {y1:.1f} A{R} {R} 0 0 1 {x2:.1f} {y2:.1f}" '
+                     f'fill="none" stroke="{DIAG_LINE}" stroke-width="4"/>')
+            p.append(_arrowhead(x2, y2, a2 + math.pi / 2, DIAG_ACCENT, 17))
+    for i, (x, y, _a) in enumerate(pos):
+        p.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{dr}" fill="{DIAG_ACCENT}"/>')
+        fs = _fit_font(nodes[i], 30, [(6, 26), (9, 22)])
+        _put_lines(p, x, y, _wrap_kr(nodes[i], 5), fs, "#faf8f3", weight=600)
+    return _diag_close(p, footer)
+
+
+def render_steps_svg(card: dict, footer: str = "") -> str:
+    """단계: 번호 원 + 라벨(+설명)을 세로로 쌓고 연결선으로 잇는다."""
+    title = str(card.get("title") or "단계").strip()
+    steps = []
+    for s in (card.get("steps") or []):
+        if isinstance(s, dict) and str(s.get("label") or "").strip():
+            steps.append((str(s["label"]).strip(), str(s.get("desc") or "").strip()))
+        elif str(s).strip():
+            steps.append((str(s).strip(), ""))
+    steps = steps[:5] or [("단계", "")]
+    p = _diag_open()
+    p.append(_title(title, 214))
+    n = len(steps)
+    top, bot, nx, rr = 372, 1150, 172, 46
+    ys = [top + (bot - top) * i / (n - 1) for i in range(n)] if n > 1 else [(top + bot) / 2]
+    if n > 1:
+        p.append(f'<line x1="{nx}" y1="{ys[0]:.0f}" x2="{nx}" y2="{ys[-1]:.0f}" '
+                 f'stroke="{DIAG_LINE}" stroke-width="4"/>')
+    for i, (label, desc) in enumerate(steps):
+        y = ys[i]
+        p.append(f'<circle cx="{nx}" cy="{y:.0f}" r="{rr}" fill="{DIAG_ACCENT}"/>')
+        p.append(f'<text x="{nx}" y="{y+13:.0f}" text-anchor="middle" font-size="36" '
+                 f'font-weight="700" fill="#faf8f3">{i+1:02d}</text>')
+        lf = _fit_font(label, 42, [(10, 36), (14, 30)])
+        p.append(f'<text x="{nx+80}" y="{y+(0 if desc else 13):.0f}" text-anchor="start" '
+                 f'font-size="{lf}" font-weight="700" fill="{DIAG_INK}">{esc(label)}</text>')
+        for j, dl in enumerate(_wrap_kr(desc, 24) if desc else []):
+            p.append(f'<text x="{nx+80}" y="{y+40+j*32:.0f}" text-anchor="start" '
+                     f'font-size="26" fill="#6b6459">{esc(dl)}</text>')
+    return _diag_close(p, footer)
+
+
+def render_quadrant_svg(card: dict, footer: str = "") -> str:
+    """사분면: 십자축(양끝 화살표) + 축 라벨(low/high/축명) + 4사분면 라벨."""
+    title = str(card.get("title") or "매트릭스").strip()
+    xa, ya = card.get("x_axis") or {}, card.get("y_axis") or {}
+    quads = [str(x).strip() for x in (card.get("quadrants") or [])][:4]
+    while len(quads) < 4:
+        quads.append("")
+    p = _diag_open()
+    p.append(_title(title, 186))
+    cx, cy, half = 540, 772, 372
+    L, Rr, T, B = cx - half, cx + half, cy - half, cy + half
+    p.append(f'<line x1="{L-34}" y1="{cy}" x2="{Rr+34}" y2="{cy}" stroke="{DIAG_INK}" stroke-width="4"/>')
+    p.append(f'<line x1="{cx}" y1="{T-34}" x2="{cx}" y2="{B+34}" stroke="{DIAG_INK}" stroke-width="4"/>')
+    p.append(_arrowhead(Rr + 34, cy, 0, DIAG_INK, 18))
+    p.append(_arrowhead(cx, T - 34, -math.pi / 2, DIAG_INK, 18))
+    centers = [(cx - half / 2, cy - half / 2), (cx + half / 2, cy - half / 2),
+               (cx - half / 2, cy + half / 2), (cx + half / 2, cy + half / 2)]
+    for (qx, qy), text in zip(centers, quads):
+        if text:
+            _put_lines(p, qx, qy, _wrap_kr(text, 7), _fit_font(text, 34, [(8, 29), (11, 25)]),
+                       DIAG_INK, weight=700)
+
+    def _lab(x, y, t, anchor="middle", fill="#6b6459", fs=25):
+        if t is not None and str(t).strip():
+            p.append(f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-size="{fs}" '
+                     f'fill="{fill}">{esc(str(t).strip())}</text>')
+
+    _lab(L - 34, cy - 18, xa.get("low"), "start")
+    _lab(Rr + 34, cy - 18, xa.get("high"), "end")
+    _lab(cx + 20, T - 12, ya.get("high"), "start")
+    _lab(cx + 20, B + 34, ya.get("low"), "start")
+    _lab(cx, B + 92, xa.get("label"), "middle", DIAG_ACCENT, 28)
+    _lab(cx, T - 74, ya.get("label"), "middle", DIAG_ACCENT, 28)
+    return _diag_close(p, footer)
+
+
+def render_diagram_svg(card: dict, footer: str = "") -> str:
+    """archetype에 따라 알맞은 렌더러로 라우팅한다 (미지값은 journey 폴백)."""
+    arch = (card.get("archetype") or "journey").strip().lower()
+    return {
+        "comparison": render_comparison_svg,
+        "cycle": render_cycle_svg,
+        "steps": render_steps_svg,
+        "quadrant": render_quadrant_svg,
+    }.get(arch, render_journey_svg)(card, footer)
+
+
+_QUOTES = str.maketrans("", "", "\"'“”‘’")
+
+
+def _clean(s) -> str:
+    return str(s or "").translate(_QUOTES).strip().rstrip(":：. ")
+
+
+def _clean_list(xs) -> "list[str]":
+    return [_clean(x) for x in (xs or []) if _clean(x)]
+
+
 def normalize_diagram_cards(cards: "list") -> "list[dict]":
-    """따옴표·콜론·마침표 제거, 노드 8개로 클램프, 필드 보강."""
-    quotes = str.maketrans("", "", "\"'“”‘’")
+    """아키타입별로 따옴표·콜론·마침표 제거 + 개수 클램프 + 필드 보강."""
     out: "list[dict]" = []
     for c in cards:
         if not isinstance(c, dict):
             continue
         c = dict(c)
-        for k in ("ideal_title", "reality_title", "start", "end"):
-            c[k] = str(c.get(k) or "").translate(quotes).strip().rstrip(":：. ")
-        nodes = [str(x).translate(quotes).strip().rstrip(":：. ") for x in (c.get("nodes") or [])]
-        c["nodes"] = [x for x in nodes if x][:8]
-        c.setdefault("archetype", "journey")
+        arch = (c.get("archetype") or "journey").strip().lower()
+        c["archetype"] = arch
+        if arch == "comparison":
+            c["title"] = _clean(c.get("title"))
+            for side in ("left", "right"):
+                s = c.get(side) or {}
+                c[side] = {"label": _clean(s.get("label")), "items": _clean_list(s.get("items"))[:5]}
+        elif arch == "cycle":
+            c["title"] = _clean(c.get("title"))
+            c["nodes"] = _clean_list(c.get("nodes"))[:6]
+        elif arch == "steps":
+            c["title"] = _clean(c.get("title"))
+            steps = []
+            for s in (c.get("steps") or []):
+                if isinstance(s, dict):
+                    lb = _clean(s.get("label"))
+                    if lb:
+                        steps.append({"label": lb, "desc": _clean(s.get("desc"))})
+                elif _clean(s):
+                    steps.append({"label": _clean(s), "desc": ""})
+            c["steps"] = steps[:5]
+        elif arch == "quadrant":
+            c["title"] = _clean(c.get("title"))
+            for ax in ("x_axis", "y_axis"):
+                a = c.get(ax) or {}
+                c[ax] = {"label": _clean(a.get("label")), "low": _clean(a.get("low")),
+                         "high": _clean(a.get("high"))}
+            c["quadrants"] = _clean_list(c.get("quadrants"))[:4]
+        else:  # journey (기본/폴백)
+            c["archetype"] = "journey"
+            for k in ("ideal_title", "reality_title", "start", "end"):
+                c[k] = _clean(c.get(k))
+            c["nodes"] = _clean_list(c.get("nodes"))[:8]
         out.append(c)
     return out
 
 
 def validate_diagram(cards: "list[dict]") -> "list[str]":
-    """스펙 경고 목록 (렌더는 계속되되 수동 확인용)."""
+    """아키타입별 필수 필드 경고 (렌더는 계속되되 수동 확인용)."""
     warns: "list[str]" = []
     for i, c in enumerate(cards):
-        nd = c.get("nodes") or []
-        if len(nd) < 4:
-            warns.append(f"카드 {i+1}: 중간 노드 {len(nd)}개 (6~8개 권장)")
-        for k in ("ideal_title", "reality_title", "start", "end"):
-            if not c.get(k):
-                warns.append(f"카드 {i+1}: {k} 비어 있음(기본값으로 대체됨)")
-        for lab in [c.get("start", ""), c.get("end", "")] + list(nd):
-            if len(lab) > 9:
-                warns.append(f"카드 {i+1}: 라벨 '{lab}' {len(lab)}자 — 7자 이내 권장(폰트 자동 축소)")
+        a = c.get("archetype")
+        tag = f"카드 {i+1}({a})"
+        if a == "comparison":
+            for side in ("left", "right"):
+                if len((c.get(side) or {}).get("items") or []) < 2:
+                    warns.append(f"{tag}: {side} 항목 2개 미만")
+        elif a == "cycle":
+            if len(c.get("nodes") or []) < 3:
+                warns.append(f"{tag}: 순환 노드 3개 미만")
+        elif a == "steps":
+            if len(c.get("steps") or []) < 2:
+                warns.append(f"{tag}: 단계 2개 미만")
+        elif a == "quadrant":
+            if len([q for q in (c.get("quadrants") or []) if q]) < 4:
+                warns.append(f"{tag}: 사분면 라벨 4개 미만")
+        else:  # journey
+            if len(c.get("nodes") or []) < 4:
+                warns.append(f"{tag}: 중간 노드 {len(c.get('nodes') or [])}개 (6~8개 권장)")
     return warns
 
 
@@ -1077,7 +1331,7 @@ def render_diagram_cards(doc: dict, outdir: Path) -> "list[Path]":
         sys.exit(1)
     pngs: "list[Path]" = []
     for i, card in enumerate(doc.get("cards", [])):
-        svg = render_journey_svg(card)
+        svg = render_diagram_svg(card)
         html = template.replace("{{FONT_FACES}}", font_css).replace("{{SVG}}", svg)
         hp = render_dir / f"card-{i+1:02d}.html"
         hp.write_text(html, encoding="utf-8")
@@ -1113,7 +1367,12 @@ def run_diagram(args, today) -> None:
         print(f"[INFO] 제목: {title[:60]}")
 
     tmpl = (SCRIPT_DIR / "cardnews_diagram_prompt_template.txt").read_text(encoding="utf-8")
-    prompt = (tmpl.replace("{TITLE}", title)
+    forced = getattr(args, "archetype", "auto")
+    directive = ("내용에 가장 잘 맞는 아키타입 하나를 스스로 고른다."
+                 if forced in (None, "auto")
+                 else f'반드시 archetype="{forced}" 를 사용해 그 스펙만 출력한다.')
+    prompt = (tmpl.replace("{ARCHETYPE_DIRECTIVE}", directive)
+                  .replace("{TITLE}", title)
                   .replace("{SOURCE_NAME}", src_name)
                   .replace("{CONTENT}", content[:45000]))
     print(f"[INFO] Gemini 다이어그램 스펙 생성 중 ({args.model})...")
@@ -1130,7 +1389,8 @@ def run_diagram(args, today) -> None:
     doc["source_label"] = re.sub(r"^\s*출처\s*[:：]\s*", "", label)
     for w in validate_diagram(cards):
         print(f"[WARN] {w}")
-    print(f"[INFO] 다이어그램 카드 {len(cards)}장 스펙 확보 (archetype=journey)")
+    print(f"[INFO] 다이어그램 카드 {len(cards)}장 스펙 확보 "
+          f"(archetype={', '.join(c.get('archetype', '?') for c in cards)})")
 
     if args.dry_run:
         print(json.dumps(doc, ensure_ascii=False, indent=2))
@@ -1211,6 +1471,10 @@ def main() -> None:
                     help="cinematic(기본 다크 사진 카드) 또는 diagram(밝은 개념 다이어그램)")
     ap.add_argument("--topic", default=None,
                     help="diagram 모드에서 URL/PDF 대신 개념·주제를 직접 입력")
+    ap.add_argument("--archetype",
+                    choices=["auto", "journey", "comparison", "cycle", "steps", "quadrant"],
+                    default="auto",
+                    help="diagram 아키타입 (auto=LLM이 내용에 맞게 선택, 기본)")
     args = ap.parse_args()
 
     if args.rerender:
