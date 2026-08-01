@@ -395,7 +395,7 @@ py -X utf8 scripts/cardnews.py <입력> --keep-images --out <기존폴더>  # �
 - **이미지 (원자료 캡처 → 생성 → 검색 3단)**: ① YouTube 실프레임(암전 프레임 회피 문턱 mean 9·std 7 — 22로 잡으면 검은 배경 강의가 6장 중 5장 탈락. 푸터에 실측 `화면 MM:SS`) / 기사 본문 이미지·og:image(썸네일 URL을 `_upsize`로 원본 승급 — 위키 220px→1280px, 안 하면 0장) / 논문은 **"Figure N" 캡션 위 영역을 페이지째 렌더**(`get_images()` 래스터 추출은 벡터 도해를 놓치고 부록 프롬프트 스크린샷을 1순위로 끌어옴 — 실측 후 교체, `p.N` 표기) ② `gemini-2.5-flash-image` 생성(16:9는 `generationConfig.imageConfig`, 다크 시네마틱 톤) ③ DDG 검색 ④ 인용 패널. 카드↔이미지는 **멀티모달이 후보 이미지를 직접 보고 배정**(실패 시 순서대로)
 - **표시 방식 3종**: 흰 바탕 도표(`_is_paper` — 가장자리 흰색 75% 판정)는 종이 패널 `contain`, 세로로 긴 사진은 어두운 박스 `fit`, 나머지는 `cover`. `cards.json`의 `images[]`가 `{path, fit, note}`라 `--rerender`가 그대로 복원한다
 - **추출 재사용**: web_to_post `fetch_content` / yt_to_post 자막 체인 import. 본문 200자 미만이면 생성 중단(환각 방지). arXiv `abs` URL은 `pdf`로 자동 치환, 출처의 arXiv ID는 **추출된 값만** 사용(첫 8000자 검색 — 세로 스탬프라 앞 120줄만 보면 놓침)
-- **후처리 QA**: cards.json 사실성 대조·이미지 육안 확인 필수 (`.claude/commands/cardnews.md` 체크리스트)
+- **후처리 QA**: cards.json 사실성 대조·이미지 육안 확인 필수 (`.claude/commands/cardnews.md` 체크리스트). **논문 출처(source_label)는 저자·연도·제목을 원문에서 verbatim 확인 — 요약·의역해 짧은 제목 지어내기 금지, arXiv/DOI는 추출값만**(hook-image 스킬과 동일 환각방지 원칙, 2026-08-01)
 
 ## 후킹 이미지 카드 (`/hook`, 2026-07-31)
 
