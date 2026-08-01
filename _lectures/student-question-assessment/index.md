@@ -28,7 +28,7 @@ header:
 
 ## 자료 내려받기
 
-| 편 | 제목 | 분량 | PDF |
+| 편 | 제목 | 분량 | 자료 |
 |----|------|------|-----|
 | 1 | 질문 중심 수업 평가의 의미와 필요성 | 35장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-01.pdf){:target="_blank"} |
 | 2 | 학생 질문 역량 함양을 위한 교육 내용과 방법 1 | 18장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-02.pdf){:target="_blank"} |
@@ -41,11 +41,11 @@ header:
 | 9 | 서·논술형 평가 설계의 원리 | 27장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-09.pdf){:target="_blank"} |
 | 10 | 서·논술형 평가 문항의 유형과 특징 | 30장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-10.pdf){:target="_blank"} |
 | 11 | 11차시 실시간 원격 연수 · 교사의 질문 능력 계발(1) | 59장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-11.pdf){:target="_blank"} |
-| 12 | 14~15차시 실시간 원격 연수 · 교사의 질문 능력 계발(2) | 28장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-12.pdf){:target="_blank"} |
+| 12 | 14~15차시 실시간 원격 연수 · 교사의 질문 능력 계발(2) | 28장 | [PDF](/assets/lectures/student-question-assessment/pdf/session-12.pdf){:target="_blank"} · [실습1 활동지 hwp](/assets/lectures/student-question-assessment/pdf/worksheet-14.hwp){:target="_blank"} · [실습2 활동지 hwp](/assets/lectures/student-question-assessment/pdf/worksheet-15.hwp){:target="_blank"} |
 | 13 | 16~17차시 실시간 원격 연수 · 학생 질문 역량 함양의 기초, QFT 이해와 적용 | 29장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-13.pdf){:target="_blank"} |
-| 14 | 18차시 실시간 원격 연수 · 학생 질문 역량 함양의 기초 실습 (+ 16~18차시 미술 사례) | 10장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-14.pdf){:target="_blank"} |
+| 14 | 18차시 실시간 원격 연수 · 학생 질문 역량 함양의 기초 실습 (+ 16~18차시 미술 사례) | 10장 | [18차시 PDF](/assets/lectures/student-question-assessment/pdf/session-14.pdf){:target="_blank"} · [미술 사례 PDF (참고자료 13장)](/assets/lectures/student-question-assessment/pdf/art-case.pdf){:target="_blank"} |
 
-11~14편은 실제 화상연수 진행 슬라이드라 소회의실 안내 등 진행용 화면도 그대로 섞여 있다. 편마다 진행 흐름을 풀어 쓴 요약과 함께 원본 슬라이드 전체를 갤러리로도 실었다.
+11~14편은 실제 화상연수 진행 슬라이드라 소회의실 안내 등 진행용 화면도 그대로 섞여 있다. 편마다 진행 흐름을 풀어 쓴 요약과 함께 원본 슬라이드 전체를 갤러리로도 실었다. 편 번호는 자료를 정리한 순서이고 차시는 원 연수 일정이라, 이 묶음에 원 프로그램의 12~13차시분이 포함되지 않아 11편(11차시) 다음이 12편(14~15차시)으로 이어진다.
 
 슬라이드는 각 편의 갤러리에서 바로 볼 수 있다. 이미지를 누르면 확대되고, 좌우 화살표나 키보드로 넘긴다.
 
