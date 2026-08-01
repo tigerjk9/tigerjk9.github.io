@@ -13,7 +13,7 @@ header:
   og_image: /assets/lectures/student-question-assessment/cover.jpg
 ---
 
-교육부와 경상북도교육청이 펴낸 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 전체를 한 곳에 정리했다. 학생 질문이 왜 배움의 출발점인지에서 시작해, 질문 교육의 내용 체계와 수업 모형, 교과 적용 사례, 학교 문화 조성, 서·논술형 평가까지 열 편이 하나의 흐름으로 이어진다. 슬라이드 249장 전체를 편별로 넘겨볼 수 있고, 편별 PDF도 내려받을 수 있다.
+교육부와 경상북도교육청이 펴낸 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 전체를 한 곳에 정리했다. 학생 질문이 왜 배움의 출발점인지에서 시작해, 질문 교육의 내용 체계와 수업 모형, 교과 적용 사례, 학교 문화 조성, 서·논술형 평가까지 다루는 1~10편(콘텐츠 연수)에 이어, 교사가 직접 질문을 만들고 다듬어 보는 11~14편(실시간 원격 연수)까지 열네 편이 하나의 흐름으로 이어진다. 슬라이드 262장 전체를 편별로 넘겨볼 수 있고, 편별 PDF와 실습 활동지도 내려받을 수 있다.
 
 ## 자료 개요
 
@@ -23,8 +23,8 @@ header:
 | 원작 | 교육부 · 경상북도교육청 |
 | 큐레이션 | 김진관 (닷커넥터) |
 | 대상 | 초등 교사 및 교육 관계자 |
-| 분량 | 10편 · 슬라이드 249장 |
-| 핵심 프레임워크 | 학생 질문 교육 내용 체계(정혜승 외, 2024) · QFT(질문형성기법) · 질문 성찰형 모형 · 질문 중심 교과 학습 모형 · AI 활용 질문 중심 문제 해결 모형 · 서·논술형 평가 |
+| 분량 | 14편 · 슬라이드 262장 (1~10편 콘텐츠 연수, 11~14편 실시간 원격 연수) |
+| 핵심 프레임워크 | 학생 질문 교육 내용 체계(정혜승 외, 2024) · QFT(질문형성기법) · 질문 생성 유창성(Fluency) · 메타 질문(Wiggins & McTighe, 2011) · Q-Matrix · 질문 성찰형 모형 · 질문 중심 교과 학습 모형 · AI 활용 질문 중심 문제 해결 모형 · 서·논술형 평가 |
 
 ## 자료 내려받기
 
@@ -40,6 +40,12 @@ header:
 | 8 | 서·논술형 평가의 이해 | 27장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-08.pdf){:target="_blank"} |
 | 9 | 서·논술형 평가 설계의 원리 | 27장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-09.pdf){:target="_blank"} |
 | 10 | 서·논술형 평가 문항의 유형과 특징 | 30장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-10.pdf){:target="_blank"} |
+| 11 | 실시간 원격 연수 — 교사의 질문 능력 계발(1) | 59장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-11.pdf){:target="_blank"} |
+| 12 | 실시간 원격 연수 — 교사의 질문 능력 계발(2) | 28장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-12.pdf){:target="_blank"} |
+| 13 | 실시간 원격 연수 — 학생 질문 역량 함양의 기초 (QFT 이해와 적용) | 29장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-13.pdf){:target="_blank"} |
+| 14 | 실시간 원격 연수 — 학생 질문 역량 함양의 기초 (실습과 미술 사례) | 10장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-14.pdf){:target="_blank"} |
+
+11~14편은 실제 화상연수 진행 슬라이드라 소회의실 안내 등 진행용 화면이 섞여 있어, 아래에서는 슬라이드 갤러리 대신 진행 흐름을 풀어 쓴 요약으로 소개한다. 다만 5학년 미술 QFT 적용 사례(14편)는 내용이 알차 슬라이드 갤러리로도 함께 실었다.
 
 슬라이드는 아래 갤러리에서 바로 볼 수 있다. 이미지를 누르면 확대되고, 좌우 화살표나 키보드로 넘긴다.
 
@@ -382,11 +388,59 @@ AI 활용 질문 중심 문제 해결 모형을 소개한다. 문제 발견하�
 <img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p249.jpg" alt="슬라이드 249">
 </div>
 
+## 11편. 실시간 원격 연수 — 교사의 질문 능력 계발(1)
+
+1~10편이 비대면으로 스스로 학습하는 콘텐츠 연수였다면, 11편부터는 Zoom으로 진행된 실시간 원격 연수다. 학생에게 질문을 가르치기 전에 교사 자신이 먼저 질문을 만들어 보는 시간으로, "오늘 나의 마음 날씨는 어떤가요"라는 부드러운 질문으로 문을 연다. 참가 교사들이 Zoom 주석 기능으로 각자의 마음 상태를 날씨 아이콘에 표시하고, 이어 앞선 콘텐츠 연수에서 익힌 질문중심수업 용어를 다시 짚어보며 몸을 푼다.
+
+본론은 질문 생성 유창성(Fluency) — 형식과 수준에 얽매이지 않고 다양한 질문을 막힘없이 산출하는 힘이다. QFT의 질문 생성 규칙(가능한 많이 묻기·판단 미루기·그대로 기록하기·문장을 질문으로 바꾸기)을 교사가 먼저 자기 것으로 만들어야 학생 앞에서 질문 생성의 모델이 될 수 있다는 논리다. 이 원리를 네 개의 실습으로 체화한다. 실습1은 제시된 키워드(스마트폰 과의존과 교실 속 문해력 위기)를 보고 5분간 최대한 많은 질문을 쏟아내는 개별 활동, 실습2는 같은 주제를 수렴적 질문과 확산적 질문으로 구분해 다시 만들어보는 활동, 실습3은 도시재생사업 사례를 정량 데이터·정성 데이터·실제 맥락 세 단계 자료로 나눠 단계마다 다른 결의 질문을 끌어내는 활동, 실습4는 같은 사안을 여러 이해관계자의 관점으로 바꿔가며 질문해보는 활동이다. 매 실습 뒤에는 모둠에서 생성한 질문을 공유하고, 마지막에는 통합 성찰과 질의응답으로 마무리한다.
+
+**[11편 슬라이드 PDF 내려받기 (59장)](/assets/lectures/student-question-assessment/pdf/session-11.pdf){:target="_blank"}**
+
+## 12편. 실시간 원격 연수 — 교사의 질문 능력 계발(2)
+
+14~15차시는 11편에서 쏟아낸 질문을 다듬는 시간이다. 많이 만드는 것(생성)에서 잘 만드는 것(정교화)으로 넘어가는 지점으로, 핵심 도구는 메타 질문(Wiggins & McTighe, 2011) — "질문에 대한 질문"이다. "이 질문은 가치 있는가?", "이 질문에 답하기 전에 먼저 답해야 할 질문은 무엇인가?", "이 질문의 답은 어디서 찾을 것인가?" 같은 상위 질문으로 자신의 질문을 스스로 평가하고 모니터링하게 한다. 정교화 방법은 넷으로 정리된다. ①메타 질문 이해하기 ②메타 질문으로 질문 평가하기 ③질문 초점화하기 ④질문 유형 바꾸기(수렴↔확산 전환)다.
+
+실습1은 앞 차시(11편)에서 만든 질문들을 놓고, 메타 질문과 질문 초점(미디어 과의존과 교실 속 문해력 위기)을 함께 고려해 중요도 1순위부터 6순위까지 줄을 세우는 활동이다. 실습2는 일회용 플라스틱 사용 증가와 환경오염을 다룬 읽기 자료를 주고, 이 자료로 수업한다면 목적이 무엇일지 생각해 질문 초점을 스스로 문장으로 써본 뒤, 수렴적 질문과 확산적 질문을 각 하나씩 만들고 서로 맞바꿔 보는 활동이다. 개별실습 후에는 소회의실에서 모둠원과 발표·피드백을 주고받고, 최종적으로 우선순위 질문 하나를 확정한다. 두 실습 모두 "나의 질문 만들기 과정을 통해 학생 질문 만들기 과정을 이해하고 돕는다"는 목적을 공유한다 — 교사가 학생 입장을 먼저 체험해 보는 구조다.
+
+**[12편 슬라이드 PDF 내려받기 (28장)](/assets/lectures/student-question-assessment/pdf/session-12.pdf){:target="_blank"}** · **[실습1 활동지 내려받기 (hwp)](/assets/lectures/student-question-assessment/pdf/worksheet-14.hwp){:target="_blank"}** · **[실습2 활동지 내려받기 (hwp)](/assets/lectures/student-question-assessment/pdf/worksheet-15.hwp){:target="_blank"}**
+
+## 13편. 실시간 원격 연수 — 학생 질문 역량 함양의 기초 (QFT 이해와 적용)
+
+11~12편이 교사 자신의 질문 만들기 연습이었다면, 16~17차시부터는 학생 질문 역량 함양이라는 본래 목적으로 초점이 옮겨간다. 중심 도구는 미국 바른질문연구소(Right Question Institute)의 Dan Rothstein와 Luz Santana가 개발한 질문형성기법(QFT)이다. 질문 초점 제시 → 질문 생성하기 → 질문 개선하기 → 질문 우선순위 → 질문 활용·성찰의 5단계 순환 구조를 다시 한 번 짚되, 이번에는 학생에게 실제로 적용하는 절차로 설명한다.
+
+16차시는 단계별 원리를 상세히 푼다. 좋은 질문 초점의 조건(성취기준과 연관될 것, 교사의 선호나 성향을 드러내지 않을 것, 확산적 사고를 자극할 것, 질문 형태가 아닐 것)을 4학년 사회 "경제활동과 지역 간 교류" 교과서 자료로 확인하고, 질문 생성 단계에서 학생이 평가받는다는 두려움 없이 질문할 수 있는 심리적 안전감의 조건, 질문 개선 단계의 수렴·확산 전환, 우선순위 단계에서 학습 목적(탐구·실험/토의·토론/개념 학습)에 따라 달라지는 선정 기준까지 다룬다. 17차시는 이 절차를 실제 수업 사례로 확인한다. 도안초(교육부 질문하는 학교 선도학교, 2024~2026년)의 4학년 사회 수업을 예로 질문 초점 체크리스트, 학생이 실제로 만든 질문, 교사가 건네는 피드백 대화("이 질문은 나의 만족이 선택의 기준이 될 수 있는지 생각하게 하네요. 가격 외에 어떤 기준을 함께 생각하면 좋을까요?")까지 구체적으로 보여준다. 5학년 미술 "작품을 보고 읽는 재미" 사례도 이 편 말미에 예고되는데, 상세한 진행 과정은 이어지는 14편에서 별도로 다룬다.
+
+**[13편 슬라이드 PDF 내려받기 (29장)](/assets/lectures/student-question-assessment/pdf/session-13.pdf){:target="_blank"}**
+
+## 14편. 실시간 원격 연수 — 학생 질문 역량 함양의 기초 (실습과 미술 사례)
+
+마지막 편은 두 갈래로 구성된다. 하나는 18차시 실습이다. 교사가 이번에는 학생 입장이 되어 6학년 1학기 4단원 "지구의 운동"을 소재로 QFT 전 과정을 직접 체험한다. 제시된 질문 초점을 확인하고, 가능한 많은 질문을 만들고("진술문은 질문으로", "평가하거나 답하지 않고 그대로 기록"), 그중 3개를 골라 수렴·확산 질문으로 분류·전환하고, 마지막으로 탐구 가치가 높다고 판단한 질문 1개를 우선순위로 선정한다. 개별 실습 30분 뒤에는 인상 깊었던 동료 교사의 질문 하나를 채팅창에 나누는 것으로 마무리한다.
+
+다른 하나는 5학년 미술 "작품을 보고 읽는 재미"(천재 미술, 안금희) 단원에 QFT를 적용한 상세 사례다. See-Think-Wonder 활동으로 질문 초점을 제시하는데, 모둠마다 게르니카·우는 여인(피카소), 바스키아, 키스 해링 등 현대미술 작품을 하나씩 배정받아 본 것(See)과 생각한 것(Think)을 먼저 기록한 뒤 궁금한 것(Wonder)을 질문으로 적는다. 학생들이 실제로 쓴 손글씨 활동지 — "손수건을 왜 물고 있는 걸까?", "왜 미술가는 전쟁의 아픔을 표현했을까?" — 가 그대로 실려 있어 질문이 형성되는 과정을 생생하게 보여준다. 질문 개선·우선순위 단계에서는 질문을 형식(표현 방법)에 관한 것과 내용(미술가의 생각과 의도)에 관한 것으로 분류한 뒤, Weiderhold의 질문 매트릭스에서 착안한 Q-Matrix(동사×What·Why·How)로 직관적인 질문을 확장해 "미술가는 자신의 가치관을 어떤 방법으로 표현할까?" 같은 포괄적 탐구 질문으로 정교화한다. 실제 학생 활동지는 1층(Pre-See~Think 해석)부터 5층(우리 반 최종 탐구 질문)까지 다섯 단계를 거치며 질문이 점점 깊어지는 과정을 보여준다. 마지막 질문 활용·성찰 단계에서는 Padlet에 개인별 탐구 계획서와 비평문을 올린다 — 칸딘스키, 앤디 워홀, 빈센트 반 고흐, 폴 세잔, 클로드 모네, 조르주 쇠라 등 각자 고른 작가를 조사해 가치관을 작품에 표현하는 방식을 탐구하고, 르네 마그리트·달리·키스 해링의 작품을 놓고 비평문을 쓴 예시도 실려 있다.
+
+<div class="slide-gallery">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p250.jpg" alt="슬라이드 250">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p251.jpg" alt="슬라이드 251">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p252.jpg" alt="슬라이드 252">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p253.jpg" alt="슬라이드 253">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p254.jpg" alt="슬라이드 254">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p255.jpg" alt="슬라이드 255">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p256.jpg" alt="슬라이드 256">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p257.jpg" alt="슬라이드 257">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p258.jpg" alt="슬라이드 258">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p259.jpg" alt="슬라이드 259">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p260.jpg" alt="슬라이드 260">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p261.jpg" alt="슬라이드 261">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p262.jpg" alt="슬라이드 262">
+</div>
+
+**[18차시 슬라이드 PDF 내려받기 (10장)](/assets/lectures/student-question-assessment/pdf/session-14.pdf){:target="_blank"}** · **[미술 사례 상세 PDF 내려받기 (13장)](/assets/lectures/student-question-assessment/pdf/art-case.pdf){:target="_blank"}**
+
 ## 참고와 출처
 
-- 원작: 교육부 · 경상북도교육청, 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 (10편)
+- 원작: 교육부 · 경상북도교육청, 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 (1~10편 콘텐츠 연수, 11~14편 실시간 원격 연수)
 - 큐레이션: 김진관 (닷커넥터) — 원본 슬라이드 전체 수록, 편별 요약 정리
-- 자료 내 주요 근거 문헌: 정혜승 외(2024) 학생 질문 교육 내용 체계 · Rothstein & Santana(2011) 질문형성기법 · Stokhof et al.(2017) 질문 모델링 · 「질문하는 학교」 선도학교 연구·지원센터(2024·2025·2026, 교육부·이화여자대학교) 질문 중심 수업 모델 · 김경희(2020·2021), 박혜경 외(2019) 서·논술형 평가 · 교육부(2018) 국어과 학생 질문 능력 계발
+- 자료 내 주요 근거 문헌: 정혜승 외(2024) 학생 질문 교육 내용 체계 · Rothstein & Santana(2011) 질문형성기법(QFT) · Wiggins & McTighe(2011) 메타 질문 · Weiderhold 질문 매트릭스(Q-Matrix) · Stokhof et al.(2017) 질문 모델링 · 「질문하는 학교」 선도학교 연구·지원센터(2024·2025·2026, 교육부·이화여자대학교) 질문 중심 수업 모델 · 도안초(교육부 질문하는 학교 선도학교, 2024~2026년) 수업 적용 사례 · 김경희(2020·2021), 박혜경 외(2019) 서·논술형 평가 · 교육부(2018) 국어과 학생 질문 능력 계발
 
 <script>
 (function(){
