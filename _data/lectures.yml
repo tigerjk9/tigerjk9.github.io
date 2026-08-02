@@ -1,3 +1,20 @@
+- slug: ai-image-video-prompting-guide
+  title: "AI 이미지·영상 생성 프롬프팅 가이드"
+  subtitle: "모델 선택 · 프롬프트 구조 · 이미지/비디오 · 샷 디렉팅 · 치트시트"
+  audience: "단체·활동가·콘텐츠 제작자 (이미지·영상 생성 AI 이용자)"
+  date: "2026-08-02"
+  hub_url: /lectures/ai-image-video-prompting-guide/
+  thumbnail: /assets/lectures/ai-image-video-prompting-guide/cover.jpg
+  author: "The Prompting Handbook (Magnific Studios) · 김용성 『챗GPT 이미지 만들기 1600제』"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "이미지·영상 생성 AI 실무 프롬프팅 원리를 단체·활동가가 젬/GPTs로 재사용하도록 정리한 큐레이션"
+  tags:
+    - AI이미지
+    - AI영상
+    - 프롬프트엔지니어링
+    - 생성형AI
+    - 콘텐츠제작
+
 - slug: literacy-reading-muscle
   title: "디지털 시대, 우리 아이들의 읽기근육을 키우는 문해력 수업"
   subtitle: "문해력 위기 · 아날로그 정독 · AI 튜터 러니 · 4대영역 · 86장"
