@@ -1,5 +1,5 @@
 ---
-title: "AI 신뢰가 비판적 사고를 잠식하는가: 지식 노동자 936건 사용 사례 분석"
+title: "AI 신뢰가 비판적 사고를 잠식하는가? 지식 노동자 936건 사용 사례 분석"
 slug: "ai-trust-critical-thinking"
 date: 2026-07-09 10:56:45 +0900
 categories: [AI, 교육, HCI]

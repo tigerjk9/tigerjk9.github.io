@@ -627,9 +627,10 @@ def normalize_question_title(markdown_content: str) -> str:
     - 제목에 이미 '?'가 있으면(중간·끝 어디든) 건드리지 않는다.
     - 강한 의문 종결어미(까·는가·인가·냐 등)로 '끝나는' 경우에만 붙인다.
     - 닫는 따옴표 뒤 인용 의문구('…인가')는 종결이 아니므로 자연히 제외된다.
-    - 'A — 부제'(em/en 대시) 형태는 앞 절이 의문이면 '?'를 대시 앞에 넣는다.
-    본질적으로 애매한 케이스(『책제목』 내부 의문, ': 부제', 認可·閑暇 같은
-    동형 명사, '…하나')는 자동 처리하지 않으므로 생성 후 QA 점검은 유지한다.
+    - 'A — 부제'(em/en 대시)·'A: 부제'(콜론) 형태는 앞 절이 의문이면 '?'를 붙인다
+      (대시는 대시 앞에, 콜론은 제거하고 'A? 부제'로 — '?:' 표기 회피).
+    본질적으로 애매한 케이스(『책제목』 내부 의문, 認可·閑暇 같은 동형 명사,
+    '…하나' 종결)는 자동 처리하지 않으므로 생성 후 QA 점검은 유지한다.
     """
     m = re.search(r"(?m)^(title:[ \t]*)(.*)$", markdown_content)
     if not m:
@@ -646,11 +647,15 @@ def normalize_question_title(markdown_content: str) -> str:
     s = inner.rstrip()
 
     new_inner = None
-    sub = re.match(r"^(.*?)(\s+[—–]\s+.*)$", s)  # 'A — 부제'
-    if sub and _clause_is_question(sub.group(1)):
-        new_inner = sub.group(1).rstrip() + "?" + sub.group(2)
-    elif _clause_is_question(s):
-        new_inner = s + "?"
+    dash = re.match(r"^(.*?)(\s+[—–]\s+.*)$", s)   # 'A — 부제' (em/en 대시)
+    colon = re.match(r"^(.*?):\s+(.*)$", s)         # 'A: 부제' (콜론 부제)
+    if _clause_is_question(s):
+        new_inner = s + "?"                          # 의문형으로 끝남 → 맨 끝
+    elif dash and _clause_is_question(dash.group(1)):
+        new_inner = dash.group(1).rstrip() + "?" + dash.group(2)
+    elif colon and _clause_is_question(colon.group(1)):
+        # 'A: 부제'의 앞 절이 의문 → 콜론 제거 후 'A? 부제' ('?:' 회피)
+        new_inner = colon.group(1).rstrip() + "? " + colon.group(2)
     if new_inner is None or new_inner == inner:
         return markdown_content
 
