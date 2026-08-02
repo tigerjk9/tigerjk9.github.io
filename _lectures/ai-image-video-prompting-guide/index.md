@@ -2,6 +2,8 @@
 title: "AI 이미지·영상 생성 프롬프팅 가이드"
 layout: lecture
 permalink: /lectures/ai-image-video-prompting-guide/
+sitemap: false
+noindex: true
 date: 2026-08-02
 author_profile: false
 toc: true
@@ -12,6 +14,14 @@ header:
 ---
 
 이미지·영상 생성 AI를 쓰는 사람이라면 누구나 부딪히는 실무 프롬프팅 원리를 한자리에 정리한 아카이브다. 모델을 고르는 기준부터 프롬프트를 문장으로 짜는 법, AI 티를 걷어내는 방법, 영상의 샷을 감독처럼 지시하는 법까지 담았다. 개인 창작자보다 단체와 활동가에게 더 요긴하다. 블로그에 올릴 이미지, 워크숍 자료, 행사 홍보물을 직접 만들어야 하는 조직에게 이 원리는 손에 익혀 두면 반복해서 쓰는 적정기술이 된다. 한 번 익힌 뒤 제미나이 젬(Gem)이나 GPTs로 만들어 두면, 디자이너 없이도 일정한 품질의 결과물을 계속 뽑아낼 수 있다.
+
+## 자료 내려받기
+
+아래 자료는 비밀번호로 보호된 페이지에서 개인 학습·단체 활동 참고용으로 제공한다. 원문 저작권은 각 원저작자에게 있으므로 무단 재배포는 삼간다.
+
+<div class="gyoan-actions">
+  <a class="gyoan-btn gyoan-btn--download" href="https://drive.google.com/uc?export=download&amp;id=1VMfI9B88xQTAyA-AwfaqrQUiAUJXwvqK" target="_blank" rel="noopener"><i class="fas fa-download" aria-hidden="true"></i> AI 이미지·영상 프롬프팅 가이드 <span class="gyoan-btn__meta">PDF · 요약 정리본</span></a>
+</div>
 
 ## 이 자료를 쓰는 법
 

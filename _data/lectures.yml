@@ -4,7 +4,9 @@
   audience: "단체·활동가·콘텐츠 제작자 (이미지·영상 생성 AI 이용자)"
   date: "2026-08-02"
   hub_url: /lectures/ai-image-video-prompting-guide/
-  thumbnail: /assets/lectures/ai-image-video-prompting-guide/cover.jpg
+  locked: true
+  locked_payload: "AnTe4iI1H8fZMEB87iH1cwjoOAka8pX09KVu16EFdAojcCkdkfr0q+K+vVAPOXClhkGlcwNzD7AawHvDes1SMt3NJel7FvrtunA2e76ucilxzWCGMsiju5PFOUEXPPMJ4ZedlHjM3FKj3/PSpHTMcg=="
+  thumbnail: /assets/lectures/covers/ce94ed60d52310cd.jpg
   author: "The Prompting Handbook (Magnific Studios) · 김용성 『챗GPT 이미지 만들기 1600제』"
   curator: "김진관 (닷커넥터)"
   curation_note: "이미지·영상 생성 AI 실무 프롬프팅 원리를 단체·활동가가 젬/GPTs로 재사용하도록 정리한 큐레이션"
