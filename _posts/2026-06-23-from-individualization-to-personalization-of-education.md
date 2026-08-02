@@ -1,5 +1,5 @@
 ---
-title: "AI는 '맞춤 학습'을 어디까지 이끄는가: 환상과 현실"
+title: "AI는 '맞춤 학습'을 어디까지 이끄는가? 환상과 현실"
 slug: "ai-personalized-learning-reality"
 date: 2026-06-23 11:04:59 +0900
 categories: [AI, 교육혁신, 학습과학]

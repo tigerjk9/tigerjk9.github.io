@@ -53,7 +53,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, get_existing_taxonomy, replace_image_markers, CROSSOVER_DOMAINS  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, normalize_question_title, get_existing_taxonomy, replace_image_markers, CROSSOVER_DOMAINS  # noqa: E402
 
 
 # ──────────────────────────────────────────────────────────────
@@ -797,6 +797,7 @@ def main() -> None:
         img_paths = [thumb_path] if thumb_path else []
     markdown_content = _sanitize_content(markdown_content)
     markdown_content = inject_permalink(markdown_content, slug)
+    markdown_content = normalize_question_title(markdown_content)
 
     # ── 파일 저장 ──
     filename = build_filename(args.date, slug)

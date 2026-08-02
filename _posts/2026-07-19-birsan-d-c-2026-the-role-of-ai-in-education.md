@@ -1,5 +1,5 @@
 ---
-title: AI, 교육의 조력자인가 대체자인가
+title: AI, 교육의 조력자인가 대체자인가?
 slug: ai-education-amplifier-or-substitute
 date: 2026-07-19 23:30:47 +0900
 categories: [교육, AI디지털기반교육혁신]

@@ -1,5 +1,5 @@
 ---
-title: "스킬의 숨겨진 계층 구조 - 교육 현장의 기회이자 숙제인가"
+title: "스킬의 숨겨진 계층 구조 - 교육 현장의 기회이자 숙제인가?"
 slug: "skill-hierarchy-education-impact"
 date: 2026-07-12 22:20:17 +0900
 categories: [교육, 학습과학, 에듀테크, 교육혁신]

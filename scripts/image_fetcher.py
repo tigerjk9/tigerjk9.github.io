@@ -607,6 +607,58 @@ def inject_permalink(markdown_content: str, slug: str) -> str:
     return f"---{new_fm}---{parts[2]}"
 
 
+# 강한 한국어 의문형 종결어미 (제목 끝에서만 판정 — 보수적)
+_STRONG_Q_ENDINGS = re.compile(r"(는가|은가|운가|인가|던가|한가|까|까요|나요|냐|느냐)$")
+
+
+def _clause_is_question(clause: str) -> bool:
+    """절이 강한 의문형 종결어미로 끝나면 True (오탐 최소화용 보수적 판정)."""
+    c = clause.rstrip()
+    return bool(c) and bool(_STRONG_Q_ENDINGS.search(c))
+
+
+def normalize_question_title(markdown_content: str) -> str:
+    """front matter title이 의문문인데 물음표가 없으면 자동으로 '?'를 붙인다.
+
+    Gemini가 의문형 제목을 생성하며 물음표를 자주 빠뜨린다. 블로그 전체에서
+    의문문 제목은 '?'로 통일한다 (2026-08-02 4개 자동화 공통 적용).
+
+    보수적 규칙 (오탐 방지):
+    - 제목에 이미 '?'가 있으면(중간·끝 어디든) 건드리지 않는다.
+    - 강한 의문 종결어미(까·는가·인가·냐 등)로 '끝나는' 경우에만 붙인다.
+    - 닫는 따옴표 뒤 인용 의문구('…인가')는 종결이 아니므로 자연히 제외된다.
+    - 'A — 부제'(em/en 대시) 형태는 앞 절이 의문이면 '?'를 대시 앞에 넣는다.
+    본질적으로 애매한 케이스(『책제목』 내부 의문, ': 부제', 認可·閑暇 같은
+    동형 명사, '…하나')는 자동 처리하지 않으므로 생성 후 QA 점검은 유지한다.
+    """
+    m = re.search(r"(?m)^(title:[ \t]*)(.*)$", markdown_content)
+    if not m:
+        return markdown_content
+    prefix, rest = m.group(1), m.group(2)
+    cr = "\r" if rest.endswith("\r") else ""
+    if cr:
+        rest = rest[:-1]
+    value = rest.rstrip(" \t")
+    if "?" in value:  # 이미 물음표가 있으면 그대로 둔다
+        return markdown_content
+    quoted = len(value) >= 2 and value[0] == '"' and value[-1] == '"'
+    inner = value[1:-1] if quoted else value
+    s = inner.rstrip()
+
+    new_inner = None
+    sub = re.match(r"^(.*?)(\s+[—–]\s+.*)$", s)  # 'A — 부제'
+    if sub and _clause_is_question(sub.group(1)):
+        new_inner = sub.group(1).rstrip() + "?" + sub.group(2)
+    elif _clause_is_question(s):
+        new_inner = s + "?"
+    if new_inner is None or new_inner == inner:
+        return markdown_content
+
+    new_value = f'"{new_inner}"' if quoted else new_inner
+    new_line = prefix + new_value + cr
+    return markdown_content[: m.start()] + new_line + markdown_content[m.end():]
+
+
 # ---------------------------------------------------------------------------
 # 공유 상수·유틸 (4개 자동화 스크립트 공통)
 # ---------------------------------------------------------------------------

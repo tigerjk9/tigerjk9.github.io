@@ -1,5 +1,5 @@
 ---
-title: "AI 시대, 자율 학습의 문을 여는 열쇠는 무엇인가"
+title: "AI 시대, 자율 학습의 문을 여는 열쇠는 무엇인가?"
 slug: "ai-era-self-directed-learning-key"
 date: 2026-07-02 13:14:19 +0900
 categories: [AI, 교육, 교육공학, 학습과학]

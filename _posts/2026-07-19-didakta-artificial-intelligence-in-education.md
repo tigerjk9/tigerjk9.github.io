@@ -1,5 +1,5 @@
 ---
-title: "AI는 교사를 대체하는가, 교육을 혁신하는가"
+title: "AI는 교사를 대체하는가, 교육을 혁신하는가?"
 slug: "ai-education-teacher-roles"
 date: 2026-07-19 23:29:30 +0900
 categories: [교육혁신, AI, 교사전문성]
