@@ -1,5 +1,5 @@
 ---
-title: "생성형 AI 시대, 새로운 학습 이론이 필요한가"
+title: "생성형 AI 시대, 새로운 학습 이론이 필요한가?"
 slug: "generativism-learning-theory-ai"
 date: 2026-06-17 12:09:08 +0900
 categories: [교육, 학습과학, AI디지털기반교육혁신]
