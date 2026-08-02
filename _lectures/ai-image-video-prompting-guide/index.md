@@ -21,6 +21,7 @@ header:
 
 <div class="gyoan-actions">
   <a class="gyoan-btn gyoan-btn--download" href="https://drive.google.com/uc?export=download&amp;id=1VMfI9B88xQTAyA-AwfaqrQUiAUJXwvqK" target="_blank" rel="noopener"><i class="fas fa-download" aria-hidden="true"></i> AI 이미지·영상 프롬프팅 가이드 <span class="gyoan-btn__meta">PDF · 요약 정리본</span></a>
+  <a class="gyoan-btn gyoan-btn--download" href="https://drive.google.com/file/d/1PWGYzSPELM7wCnOre7bY5d7U-1ZszX61/view" target="_blank" rel="noopener"><i class="fas fa-download" aria-hidden="true"></i> 챗GPT 이미지 만들기 1600제 (원본 도서) <span class="gyoan-btn__meta">Drive에서 내려받기 · 약 106MB</span></a>
 </div>
 
 ## 이 자료를 쓰는 법
