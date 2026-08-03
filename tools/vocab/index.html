@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학습자 친화적 어휘 사전 · 닷커넥터</title>
+<meta name="description" content="교과 학습에 걸리는 어휘를 학습자 눈높이 뜻풀이와 예시문으로 바꿔 보여 주는 사전. 국립국어원 국어 기초 어휘 등급을 근거로 어려운 말을 표시한다.">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0e1013; --panel:#16191e; --panel2:#1c2027; --line:#2a2f38;
+    --ink:#e8eaed; --dim:#9aa2ad; --faint:#6b7480;
+    --accent:#4da3ff; --gold:#f0b24b;
+    --lv1:#3fa66a; --lv2:#63a83f; --lv3:#c9a227; --lv4:#e07b39; --lv5:#d95757;
+    --radius:12px;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.6; word-break:keep-all; overflow-wrap:anywhere;
+    padding:0 16px 72px;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+
+  header{padding:40px 0 20px;border-bottom:1px solid var(--line)}
+  h1{font-size:clamp(22px,4.4vw,30px);font-weight:800;letter-spacing:-.02em}
+  h1 .dot{color:var(--gold)}
+  .lead{color:var(--dim);margin-top:10px;font-size:15px;max-width:62ch}
+  .lead b{color:var(--ink);font-weight:600}
+
+  .controls{position:sticky;top:0;z-index:20;background:var(--bg);
+    padding:16px 0 12px;border-bottom:1px solid var(--line);margin-bottom:20px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .row + .row{margin-top:10px}
+  input[type=search],select{
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);
+    border-radius:10px;padding:11px 13px;font-size:15px;font-family:inherit;
+  }
+  input[type=search]{flex:1 1 240px;min-width:0}
+  input[type=search]:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .chip{
+    background:var(--panel);color:var(--dim);border:1px solid var(--line);
+    border-radius:999px;padding:7px 13px;font-size:13px;font-family:inherit;
+    cursor:pointer;white-space:nowrap;
+  }
+  .chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#08121d;font-weight:700}
+  .chip.lv[aria-pressed=true]{color:#0e1013}
+  .chip.lv1[aria-pressed=true]{background:var(--lv1);border-color:var(--lv1)}
+  .chip.lv2[aria-pressed=true]{background:var(--lv2);border-color:var(--lv2)}
+  .chip.lv3[aria-pressed=true]{background:var(--lv3);border-color:var(--lv3)}
+  .chip.lv4[aria-pressed=true]{background:var(--lv4);border-color:var(--lv4)}
+  .chip.lv5[aria-pressed=true]{background:var(--lv5);border-color:var(--lv5)}
+  .count{color:var(--faint);font-size:13px;margin-left:auto}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;margin-bottom:14px}
+  .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .word{font-size:22px;font-weight:800;letter-spacing:-.01em}
+  .sup{font-size:12px;color:var(--faint);vertical-align:super}
+  .meta{color:var(--faint);font-size:13px}
+  .badge{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;color:#0e1013}
+  .g1{background:var(--lv1)} .g2{background:var(--lv2)} .g3{background:var(--lv3)}
+  .g4{background:var(--lv4)} .g5{background:var(--lv5)}
+
+  .glosses{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media (max-width:640px){.glosses{grid-template-columns:1fr}}
+  .gloss{background:var(--panel2);border-radius:10px;padding:12px 13px;font-size:15px}
+  .gloss h4{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--faint);
+    margin-bottom:6px;text-transform:uppercase}
+  .gloss.easy{border:1px solid rgba(77,163,255,.3)}
+  .gloss.easy h4{color:var(--accent)}
+  .orig{color:var(--dim);font-size:14px}
+
+  .ex{margin-top:12px;display:grid;gap:8px}
+  .ex div{font-size:14px;color:var(--ink);background:var(--panel2);
+    border-left:3px solid var(--line);border-radius:0 8px 8px 0;padding:9px 12px}
+  .ex .tag{display:inline-block;font-size:11px;color:var(--faint);margin-right:8px;font-weight:600}
+  .ex .subj{border-left-color:var(--gold)}
+  .ex .subj .tag{color:var(--gold)}
+
+  .tok{border-radius:4px;padding:0 3px}
+  .t1{background:rgba(63,166,106,.18)} .t2{background:rgba(99,168,63,.18)}
+  .t3{background:rgba(201,162,39,.20)} .t4{background:rgba(224,123,57,.24)}
+  .t5{background:rgba(217,87,87,.26)}
+  .tinf{background:rgba(255,255,255,.06);color:var(--dim)}
+
+  .empty{color:var(--faint);text-align:center;padding:60px 0}
+  .more{display:block;width:100%;margin-top:8px;background:var(--panel);color:var(--ink);
+    border:1px solid var(--line);border-radius:10px;padding:13px;font-size:15px;
+    font-family:inherit;cursor:pointer}
+  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--faint);font-size:13px}
+  footer a{color:var(--dim)}
+  @media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
+  .card:hover{border-color:#39404b}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>학습자 친화적 어휘 사전<span class="dot">.</span></h1>
+  <p class="lead">
+    교과서에 나오지만 사전을 찾아도 <b>뜻풀이가 더 어려운</b> 낱말들을 모았다.
+    국립국어원 국어 기초 어휘 등급(1~5)을 근거로, 뜻풀이에 쓰인 말 하나하나의
+    난이도를 표시한다. <b>4등급 이상이 섞이면 다시 쓰게</b> 해서 만들었다.
+  </p>
+</header>
+
+<div class="controls">
+  <div class="row">
+    <input type="search" id="q" placeholder="낱말·뜻풀이 검색" autocomplete="off" aria-label="검색">
+    <select id="sort" aria-label="정렬">
+      <option value="default">기본 순</option>
+      <option value="word">가나다순</option>
+      <option value="hard">사전 뜻풀이가 어려운 순</option>
+      <option value="easy">쉬워진 폭이 큰 순</option>
+    </select>
+  </div>
+  <div class="row">
+    <button class="chip lv lv3" data-grade="3" aria-pressed="false">3등급</button>
+    <button class="chip lv lv4" data-grade="4" aria-pressed="false">4등급</button>
+    <button class="chip" id="annToggle" aria-pressed="true">난이도 표시</button>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<main id="list" aria-live="polite"></main>
+<button class="more" id="more" hidden>더 보기</button>
+
+<footer>
+  <p>
+    뜻풀이 등급 근거: 국립국어원 <a href="https://www.korean.go.kr/front/reportData/reportDataView.do?mn_id=207&amp;report_seq=1160" target="_blank" rel="noopener">2023년 국어 기초 어휘 선정 및 어휘 등급화 연구</a> (40,000개 공개 목록).
+    원 뜻풀이는 표준국어대사전.
+  </p>
+  <p style="margin-top:8px">
+    설계 참고: 한국교육과정평가원 연구보고 RRI 2026-1 「학습자 친화적 어휘 교수학습 지원 방안 탐색 및 콘텐츠 개발」.
+    쉬운 뜻풀이와 예시문은 생성형 AI 로 만들고 규칙 검증을 거쳤다 — <b>사람의 교육적 검수는 아직 거치지 않았다.</b>
+  </p>
+  <p style="margin-top:8px">닷커넥터 · <a href="/">블로그로</a></p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var PAGE = 40;
+  var data = [], view = [], shown = 0, annOn = true;
+  var grades = new Set();
+
+  var $ = function (id) { return document.getElementById(id); };
+  var list = $('list'), more = $('more'), count = $('count');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  // "말[Lv3] 다른[Lv1(추론 결과)]" -> 등급 색 배지가 입혀진 HTML
+  //
+  // 공백으로 split 하면 안 된다. 미등재 표기 '(추론 결과)' 안에 공백이 있어
+  // 토큰이 '거쳐서[Lv1(추론' 과 '결과)]' 로 쪼개진다(실측). 정규식으로 통째 집는다.
+  var TOKEN = /(\S+?)\[Lv(\d)(\(추론 결과\))?\]/g;
+
+  function renderAnnotated(s) {
+    if (!s) return '';
+    var out = '', last = 0, m;
+    TOKEN.lastIndex = 0;
+    while ((m = TOKEN.exec(s)) !== null) {
+      out += esc(s.slice(last, m.index));
+      var cls = m[3] ? 'tinf' : 't' + m[2];
+      var tip = m[3] ? '사전 미등재 - 추론' : m[2] + '등급';
+      out += '<span class="tok ' + cls + '" title="' + tip + '">' + esc(m[1]) + '</span>';
+      last = m.index + m[0].length;
+    }
+    out += esc(s.slice(last));
+    return out;
+  }
+
+  function card(r) {
+    var sup = r.homonym_no ? '<span class="sup">' + esc(r.homonym_no) + '</span>' : '';
+    var easy = annOn && r.gloss_easy_annotated
+      ? renderAnnotated(r.gloss_easy_annotated) : esc(r.gloss_easy);
+    var ex = '';
+    if (r.example_general) {
+      ex += '<div><span class="tag">일상</span>' + esc(r.example_general) + '</div>';
+    }
+    if (r.example_subject) {
+      ex += '<div class="subj"><span class="tag">' +
+            esc(r.subject || '교과') + '</span>' + esc(r.example_subject) + '</div>';
+    }
+    return '<article class="card">' +
+      '<div class="head">' +
+        '<span class="word">' + esc(r.word) + sup + '</span>' +
+        '<span class="badge g' + r.grade + '">' + r.grade + '등급</span>' +
+        '<span class="meta">' + esc(r.pos) + (r.origin_type ? ' · ' + esc(r.origin_type) : '') +
+        (r.source_word ? ' · ' + esc(r.source_word) : '') + '</span>' +
+      '</div>' +
+      '<div class="glosses">' +
+        '<div class="gloss"><h4>표준국어대사전</h4><div class="orig">' +
+          esc(r.gloss_original) + '</div></div>' +
+        '<div class="gloss easy"><h4>쉬운 뜻풀이</h4><div>' + easy + '</div></div>' +
+      '</div>' +
+      (ex ? '<div class="ex">' + ex + '</div>' : '') +
+    '</article>';
+  }
+
+  function apply() {
+    var q = $('q').value.trim().toLowerCase();
+    var sort = $('sort').value;
+    view = data.filter(function (r) {
+      if (grades.size && !grades.has(r.grade)) return false;
+      if (!q) return true;
+      return (r.word + ' ' + r.gloss_easy + ' ' + r.gloss_original).toLowerCase().indexOf(q) >= 0;
+    });
+    if (sort === 'word') view.sort(function (a, b) { return a.word.localeCompare(b.word, 'ko'); });
+    else if (sort === 'hard') view.sort(function (a, b) { return b.max_grade_original - a.max_grade_original; });
+    else if (sort === 'easy') view.sort(function (a, b) {
+      return (b.max_grade_original - b.max_grade_easy) - (a.max_grade_original - a.max_grade_easy);
+    });
+    shown = 0;
+    list.innerHTML = '';
+    count.textContent = view.length + ' / ' + data.length + '개';
+    draw();
+  }
+
+  function draw() {
+    var next = view.slice(shown, shown + PAGE);
+    if (!next.length && !shown) {
+      list.innerHTML = '<p class="empty">찾는 낱말이 없다.</p>';
+      more.hidden = true;
+      return;
+    }
+    list.insertAdjacentHTML('beforeend', next.map(card).join(''));
+    shown += next.length;
+    more.hidden = shown >= view.length;
+  }
+
+  $('q').addEventListener('input', apply);
+  $('sort').addEventListener('change', apply);
+  more.addEventListener('click', draw);
+
+  Array.prototype.forEach.call(document.querySelectorAll('.chip.lv'), function (b) {
+    b.addEventListener('click', function () {
+      var g = Number(b.dataset.grade);
+      var on = b.getAttribute('aria-pressed') === 'true';
+      b.setAttribute('aria-pressed', on ? 'false' : 'true');
+      if (on) grades.delete(g); else grades.add(g);
+      apply();
+    });
+  });
+
+  $('annToggle').addEventListener('click', function () {
+    annOn = !annOn;
+    this.setAttribute('aria-pressed', annOn ? 'true' : 'false');
+    apply();
+  });
+
+  fetch('/assets/vocab-db.json')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (rows) {
+      data = rows;
+      apply();
+    })
+    .catch(function () {
+      list.innerHTML = '<p class="empty">어휘 자료를 불러오지 못했다.</p>';
+      count.textContent = '';
+    });
+})();
+</script>
+</body>
+</html>

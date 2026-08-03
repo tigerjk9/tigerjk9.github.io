@@ -86,3 +86,13 @@ scripts/.naver_profile/
 scripts/.naver_shots/
 scripts/.naver_delete_result.json
 scripts/naver_task.log
+
+# 어휘 DB 파이프라인 — 원천 xlsx(5.9MB)와 중간 캐시는 커밋하지 않는다.
+# 원천은 국립국어원 공개 자료이므로 누구나 다시 받을 수 있다(vocab_lexicon.py 안내).
+_papers/vocab/
+scripts/.vocab_lexicon.json
+scripts/.vocab_cache.json
+scripts/.vocab_targets.json
+scripts/.vocab_build.log
+
+scripts/.vocab_build2.log
