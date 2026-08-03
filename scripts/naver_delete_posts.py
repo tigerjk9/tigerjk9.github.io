@@ -103,23 +103,37 @@ def delete_one(page, logno: str, dry: bool) -> str:
     if got != logno:
         return f"skip:열린 글이 다름 (기대 {logno} / 실제 {got or '미확인'})"
 
-    # 한 글에 삭제 링크가 둘 있다 — ⋮ 메뉴 안의 숨은 것(_param(<logNo>|...))과
-    # 글 하단의 보이는 것(_param(<글 순번>|...)). 둘 다 같은 글을 가리킨다(실측).
-    # 보이는 것만 세고, 그 개수가 1이 아니면 손대지 않는다.
-    total = mf.locator(DELETE_SEL).count()
-    if total == 0:
+    # 한 글에 삭제 링크가 둘 있다(실측).
+    #   ① 제목 우측 ⋮ 메뉴 안의 숨은 것 — class 에 _param(<logNo>|false|false)
+    #   ② 글 하단의 보이는 것            — class 에 _param(<글 순번>|false|false)
+    # ②는 페이지 안 순번이라 어느 글인지 링크 자체로는 알 수 없다. ①은 대상을 직접
+    # 명시하므로 이쪽을 쓴다. ⋮ 토글(a._open_overflowmenu)도 class 에 _param(<logNo>)
+    # 를 달고 있어, 토글 → 링크 두 단계 모두 logNo 로 대조된다.
+    if mf.locator(DELETE_SEL).count() == 0:
         return "skip:삭제 링크 없음 (이미 삭제됐거나 권한 없음)"
-    link = mf.locator(f"{DELETE_SEL}:visible")
-    n = link.count()
-    if n == 0:
-        return f"skip:보이는 삭제 링크 없음 (전체 {total}개)"
-    if n > 1:
-        return f"skip:보이는 삭제 링크가 {n}개 — 오삭제 위험"
 
-    # 링크가 대상 logNo 를 명시하고 있으면 그 값까지 대조한다.
+    toggle = mf.locator(f'a._open_overflowmenu[class*="_param({logno})"]')
+    if toggle.count() != 1:
+        return f"skip:대상 logNo 를 명시한 ⋮ 토글이 {toggle.count()}개"
+    try:
+        toggle.first.click(timeout=10000)
+        page.wait_for_timeout(1200)
+    except Exception as e:
+        return f"fail:⋮ 메뉴 열기 실패 {str(e)[:80]}"
+
+    link = mf.locator(f'#overflowmenu-{logno} {DELETE_SEL}[class*="_param({logno}|"]')
+    n = link.count()
+    if n != 1:
+        return f"skip:메뉴 안 대상 삭제 링크가 {n}개"
+    if not link.first.is_visible():
+        return "skip:메뉴가 열리지 않아 삭제 링크가 숨어 있음"
+
+    # 클래스에서 logNo 를 한 번 더 읽어 최종 대조한다.
     cls = link.first.get_attribute("class") or ""
     m = re.search(r"_param\((\d{6,})\|", cls)
-    if m and m.group(1) != logno:
+    if not m:
+        return "skip:삭제 링크에 logNo 표기 없음"
+    if m.group(1) != logno:
         return f"skip:삭제 링크가 다른 글({m.group(1)})을 가리킴"
 
     if dry:
