@@ -112,6 +112,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 
 **독자 편의 UI (2026-07-25)** — 기조(다크 에디토리얼·블루 액센트·미니멀) 유지하며 추가:
 - **포스트 넘버링**: 홈 리스트(`archive-single.html` seq)·단일 글(`single.html` 헤더, `page.collection == 'posts'` 게이트 후 `site.posts`에서 위치 탐색)·검색 결과 모두 **`전체수 − index0`** 동일 공식(최신글=총편수, 3자리 zero-pad). 검색은 `lunr-store.js`가 **`site.posts` 순회**로 seq·date를 스토어에 담아야 정확(컬렉션 docs 순서 아님) → `lunr-en.js`가 홈과 동일 카드(`.recent-posts` 상속, `.search-results` 래퍼)로 렌더
+- **홈 리스트 발췌 제거 (2026-08-03)**: 홈/최근 포스트 카드에서 발췌(`post.excerpt`)를 뺐다 — 이미지로 시작하는 글은 캡션/빈칸, 텍스트 글은 도입문이 나와 카드마다 제각각이라 어수선했다. 이제 **번호·카테고리·날짜·제목·해시태그**만 남겨 통일. `archive-single.html`의 **seq 분기(홈)에서만** excerpt `<p>` 한 줄 제거(else 분기=카테고리/태그 페이지는 `post.excerpt` 발췌 유지). 향후 자동화·테마 업스트림 병합이 이 줄을 되살리지 않도록 주의
 - **페이지네이션**: `paginator-v1.html` 노출 창 ±2→±3, 임계값 5로 인접 페이지 사이 가짜 `…` 제거. `.pagination--numbered` 클래스로 숫자형만 스코프(단일 글 `.pagination--pager`와 분리), 중앙정렬 개별 라운드 칩
 - **검색 단축키**: `/`·`Ctrl/Cmd+K`로 오버레이 열기(`.search__toggle` click 재사용). 자동 포커스·Esc 닫기는 테마 `main.min.js`가 이미 처리, 입력 중이면 무시. 오버레이에 `.search-hint` kbd 힌트
 - **읽은 글 표시**: 방문 글을 `readPosts` localStorage에 기록(기존 `recentPosts`는 8개 한정이라 **별도 키**). 리스트·검색에서 `.is-read` + 넘버 옅게 채움 + `.entry-read` "읽음" 배지. 검색 결과는 `MutationObserver`로 비동기 렌더 대응
