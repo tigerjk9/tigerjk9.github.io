@@ -419,7 +419,9 @@ py -X utf8 scripts/cardnews.py --style diagram --topic "..."          # 밝은 �
 - **레터박스 제거는 12% 상한**: gemini가 비율을 맞추며 넣는 순검정 띠는 얇다. 상한이 없으면 다크 시네마틱 이미지의 의도된 어두운 여백(위 프롬프트로 요청한 하단 3분의 1)까지 깎아 1024→783로 해상도만 잃는다(실측)
 - **단정체 어미 + 물음표 = 비문**: `모른다?`·`실천이다?`가 반복 생성됐다. 의문형은 권장하지만 어미까지 의문형(`~인가?`/`~일까?`/`~하는가?`)이어야 한다. `validate_copy`에 정규식으로 넣어 자동 재작성시킨다
 - **스크림 필수**: 레퍼런스 원본은 사진이 이미 어두웠지만 밝은 사진이 들어오면 흰 헤드라인이 날아간다 → 사진 위에 하단 그라디언트(30%부터 99%까지)를 항상 덮는다
+- **긴 출처는 상단 우측으로 (2026-08-03)**: 논문 제목이 길면 푸터 우측 출처 블록이 위로 자라 헤드라인을 침범한다. `hookcard_template.html` 스크립트가 **4단계로 물러난다** — ① 푸터 유지(2행 이내, 레퍼런스 실측 배치) ② `.source.top` 으로 상단 띠(0~140px) 이동, 폭은 헤드라인과 같은 **888px**(760px로 잡으면 제목 끝 한 단어가 3행으로 떨어져 고아 줄이 생김) ③ 24→20px 축소 ④ **마지막 줄만** 말줄임(저자·연도 줄은 불변). 이를 위해 `hookcard.py`가 출처를 `<br>` 한 덩어리가 아니라 `.s-line` 요소로 넘긴다. 템플릿 `<div class="source">`에 **`id="source"` 필수**(누락 시 스크립트가 조용히 no-op). 프롬프트도 "제목은 원문 그대로 전부 쓰고 스스로 줄이지 말 것"으로 바꿨다 — 미리 자른 제목으론 독자가 검색해도 원문을 못 찾는다. `validate_copy`의 "출처 말줄임표" 검사는 유지(Gemini의 어중간한 절단을 막는 별개 규칙)
 - **후처리 QA**: 헤드라인이 원문에 없는 주장을 만들지 않았는지(놀라움은 자료 안 사실에서), 출처 저자·연도 환각, 생성 이미지에 글자 혼입 여부 육안 확인. 수정은 `card.json` 고쳐 `--rerender`(무과금)
+- **`image_hint`가 글자를 부른다 (실측 2회)**: 힌트에 "essay page", "handwritten cheat sheet"처럼 **글이 적힌 사물**을 요구하면 `STYLE_SUFFIX`의 `No text, no letters` 지시를 덮고 화면 가득 가짜 글자가 나온다. 글이 필요한 주제는 힌트에서 필기 요구를 빼거나 "handwriting completely out of focus and unreadable"로 초점을 흐린다
 
 ## 네이버 블로그 크로스포스팅 (`/naver`)
 
@@ -434,6 +436,10 @@ py -u scripts/naver_crosspost.py --login       # 로그인 쿠키 갱신 (풀렸
 ```
 
 - **범위**: `2026-05-14-measuring-ai-ability...md` 이후 ~ 최신 (BASELINE_FILENAME 상수), 주간다이제스트 제외. 게시 이력 `scripts/naver_crosspost_state.json`(커밋 대상)
+- **게시 이력 자동 동기화 (2026-08-03, 중복 발행 20편 사고 후 추가)**: 이력 파일이 곧 중복 방지 장치인데 그 장치가 로컬에만 있으면 무력하다. 실제로 이력이 커밋되지 않은 채 스케줄 실행이 돌아 원격에만 기록된 20편을 미게시로 판단해 두 번 올렸다. → `sync_state_before_run()`이 **대상 산정 전에** `origin/main`의 이력을 합치고(같은 글이 양쪽에 있으면 `posted_at` 늦은 쪽, 다르면 경고), `push_state()`가 실행 종료 시(중단·예외 포함) 이력 파일만 커밋·rebase·push 한다. `--no-git-sync`로 끔. 네트워크·인증 실패는 경고만 하고 발행은 계속
+- **중복 정리 도구 `scripts/naver_delete_posts.py`**: `--file <targets.json>`·`--logno`·`--dry-run`·`--limit`. 삭제는 되돌릴 수 없어 매 건 ① 열린 글의 logNo 대조 ② `⋮` 메뉴(`a._open_overflowmenu`, class에 `_param(<logNo>)`) 안의 **숨은 삭제 링크**(class에 `_param(<logNo>|false|false)`) 선택 ③ 삭제 후 소멸 검증 — 세 겹 대조. 글 하단의 **보이는** 삭제 링크는 class가 `_param(<글 순번>|...)`라 어느 글인지 알 수 없어 쓰지 않는다
+- **삭제된 글 URL은 최신 글로 리다이렉트된다 (실측, 위험)**: 지운 logNo로 접근하면 404가 아니라 **가장 최근 글이 열린다**. logNo 대조 없이 화면의 삭제 링크를 누르면 멀쩡한 최신 글이 지워진다. 위 ①이 이걸 막는다
+- **`url: "unknown"`은 "다른 주소로 발행됨"이 아니라 "발행 결과 미확인"**: 실제로 발행이 성사되지 않은 기록일 수 있다. 2026-08-03 이 값을 중복 근거로 읽어 **유일본을 삭제**했다(재발행 복구). 중복 판정에서 남길 쪽 URL이 `unknown`인 행은 제외한다(`warn_unknown_pair`)
 - **카테고리 자동 분류**: 인공지능교육 인사이트(26)/뇌기반 학습 과학(84)/생각하는 교실, 깊이있는 학습(87). Gemini 일괄 분류가 `scripts/naver_category_overrides.json`에 캐시(수동 교정 우선). categoryNo는 `postwrite?categoryNo=N` URL로 사전 선택
 - **마루부리 15 구현 (실측)**: 붙여넣기 HTML의 인라인 `font-size:15px` → 에디터 `se-fs15` 자동 매핑(소제목 h2는 19 유지). 서체는 Ctrl+A 후 고정 툴바 버튼(`button.se-font-family-toolbar-button[data-group='propertyToolbar']`) → 드롭다운 `se-toolbar-option-text-button` 마루부리 클릭 — **서체만 바꾸면 크기는 요소별 보존됨**
 - **발행 팝업 셀렉터 (실측)**: 상단 `button[class*='publish_btn']`(has-text('발행')는 숨은 예약발행 버튼을 잡으므로 금지) → 카테고리 라벨 `selectbox_button__` → 태그 input `placeholder*='태그'` → 최종 `button[class*='confirm_btn']`. 발행 후 URL은 `logNo=` 형식도 매칭
