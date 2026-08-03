@@ -45,12 +45,11 @@
     cursor:pointer;white-space:nowrap;
   }
   .chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#08121d;font-weight:700}
+  /* 등급 칩은 3·4등급만 있다 — 대상 어휘가 그 두 등급으로 한정돼 있다.
+     반면 .t1~.t5 / .g1~.g5 는 뜻풀이 안 낱말 등급이라 1~5가 모두 쓰인다. */
   .chip.lv[aria-pressed=true]{color:#0e1013}
-  .chip.lv1[aria-pressed=true]{background:var(--lv1);border-color:var(--lv1)}
-  .chip.lv2[aria-pressed=true]{background:var(--lv2);border-color:var(--lv2)}
   .chip.lv3[aria-pressed=true]{background:var(--lv3);border-color:var(--lv3)}
   .chip.lv4[aria-pressed=true]{background:var(--lv4);border-color:var(--lv4)}
-  .chip.lv5[aria-pressed=true]{background:var(--lv5);border-color:var(--lv5)}
   .count{color:var(--faint);font-size:13px;margin-left:auto}
 
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);

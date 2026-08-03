@@ -24,7 +24,7 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
@@ -131,7 +131,7 @@ PROMPT = """너는 초등 고학년~중학생을 위한 국어 어휘 교육 전
 5. 예시문 두 개는 모두 '{word}' 를 넣어 자연스러운 문장으로 만든다.
    - example_general: 일상에서 쓰는 맥락
    - example_subject: 학교 교과 수업 맥락. subject 에 그 교과명을 쓴다
-     (국어, 수학, 사회, 과학, 도덕, 음악, 미술, 체육, 실과, 영어 중 하나)
+     ({subjects} 중 하나)
 6. 문장은 짧게. 한 문장이 25자를 넘지 않게 한다.
 
 JSON 객체 하나만 출력한다. 다른 말은 쓰지 않는다.
@@ -173,7 +173,6 @@ def gemini_json(model: str, prompt: str) -> dict:
     research-ask/lib/store.js 가 같은 이유로 REST 를 쓴다.
     """
     import ssl
-    import urllib.error
     import urllib.request
 
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
@@ -327,7 +326,8 @@ def main() -> None:
             print(f"      {r['gloss'][:70]}")
         print("\n프롬프트 예시:\n" + "-" * 60)
         t = targets[0]
-        print(PROMPT.format(word=t["word"], pos=t["pos"], gloss=t["gloss"]))
+        print(PROMPT.format(word=t["word"], pos=t["pos"], gloss=t["gloss"],
+                        subjects=", ".join(SUBJECTS)))
         return
 
     if args.revalidate:
@@ -375,7 +375,8 @@ def main() -> None:
 
         card, issues = None, ["시작"]
         for attempt in range(MAX_REWRITES + 1):
-            prompt = (PROMPT.format(word=rec["word"], pos=rec["pos"], gloss=rec["gloss"])
+            prompt = (PROMPT.format(word=rec["word"], pos=rec["pos"], gloss=rec["gloss"],
+                                    subjects=", ".join(SUBJECTS))
                       if attempt == 0 else
                       REWRITE.format(word=rec["word"], pos=rec["pos"], gloss=rec["gloss"],
                                      prev=_s(card.get("easy_gloss")),
