@@ -84,4 +84,5 @@ _workspace/
 # 네이버 크로스포스팅 로그인 프로필·디버그 스크린샷 (쿠키 포함 - 절대 커밋 금지)
 scripts/.naver_profile/
 scripts/.naver_shots/
+scripts/.naver_delete_result.json
 scripts/naver_task.log

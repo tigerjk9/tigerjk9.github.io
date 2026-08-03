@@ -271,6 +271,106 @@ def save_json(path: Path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+# ---------------------------------------------------------------- 게시 이력 동기화
+#
+# 2026-08-03 사고: 게시 이력이 커밋되지 않은 채 스케줄 실행이 돌아, 원격에만 기록된
+# 20편을 미게시로 판단해 네이버에 중복 발행했다. 이력 파일이 곧 중복 방지 장치이므로
+# 실행 전에 원격과 합치고, 실행 후에 결과를 되돌려 놓아야 장치가 성립한다.
+# 네트워크·인증 문제로 동기화가 실패해도 발행 자체는 계속한다(경고만).
+
+def _git(*args, timeout: int = 60):
+    import subprocess
+    return subprocess.run(["git", *args], cwd=str(ROOT), capture_output=True,
+                          text=True, encoding="utf-8", errors="replace", timeout=timeout)
+
+
+def _git_ok() -> bool:
+    try:
+        return _git("rev-parse", "--git-dir").returncode == 0
+    except Exception:
+        return False
+
+
+def merge_state(base: dict, other: dict) -> "tuple[dict, int, int]":
+    """두 이력을 합친다. 같은 글이 양쪽에 있으면 posted_at 이 늦은 쪽을 남긴다.
+
+    반환: (합친 이력, other 에만 있던 건수, 서로 다르게 기록된 건수)
+    """
+    merged = dict(base.get("posted", {}))
+    added = conflicts = 0
+    for k, v in other.get("posted", {}).items():
+        if k not in merged:
+            merged[k] = v
+            added += 1
+        elif merged[k] != v:
+            conflicts += 1
+            if str(v.get("posted_at", "")) > str(merged[k].get("posted_at", "")):
+                merged[k] = v
+    return {"posted": merged}, added, conflicts
+
+
+def sync_state_before_run(state: dict) -> dict:
+    """원격 이력을 끌어와 로컬에 합친다. 원격에만 있는 발행분을 미게시로 오인하지 않도록."""
+    if not _git_ok():
+        print("[WARN] git 저장소가 아닙니다 - 이력 동기화를 건너뜁니다")
+        return state
+    try:
+        r = _git("fetch", "origin", "--quiet", timeout=120)
+        if r.returncode != 0:
+            print(f"[WARN] git fetch 실패 - 이력 동기화 건너뜀: {r.stderr.strip()[:200]}")
+            return state
+        rel = STATE_FILE.relative_to(ROOT).as_posix()
+        show = _git("show", f"origin/main:{rel}")
+        if show.returncode != 0:
+            print("[WARN] 원격 이력을 읽지 못했습니다 - 동기화 건너뜀")
+            return state
+        remote = json.loads(show.stdout)
+    except Exception as e:
+        print(f"[WARN] 이력 동기화 실패 - 로컬 이력으로 진행: {e}")
+        return state
+
+    merged, added, conflicts = merge_state(state, remote)
+    if added or conflicts:
+        save_json(STATE_FILE, merged)
+        print(f"[SYNC] 원격 이력 반영: 신규 {added}건, 시각 갱신 {conflicts}건 "
+              f"(총 {len(merged['posted'])}편)")
+        if conflicts:
+            print("       같은 글이 양쪽에 다르게 기록돼 있습니다 - 중복 발행 가능성을 확인하세요")
+    return merged
+
+
+def push_state(note: str) -> None:
+    """이력 파일만 커밋·푸시한다. 다른 작업 중인 변경은 건드리지 않는다."""
+    if not _git_ok():
+        return
+    rel = STATE_FILE.relative_to(ROOT).as_posix()
+    try:
+        if not _git("status", "--porcelain", "--", rel).stdout.strip():
+            return
+        if _git("add", "--", rel).returncode != 0:
+            print("[WARN] 이력 stage 실패")
+            return
+        msg = f"chore: 네이버 크로스포스팅 게시 이력 갱신 ({note})"
+        if _git("commit", "-m", msg, "--", rel).returncode != 0:
+            print("[WARN] 이력 커밋 실패")
+            return
+        # 다른 커밋이 원격에 먼저 올라와 있어도 이력 커밋만 얹어 올린다.
+        # --autostash 는 작업 중인 다른 파일을 잠시 치워 rebase 가 멈추지 않게 한다.
+        _git("fetch", "origin", "--quiet", timeout=120)
+        rb = _git("rebase", "origin/main", "--autostash", timeout=180)
+        if rb.returncode != 0:
+            _git("rebase", "--abort")
+            print("[WARN] rebase 충돌 - 이력은 로컬에 커밋됨. 수동으로 push 하세요")
+            return
+        pu = _git("push", "origin", "HEAD:main", timeout=180)
+        if pu.returncode != 0:
+            print(f"[WARN] 이력 push 실패 (로컬 커밋은 남음): {pu.stderr.strip()[:200]}")
+            return
+        print(f"[SYNC] 게시 이력 push 완료 ({note})")
+    except Exception as e:
+        print(f"[WARN] 이력 push 실패: {e}")
+
+
 def recent_post_count(state: dict, hours: int = 24) -> int:
     """최근 N시간 발행 수. 수동 실행과 스케줄 실행이 겹쳐 과발행되는 것을 막는다."""
     cutoff = time.time() - hours * 3600
@@ -915,6 +1015,8 @@ def main():
     ap.add_argument("--debug", action="store_true", help="단계별 스크린샷 저장")
     # 글 간 대기. 2026-07-22부터 45~90초로 운영해 문제가 없었으므로 유지한다
     # (10편이면 실행당 약 11분). 발행이 몰리는 게 걱정되면 값을 올려 쓸 것.
+    ap.add_argument("--no-git-sync", action="store_true",
+                    help="게시 이력 원격 동기화·자동 커밋 끄기 (오프라인 실행용)")
     ap.add_argument("--min-wait", type=int, default=45)
     ap.add_argument("--max-wait", type=int, default=90)
     args = ap.parse_args()
@@ -927,6 +1029,10 @@ def main():
     print(f"\n=== 실행 {time.strftime('%Y-%m-%d %H:%M:%S')} ===")
 
     state = load_json(STATE_FILE, {"posted": {}})
+    # 대상 산정 전에 원격 이력을 합친다. 이 순서가 아니면 원격에만 기록된 발행분이
+    # 미게시로 잡혀 그대로 중복 발행된다(2026-08-03 실제 사고, 20편).
+    if not args.no_git_sync:
+        state = sync_state_before_run(state)
     overrides = load_json(OVERRIDES_FILE, {})
     pending = collect_pending(state, args.post)
 
@@ -1065,6 +1171,11 @@ def main():
                 ctx.close()
             except Exception:
                 pass
+            # 중단·예외로 끝나도 여기까지 발행한 만큼은 원격에 남겨야 다음 실행이
+            # 같은 글을 다시 올리지 않는다.
+            if not args.no_git_sync and not args.no_publish:
+                done = len(state.get("posted", {}))
+                push_state(f"{done}편 누적")
 
 
 if __name__ == "__main__":
