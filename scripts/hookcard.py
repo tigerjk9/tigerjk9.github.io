@@ -481,7 +481,10 @@ def render(card: dict, image: "dict | None", outdir: Path) -> Path:
     else:
         img_html, fit = "", "empty"
 
-    source = cn.esc(card.get("source", "")).replace("\\n", "<br>").replace("\n", "<br>")
+    # 출처는 줄 단위 요소로 넘긴다 — 템플릿 스크립트가 마지막 줄(대개 논문 제목)만
+    # 골라 말줄임 처리해야 저자·연도가 온전히 남는다. <br> 한 덩어리로는 그게 안 된다.
+    src_lines = [s.strip() for s in re.split(r"\\n|\n", card.get("source", "")) if s.strip()]
+    source = "".join(f'<div class="s-line">{cn.esc(s)}</div>' for s in src_lines)
 
     html = ((SCRIPT_DIR / "hookcard_template.html").read_text(encoding="utf-8")
             .replace("{{FONT_FACES}}", font_css)

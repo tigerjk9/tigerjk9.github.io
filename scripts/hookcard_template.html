@@ -84,6 +84,12 @@ body {
   text-align: right; font-size: 24px; font-weight: 500;
   line-height: 1.30; color: #b9b4ac;
 }
+/* 긴 논문 제목은 푸터 밴드(2행)를 넘쳐 위로 자라며 헤드라인을 침범한다.
+   그럴 때만 비어 있는 상단 띠(0~140px)로 올린다 — 짧은 출처는 레퍼런스 실측 그대로
+   좌 로고·우 출처를 유지해야 브랜드 일관성이 깨지지 않는다. */
+/* 상단에서는 헤드라인과 같은 폭(888 = 1080 - 96*2)을 쓴다. 좁게 잡으면 제목 마지막
+   한 단어가 3행으로 떨어져 고아 줄이 생긴다(실측: 760px 에서 "Writing." 만 남았다). */
+.source.top { bottom: auto; top: 30px; max-width: 888px; }
 </style>
 </head>
 <body>
@@ -100,7 +106,7 @@ body {
   </div>
 
   <span class="logo"><img src="logo.png" alt="Dot Connector"></span>
-  <div class="source">{{SOURCE}}</div>
+  <div class="source" id="source">{{SOURCE}}</div>
 
 <script>
 /* 헤드라인은 글자 수가 매번 달라 CSS 고정 크기로는 반드시 넘친다.
@@ -124,6 +130,36 @@ body {
     head.style.fontSize = fs + 'px';
   }
   document.documentElement.setAttribute('data-fit', fs);
+})();
+
+/* 출처 배치 — 안 잘리는 것이 최선이라 ① 푸터 유지 ② 상단 이동 ③ 축소 ④ 말줄임 순으로 물러선다.
+   말줄임은 마지막 줄(대개 논문 제목)에만 적용해 저자·연도는 언제나 온전히 남긴다.
+   주의: validate_copy 의 "출처 말줄임표" 검사는 그대로 둔다. 저쪽은 Gemini 가 제목을
+   스스로 어중간하게 끊는 것을 막는 규칙이고, 여기는 렌더가 마지막에 물러서는 안전장치다. */
+(function () {
+  var src = document.getElementById('source');
+  if (!src) return;
+  var BOTTOM_MAX = 70;   // 푸터 밴드(y1229~1281)에 들어가는 2행
+  var TOP_MAX = 100;     // 상단 띠(140px)에 들어가는 3행
+  if (src.scrollHeight <= BOTTOM_MAX) {
+    document.documentElement.setAttribute('data-src', 'footer');
+    return;
+  }
+  src.classList.add('top');
+  var fs = 24;
+  while (fs > 20 && src.scrollHeight > TOP_MAX) {
+    fs -= 1;
+    src.style.fontSize = fs + 'px';
+  }
+  var last = src.querySelector('.s-line:last-child');
+  if (last && src.scrollHeight > TOP_MAX) {
+    var w = last.textContent.split(' ');
+    while (w.length > 2 && src.scrollHeight > TOP_MAX) {
+      w.pop();
+      last.textContent = w.join(' ') + '…';
+    }
+  }
+  document.documentElement.setAttribute('data-src', 'top' + fs);
 })();
 </script>
 </body>
