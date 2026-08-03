@@ -4,152 +4,343 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>학습자 친화적 어휘 사전 · 닷커넥터</title>
-<meta name="description" content="교과 학습에 걸리는 어휘를 학습자 눈높이 뜻풀이와 예시문으로 바꿔 보여 주는 사전. 국립국어원 국어 기초 어휘 등급을 근거로 어려운 말을 표시한다.">
+<meta name="description" content="사전을 찾아도 뜻풀이가 더 어려운 낱말 497개. 국립국어원 어휘 등급을 근거로 쉬운 뜻풀이와 교과 예문을 붙였다. 교사와 학생이 바로 쓰는 어휘 도구.">
+<meta property="og:title" content="학습자 친화적 어휘 사전">
+<meta property="og:description" content="사전을 찾아도 뜻풀이가 더 어려운 낱말 497개를 학습자 눈높이로 다시 썼다.">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
   :root{
-    --bg:#0e1013; --panel:#16191e; --panel2:#1c2027; --line:#2a2f38;
-    --ink:#e8eaed; --dim:#9aa2ad; --faint:#6b7480;
-    --accent:#4da3ff; --gold:#f0b24b;
-    --lv1:#3fa66a; --lv2:#63a83f; --lv3:#c9a227; --lv4:#e07b39; --lv5:#d95757;
-    --radius:12px;
+    --paper:#FDF7E4; --ink:#111111; --line:#111111;
+    --y:#FFE14D; --c:#7BE0F5; --p:#FF9BC4; --l:#B8F55E; --o:#FFA45B;
+    --lv1:#B8F55E; --lv2:#7BE0F5; --lv3:#FFE14D; --lv4:#FFA45B; --lv5:#FF9BC4;
+    --bd:3px solid var(--line);
+    --sh:5px 5px 0 var(--line);
+    --sh-sm:3px 3px 0 var(--line);
   }
-  html{-webkit-text-size-adjust:100%}
+
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{
-    background:var(--bg); color:var(--ink);
+    background:var(--paper); color:var(--ink);
     font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
-    line-height:1.6; word-break:keep-all; overflow-wrap:anywhere;
-    padding:0 16px 72px;
+    font-size:16px; line-height:1.65;
+    /* 고아 줄 방지 — 마지막 한 어절만 떨어지는 것을 브라우저가 알아서 막는다.
+       word-break:keep-all 은 한국어 어절이 글자 단위로 잘리는 것을 막는다. */
+    word-break:keep-all; overflow-wrap:anywhere; text-wrap:pretty;
+    padding:0 18px 80px;
+    background-image:radial-gradient(var(--line) 1px, transparent 1px);
+    background-size:26px 26px; background-attachment:fixed;
   }
-  .wrap{max-width:960px;margin:0 auto}
+  .wrap{max-width:1000px;margin:0 auto}
 
-  header{padding:40px 0 20px;border-bottom:1px solid var(--line)}
-  h1{font-size:clamp(22px,4.4vw,30px);font-weight:800;letter-spacing:-.02em}
-  h1 .dot{color:var(--gold)}
-  .lead{color:var(--dim);margin-top:10px;font-size:15px;max-width:62ch}
-  .lead b{color:var(--ink);font-weight:600}
+  /* 고아 줄(마지막 줄에 한두 어절만 떨어지는 것) 대응.
+     balance = 줄 길이를 고르게 나눠 짧은 꼬리 줄을 없앤다. 몇 줄 안 되는 블록에 쓴다.
+     pretty  = 긴 본문용. 마지막 줄이 한 단어가 되는 것만 피한다.
+     둘 다 미지원 브라우저에서는 조용히 무시되므로 안전하다. */
+  h1,h2,h3{text-wrap:balance;line-height:1.2;letter-spacing:-.02em}
+  .hero p,.cmp q,.cmp .note,.step p,.step li,.tint,.limit p,footer p,
+  .empty span,.gloss .body,.ex div{text-wrap:balance}
+  h2{font-size:clamp(19px,3.2vw,24px);font-weight:900}
+  h3{font-size:16px;font-weight:900}
+  p{text-wrap:pretty}
 
-  .controls{position:sticky;top:0;z-index:20;background:var(--bg);
-    padding:16px 0 12px;border-bottom:1px solid var(--line);margin-bottom:20px}
+  .box{background:#fff;border:var(--bd);box-shadow:var(--sh)}
+
+  /* ---------------- 히어로 ---------------- */
+  header{margin:26px 0 20px}
+  .hero{background:var(--y);border:var(--bd);box-shadow:var(--sh);padding:26px 22px}
+  .kicker{display:inline-block;background:var(--ink);color:var(--y);
+    font-size:12px;font-weight:900;letter-spacing:.1em;padding:4px 10px;margin-bottom:12px}
+  h1{font-size:clamp(26px,6vw,44px);font-weight:900}
+  .hero p{margin-top:12px;font-size:clamp(15px,2.2vw,17px);max-width:56ch;font-weight:500}
+  .hero .stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .stat b{background:#fff;border:var(--bd);box-shadow:var(--sh-sm);
+    padding:6px 12px;font-size:14px;font-weight:800}
+
+  /* ---------------- 설명 블록 ---------------- */
+  section{margin-top:22px}
+  .panel{padding:20px 22px}
+  .panel + .panel{margin-top:16px}
+  .panel h2{margin-bottom:10px}
+  .panel p + p{margin-top:10px}
+  .panel .tint{background:var(--c);border:var(--bd);padding:12px 14px;margin-top:14px;font-weight:600}
+  .cta{display:inline-block;margin-top:14px;background:var(--ink);color:var(--paper);
+    border:var(--bd);box-shadow:var(--sh-sm);padding:11px 16px;
+    font-weight:900;font-size:15px;text-decoration:none;text-wrap:balance}
+  .cta:active{transform:translate(2px,2px);box-shadow:none}
+
+  .why{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:760px){.why{grid-template-columns:1fr}}
+  .cmp{padding:16px 18px}
+  .cmp .tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;
+    border:2px solid var(--line);padding:2px 8px;margin-bottom:10px}
+  .cmp.bad .tag{background:var(--p)} .cmp.good .tag{background:var(--l)}
+  .cmp q{display:block;font-size:15px;quotes:none}
+  .cmp .note{margin-top:10px;font-size:13px;font-weight:600;opacity:.75}
+
+  /* ---------------- 범례 ---------------- */
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .legend span{border:2px solid var(--line);padding:4px 10px;font-size:13px;font-weight:800}
+  .lg1{background:var(--lv1)} .lg2{background:var(--lv2)} .lg3{background:var(--lv3)}
+  .lg4{background:var(--lv4)} .lg5{background:var(--lv5)}
+  .lgx{background:#fff;border-style:dashed !important}
+
+  /* ---------------- 사용법 ---------------- */
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:860px){.how{grid-template-columns:1fr}}
+  .step{padding:18px}
+  .step .n{display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;background:var(--ink);color:var(--paper);
+    font-weight:900;font-size:17px;margin-bottom:10px}
+  .step h3{margin-bottom:6px}
+  .step p{font-size:14px}
+  .step ul{margin-top:8px;padding-left:18px;font-size:14px}
+  .step li{margin-top:4px}
+
+  /* ---------------- 컨트롤 ---------------- */
+  .controls{position:sticky;top:0;z-index:30;margin-top:26px;
+    background:var(--paper);padding:12px 0 14px;border-bottom:var(--bd)}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .row + .row{margin-top:10px}
-  input[type=search],select{
-    background:var(--panel);color:var(--ink);border:1px solid var(--line);
-    border-radius:10px;padding:11px 13px;font-size:15px;font-family:inherit;
+  .searchwrap{position:relative;flex:1 1 260px;min-width:0}
+  input[type=search]{
+    width:100%;background:#fff;color:var(--ink);border:var(--bd);box-shadow:var(--sh-sm);
+    padding:12px 42px 12px 14px;font-size:16px;font-family:inherit;font-weight:600;
   }
-  input[type=search]{flex:1 1 240px;min-width:0}
-  input[type=search]:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
-  .chip{
-    background:var(--panel);color:var(--dim);border:1px solid var(--line);
-    border-radius:999px;padding:7px 13px;font-size:13px;font-family:inherit;
-    cursor:pointer;white-space:nowrap;
-  }
-  .chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#08121d;font-weight:700}
-  /* 등급 칩은 3·4등급만 있다 — 대상 어휘가 그 두 등급으로 한정돼 있다.
-     반면 .t1~.t5 / .g1~.g5 는 뜻풀이 안 낱말 등급이라 1~5가 모두 쓰인다. */
-  .chip.lv[aria-pressed=true]{color:#0e1013}
-  .chip.lv3[aria-pressed=true]{background:var(--lv3);border-color:var(--lv3)}
-  .chip.lv4[aria-pressed=true]{background:var(--lv4);border-color:var(--lv4)}
-  .count{color:var(--faint);font-size:13px;margin-left:auto}
+  input[type=search]::-webkit-search-cancel-button{display:none}
+  input:focus-visible,select:focus-visible,button:focus-visible{
+    outline:3px solid #2563eb;outline-offset:2px}
+  .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    background:var(--ink);color:#fff;border:0;width:26px;height:26px;
+    font-size:15px;font-weight:900;cursor:pointer;line-height:1}
+  .kbd{position:absolute;right:44px;top:50%;transform:translateY(-50%);
+    border:2px solid var(--line);padding:1px 6px;font-size:11px;font-weight:800;background:var(--paper)}
+  select{background:#fff;border:var(--bd);box-shadow:var(--sh-sm);
+    padding:12px 12px;font-size:15px;font-family:inherit;font-weight:700;cursor:pointer}
+  .chip{background:#fff;border:var(--bd);box-shadow:var(--sh-sm);
+    padding:9px 14px;font-size:14px;font-family:inherit;font-weight:800;
+    cursor:pointer;white-space:nowrap}
+  .chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+  .chip[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+  .chip.lv3[aria-pressed=true]{background:var(--lv3);color:var(--ink)}
+  .chip.lv4[aria-pressed=true]{background:var(--lv4);color:var(--ink)}
+  .count{margin-left:auto;font-size:14px;font-weight:800;
+    background:var(--l);border:2px solid var(--line);padding:4px 10px}
 
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-    padding:18px;margin-bottom:14px}
-  .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .word{font-size:22px;font-weight:800;letter-spacing:-.01em}
-  .sup{font-size:12px;color:var(--faint);vertical-align:super}
-  .meta{color:var(--faint);font-size:13px}
-  .badge{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;color:#0e1013}
+  /* ---------------- 카드 ---------------- */
+  .card{background:#fff;border:var(--bd);box-shadow:var(--sh);padding:20px;margin-bottom:18px}
+  .head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .word{font-size:26px;font-weight:900;letter-spacing:-.02em}
+  .sup{font-size:12px;font-weight:700;vertical-align:super;opacity:.6}
+  .badge{font-size:12px;font-weight:900;border:2px solid var(--line);padding:2px 8px}
   .g1{background:var(--lv1)} .g2{background:var(--lv2)} .g3{background:var(--lv3)}
   .g4{background:var(--lv4)} .g5{background:var(--lv5)}
+  .meta{font-size:13px;font-weight:600;opacity:.7}
+  .copy{margin-left:auto;background:#fff;border:2px solid var(--line);box-shadow:2px 2px 0 var(--line);
+    font-family:inherit;font-size:12px;font-weight:800;padding:5px 10px;cursor:pointer}
+  .copy:active{transform:translate(2px,2px);box-shadow:none}
 
-  .glosses{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-  @media (max-width:640px){.glosses{grid-template-columns:1fr}}
-  .gloss{background:var(--panel2);border-radius:10px;padding:12px 13px;font-size:15px}
-  .gloss h4{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--faint);
-    margin-bottom:6px;text-transform:uppercase}
-  .gloss.easy{border:1px solid rgba(77,163,255,.3)}
-  .gloss.easy h4{color:var(--accent)}
-  .orig{color:var(--dim);font-size:14px}
+  .glosses{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  @media (max-width:700px){.glosses{grid-template-columns:1fr}}
+  .gloss{border:2px solid var(--line);padding:13px 14px}
+  .gloss h4{font-size:11px;font-weight:900;letter-spacing:.08em;margin-bottom:7px}
+  .gloss.orig{background:#F1EDE0}
+  .gloss.easy{background:var(--c)}
+  .gloss .body{font-size:15px;font-weight:500}
+  .gloss.orig .body{font-size:14px}
 
-  .ex{margin-top:12px;display:grid;gap:8px}
-  .ex div{font-size:14px;color:var(--ink);background:var(--panel2);
-    border-left:3px solid var(--line);border-radius:0 8px 8px 0;padding:9px 12px}
-  .ex .tag{display:inline-block;font-size:11px;color:var(--faint);margin-right:8px;font-weight:600}
-  .ex .subj{border-left-color:var(--gold)}
-  .ex .subj .tag{color:var(--gold)}
+  .ex{margin-top:14px;display:grid;gap:9px}
+  .ex div{font-size:14.5px;font-weight:500;border-left:6px solid var(--line);
+    background:#F7F3E6;padding:9px 12px}
+  .ex .tag{display:inline-block;font-size:11px;font-weight:900;margin-right:8px;
+    border:2px solid var(--line);padding:0 6px;background:#fff}
+  .ex .subj{border-left-color:var(--o)}
 
-  .tok{border-radius:4px;padding:0 3px}
-  .t1{background:rgba(63,166,106,.18)} .t2{background:rgba(99,168,63,.18)}
-  .t3{background:rgba(201,162,39,.20)} .t4{background:rgba(224,123,57,.24)}
-  .t5{background:rgba(217,87,87,.26)}
-  .tinf{background:rgba(255,255,255,.06);color:var(--dim)}
+  mark{background:var(--y);font-weight:800;padding:0 2px}
+  .tok{padding:0 3px;border-radius:2px}
+  .t1{background:var(--lv1)} .t2{background:var(--lv2)} .t3{background:var(--lv3)}
+  .t4{background:var(--lv4)} .t5{background:var(--lv5)}
+  .tinf{background:transparent;border-bottom:2px dashed var(--line)}
 
-  .empty{color:var(--faint);text-align:center;padding:60px 0}
-  .more{display:block;width:100%;margin-top:8px;background:var(--panel);color:var(--ink);
-    border:1px solid var(--line);border-radius:10px;padding:13px;font-size:15px;
-    font-family:inherit;cursor:pointer}
-  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);
-    color:var(--faint);font-size:13px}
-  footer a{color:var(--dim)}
-  @media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
-  .card:hover{border-color:#39404b}
+  .empty{padding:44px 20px;text-align:center;font-weight:700}
+  .empty b{display:block;font-size:19px;font-weight:900;margin-bottom:8px}
+  .empty span{font-size:14px;font-weight:600;opacity:.75}
+  .more{display:block;width:100%;margin-top:6px;background:var(--y);
+    border:var(--bd);box-shadow:var(--sh);padding:15px;font-size:16px;
+    font-family:inherit;font-weight:900;cursor:pointer}
+  .more:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--line)}
+
+  .limit{background:var(--p);padding:18px 20px;border:var(--bd);box-shadow:var(--sh);margin-top:22px}
+  .limit h2{margin-bottom:8px}
+  .limit p{font-size:14.5px;font-weight:600}
+
+  footer{margin-top:22px;padding:18px 20px;background:var(--ink);color:var(--paper);
+    border:var(--bd);box-shadow:var(--sh);font-size:13.5px;font-weight:500}
+  footer a{color:var(--y);font-weight:800}
+  footer p + p{margin-top:8px}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+    background:var(--ink);color:var(--paper);border:var(--bd);box-shadow:var(--sh);
+    padding:11px 18px;font-weight:800;font-size:14px;z-index:60;
+    opacity:0;pointer-events:none;transition:opacity .18s}
+  .toast.on{opacity:1}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <h1>학습자 친화적 어휘 사전<span class="dot">.</span></h1>
-  <p class="lead">
-    교과서에 나오지만 사전을 찾아도 <b>뜻풀이가 더 어려운</b> 낱말들을 모았다.
-    국립국어원 국어 기초 어휘 등급(1~5)을 근거로, 뜻풀이에 쓰인 말 하나하나의
-    난이도를 표시한다. <b>4등급 이상이 섞이면 다시 쓰게</b> 해서 만들었다.
-  </p>
+  <div class="hero">
+    <span class="kicker">닷커넥터 어휘 도구</span>
+    <h1>학습자 친화적 어휘 사전</h1>
+    <p>
+      모르는 낱말을 사전에서 찾았는데 <strong>뜻풀이가 더 어려웠던 적</strong>이 있을 것이다.
+      이 사전은 바로 그런 낱말만 모아, 초등 고학년이 읽고 바로 이해할 수 있는 말로
+      다시 썼다. 뜻풀이에 쓰인 낱말 하나하나에 난이도를 표시해 두었다.
+    </p>
+    <div class="stat">
+      <b>낱말 497개</b>
+      <b>쉬운 뜻풀이 100%가 3등급 이하</b>
+      <b>예문 2종 · 일상 + 교과</b>
+    </div>
+  </div>
 </header>
+
+<section class="why">
+  <div class="box cmp bad">
+    <span class="tag">사전은 이렇게 말한다</span>
+    <q>중간에 매개(媒介)가 되는 사람이나 사물 따위를 통하여 맺어지는 관계.</q>
+    <p class="note">‘매개’를 모르면 ‘간접’도 모른다. 뜻풀이가 표제어보다 어렵다.</p>
+  </div>
+  <div class="box cmp good">
+    <span class="tag">이 사전은 이렇게 말한다</span>
+    <q>어떤 대상과 직접 연결되지 않고 중간에 다른 것을 거쳐 이어지는 관계나 일.</q>
+    <p class="note">쓰인 낱말이 모두 3등급 이하다. 읽으면 바로 이해된다.</p>
+  </div>
+</section>
+
+<section class="box panel">
+  <h2>무엇을 근거로 ‘쉽다’고 하는가</h2>
+  <p>
+    느낌으로 정하지 않았다. 국립국어원이 공개한 <strong>국어 기초 어휘 40,000개</strong>는
+    낱말마다 1~5등급이 매겨져 있다. 1등급이 가장 먼저 배우는 쉬운 말, 5등급이 가장 어려운 말이다.
+  </p>
+  <p>
+    쉬운 뜻풀이를 쓴 뒤, 거기 쓰인 낱말을 이 등급표에 하나씩 대조한다.
+    <strong>4등급 이상이 하나라도 섞이면 다시 쓴다.</strong> 이 검사를 통과할 때까지 반복했다.
+    그래서 화면의 색은 장식이 아니라 실제 등급이다.
+  </p>
+  <div class="legend" aria-label="난이도 등급 범례">
+    <span class="lg1">1등급 · 가장 쉬움</span>
+    <span class="lg2">2등급</span>
+    <span class="lg3">3등급</span>
+    <span class="lg4">4등급</span>
+    <span class="lg5">5등급 · 가장 어려움</span>
+    <span class="lgx">점선 · 등급표에 없는 말</span>
+  </div>
+  <div class="tint">
+    실린 낱말은 <strong>3~4등급</strong>이면서 <strong>사전 뜻풀이에 4등급 이상이 섞인 것</strong>만 골랐다.
+    쉬운 말은 설명이 필요 없고, 아주 어려운 말은 초·중학교 교과 범위를 넘기 때문이다.
+  </div>
+  <a class="cta" href="https://tigerjk9.github.io/post/kice-vocab-2026/">
+    이 방식이 나온 연구를 정리한 글 읽기 →</a>
+</section>
+
+<section>
+  <div class="how">
+    <div class="box step">
+      <span class="n">1</span>
+      <h3>찾는다</h3>
+      <p>낱말을 모르면 낱말로, 낱말이 기억나지 않으면 뜻으로 찾는다. 검색은 뜻풀이 안까지 훑는다.</p>
+      <ul>
+        <li><strong>/</strong> 키를 누르면 바로 검색창으로 간다</li>
+        <li>3등급·4등급 단추로 범위를 좁힌다</li>
+      </ul>
+    </div>
+    <div class="box step">
+      <span class="n">2</span>
+      <h3>비교한다</h3>
+      <p>왼쪽이 표준국어대사전 원문, 오른쪽이 쉬운 뜻풀이다. 둘을 나란히 두면 무엇이 어려웠는지가 보인다.</p>
+      <ul>
+        <li>색이 진할수록 어려운 낱말</li>
+        <li><strong>난이도 색</strong> 단추로 색을 끌 수 있다</li>
+      </ul>
+    </div>
+    <div class="box step">
+      <span class="n">3</span>
+      <h3>가져간다</h3>
+      <p>카드의 <strong>복사</strong>를 누르면 뜻풀이와 예문이 통째로 복사된다. 학습지나 판서에 그대로 붙여 쓴다.</p>
+      <ul>
+        <li>예문은 일상용·교과용 두 가지</li>
+        <li>교과 예문에는 과목 이름이 붙어 있다</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 <div class="controls">
   <div class="row">
-    <input type="search" id="q" placeholder="낱말·뜻풀이 검색" autocomplete="off" aria-label="검색">
-    <select id="sort" aria-label="정렬">
-      <option value="default">기본 순</option>
-      <option value="word">가나다순</option>
-      <option value="hard">사전 뜻풀이가 어려운 순</option>
+    <div class="searchwrap">
+      <input type="search" id="q" placeholder="낱말 또는 뜻으로 찾기" autocomplete="off" aria-label="낱말 검색">
+      <span class="kbd" id="kbd">/</span>
+      <button class="clr" id="clr" hidden aria-label="검색어 지우기">×</button>
+    </div>
+    <select id="sort" aria-label="정렬 기준">
+      <option value="default">가나다순</option>
+      <option value="hard">사전이 어려운 순</option>
       <option value="easy">쉬워진 폭이 큰 순</option>
     </select>
   </div>
   <div class="row">
-    <button class="chip lv lv3" data-grade="3" aria-pressed="false">3등급</button>
-    <button class="chip lv lv4" data-grade="4" aria-pressed="false">4등급</button>
-    <button class="chip" id="annToggle" aria-pressed="true">난이도 표시</button>
-    <span class="count" id="count"></span>
+    <button class="chip lv3" data-grade="3" aria-pressed="false">3등급만</button>
+    <button class="chip lv4" data-grade="4" aria-pressed="false">4등급만</button>
+    <button class="chip" id="annToggle" aria-pressed="true">난이도 색</button>
+    <span class="count" id="count" role="status"></span>
   </div>
 </div>
 
 <main id="list" aria-live="polite"></main>
 <button class="more" id="more" hidden>더 보기</button>
 
+<section class="limit">
+  <h2>알고 써야 할 한계</h2>
+  <p>
+    쉬운 뜻풀이와 예문은 생성형 AI가 쓰고 규칙 검사를 통과한 것이다.
+    <strong>현직 교사와 국어교육 전문가의 검수는 아직 거치지 않았다.</strong>
+    원래 뜻을 좁히거나 미묘하게 비트는 경우가 남아 있을 수 있으니,
+    수업에 그대로 쓰기 전에 왼쪽 사전 원문과 견주어 보길 권한다.
+    이상한 뜻풀이를 발견하면 알려주면 고친다.
+  </p>
+</section>
+
 <footer>
   <p>
-    뜻풀이 등급 근거: 국립국어원 <a href="https://www.korean.go.kr/front/reportData/reportDataView.do?mn_id=207&amp;report_seq=1160" target="_blank" rel="noopener">2023년 국어 기초 어휘 선정 및 어휘 등급화 연구</a> (40,000개 공개 목록).
-    원 뜻풀이는 표준국어대사전.
+    <strong>등급 근거</strong> · 국립국어원
+    <a href="https://www.korean.go.kr/front/reportData/reportDataView.do?mn_id=207&amp;report_seq=1160" target="_blank" rel="noopener">2023년 국어 기초 어휘 선정 및 어휘 등급화 연구</a>
+    (40,000개 공개 목록). 왼쪽 뜻풀이 원문은 표준국어대사전.
   </p>
-  <p style="margin-top:8px">
-    설계 참고: 한국교육과정평가원 연구보고 RRI 2026-1 「학습자 친화적 어휘 교수학습 지원 방안 탐색 및 콘텐츠 개발」.
-    쉬운 뜻풀이와 예시문은 생성형 AI 로 만들고 규칙 검증을 거쳤다 — <b>사람의 교육적 검수는 아직 거치지 않았다.</b>
+  <p>
+    <strong>설계 참고</strong> · 한국교육과정평가원 연구보고 RRI 2026-1
+    「학습자 친화적 어휘 교수학습 지원 방안 탐색 및 콘텐츠 개발」.
+    이 연구가 만든 1만 개 어휘 DB는 공개돼 있지 않아, 같은 방식을 공개 자료만으로 재현했다.
   </p>
-  <p style="margin-top:8px">닷커넥터 · <a href="/">블로그로</a></p>
+  <p>
+    닷커넥터 ·
+    <a href="https://tigerjk9.github.io/post/kice-vocab-2026/">이 도구의 배경이 된 연구 리뷰 읽기 →</a>
+  </p>
 </footer>
 
 </div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
 (function () {
-  var PAGE = 40;
-  var data = [], view = [], shown = 0, annOn = true;
-  var grades = new Set();
-
+  var PAGE = 30;
+  var data = [], view = [], shown = 0, annOn = true, grades = new Set();
   var $ = function (id) { return document.getElementById(id); };
-  var list = $('list'), more = $('more'), count = $('count');
+  var list = $('list'), more = $('more'), count = $('count'), q = $('q'), clr = $('clr');
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
@@ -157,7 +348,24 @@
     });
   }
 
-  // "말[Lv3] 다른[Lv1(추론 결과)]" -> 등급 색 배지가 입혀진 HTML
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('on');
+    clearTimeout(t._h);
+    t._h = setTimeout(function () { t.classList.remove('on'); }, 1600);
+  }
+
+  // 검색어를 결과에서 눈에 띄게 — 어디가 걸렸는지 보여야 검색이 신뢰된다.
+  function hl(html, term) {
+    if (!term) return html;
+    var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return html.replace(/>([^<]+)</g, function (m, txt) {
+      return '>' + txt.replace(re, '<mark>$1</mark>') + '<';
+    });
+  }
+
+  // "말[Lv3] 다른[Lv1(추론 결과)]" -> 등급 색이 입혀진 HTML
   //
   // 공백으로 split 하면 안 된다. 미등재 표기 '(추론 결과)' 안에 공백이 있어
   // 토큰이 '거쳐서[Lv1(추론' 과 '결과)]' 로 쪼개진다(실측). 정규식으로 통째 집는다.
@@ -170,15 +378,22 @@
     while ((m = TOKEN.exec(s)) !== null) {
       out += esc(s.slice(last, m.index));
       var cls = m[3] ? 'tinf' : 't' + m[2];
-      var tip = m[3] ? '사전 미등재 - 추론' : m[2] + '등급';
+      var tip = m[3] ? '등급표에 없는 말' : m[2] + '등급';
       out += '<span class="tok ' + cls + '" title="' + tip + '">' + esc(m[1]) + '</span>';
       last = m.index + m[0].length;
     }
-    out += esc(s.slice(last));
-    return out;
+    return out + esc(s.slice(last));
   }
 
-  function card(r) {
+  function plain(r) {
+    return r.word + '\n' +
+      '쉬운 뜻풀이: ' + r.gloss_easy + '\n' +
+      '사전 뜻풀이: ' + r.gloss_original + '\n' +
+      '예문(일상): ' + r.example_general + '\n' +
+      '예문(' + (r.subject || '교과') + '): ' + r.example_subject;
+  }
+
+  function card(r, i, term) {
     var sup = r.homonym_no ? '<span class="sup">' + esc(r.homonym_no) + '</span>' : '';
     var easy = annOn && r.gloss_easy_annotated
       ? renderAnnotated(r.gloss_easy_annotated) : esc(r.gloss_easy);
@@ -187,61 +402,100 @@
       ex += '<div><span class="tag">일상</span>' + esc(r.example_general) + '</div>';
     }
     if (r.example_subject) {
-      ex += '<div class="subj"><span class="tag">' +
-            esc(r.subject || '교과') + '</span>' + esc(r.example_subject) + '</div>';
+      ex += '<div class="subj"><span class="tag">' + esc(r.subject || '교과') + '</span>' +
+            esc(r.example_subject) + '</div>';
     }
-    return '<article class="card">' +
+    var html = '<article class="card">' +
       '<div class="head">' +
         '<span class="word">' + esc(r.word) + sup + '</span>' +
         '<span class="badge g' + r.grade + '">' + r.grade + '등급</span>' +
-        '<span class="meta">' + esc(r.pos) + (r.origin_type ? ' · ' + esc(r.origin_type) : '') +
-        (r.source_word ? ' · ' + esc(r.source_word) : '') + '</span>' +
+        '<span class="meta">' + esc(r.pos) +
+          (r.source_word ? ' · ' + esc(r.source_word) : '') + '</span>' +
+        '<button class="copy" data-i="' + i + '">복사</button>' +
       '</div>' +
       '<div class="glosses">' +
-        '<div class="gloss"><h4>표준국어대사전</h4><div class="orig">' +
+        '<div class="gloss orig"><h4>표준국어대사전</h4><div class="body">' +
           esc(r.gloss_original) + '</div></div>' +
-        '<div class="gloss easy"><h4>쉬운 뜻풀이</h4><div>' + easy + '</div></div>' +
+        '<div class="gloss easy"><h4>쉬운 뜻풀이</h4><div class="body">' + easy + '</div></div>' +
       '</div>' +
       (ex ? '<div class="ex">' + ex + '</div>' : '') +
     '</article>';
+    return hl(html, term);
   }
 
   function apply() {
-    var q = $('q').value.trim().toLowerCase();
+    var term = q.value.trim();
+    var t = term.toLowerCase();
     var sort = $('sort').value;
+    clr.hidden = !term;
+    $('kbd').hidden = !!term;
+
     view = data.filter(function (r) {
       if (grades.size && !grades.has(r.grade)) return false;
-      if (!q) return true;
-      return (r.word + ' ' + r.gloss_easy + ' ' + r.gloss_original).toLowerCase().indexOf(q) >= 0;
+      if (!t) return true;
+      return (r.word + ' ' + r.gloss_easy + ' ' + r.gloss_original +
+              ' ' + r.example_general).toLowerCase().indexOf(t) >= 0;
     });
-    if (sort === 'word') view.sort(function (a, b) { return a.word.localeCompare(b.word, 'ko'); });
-    else if (sort === 'hard') view.sort(function (a, b) { return b.max_grade_original - a.max_grade_original; });
-    else if (sort === 'easy') view.sort(function (a, b) {
-      return (b.max_grade_original - b.max_grade_easy) - (a.max_grade_original - a.max_grade_easy);
-    });
+
+    if (sort === 'hard') {
+      view.sort(function (a, b) { return b.max_grade_original - a.max_grade_original; });
+    } else if (sort === 'easy') {
+      view.sort(function (a, b) {
+        return (b.max_grade_original - b.max_grade_easy) - (a.max_grade_original - a.max_grade_easy);
+      });
+    } else {
+      view.sort(function (a, b) { return a.word.localeCompare(b.word, 'ko'); });
+    }
+
     shown = 0;
     list.innerHTML = '';
-    count.textContent = view.length + ' / ' + data.length + '개';
-    draw();
+    count.textContent = view.length === data.length
+      ? data.length + '개'
+      : view.length + ' / ' + data.length + '개';
+    draw(term);
   }
 
-  function draw() {
+  function draw(term) {
     var next = view.slice(shown, shown + PAGE);
     if (!next.length && !shown) {
-      list.innerHTML = '<p class="empty">찾는 낱말이 없다.</p>';
+      list.innerHTML = '<div class="box empty"><b>찾는 낱말이 없다</b>' +
+        '<span>다른 말로 찾아보거나, 등급 단추를 풀어 보라.<br>' +
+        '이 사전에는 3~4등급 낱말 ' + data.length + '개만 실려 있다.</span></div>';
       more.hidden = true;
       return;
     }
-    list.insertAdjacentHTML('beforeend', next.map(card).join(''));
+    var html = '';
+    for (var i = 0; i < next.length; i++) {
+      html += card(next[i], shown + i, term);
+    }
+    list.insertAdjacentHTML('beforeend', html);
     shown += next.length;
     more.hidden = shown >= view.length;
+    more.textContent = '더 보기 (' + (view.length - shown) + '개 남음)';
   }
 
-  $('q').addEventListener('input', apply);
+  q.addEventListener('input', apply);
   $('sort').addEventListener('change', apply);
-  more.addEventListener('click', draw);
+  more.addEventListener('click', function () { draw(q.value.trim()); });
+  clr.addEventListener('click', function () { q.value = ''; q.focus(); apply(); });
 
-  Array.prototype.forEach.call(document.querySelectorAll('.chip.lv'), function (b) {
+  list.addEventListener('click', function (e) {
+    var b = e.target.closest('.copy');
+    if (!b) return;
+    var r = view[Number(b.dataset.i)];
+    if (!r) return;
+    var text = plain(r);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('복사했다 — ' + r.word); });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); toast('복사했다 — ' + r.word); } catch (x) {}
+      document.body.removeChild(ta);
+    }
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.chip[data-grade]'), function (b) {
     b.addEventListener('click', function () {
       var g = Number(b.dataset.grade);
       var on = b.getAttribute('aria-pressed') === 'true';
@@ -257,14 +511,21 @@
     apply();
   });
 
+  // '/' 로 검색창 진입. 입력 중이면 가로채지 않는다.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) {
+      e.preventDefault(); q.focus(); q.select();
+    } else if (e.key === 'Escape' && document.activeElement === q) {
+      q.value = ''; apply(); q.blur();
+    }
+  });
+
   fetch('/assets/vocab-db.json')
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (rows) {
-      data = rows;
-      apply();
-    })
+    .then(function (rows) { data = rows; apply(); })
     .catch(function () {
-      list.innerHTML = '<p class="empty">어휘 자료를 불러오지 못했다.</p>';
+      list.innerHTML = '<div class="box empty"><b>어휘 자료를 불러오지 못했다</b>' +
+        '<span>잠시 뒤에 새로고침해 보라.</span></div>';
       count.textContent = '';
     });
 })();
