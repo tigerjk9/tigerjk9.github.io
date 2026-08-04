@@ -88,6 +88,8 @@ bundle exec rake version        # 버전 일괄 업데이트
 
 > **주의**: `_sass/minimal-mistakes/_sidebar.scss`에 `.sidebar.sticky { max-height: calc(100vh - #{$nav-height} - 2em) }` 하드코딩 → `main.scss` 오버라이드에 `!important` 필수.
 
+**기본 화면 배율 (2026-08-04)**: 크롬 80% 줌으로 보던 밀도를 100%의 기본값으로 삼았다. `main.scss` 최상단(테마 import 앞)에서 `$doc-font-size*` 4개를 덮어씀 — 16 / 18 / 20 / 22px → **16 / 16 / 16 / 17.6px**. 모바일(<768px)은 가독성 하한 때문에 16px 유지, 데스크톱 구간만 축소. 이 변수는 `_reset.scss`의 `html { font-size }`와 `em()` 함수 기본 컨텍스트에만 쓰이는데 `em()`은 실사용처가 없고, 브레이크포인트는 breakpoint gem이 자체 16px 기준으로 em 변환(`@include breakpoint-set("to ems", true)`)하므로 **폰트 스케일을 바꿔도 브레이크포인트는 이동하지 않는다**. 사이드바 폭(`$right-sidebar-width` 300px)은 의도적으로 유지 — 줄이면 미니 그래프·서재 위젯(5열 표지 그리드)이 좁아진다. 커스텀 UI의 하드코딩 px(버튼·토스트·토글 14~18px)도 그대로라 본문만 작아지고 컨트롤 크기는 보존된다. 재조정은 `-x-large`(≥1280px)·`-large` 두 값만 만지면 된다. 검증: 라이브 HTML에 `<base>` + 오버라이드 `<style>`을 주입한 정적 하네스를 Edge 헤드리스로 캡처해 **진짜 80% 줌**(`--window-size=1920,1125 --force-device-scale-factor=0.8`)과 픽셀 비교.
+
 ### Custom UI Features
 
 | 기능 | 주요 파일 |

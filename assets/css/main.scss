@@ -8,6 +8,15 @@ search: false
 // 1. 테마 변수 덮어쓰기 (Overrides)
 $max-width: 100%;
 
+// 기본 화면 배율 축소 — 크롬 80% 줌으로 보던 밀도를 100%에서 기본값으로 삼는다.
+// 테마 기본값은 16 / 18 / 20 / 22px. 데스크톱 구간만 줄이고 모바일(<768px)은
+// 가독성 하한(16px)을 지키기 위해 그대로 둔다. 더 작게/크게 조정하려면
+// $doc-font-size-x-large(≥1280px)와 -large(1024~1279px) 두 값만 만지면 된다.
+$doc-font-size: 16px; // <768px  (변경 없음)
+$doc-font-size-medium: 16px; // ≥768px  (18px → 16px)
+$doc-font-size-large: 16px; // ≥1024px (20px → 16px)
+$doc-font-size-x-large: 17.6px; // ≥1280px (22px → 17.6px, 0.8배)
+
 // 2. 테마 기본 스타일 불러오기
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
