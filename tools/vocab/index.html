@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>학습자 친화적 어휘 사전 · 닷커넥터</title>
-<meta name="description" content="사전을 찾아도 뜻풀이가 더 어려운 낱말 497개. 국립국어원 어휘 등급을 근거로 쉬운 뜻풀이와 교과 예문을 붙였다. 교사와 학생이 바로 쓰는 어휘 도구.">
+<meta name="description" content="사전 뜻풀이가 표제어보다 어려운 낱말 497개에, 국립국어원 어휘 등급을 근거로 쉬운 뜻풀이와 교과 예문을 붙였습니다. 교사와 학생이 바로 쓰는 어휘 도구입니다.">
 <meta property="og:title" content="학습자 친화적 어휘 사전">
-<meta property="og:description" content="사전을 찾아도 뜻풀이가 더 어려운 낱말 497개를 학습자 눈높이로 다시 썼다.">
+<meta property="og:description" content="사전을 찾아도 뜻풀이가 더 어려운 낱말 497개를 학습자 눈높이로 다시 썼습니다.">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -169,6 +169,9 @@
     border:var(--bd);box-shadow:var(--sh);padding:15px;font-size:16px;
     font-family:inherit;font-weight:900;cursor:pointer}
   .more:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--line)}
+  /* .more 의 display:block 은 UA 스타일시트의 [hidden]{display:none} 을 이겨서
+     JS 가 more.hidden=true 로 숨겨도 단추가 남는다(실측). 명시적으로 되돌린다. */
+  .more[hidden]{display:none}
 
   .limit{background:var(--p);padding:18px 20px;border:var(--bd);box-shadow:var(--sh);margin-top:22px}
   .limit h2{margin-bottom:8px}
@@ -195,41 +198,41 @@
     <span class="kicker">닷커넥터 어휘 도구</span>
     <h1>학습자 친화적 어휘 사전</h1>
     <p>
-      모르는 낱말을 사전에서 찾았는데 <strong>뜻풀이가 더 어려웠던 적</strong>이 있을 것이다.
-      이 사전은 바로 그런 낱말만 모아, 초등 고학년이 읽고 바로 이해할 수 있는 말로
-      다시 썼다. 뜻풀이에 쓰인 낱말 하나하나에 난이도를 표시해 두었다.
+      낱말을 찾으러 사전을 펼쳤는데 <strong>뜻풀이에 모르는 낱말이 또 나오는</strong> 일이 있습니다.
+      이 사전은 그런 낱말만 모아, 초등 고학년이 읽고 바로 이해할 수 있는 말로 다시 썼습니다.
+      뜻풀이에 쓰인 낱말마다 난이도를 색으로 표시해 두었습니다.
     </p>
     <div class="stat">
       <b>낱말 497개</b>
-      <b>쉬운 뜻풀이 100%가 3등급 이하</b>
-      <b>예문 2종 · 일상 + 교과</b>
+      <b>쉬운 뜻풀이는 모두 3등급 이하</b>
+      <b>낱말마다 예문 2개 · 일상과 교과</b>
     </div>
   </div>
 </header>
 
 <section class="why">
   <div class="box cmp bad">
-    <span class="tag">사전은 이렇게 말한다</span>
+    <span class="tag">‘간접’ · 사전 원문</span>
     <q>중간에 매개(媒介)가 되는 사람이나 사물 따위를 통하여 맺어지는 관계.</q>
-    <p class="note">‘매개’를 모르면 ‘간접’도 모른다. 뜻풀이가 표제어보다 어렵다.</p>
+    <p class="note">‘매개’를 모르면 ‘간접’도 알 수 없습니다. 뜻풀이가 표제어보다 어렵습니다.</p>
   </div>
   <div class="box cmp good">
-    <span class="tag">이 사전은 이렇게 말한다</span>
+    <span class="tag">‘간접’ · 쉬운 뜻풀이</span>
     <q>어떤 대상과 직접 연결되지 않고 중간에 다른 것을 거쳐 이어지는 관계나 일.</q>
-    <p class="note">쓰인 낱말이 모두 3등급 이하다. 읽으면 바로 이해된다.</p>
+    <p class="note">쓰인 낱말이 모두 3등급 이하입니다. 다시 찾아볼 낱말이 없습니다.</p>
   </div>
 </section>
 
 <section class="box panel">
-  <h2>무엇을 근거로 ‘쉽다’고 하는가</h2>
+  <h2>무엇을 기준으로 ‘쉽다’고 판단했나요?</h2>
   <p>
-    느낌으로 정하지 않았다. 국립국어원이 공개한 <strong>국어 기초 어휘 40,000개</strong>는
-    낱말마다 1~5등급이 매겨져 있다. 1등급이 가장 먼저 배우는 쉬운 말, 5등급이 가장 어려운 말이다.
+    느낌으로 정하지 않았습니다. 국립국어원이 공개한 <strong>국어 기초 어휘 40,000개</strong>에는
+    낱말마다 1~5등급이 매겨져 있습니다. 1등급이 가장 먼저 배우는 쉬운 말이고, 5등급이 가장 어려운 말입니다.
   </p>
   <p>
-    쉬운 뜻풀이를 쓴 뒤, 거기 쓰인 낱말을 이 등급표에 하나씩 대조한다.
-    <strong>4등급 이상이 하나라도 섞이면 다시 쓴다.</strong> 이 검사를 통과할 때까지 반복했다.
-    그래서 화면의 색은 장식이 아니라 실제 등급이다.
+    쉬운 뜻풀이를 쓴 뒤 거기 쓰인 낱말을 이 등급표와 하나씩 대조했습니다.
+    <strong>4등급 이상이 하나라도 섞이면 다시 썼고</strong>, 검사를 통과할 때까지 반복했습니다.
+    화면에 칠해진 색은 그때 확인한 등급을 그대로 옮긴 것입니다.
   </p>
   <div class="legend" aria-label="난이도 등급 범례">
     <span class="lg1">1등급 · 가장 쉬움</span>
@@ -240,40 +243,40 @@
     <span class="lgx">점선 · 등급표에 없는 말</span>
   </div>
   <div class="tint">
-    실린 낱말은 <strong>3~4등급</strong>이면서 <strong>사전 뜻풀이에 4등급 이상이 섞인 것</strong>만 골랐다.
-    쉬운 말은 설명이 필요 없고, 아주 어려운 말은 초·중학교 교과 범위를 넘기 때문이다.
+    실린 낱말은 <strong>3~4등급</strong>이면서 <strong>사전 뜻풀이에 4등급 이상이 섞인 것</strong>만 골랐습니다.
+    1~2등급은 굳이 풀이할 필요가 없고, 5등급은 초·중학교 교과에서 거의 다루지 않기 때문입니다.
   </div>
   <a class="cta" href="https://tigerjk9.github.io/post/kice-vocab-2026/">
-    이 방식이 나온 연구를 정리한 글 읽기 →</a>
+    이 방식의 바탕이 된 연구 정리 글 읽기 →</a>
 </section>
 
 <section>
   <div class="how">
     <div class="box step">
       <span class="n">1</span>
-      <h3>찾는다</h3>
-      <p>낱말을 모르면 낱말로, 낱말이 기억나지 않으면 뜻으로 찾는다. 검색은 뜻풀이 안까지 훑는다.</p>
+      <h3>찾기</h3>
+      <p>낱말이 생각나면 낱말로, 뜻만 어렴풋하면 뜻으로 찾으세요. 검색은 뜻풀이와 일상 예문 안까지 훑습니다.</p>
       <ul>
-        <li><strong>/</strong> 키를 누르면 바로 검색창으로 간다</li>
-        <li>3등급·4등급 단추로 범위를 좁힌다</li>
+        <li><strong>/</strong> 키를 누르면 검색창으로 바로 갑니다</li>
+        <li>3등급·4등급 단추로 범위를 좁힐 수 있습니다</li>
       </ul>
     </div>
     <div class="box step">
       <span class="n">2</span>
-      <h3>비교한다</h3>
-      <p>왼쪽이 표준국어대사전 원문, 오른쪽이 쉬운 뜻풀이다. 둘을 나란히 두면 무엇이 어려웠는지가 보인다.</p>
+      <h3>비교하기</h3>
+      <p>왼쪽이 표준국어대사전 원문, 오른쪽이 쉬운 뜻풀이입니다. 나란히 놓고 보면 어느 낱말이 걸림돌이었는지 바로 보입니다.</p>
       <ul>
-        <li>색이 진할수록 어려운 낱말</li>
-        <li><strong>난이도 색</strong> 단추로 색을 끌 수 있다</li>
+        <li>색이 진할수록 어려운 낱말입니다</li>
+        <li><strong>난이도 색</strong> 단추로 색을 끌 수 있습니다</li>
       </ul>
     </div>
     <div class="box step">
       <span class="n">3</span>
-      <h3>가져간다</h3>
-      <p>카드의 <strong>복사</strong>를 누르면 뜻풀이와 예문이 통째로 복사된다. 학습지나 판서에 그대로 붙여 쓴다.</p>
+      <h3>가져가기</h3>
+      <p>카드의 <strong>복사</strong>를 누르면 뜻풀이와 예문이 통째로 복사됩니다. 학습지나 판서에 그대로 붙여 쓰세요.</p>
       <ul>
-        <li>예문은 일상용·교과용 두 가지</li>
-        <li>교과 예문에는 과목 이름이 붙어 있다</li>
+        <li>예문은 일상용과 교과용 두 가지입니다</li>
+        <li>교과 예문에는 과목 이름이 붙어 있습니다</li>
       </ul>
     </div>
   </div>
@@ -304,13 +307,12 @@
 <button class="more" id="more" hidden>더 보기</button>
 
 <section class="limit">
-  <h2>알고 써야 할 한계</h2>
+  <h2>쓰기 전에 알아 두실 점</h2>
   <p>
-    쉬운 뜻풀이와 예문은 생성형 AI가 쓰고 규칙 검사를 통과한 것이다.
-    <strong>현직 교사와 국어교육 전문가의 검수는 아직 거치지 않았다.</strong>
-    원래 뜻을 좁히거나 미묘하게 비트는 경우가 남아 있을 수 있으니,
-    수업에 그대로 쓰기 전에 왼쪽 사전 원문과 견주어 보길 권한다.
-    이상한 뜻풀이를 발견하면 알려주면 고친다.
+    쉬운 뜻풀이와 예문은 생성형 AI가 쓰고 등급 검사를 통과한 것입니다.
+    <strong>현직 교사와 국어교육 전문가의 검수는 아직 거치지 않았습니다.</strong>
+    원래 뜻을 좁혀 놓았거나 미묘하게 비틀어 놓은 것이 남아 있을 수 있으니,
+    수업에 그대로 쓰시기 전에 왼쪽 사전 원문과 견주어 보시기 바랍니다.
   </p>
 </section>
 
@@ -318,12 +320,12 @@
   <p>
     <strong>등급 근거</strong> · 국립국어원
     <a href="https://www.korean.go.kr/front/reportData/reportDataView.do?mn_id=207&amp;report_seq=1160" target="_blank" rel="noopener">2023년 국어 기초 어휘 선정 및 어휘 등급화 연구</a>
-    (40,000개 공개 목록). 왼쪽 뜻풀이 원문은 표준국어대사전.
+    (40,000개 공개 목록). 왼쪽 뜻풀이 원문은 표준국어대사전에서 가져왔습니다.
   </p>
   <p>
     <strong>설계 참고</strong> · 한국교육과정평가원 연구보고 RRI 2026-1
     「학습자 친화적 어휘 교수학습 지원 방안 탐색 및 콘텐츠 개발」.
-    이 연구가 만든 1만 개 어휘 DB는 공개돼 있지 않아, 같은 방식을 공개 자료만으로 재현했다.
+    이 연구가 만든 1만 개 어휘 DB는 공개돼 있지 않아, 공개 자료만으로 같은 방식을 재현했습니다.
   </p>
   <p>
     닷커넥터 ·
@@ -458,9 +460,9 @@
   function draw(term) {
     var next = view.slice(shown, shown + PAGE);
     if (!next.length && !shown) {
-      list.innerHTML = '<div class="box empty"><b>찾는 낱말이 없다</b>' +
-        '<span>다른 말로 찾아보거나, 등급 단추를 풀어 보라.<br>' +
-        '이 사전에는 3~4등급 낱말 ' + data.length + '개만 실려 있다.</span></div>';
+      list.innerHTML = '<div class="box empty"><b>찾으시는 낱말이 없습니다</b>' +
+        '<span>다른 말로 찾아보시거나 등급 단추를 풀어 보세요.<br>' +
+        '이 사전에는 3~4등급 낱말 ' + data.length + '개만 실려 있습니다.</span></div>';
       more.hidden = true;
       return;
     }
@@ -486,11 +488,11 @@
     if (!r) return;
     var text = plain(r);
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { toast('복사했다 — ' + r.word); });
+      navigator.clipboard.writeText(text).then(function () { toast('복사했습니다 — ' + r.word); });
     } else {
       var ta = document.createElement('textarea');
       ta.value = text; document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); toast('복사했다 — ' + r.word); } catch (x) {}
+      try { document.execCommand('copy'); toast('복사했습니다 — ' + r.word); } catch (x) {}
       document.body.removeChild(ta);
     }
   });
@@ -524,8 +526,8 @@
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (rows) { data = rows; apply(); })
     .catch(function () {
-      list.innerHTML = '<div class="box empty"><b>어휘 자료를 불러오지 못했다</b>' +
-        '<span>잠시 뒤에 새로고침해 보라.</span></div>';
+      list.innerHTML = '<div class="box empty"><b>어휘 자료를 불러오지 못했습니다</b>' +
+        '<span>잠시 뒤에 새로고침해 주세요.</span></div>';
       count.textContent = '';
     });
 })();
