@@ -54,6 +54,22 @@ COPY_RULES = cn.COPY_RULES
 
 # ---------------------------------------------------------------- 입력 추출
 
+def blog_identity() -> "tuple[str, str]":
+    """_config.yml 에서 사이트 주소와 저자명을 읽는다(하드코딩 방지)."""
+    url, author = "https://tigerjk9.github.io", "김진관(닷커넥터)"
+    try:
+        cfg = (REPO_ROOT / "_config.yml").read_text(encoding="utf-8")
+        m = re.search(r"^url\s*:\s*[\"']?(https?://[^\"'\s]+)", cfg, re.M)
+        if m:
+            url = m.group(1)
+        m = re.search(r"^author:\s*\n\s+name\s*:\s*[\"'](.+?)[\"']", cfg, re.M)
+        if m:
+            author = m.group(1)
+    except OSError:
+        pass
+    return url.rstrip("/"), author
+
+
 def extract_post(path: Path) -> dict:
     """_posts/*.md 에서 제목·본문·출처를 뽑는다."""
     raw = path.read_text(encoding="utf-8")
@@ -72,6 +88,17 @@ def extract_post(path: Path) -> dict:
     ms = re.search(r"^##\s*출처\s*$(.*?)(?=^##\s|\Z)", body, re.S | re.M)
     if ms:
         src_hint = " ".join(ms.group(1).split())[:400]
+
+    # 자체 집필 글(원 자료가 따로 없는 글)은 출처가 곧 블로그 글 주소다.
+    # 이걸 안 넘기면 모델이 저자·제목만 쓰고 주소를 빼먹어, 카드를 보고도
+    # 원문을 찾아갈 수 없게 된다(2026-08-04 실측).
+    if not src_hint:
+        site, author = blog_identity()
+        permalink = fm_get("permalink")
+        if permalink:
+            addr = site.split("://", 1)[-1] + "/" + permalink.strip("/")
+            src_hint = (f"닷커넥터 블로그 자체 집필 글. 저자 {author}. "
+                        f"글 주소(그대로 표기): {addr}")
 
     # 본문에서 마크업·figure 걷어내기
     text = re.sub(r"<figure>.*?</figure>", " ", body, flags=re.S)
