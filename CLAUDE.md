@@ -108,6 +108,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | AI에게 묻기 (RAG 챗봇, 주인장 키 + 방문자 BYOK) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
 | 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
 | NE 수업 디자이너 (노벨 엔지니어링 수업 설계기) | `tools/ne-designer/index.html` (front matter 없는 정적 단독 HTML) |
+| 학습자 친화적 어휘 사전 (497개, 등급 대조) | `tools/vocab/index.html`, `assets/vocab-db.json` |
 | 포스트 번호 표시 (홈·단일·검색 공통 넘버링) | `_layouts/single.html`, `_includes/archive-single.html`, `assets/js/lunr/lunr-store.js`·`lunr-en.js`, `assets/css/main.scss` |
 | 검색 키보드 단축키 (`/`·`Ctrl/Cmd+K`) | `assets/js/search-shortcut.js`, `_includes/search/search_form.html`, `_includes/scripts.html` |
 | 이미 읽은 글 표시 (localStorage `readPosts`) | `assets/js/read-tracker.js`, `_includes/scripts.html`, `assets/css/main.scss` |
@@ -122,7 +123,9 @@ bundle exec rake version        # 버전 일괄 업데이트
 - **프로필**(`_includes/author-profile.html`): 이메일은 mailto 링크 대신 주소(`faithfuljk@naver.com`) 표시 + 클릭 복사(onclick, no-JS mailto 폴백). 소셜 링크(Website·Facebook·GitHub·Instagram = `author.links`)에 `target="_blank"` → 새 탭
 - **모바일 사이드바 토글**: `@media max-width:1023px` 안에 좌하단 FAB(2026-07-24) 뒤로 남아 있던 `.sidebar-toggle { top:70px }` 스테일 오버라이드 제거 → FAB가 상단으로 튀어 포스트 번호와 겹치던 문제 해소
 
-**`tools/` 정적 단독 페이지**: front matter 없는 `tools/<슬러그>/index.html`은 Jekyll이 정적 파일로 그대로 복사한다(exclude 목록에 없음). 테마 CSS·`sidebar-toggle.js`가 로드되지 않아 라이트모드 앵커 색·플로팅 ☰ 버튼 함정이 원천 차단된다 — layout default 커스텀 페이지에 필요한 `#앱ID` 스코핑도 불필요. 첫 사례가 NE 수업 디자이너(`/tools/ne-designer/`). 검증은 스크래치패드 복사 후 Edge 헤드리스 `#demo` 해시 렌더 캡처(메모리 `project_tools_static_pages`).
+**`tools/` 정적 단독 페이지**: front matter 없는 `tools/<슬러그>/index.html`은 Jekyll이 정적 파일로 그대로 복사한다(exclude 목록에 없음). 테마 CSS·`sidebar-toggle.js`가 로드되지 않아 라이트모드 앵커 색·플로팅 ☰ 버튼 함정이 원천 차단된다 — layout default 커스텀 페이지에 필요한 `#앱ID` 스코핑도 불필요. 첫 사례가 NE 수업 디자이너(`/tools/ne-designer/`), 두 번째가 어휘 사전(`/tools/vocab/`). 검증은 스크래치패드 복사 후 Edge 헤드리스 `#demo` 해시 렌더 캡처(메모리 `project_tools_static_pages`). 데이터 fetch가 절대경로(`/assets/...`)면 로컬 file:// 에서 안 잡히므로 `window.fetch`를 목데이터로 덮어쓴 사본을 만들어 캡처한다.
+
+> **`[hidden]` 무력화 함정 (2026-08-04 실측)**: 저자 CSS에서 `display`를 지정한 요소는 UA 스타일시트의 `[hidden]{display:none}`을 **이겨서** JS의 `el.hidden = true`가 통하지 않는다. 어휘 사전 `.more{display:block}`이 그래서 결과가 0건일 때도 "더 보기" 단추를 계속 보여줬다(누르면 라벨이 `더 보기 (0개 남음)`으로 바뀜). `display`를 주는 셀렉터마다 `&[hidden]{display:none}`을 짝으로 붙인다. `display` 미지정 요소(`.clr`·`.kbd`)는 무영향.
 
 **다크/라이트 모드**: `html[data-theme="light"]` CSS 레이어 방식. 컴파일된 dark skin 위에 light 오버라이드 덮기. anti-FOUC 인라인 스크립트를 `_includes/head.html` CSS `<link>` 이전에 삽입. `theme-toggle.js`는 이벤트 위임 방식 — masthead와 모바일 사이드바의 `.theme-toggle` 버튼 모두 처리.
 
@@ -424,6 +427,8 @@ py -X utf8 scripts/cardnews.py --style diagram --topic "..."          # 밝은 �
 - **스크림 필수**: 레퍼런스 원본은 사진이 이미 어두웠지만 밝은 사진이 들어오면 흰 헤드라인이 날아간다 → 사진 위에 하단 그라디언트(30%부터 99%까지)를 항상 덮는다
 - **긴 출처는 상단 우측으로 (2026-08-03)**: 논문 제목이 길면 푸터 우측 출처 블록이 위로 자라 헤드라인을 침범한다. `hookcard_template.html` 스크립트가 **4단계로 물러난다** — ① 푸터 유지(2행 이내, 레퍼런스 실측 배치) ② `.source.top` 으로 상단 띠(0~140px) 이동, 폭은 헤드라인과 같은 **888px**(760px로 잡으면 제목 끝 한 단어가 3행으로 떨어져 고아 줄이 생김) ③ 24→20px 축소 ④ **마지막 줄만** 말줄임(저자·연도 줄은 불변). 이를 위해 `hookcard.py`가 출처를 `<br>` 한 덩어리가 아니라 `.s-line` 요소로 넘긴다. 템플릿 `<div class="source">`에 **`id="source"` 필수**(누락 시 스크립트가 조용히 no-op). 프롬프트도 "제목은 원문 그대로 전부 쓰고 스스로 줄이지 말 것"으로 바꿨다 — 미리 자른 제목으론 독자가 검색해도 원문을 못 찾는다. `validate_copy`의 "출처 말줄임표" 검사는 유지(Gemini의 어중간한 절단을 막는 별개 규칙)
 - **자체 집필 글은 출처 = 블로그 주소 (2026-08-04)**: `## 출처`가 없는 자기 글은 모델이 저자·제목만 쓰고 **주소를 빼먹어, 카드를 봐도 원문을 찾아갈 수 없었다**(실측). `extract_post`가 `## 출처` 부재 시 front matter `permalink` + `_config.yml`의 `url`·`author.name`(하드코딩 아님, `blog_identity()`)으로 "자체 집필 글 + 글 주소" 힌트를 만들고, 프롬프트 `[source]`에 "`출처: 닷커넥터 <저자>` + 줄바꿈 + 주어진 주소 그대로, **2줄 초과 금지**(제목은 헤드라인과 중복)" 규칙을 넣었다. **`## 출처`가 있는 글(논문·기사 리뷰)은 기존대로 원 자료를 인용** — 우선순위가 바뀌지 않는다. 3줄이 되면 폴백이 출처를 상단 띠로 올려 좌하단 로고 옆 레퍼런스 배치가 깨지므로 2줄 상한이 핵심
+- **카드를 포스트 히어로로 넣기 (2026-08-04, 9편 적용)**: 카드는 소셜용이지만 해당 글 맨 위 표지로도 쓴다. `assets/<permalink슬러그>-card.jpg`(PNG→JPEG q90, 장당 ~130KB)로 두고 `<figure style="max-width:560px;margin-inline:auto">`로 감싼다 — 1080×1350 세로라 본문 폭을 다 채우면 과하다. 원본보다 작은 사본(SNS 경유 등)을 받으면 확대 손실을 피해 그 폭을 그대로 쓴다. **선두에 자동 삽입된 teaser `<figure>`가 있으면 카드로 교체**한다(같은 자리·같은 역할이라 두면 큰 이미지가 두 장 쌓인다). 이미지 파일은 남겨 `header.teaser`(OG·리스트)로 계속 쓰이므로 미리보기는 그대로다. **`header.teaser`를 세로 카드로 바꾸지 말 것** — 카카오·OG가 가로로 잘라 헤드라인이 날아간다
+- **이미지가 본문 첫 블록이면 description 이 빈다 (CRITICAL)**: Jekyll 자동 발췌가 `<figure>` 블록이 되고 `_includes/seo.html`이 `strip_html` 하면 `meta description`·`og:description`이 **빈 문자열**이 된다(공유 카드에 설명 증발). front matter에 `description:`을 직접 넣어 막는다. 문구는 본문 첫 문단에서 **추출**한다(생성 금지). 참고로 `/paper` 산출 글은 카드 삽입 전에도 이미 발췌가 `## 1. 연구의 목적` 헤딩이라 `"1. 연구의 목적"`이 description 이었다 — 카드를 넣는 김에 함께 고친다
 - **후처리 QA**: 헤드라인이 원문에 없는 주장을 만들지 않았는지(놀라움은 자료 안 사실에서), 출처 저자·연도 환각, **자체 글이면 블로그 주소 포함 여부**, 생성 이미지에 글자 혼입 여부 육안 확인. 수정은 `card.json` 고쳐 `--rerender`(무과금)
 - **`image_hint`가 글자를 부른다 (실측 2회)**: 힌트에 "essay page", "handwritten cheat sheet"처럼 **글이 적힌 사물**을 요구하면 `STYLE_SUFFIX`의 `No text, no letters` 지시를 덮고 화면 가득 가짜 글자가 나온다. 글이 필요한 주제는 힌트에서 필기 요구를 빼거나 "handwriting completely out of focus and unreadable"로 초점을 흐린다
 
