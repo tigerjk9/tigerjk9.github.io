@@ -1,10 +1,16 @@
 ---
 title: "LLM이 만든 설계 문제는 프로젝트 학습의 고차원적 사고를 평가할 수 있는가?"
+description: "프로젝트 기반 학습(PjBL)은 컴퓨터 공학 교육에서 실용적 기술과 깊은 인지 참여를 촉진함. 그러나 기존 PjBL 평가는 학습 전이 맥락에서의 고차원적 사고력(HOT) 측정을 어려워함. 특히 생성형 AI 도구 활용과 협업 학습이 증가하면서 개별 학생의 진정한 숙달 여부 파악에 한계가 드러남."
 date: 2026-07-31 13:25:42 +0900
 categories: [AI, 교육, 학습과학, 에듀테크]
 tags: [AI, 에듀테크, 교육혁신, 논문리뷰, LLM, 미래교육, 자기조절학습]
 permalink: /post/llm-generated-design-problems/
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/llm-generated-design-problems-card.jpg" alt="LLM이 만든 설계 문제는 프로젝트 학습의 고차원적 사고를 평가할 수 있는가?">
+</figure>
+
 
 ## 1. 연구의 목적
 

@@ -1,5 +1,6 @@
 ---
 title: "교사가 AI 학습 기술을 직접 만들 때 AI 리터러시는 어떻게 깊어지는가?"
+description: "기존 학습 도구는 개발자 중심 사고로 실제 교실 환경과 괴리가 컸음. 이에 따라 교사 참여형 설계의 중요성이 부각되지만, AI 기반 기술 개발에 대한 교사의 기술적 역량과 전문성 개발 기회가 부족한 현실임. 더욱이 교사들이 AI를 교실에 책임감 있게 적용하는 데 필요한 AI 리터러시 함양 또한 시급한 과제임."
 date: 2026-07-31 13:25:46 +0900
 categories: [AI, 교육, 교육혁신, 에듀테크, 교사전문성]
 tags: [AI, 에듀테크, 교육혁신, 논문리뷰, 교사전문성, LLM, 미래교육, 생성형AI, AI수업, 교육공학, 디지털교육, 바이브코딩, 인간중심AI, AI리터러시]
@@ -7,6 +8,11 @@ header:
   teaser: /assets/k12-teachers-ai-learning-tech-framework-fig-1.jpg
 permalink: /post/k12-teachers-ai-learning-tech-framework/
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/k12-teachers-ai-learning-tech-framework-card.jpg" alt="교사가 AI 학습 기술을 직접 만들 때 AI 리터러시는 어떻게 깊어지는가?">
+</figure>
+
 
 ## 1. 연구의 목적
 

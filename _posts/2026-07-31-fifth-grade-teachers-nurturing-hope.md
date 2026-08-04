@@ -1,10 +1,16 @@
 ---
 title: "전문적학습공동체는 교사의 집단적 희망을 어떻게 키우는가?"
+description: "학교 현장의 교사들은 수많은 난관에 부딪히지만, 협력하며 극복해 나감. 이 연구는 교사들이 겪는 장애물과 좌절감 속에서도 희망을 유지하고 키워나가는 방식에 주목함."
 date: 2026-07-31 13:05:00 +0900
 categories: [교육공학, 교사전문성]
 tags: [교사전문성, 학습과학, 자기조절학습, 교육혁신, 논문리뷰]
 permalink: /post/fifth-grade-teachers-nurturing-hope/
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/fifth-grade-teachers-nurturing-hope-card.jpg" alt="전문적학습공동체는 교사의 집단적 희망을 어떻게 키우는가?">
+</figure>
+
 
 ## 1. 연구의 목적
 

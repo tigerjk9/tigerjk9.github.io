@@ -1,5 +1,6 @@
 ---
 title: "AI 피드백은 반복적인 글쓰기 학습에 어떤 영향을 미치는가?"
+description: "AI 기반 피드백 시스템이 고등 교육 글쓰기 학습에 빠르게 도입되고 있으나, 학기 전체에 걸친 반복적인 현장 사용 효과에 대한 실증적 증거가 부족한 상황임. 학생들은 AI의 즉각적인 지원을 높이 평가하지만, 동시에 AI 피드백의 정확성, 문맥 적합성, 일반적인 조언 경향, 그리고 과도한 의존성 위험에 대한 우려를 표함."
 date: 2026-08-02 14:47:11 +0900
 categories: [AI, 교육혁신, 학습과학]
 tags: [AI, 에듀테크, 교육혁신, 자기조절학습, LLM, AI윤리, 논문리뷰]
@@ -8,9 +9,10 @@ header:
 permalink: /post/student-evaluation-of-repeated-ai-feedback/
 ---
 
-<figure>
-<img src="/assets/student-evaluation-of-repeated-ai-feedback-thumb.jpg" alt="AI 피드백은 반복적인 글쓰기 학습에 어떤 영향을 미치는가?">
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/student-evaluation-of-repeated-ai-feedback-card.jpg" alt="AI 피드백은 반복적인 글쓰기 학습에 어떤 영향을 미치는가?">
 </figure>
+
 
 ## 1. 연구의 목적
 

@@ -1,5 +1,6 @@
 ---
 title: "대학생들은 생성형 AI를 어떻게 이해하고 있는가?"
+description: "이 연구는 학생들이 생성형 AI(GenAI)를 어떻게 인식하는지가 학업에서의 활용 방식, 기관 정책 준수 여부, 그리고 새로운 학습 기회 포착 능력에 결정적인 영향을 미친다는 문제의식에서 시작함. 기존의 생성형 AI 교육 도입 연구는 대개 학생들의 지식 수준을 양적으로 평가하거나 도구 채택 패턴을 분석하는 데 그쳤음."
 date: 2026-07-31 13:25:39 +0900
 categories: [AI, 교육혁신]
 tags: [AI, 에듀테크, 학습과학, 생성형AI, 자기조절학습, 메타인지, 디지털교육, 논문리뷰]
@@ -7,6 +8,11 @@ header:
   teaser: /assets/students-mental-models-genai-fig-1.png
 permalink: /post/students-mental-models-genai/
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/students-mental-models-genai-card.jpg" alt="대학생들은 생성형 AI를 어떻게 이해하고 있는가?">
+</figure>
+
 
 ## 1. 연구의 목적
 

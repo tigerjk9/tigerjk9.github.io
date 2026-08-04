@@ -1,5 +1,6 @@
 ---
 title: "카메라 켜기가 참여가 될 때, HyFlex 교실에서 벌어지는 일"
+description: "한 교실에 세 종류의 학생이 동시에 있는 장면에서 출발함. 교실에 앉은 학생, 화상으로 접속한 학생, 나중에 녹화를 볼 학생임. 교사는 셋을 한꺼번에 상대함. 앞자리와 눈을 맞추면서, 카메라를 향해 몸을 돌리고, 뒤늦게 볼 학생도 알아듣도록 말의 순서를 다시 짬."
 date: 2026-07-27 15:44:25 +0900
 categories: [교육혁신, 교육공학]
 tags: [에듀테크, 교육혁신, 디지털교육, AI윤리, UDL, 논문리뷰]
@@ -7,6 +8,11 @@ header:
   teaser: /assets/platformized-classroom-hyflex-fig-1.jpg
 permalink: /post/platformized-classroom-hyflex/
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/platformized-classroom-hyflex-card.jpg" alt="카메라 켜기가 참여가 될 때, HyFlex 교실에서 벌어지는 일">
+</figure>
+
 
 ## 1. 연구의 목적
 

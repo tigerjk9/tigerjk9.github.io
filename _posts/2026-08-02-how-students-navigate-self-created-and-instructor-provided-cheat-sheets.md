@@ -1,5 +1,6 @@
 ---
 title: "학생은 왜 직접 치트 시트를 만드는가? — 치트 시트 선택과 학습의 본질"
+description: "교육 현장에서 치트 시트는 인지 부하를 줄이고 시험 성과를 높이는 도구로 흔히 쓰이는 중임. 하지만 학습자가 직접 만든 치트 시트와 강사가 제공한 치트 시트 중 무엇을 선택하는지, 또 이런 선택이 시험 준비 방식과 어떻게 연결되는지는 충분히 탐구되지 못했음."
 date: 2026-08-02 14:47:58 +0900
 categories: [교육, 학습과학]
 tags: [자기조절학습, 에듀테크, 교육혁신, 논문리뷰, 학습과학]
@@ -8,9 +9,10 @@ header:
 permalink: /post/how-students-navigate-self-created-and-instructor-provided-cheat-sheets/
 ---
 
-<figure>
-<img src="/assets/how-students-navigate-self-created-and-instructor-provided-cheat-sheets-thumb.jpg" alt="학생은 왜 직접 치트 시트를 만드는가 — 치트 시트 선택과 학습의 본질">
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/how-students-navigate-self-created-and-instructor-provided-cheat-sheets-card.jpg" alt="학생은 왜 직접 치트 시트를 만드는가? — 치트 시트 선택과 학습의 본질">
 </figure>
+
 
 ## 1. 연구의 목적
 

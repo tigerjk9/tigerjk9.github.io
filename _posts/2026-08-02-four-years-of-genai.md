@@ -1,5 +1,6 @@
 ---
 title: "생성형 AI 시대, 소프트웨어 역량 평가의 교육-산업계 간극을 좁히는 길은 무엇인가?"
+description: "생성형 AI(GenAI)의 등장으로 소프트웨어 개발 방식이 근본적으로 변화함. 이로 인해 초급 소프트웨어 엔지니어에게 요구되는 핵심 역량과 이를 평가하는 방식에 대한 근본적인 질문이 제기됨."
 date: 2026-08-02 14:48:45 +0900
 categories: [AI, 교육, 교육공학, AI디지털기반교육혁신]
 tags: [생성형AI, 에듀테크, 교육혁신, AI윤리, 학습과학, 논문리뷰]
@@ -8,9 +9,10 @@ header:
 permalink: /post/four-years-of-genai/
 ---
 
-<figure>
-<img src="/assets/four-years-of-genai-thumb.jpg" alt="생성형 AI 시대, 소프트웨어 역량 평가의 교육-산업계 간극을 좁히는 길은 무엇인가?">
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/four-years-of-genai-card.jpg" alt="생성형 AI 시대, 소프트웨어 역량 평가의 교육-산업계 간극을 좁히는 길은 무엇인가?">
 </figure>
+
 
 ## 1. 연구의 목적
 
