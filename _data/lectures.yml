@@ -1,3 +1,22 @@
+- slug: elementary-assessment-expert
+  title: "초등 학생평가 전문가 기본과정"
+  subtitle: "개념기반 탐구수업 · 서논술형 평가 도구 · GRASPS 루브릭 · 과정중심평가"
+  audience: "초등 교사"
+  date: "2026-08-06"
+  hub_url: /lectures/elementary-assessment-expert/
+  locked: true
+  locked_payload: "AgKCQBboxKSZDOs3bgqTtNpq7/ApUKF52KqI/4mrDL0w3bvSdZs6I/B3WNS84bRd1Gp1hlRROGBNA8UD4SC41q/Ka/4QZ/yZ2HiYZnSxLR810+6nPF8kvyFoUrChERNxViSABJwRlFSyY71w9eo="
+  thumbnail: /assets/lectures/covers/7156c96edd3df89d.jpg
+  author: "황지연 · 정민수 · 지미정(도전하는 지쌤) 외 · 2026 대전 학생평가 전문가 과정 연수"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "대전 초등 학생평가 전문가 과정의 안내판·강의·가이드북·루브릭 자료를 한 곳에서 찾도록 정리한 링크 큐레이션"
+  tags:
+    - 학생평가
+    - 서논술형평가
+    - 개념기반탐구수업
+    - 과정중심평가
+    - 교원연수
+
 - slug: ai-image-video-prompting-guide
   title: "AI 이미지·영상 생성 프롬프팅 가이드"
   subtitle: "모델 선택 · 프롬프트 구조 · 이미지/비디오 · 샷 디렉팅 · 치트시트"
