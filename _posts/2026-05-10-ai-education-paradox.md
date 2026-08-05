@@ -5,7 +5,7 @@ categories: [AI, 교육]
 tags: [AI, 교육혁신, 교사전문성, AI윤리, 학습과학, 인간중심AI, 비판적사고, 미래교육]
 header:
   teaser: /assets/ai-education-paradox-src1-thumb.png
-permalink: /post/ai-education-paradox/
+permalink: /post/ai-education-efficiency-judgment/
 ---
 기술이 우리에게 새로운 도구를 건넬 때마다, 우리는 익숙한 질문과 씨름한다. "이것은 무엇을 변화시키는가?" 그리고 "우리는 무엇을 놓치지 않아야 하는가?" 챗GPT와 같은 생성형 AI가 교육 현장의 문을 두드린 지금, 이 질문들은 더욱 첨예해진다. AI가 제시하는 효율의 약속 뒤에는 우리가 직면해야 할 중요한 교육적 역설이 존재한다.
 
