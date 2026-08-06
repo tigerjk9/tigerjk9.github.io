@@ -38,5 +38,5 @@ permalink: /post/llm-beyond-stochastic-parrot/
 
 ## 출처
 
-- Emily M. Bender · Timnit Gebru 외, "On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?" (ACM FAccT, 2021) — '통계적 앵무새'라는 표현의 출처
+- Bender, E. M., Gebru, T., McMillan-Major, A., & Shmitchell, S. (2021). On the Dangers of Stochastic Parrots: Can Language Models Be Too Big? *Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency (FAccT '21)*, 610–623. https://doi.org/10.1145/3442188.3445922 — '통계적 앵무새(stochastic parrot)'라는 표현의 출처
 - 닷커넥터 자체 정리
