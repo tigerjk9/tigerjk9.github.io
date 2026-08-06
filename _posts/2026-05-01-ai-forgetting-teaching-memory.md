@@ -8,11 +8,11 @@ header:
 permalink: /post/ai-forgetting-teaching-memory/
 ---
 
-인공지능의 발전은 끊임없이 새로운 질문을 던지고 있다. AI가 무엇을 기억하고 무엇을 잊을 수 있는가에 대한 기술적 논의는 인간의 기억, 지식, 그리고 교육의 본질에 대한 근원적인 탐구로 확장된다. 우리는 AI의 '선택적 망각'이 교육 현장에 어떤 의미를 지니는지 깊이 사유한다.
-
 <figure>
-<img src="/assets/ai-forgetting-teaching-memory-thumb.jpg" alt="AI 망각의 시대, 교실은 어떤 기억을 가르칠까">
+<img src="/assets/ai-forgetting-teaching-memory-hook.png" alt="AI 망각의 시대, 교실은 어떤 기억을 기억하게 해야 할까">
 </figure>
+
+인공지능의 발전은 끊임없이 새로운 질문을 던지고 있다. AI가 무엇을 기억하고 무엇을 잊을 수 있는가에 대한 기술적 논의는 인간의 기억, 지식, 그리고 교육의 본질에 대한 근원적인 탐구로 확장된다. 우리는 AI의 '선택적 망각'이 교육 현장에 어떤 의미를 지니는지 깊이 사유한다.
 
 ## 1. 망각하는 인공지능, 교실의 기억을 묻다
 
