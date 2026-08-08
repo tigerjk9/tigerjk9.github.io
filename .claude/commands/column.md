@@ -58,7 +58,17 @@
 
 ## 워크플로
 
-**1단계 — 자료 읽기(있으면).** 참고 URL이 있으면 읽는다. 일반 웹은 `curl -ksL "https://r.jina.ai/<URL>"`, 막히면 `curl -ksL "<URL>"`. 주장에 최신 사실·수치가 필요하면 `WebSearch`로 확인한다. 자료는 근거로 쓰되 베끼지 않는다. 칼럼은 오피니언이지 문헌 검토가 아니다 — 조사는 논지에 필요한 만큼만.
+**1단계 — 자료 읽기(있으면).** 참고 URL이 있으면 읽는다. 일반 웹은 `curl -ksL "https://r.jina.ai/<URL>"`, 막히면 `curl -ksL "<URL>"`.
+
+**유튜브 URL**(`youtube.com`·`youtu.be`)이면 영상 자막을 근거로 삼는다. 자막 추출:
+
+```bash
+py -3.12 -c "from youtube_transcript_api import YouTubeTranscriptApi as Y; print(' '.join(s.text for s in Y().fetch('<VIDEO_ID>', languages=['ko','en'])))" > 자막.txt
+```
+
+자막이 없으면 `yt-dlp`의 VTT 자동자막으로 폴백한다(`yt-dlp --write-auto-sub --sub-lang ko,en --skip-download <URL>`). 자막은 발화라 군더더기·중복·진행자 멘트가 많으니 **그대로 옮기지 말고** 요지·핵심 발언·수치를 추려 각을 잡는다. 화자·출연자·매체명을 확인해 출처에 정확히 적고, 인용은 자막에 실제로 있는 말만 쓴다(발언 날조 금지).
+
+주장에 최신 사실·수치가 필요하면 `WebSearch`로 확인한다. 자료는 근거로 쓰되 베끼지 않는다. 칼럼은 오피니언이지 문헌 검토가 아니다 — 조사는 논지에 필요한 만큼만.
 
 **2단계 — 각을 잡는다.** 사안에서 남들이 놓친 긴장·역설·구체적 주장을 하나 찾는다. 중립을 지키지 않는다. 무엇을 말할지 정하고 쓴다.
 
