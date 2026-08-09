@@ -4,7 +4,14 @@ date: 2026-08-09 01:20:30 +0900
 categories: [AI, 학습과학]
 tags: [칼럼, AI에이전트, 스킬, 판단력, 바이브코딩]
 permalink: /post/skill-file-judgment/
+description: "AI 코딩 에이전트의 '스킬'은 마크다운 문서 한 장에 담긴 전문가의 판단이다. 파일은 내려받아도, 그것을 언제 어떻게 쓸지 아는 판단까지 함께 딸려 오지는 않는다."
+header:
+  teaser: /assets/skill-file-judgment-card.jpg
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/skill-file-judgment-card.jpg" alt="스킬 파일은 판단까지 설치해 주지 않는다">
+</figure>
 
 AI 코딩 도구를 쓰다 보면 '스킬'이라는 걸 만나게 된다. 이름은 거창해도 열어 보면 그냥 마크다운 문서 한 장이다. "기능을 짜기 전에 실패하는 테스트부터 써라" 같은 지침이 평범한 문장으로 적혀 있고, 에이전트는 상황이 맞으면 그 문서를 읽어 그대로 따른다. 코드가 아니라 글이라서, 개발자가 아니어도 열어서 읽고 고칠 수 있다. 최근 한 한국어 영상이 이런 스킬 도구 세 가지를 가벼운 것부터 무거운 것까지 나란히 놓고 비교하는데, 설명을 듣다 보면 조용한 사실 하나가 만져진다. 여기서 설치되는 건 결국 전문가의 판단을 글로 옮겨 적은 것이다.
 
