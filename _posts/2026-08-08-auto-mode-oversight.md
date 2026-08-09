@@ -4,7 +4,14 @@ date: 2026-08-08 17:53:00 +0900
 categories: [AI, 교육]
 tags: [칼럼, AI에이전트, 클로드코드, 자동화, 메타인지]
 permalink: /post/auto-mode-oversight/
+description: "클로드 코드를 만든 보리스 처니는 에이전트가 승인을 요청할 때마다 결국 읽지 않고 '예'만 누르게 됐다고 고백한다. 사람이 확인하니 안전하다는 감독은 어떻게 반사작용이 되는가."
+header:
+  teaser: /assets/auto-mode-oversight-card.jpg
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/auto-mode-oversight-card.jpg" alt="사람이 매번 '예'를 누른다면, 그 감독은 이미 없다">
+</figure>
 
 미국 반도체 회사 AMD의 한 대담에서, 클로드 코드를 만든 보리스 처니가 자기 습관 하나를 털어놓는다. 에이전트가 점점 오래 돌면서 명령을 실행할 때마다 승인을 요청하자, 어느 순간부터 그는 그 내용을 읽지 않게 되었다고 한다. 그냥 예, 예, 예를 눌렀다는 것이다. 나중에 보니 보안팀도 똑같이 하고 있었다. 그래서 앤트로픽이 찾은 해법은 사람을 더 꼼꼼히 읽게 만드는 쪽이 아니었다. 승인이라는 판단 자체를 별도의 분류기에 넘겨 버렸다. 이름은 auto 모드, 고객에게도 권한다.
 
