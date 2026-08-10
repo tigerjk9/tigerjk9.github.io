@@ -1057,6 +1057,35 @@ AI 활용 질문 중심 문제 해결 모형을 소개한다. 문제 발견하�
 
 > 위는 패들렛 '실습자료' 열 8개 항목을 그대로 옮긴 것이다. 반별(1~7반) 열의 분임 작업 산출물과 교과서·교육과정 원문(105MB) 등 상용·대용량 자료는 연수 [패들렛](https://padlet.com/eqa1/4-e9gqd9sw7znnb7mg)에서 확인한다.
 
+## 집합연수 참고 원본 자료
+
+연수에서 근거와 예시로 참조한 공식 자료다. 교육부·이화여자대학교 「질문하는 학교」 사업 산출물과 교육과정·평가 문서로, 앞선 편들의 이론과 설계 실습의 바탕이 된다. (상용 교과서·지도서와 대용량 교육과정 원문은 저작권·용량상 이 페이지에 옮기지 않고 연수 [패들렛](https://padlet.com/eqa1/4-e9gqd9sw7znnb7mg)에서 내려받는다.)
+
+**연수 안내**
+
+- [연수의 이해 — 1강부터 36강까지 개요 — pdf](/assets/lectures/student-question-assessment/pdf/guide-overview.pdf){:target="_blank"}
+- [이해를 넘어 실천으로 — 연수의 흐름 잡기 — pdf](/assets/lectures/student-question-assessment/pdf/guide-flow.pdf){:target="_blank"}
+- [학생 질문 중심 수업·평가 연수 로드맵 — png](/assets/lectures/student-question-assessment/pdf/roadmap.png){:target="_blank"}
+
+**질문 중심 수업 모델 자료집** — 교육부·이화여자대학교 산학협력단, 2025 「질문하는 학교」 선도학교
+
+- [학생의 질문 능력 계발을 위한 질문 중심 수업 모델 — pdf](/assets/lectures/student-question-assessment/pdf/model-question-lesson.pdf){:target="_blank"} · 2~3편 근거
+- [학생 질문 중심의 교과 수업 모델 (244쪽) — pdf](/assets/lectures/student-question-assessment/pdf/model-subject-lesson.pdf){:target="_blank"} · 4~5편 근거
+- [학생 질문 중심의 프로젝트 수업 모델 — pdf](/assets/lectures/student-question-assessment/pdf/model-project-lesson.pdf){:target="_blank"} · 6편 근거
+
+**서·논술형 평가·피드백 참고**
+
+- [학생평가 톺아보기 — 과정 중심 학생평가 운영 가이드 (교육부, 2026) — pdf](/assets/lectures/student-question-assessment/pdf/assessment-overview.pdf){:target="_blank"} · 8~10편·20·22편 근거
+- [질문 중심 수업·평가 성장 지원 피드백 — pdf](/assets/lectures/student-question-assessment/pdf/growth-feedback.pdf){:target="_blank"} · 23편(33~34차시) 근거
+
+**교육과정 분석 참고** — "날씨와 우리 생활" 단원 실습 소재
+
+- [2022 과학과 교육과정 — pdf](/assets/lectures/student-question-assessment/pdf/science-curriculum-2022.pdf){:target="_blank"}
+- [과학과 교육과정 편집본 (지구와 우주 영역) — pdf](/assets/lectures/student-question-assessment/pdf/science-curriculum-edit.pdf){:target="_blank"}
+- [설계 실습 참고자료 — 내용체계·성취기준·성취수준 — hwp](/assets/lectures/student-question-assessment/pdf/design-reference.hwp){:target="_blank"}
+- [질문 초점 자료 (25-26차시) — png](/assets/lectures/student-question-assessment/pdf/question-focus.png){:target="_blank"}
+- [23차시 도입부 질문 만들기 자료 — png](/assets/lectures/student-question-assessment/pdf/intro-question-23.png){:target="_blank"}
+
 ## 참고와 출처
 
 - 원작: 교육부 · 경상북도교육청, 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 (1~10편 콘텐츠 연수, 11~14편 실시간 원격 연수, 15~24편 집합연수). 15편·16편은 각각 서수현·김선 교수의 초청 특강이며, 18편 24차시 설계 실습 안내는 강영구 교사(광주 관산초)가 맡았다.
