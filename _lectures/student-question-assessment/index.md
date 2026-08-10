@@ -1037,18 +1037,25 @@ AI 활용 질문 중심 문제 해결 모형을 소개한다. 문제 발견하�
 
 **[24편 슬라이드 PDF 내려받기 (22장)](/assets/lectures/student-question-assessment/pdf/session-3536.pdf){:target="_blank"}**
 
-## 집합연수 실습 자료와 참고 원본
+## 집합연수 실습자료
 
-집합연수에서 쓰인 연수생용 실습 활동지 원본이다.
+패들렛 '실습자료' 열에 올라온 연수생용 자료 전체다. 설계 실습에서 직접 작성하는 활동지와, 교육과정 분석의 근거로 쓰는 성취수준 참고자료로 나뉜다.
 
-- [모둠활동 실습지 (연수생용) (hwp)](/assets/lectures/student-question-assessment/pdf/worksheet-group.hwp){:target="_blank"}
-- [개별활동 실습지 (연수생용) (hwp)](/assets/lectures/student-question-assessment/pdf/worksheet-individual.hwp){:target="_blank"}
-- [27차시 모둠활동 실습지 (hwpx)](/assets/lectures/student-question-assessment/pdf/worksheet-27-group.hwpx){:target="_blank"}
-- [서·논술형 평가 문항 개발 도움 자료 (hwpx)](/assets/lectures/student-question-assessment/pdf/worksheet-item-guide.hwpx){:target="_blank"}
-- [수업·평가 방법 정리 (hwp)](/assets/lectures/student-question-assessment/pdf/worksheet-method-summary.hwp){:target="_blank"}
-- [주사위 질문 챌린지 발표자료 예시 (hwp)](/assets/lectures/student-question-assessment/pdf/worksheet-dice-example.hwp){:target="_blank"}
+**설계 실습 활동지**
 
-교육과정 원문, 성취수준 자료, 과학 교과서·지도서, 교육부 「질문하는 학교」 질문 중심 수업 모델 자료집 등 용량이 큰 참고 원본은 연수 [패들렛 자료실](https://padlet.com/eqa1/4-e9gqd9sw7znnb7mg)에서 함께 내려받을 수 있다. (교과서·지도서는 상용 저작물이라 이 페이지에 옮겨 싣지 않는다.)
+- [모둠활동 실습지 (연수생용) — hwp](/assets/lectures/student-question-assessment/pdf/worksheet-group.hwp){:target="_blank"} · 설계 실습(24·29·31·33·35차시) 공용
+- [개별활동 실습지 (연수생용) — hwp](/assets/lectures/student-question-assessment/pdf/worksheet-individual.hwp){:target="_blank"} · 설계 실습 공용
+- [27차시 모둠활동 실습지 — hwpx](/assets/lectures/student-question-assessment/pdf/worksheet-27-group.hwpx){:target="_blank"} · 27차시(서·논술형 평가 유형 분석)
+- [서·논술형 평가 문항 개발 도움 자료 (연수생용) — hwpx](/assets/lectures/student-question-assessment/pdf/worksheet-item-guide.hwpx){:target="_blank"} · 31~32차시(문항·채점기준 개발)
+
+**교육과정 분석·성취수준 참고자료** — 한국교육학술정보원, 2022 개정 교육과정에 따른 성취수준. 핵심 질문 도출과 평가 요소 선정(25~32차시)에서 근거로 쓴다.
+
+- [성취수준 (1~2학년군) — hwp](/assets/lectures/student-question-assessment/pdf/achievement-standards-1-2.hwp){:target="_blank"}
+- [성취수준 (3~4학년군) — hwp](/assets/lectures/student-question-assessment/pdf/achievement-standards-3-4.hwp){:target="_blank"}
+- [성취수준 (5~6학년군) — hwp](/assets/lectures/student-question-assessment/pdf/achievement-standards-5-6.hwp){:target="_blank"}
+- 과학 5-2 지도서: [티솔파 초등 지도서 포털](https://ele.tsherpa.co.kr/){:target="_blank"} (아이스크림미디어 상용 자료 — 회원 로그인 필요, 원본 링크로 안내)
+
+> 위는 패들렛 '실습자료' 열 8개 항목을 그대로 옮긴 것이다. 반별(1~7반) 열의 분임 작업 산출물과 교과서·교육과정 원문(105MB) 등 상용·대용량 자료는 연수 [패들렛](https://padlet.com/eqa1/4-e9gqd9sw7znnb7mg)에서 확인한다.
 
 ## 참고와 출처
 
