@@ -13,7 +13,7 @@ header:
   og_image: /assets/lectures/student-question-assessment/cover.jpg
 ---
 
-교육부와 경상북도교육청이 펴낸 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 전체를 한 곳에 정리했다. 학생 질문이 왜 배움의 출발점인지에서 시작해, 질문 교육의 내용 체계와 수업 모형, 교과 적용 사례, 학교 문화 조성, 서·논술형 평가까지 다루는 1~10편(콘텐츠 연수)에 이어, 교사가 직접 질문을 만들고 다듬어 보는 11~14편(11~18차시 실시간 원격 연수)까지 열네 편이 하나의 흐름으로 이어진다. 여기에 오프라인으로 진행된 집합연수(19~36차시)를 정리한 15편 이후가 더해져, 두 전문가 특강과 질문 놀이형 수업·핵심 질문 설계·서·논술형 평가 설계와 문항·채점기준·성장 지원 피드백까지 대면 실습 심화 과정을 담는다. 슬라이드 660여 장 전체를 편별로 넘겨볼 수 있고, 편별 PDF와 실습 활동지도 내려받을 수 있다.
+교육부와 경상북도교육청이 펴낸 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 전체를 한 곳에 정리했다. 학생 질문이 왜 배움의 출발점인지에서 시작해, 질문 교육의 내용 체계와 수업 모형, 교과 적용 사례, 학교 문화 조성, 서·논술형 평가까지 다루는 1~10편(콘텐츠 연수)에 이어, 교사가 직접 질문을 만들고 다듬어 보는 11~14편(11~18차시 실시간 원격 연수)까지 열네 편이 하나의 흐름으로 이어진다. 여기에 오프라인으로 진행된 집합연수(19~36차시)를 정리한 15편 이후가 더해져, 두 전문가 특강과 질문 놀이형 수업·핵심 질문 설계·서·논술형 평가 설계와 문항·채점기준·성장 지원 피드백까지 대면 실습 심화 과정을 담는다. 슬라이드 720여 장 전체를 편별로 넘겨볼 수 있고, 편별 PDF와 실습 활동지도 내려받을 수 있다.
 
 ## 자료 개요
 
@@ -23,7 +23,7 @@ header:
 | 원작 | 교육부 · 경상북도교육청 (특강 서수현·김선) |
 | 큐레이션 | 김진관 (닷커넥터) |
 | 대상 | 초등 교사 및 교육 관계자 |
-| 분량 | 24편 · 슬라이드 660여 장 (1~10편 콘텐츠 연수, 11~14편 실시간 원격 연수, 15~24편 집합연수) |
+| 분량 | 24편 · 슬라이드 720여 장 (1~10편 콘텐츠 연수, 11~14편 실시간 원격 연수, 15~24편 집합연수) |
 | 핵심 프레임워크 | 학생 질문 교육 내용 체계(정혜승 외, 2024) · QFT(질문형성기법) · 질문 생성 유창성(Fluency) · 메타 질문(Wiggins & McTighe, 2011) · Q-Matrix · 질문 성찰형 모형 · 질문 중심 교과 학습 모형 · AI 활용 질문 중심 문제 해결 모형 · 서·논술형 평가 |
 
 ## 자료 내려받기
@@ -47,7 +47,7 @@ header:
 | 15 | 19차시 특강 1 · 질문의 이해와 교육 방향 (서수현) | 16장 | [내려받기](/assets/lectures/student-question-assessment/pdf/teukgang1-seosuhyeon.pdf){:target="_blank"} |
 | 16 | 20차시 특강 2 · AI 시대, 무엇을 어떻게 가르치고 평가할 것인가 (김선) | 29장 | [내려받기](/assets/lectures/student-question-assessment/pdf/teukgang2-kimseon.pdf){:target="_blank"} |
 | 17 | 21-22차시 · 학생 질문 역량 함양의 심화(질문 놀이형 수업) | 28장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-2122.pdf){:target="_blank"} |
-| 18 | 23-24차시 · 질문 중심 수업·평가 이해 및 실습 안내 | 준비 중 | 자료 추가 예정 |
+| 18 | 23-24차시 · 질문 중심 수업·평가 이해 및 실습 안내 | 59장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-2324.pdf){:target="_blank"} |
 | 19 | 25-26차시 · 핵심 질문 설계 및 학생 질문 생성 | 33장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-2526.pdf){:target="_blank"} |
 | 20 | 27-28차시 · 서·논술형 평가 설계 원리 및 유형 분석 | 67장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-2728.pdf){:target="_blank"} |
 | 21 | 29-30차시 · 단원 및 차시별 수업·평가 계획 수립 | 26장 | [내려받기](/assets/lectures/student-question-assessment/pdf/session-2930.pdf){:target="_blank"} |
@@ -685,7 +685,75 @@ AI 활용 질문 중심 문제 해결 모형을 소개한다. 문제 발견하�
 
 ## 18편. 23-24차시 — 질문 중심 수업·평가 이해 및 실습 안내
 
-앞의 21-22차시 질문 놀이형 수업과 뒤의 25-26차시 핵심 질문 설계를 잇는, 질문 중심 수업·평가의 전체 흐름을 개관하고 실습을 안내하는 편이다. 이 편의 원본은 구글 슬라이드로 제공되어, 자료를 내려받아 정리한 뒤 슬라이드 갤러리와 요약을 이 자리에 추가할 예정이다.
+집합연수가 이론에서 실습으로 넘어가는 다리 편이다. 앞선 편들에서 익힌 핵심 질문·QFT·서·논술형 평가를 하나의 실제 수업 사례로 통째로 확인한 뒤, 교사가 직접 설계를 시작하도록 이끈다. 두 차시로 나뉜다.
+
+23차시는 학생 질문 중심 수업·평가 사례다. 5학년 2학기 과학 "날씨와 우리 생활"(교육부 질문하는 학교 선도학교 장흥초, EBS 클래스업 「교실을 깨워라」 시즌3 6화 방영) 수업을 처음부터 끝까지 따라간다. 학생 질문 생성(개인 → 1:1 → 2:2 → 모둠 → 전체 대표 질문 선정)에서 출발해, 학교 옥상 표면 온도 변화 실험·일본 국립환경연구소 사례 분석·페인트 색에 따른 지붕 온도 비교 실험·신문 활용 교육·전문가 학습으로 이어지는 탐구 과정을 거쳐, 탐구 결과를 근거로 '옥상 도색 건의서'를 쓰는 논술형 평가(출제 계획 → 문항 개발 → 예시 답안·채점기준)로 닫힌다. 사례를 보기 전과 후에 "학생 질문 중심 수업·평가는 어떻게 해야 할까"를 모둠 토의로 열고 닫는다.
+
+24차시는 설계 실습 안내다(강영구 교사, 광주 관산초). 23~36차시가 설계 실습 중심으로 진행됨을 예고하며 앞으로 밟을 전 과정을 한 번에 미리 짚는다 — 실습 단원 정하기, 교육과정 분석(내용 체계·성취기준·해설·적용 시 고려사항), 핵심 질문 도출(핵심어 → 단원 수준 재진술 → 질문으로 바꾸기), QFT로 학생 질문 생성하고 개선·우선순위·성찰하기, 탐구 질문 설정, 단원·차시 지도 계획, 서·논술형 문항 개발과 예시 답안·채점기준·피드백까지. "날씨와 우리 생활" 단원을 공통 실습 소재로 각 단계의 예시를 보여주고, 4인 1조(이끔이·기록이·찾음이)로 역할을 나눠 모둠별 설계안 1종을 완성하는 실습으로 이어진다. 마지막은 선도교원으로서 현장 전달 연수의 어려움과 역할을 신호등 토의로 나눈다.
+
+<div class="slide-gallery">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p668.jpg" alt="슬라이드 668">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p669.jpg" alt="슬라이드 669">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p670.jpg" alt="슬라이드 670">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p671.jpg" alt="슬라이드 671">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p672.jpg" alt="슬라이드 672">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p673.jpg" alt="슬라이드 673">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p674.jpg" alt="슬라이드 674">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p675.jpg" alt="슬라이드 675">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p676.jpg" alt="슬라이드 676">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p677.jpg" alt="슬라이드 677">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p678.jpg" alt="슬라이드 678">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p679.jpg" alt="슬라이드 679">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p680.jpg" alt="슬라이드 680">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p681.jpg" alt="슬라이드 681">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p682.jpg" alt="슬라이드 682">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p683.jpg" alt="슬라이드 683">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p684.jpg" alt="슬라이드 684">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p685.jpg" alt="슬라이드 685">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p686.jpg" alt="슬라이드 686">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p687.jpg" alt="슬라이드 687">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p688.jpg" alt="슬라이드 688">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p689.jpg" alt="슬라이드 689">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p690.jpg" alt="슬라이드 690">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p691.jpg" alt="슬라이드 691">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p692.jpg" alt="슬라이드 692">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p693.jpg" alt="슬라이드 693">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p694.jpg" alt="슬라이드 694">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p695.jpg" alt="슬라이드 695">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p696.jpg" alt="슬라이드 696">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p697.jpg" alt="슬라이드 697">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p698.jpg" alt="슬라이드 698">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p699.jpg" alt="슬라이드 699">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p700.jpg" alt="슬라이드 700">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p701.jpg" alt="슬라이드 701">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p702.jpg" alt="슬라이드 702">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p703.jpg" alt="슬라이드 703">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p704.jpg" alt="슬라이드 704">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p705.jpg" alt="슬라이드 705">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p706.jpg" alt="슬라이드 706">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p707.jpg" alt="슬라이드 707">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p708.jpg" alt="슬라이드 708">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p709.jpg" alt="슬라이드 709">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p710.jpg" alt="슬라이드 710">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p711.jpg" alt="슬라이드 711">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p712.jpg" alt="슬라이드 712">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p713.jpg" alt="슬라이드 713">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p714.jpg" alt="슬라이드 714">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p715.jpg" alt="슬라이드 715">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p716.jpg" alt="슬라이드 716">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p717.jpg" alt="슬라이드 717">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p718.jpg" alt="슬라이드 718">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p719.jpg" alt="슬라이드 719">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p720.jpg" alt="슬라이드 720">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p721.jpg" alt="슬라이드 721">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p722.jpg" alt="슬라이드 722">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p723.jpg" alt="슬라이드 723">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p724.jpg" alt="슬라이드 724">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p725.jpg" alt="슬라이드 725">
+<img loading="lazy" src="/assets/lectures/student-question-assessment/slides/p726.jpg" alt="슬라이드 726">
+</div>
+
+**[18편 슬라이드 PDF 내려받기 (59장)](/assets/lectures/student-question-assessment/pdf/session-2324.pdf){:target="_blank"}**
 
 ## 19편. 25-26차시 — 핵심 질문 설계 및 학생 질문 생성
 
@@ -984,7 +1052,7 @@ AI 활용 질문 중심 문제 해결 모형을 소개한다. 문제 발견하�
 
 ## 참고와 출처
 
-- 원작: 교육부 · 경상북도교육청, 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 (1~10편 콘텐츠 연수, 11~14편 실시간 원격 연수, 15~24편 집합연수). 15편·16편은 각각 서수현·김선 교수의 초청 특강.
+- 원작: 교육부 · 경상북도교육청, 2026년 『학생 질문 중심 수업·평가』 초등 선도교원 연수 자료 (1~10편 콘텐츠 연수, 11~14편 실시간 원격 연수, 15~24편 집합연수). 15편·16편은 각각 서수현·김선 교수의 초청 특강이며, 18편 24차시 설계 실습 안내는 강영구 교사(광주 관산초)가 맡았다.
 - 큐레이션: 김진관 (닷커넥터) — 원본 슬라이드 전체 수록, 편별 요약 정리
 - 집합연수 주요 근거 문헌: McTighe & Wiggins(2013) 핵심 질문 · 김선·반재천(2024) 서·논술형 평가 도구 개발 · 김선 외(2021) 과정 중심 피드백 · 한국교육과정평가원(2019·2025) 수업-평가 연계 및 서·논술형 평가 도구 개발 · 교육부(2023) 학생평가컨설팅 도움자료집 · 한국교육학술정보원(2024) 2022 개정 교육과정 성취수준 · 경기도교육청(2026) 핵심어·핵심문장 도출 가이드. 특강2(김선)는 NRC(2001) · Corbin, Dawson & Liu(2025) · Perkins et al.(2024) AIAS · OECD/EU(2026) AILit · OECD(2026) PISA 2029 MAIL · White & Frederiksen(2000)을 인용
 - 자료 내 주요 근거 문헌: 정혜승 외(2024) 학생 질문 교육 내용 체계 · Rothstein & Santana(2011) 질문형성기법(QFT) · Wiggins & McTighe(2011) 메타 질문 · Weiderhold 질문 매트릭스(Q-Matrix) · Stokhof et al.(2017) 질문 모델링 · 「질문하는 학교」 선도학교 연구·지원센터(2024·2025·2026, 교육부·이화여자대학교) 질문 중심 수업 모델 · 도안초(교육부 질문하는 학교 선도학교, 2024~2026년) 수업 적용 사례 · 김경희(2020·2021), 박혜경 외(2019) 서·논술형 평가 · 교육부(2018) 국어과 학생 질문 능력 계발
