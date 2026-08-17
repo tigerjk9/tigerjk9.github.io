@@ -1,5 +1,5 @@
 ---
-title: "AI로 만든 사이트가 자꾸 AI 티 나는 이유 — 도구 4개 조합으로 끊는 법"
+title: "AI로 만든 사이트가 자꾸 AI 티 나는 이유, 도구 4개 조합으로 끊는 법"
 date: 2026-08-18 00:16:30 +0900
 categories: [바이브코딩, AI]
 tags: [바이브코딩, UIUX, 디자인, 프론트엔드, AI슬롭, ClaudeCode, FramerMotion]

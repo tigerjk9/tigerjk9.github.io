@@ -1,5 +1,5 @@
 ---
-title: "교육공학 계보를 한 화면에 — EdTech Pantheon 아카이브 탐색기"
+title: "교육공학 계보를 한 화면에, EdTech Pantheon 아카이브 탐색기"
 date: 2026-08-18 00:13:46 +0900
 categories: [교육, 교육공학]
 tags: [교육공학, 아카이브, 인물열전, 시각화, 오픈소스]

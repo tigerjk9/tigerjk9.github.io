@@ -1,5 +1,5 @@
 ---
-title: "한 문장이면 충분하다 — AI 티를 안 내는 디자인 스킬 huashu-design"
+title: "한 문장이면 충분하다, AI 티를 안 내는 디자인 스킬 huashu-design"
 date: 2026-08-18 00:14:31 +0900
 categories: [AI, 기술]
 tags: [AI도구, 디자인, 프레젠테이션, 생성형AI, ClaudeCode, 바이브코딩]

@@ -1,5 +1,5 @@
 ---
-title: "에이전트가 책 한 권을 조판하는 법 — bookforge의 QC 게이트 설계"
+title: "에이전트가 책 한 권을 조판하는 법, bookforge의 QC 게이트 설계"
 date: 2026-08-18 00:14:19 +0900
 categories: [AI, 바이브코딩]
 tags: [에이전트, 전자책, PDF, Claude Code, 바이브코딩, 조판]

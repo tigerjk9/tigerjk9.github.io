@@ -1,5 +1,5 @@
 ---
-title: "Vibe Index — 바이브 코딩 도구 23만 개를 한 곳에"
+title: "Vibe Index, 바이브 코딩 도구 23만 개를 한 곳에"
 date: 2026-08-18 00:13:58 +0900
 categories: [바이브코딩, AI]
 tags: [바이브코딩, MCP, Claude Code, 스킬, AI도구]

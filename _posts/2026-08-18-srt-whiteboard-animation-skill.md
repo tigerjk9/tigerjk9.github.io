@@ -1,5 +1,5 @@
 ---
-title: "자막이 그림을 그린다 — srt-whiteboard-animation 작동 원리와 한계"
+title: "자막이 그림을 그린다, srt-whiteboard-animation 작동 원리와 한계"
 date: 2026-08-18 00:13:17 +0900
 categories: [AI, 기술]
 tags: [Claude Code, 화이트보드, 영상제작, SRT, 스킬, 생성형AI]
