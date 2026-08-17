@@ -13,7 +13,7 @@ toc_sticky: true
 <figcaption>김진관(닷커넥터)</figcaption>
 </figure>
 
-- 연구 · 기여 · 연결 · 순환 · 성장 — 다섯 단어로 움직이는 연결주의자
+- 연구 · 기여 · 연결 · 순환 · 성장을 추구하는 연결주의자
 - 대전둔천초등학교 교사 · 교사 연구회 'AI 티처스쿨(AITS)' 대표교사
 - 한국교원대학교 컴퓨터교육과 박사과정(휴학)
 
@@ -35,10 +35,10 @@ toc_sticky: true
 - (전) 대전교육정보원 대전AI교육지원체험센터 파견교사
 - 한국교원대학교 컴퓨터교육과 박사과정(휴학)
 
-영재교육에서 출발해 디지털교과서와 SW교육을 지나 AI 교육까지, 15년의 발자취를 시기별로 접어 두었다. 눌러서 펼친다.
+2011년부터의 활동 전체를 시기별로 정리했다. 눌러서 펼친다.
 
 <details markdown="1">
-<summary><strong>2011–2019 — 영재·STEAM에서 SW교육까지, 기반을 놓다</strong></summary>
+<summary><strong>2011–2019 — 영재·STEAM·디지털교과서·SW교육</strong></summary>
 
 - 2011–2014 단위학교 영재학급 주무 및 강사
 - 2012 창의융합인재(STEAM) 과학교사연구회 회장
@@ -65,7 +65,7 @@ toc_sticky: true
 </details>
 
 <details markdown="1">
-<summary><strong>2020–2022 — AI 교육을 개척하다</strong></summary>
+<summary><strong>2020–2022 — AI·메타버스 교육</strong></summary>
 
 - 2020 SW교육 선도학교 운영 주무(대전자양초)
 - 2020 현장자율직무연수 '소나무 소프트웨어교실' 강사(대전천동초등학교)
@@ -135,7 +135,7 @@ toc_sticky: true
 </details>
 
 <details markdown="1">
-<summary><strong>2023–2024 — 생성형 AI와 교실혁명의 한복판</strong></summary>
+<summary><strong>2023–2024 — 생성형 AI·교실혁명 선도교사</strong></summary>
 
 - 2023 초등 1급 정교사 자격 연수 '메타버스 활용 교육' 강사(대전교육연수원)
 - 2023 AI교육 학습공동체(AI Edu prompt engineer) 회원(대전교육정보원)
@@ -245,7 +245,7 @@ toc_sticky: true
 </details>
 
 <details markdown="1">
-<summary><strong>2025–2026 — 깊이 있는 수업·평가로 향하다</strong></summary>
+<summary><strong>2025–2026 — 수업·평가 설계, AI 디지털 교육혁신</strong></summary>
 
 - 2025 중등 복직 교사 직무 연수 강사(대전교육연수원)
 - 2025 교육과정-수업-평가 초등 현장지원단(교육부)
@@ -315,8 +315,6 @@ toc_sticky: true
 
 ## 음악
 
-점과 점을 잇는 일은 소리로도 이어진다.
-
 - 2018 CCM 정규 1집 'Oh My Soul'
 - 2021 대전AI교육지원체험센터 로고송(대전교육정보원)
 - 2022 사단법인 AI 프렌즈 학회 로고송
@@ -354,5 +352,3 @@ toc_sticky: true
 
 - 이메일 — [faithfuljk@naver.com](mailto:faithfuljk@naver.com)
 - 협업·강연 문의 — [리틀리 CONTACT](https://litt.ly/dot_connector)
-
-점 하나로 시작한 대화가 새로운 선이 된다.
