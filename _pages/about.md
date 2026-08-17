@@ -1,7 +1,7 @@
 ---
 title: "소개"
 permalink: /about/
-layout: single
+layout: about
 author_profile: false
 toc: true
 toc_label: "차례"
