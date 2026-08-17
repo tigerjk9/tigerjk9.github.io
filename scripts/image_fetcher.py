@@ -664,6 +664,46 @@ def normalize_question_title(markdown_content: str) -> str:
     return markdown_content[: m.start()] + new_line + markdown_content[m.end():]
 
 
+def normalize_title_dash(markdown_content: str) -> str:
+    """front matter title의 em/en 대시 부제 구분자(' — ')를 쉼표로 치환한다.
+
+    Gemini·집필이 '본문 결론 — 대상 설명' 꼴 부제 제목을 반복 생성해 AI 티가
+    난다(2026-08-18 최근 16편에서 몰림 확인). 블로그 전체에서 제목의 대시 부제는
+    쉼표로 통일한다.
+
+    보수적 규칙 (오탐 방지):
+    - 공백으로 감싼 대시(' — '/' – ')만 대상. 하이픈(-)·숫자 범위·복합어는 무시.
+    - 대시 앞 글자가 문장부호(? ! .)면 쉼표 대신 공백으로 치환('?,' 표기 회피).
+    - title 라인만 손대고 본문·다른 front matter는 건드리지 않는다.
+    - normalize_question_title 다음에 호출해야 한다(의문형 'A — 부제'가 먼저
+      'A? — 부제'로 바뀐 뒤 대시가 공백으로 정리되도록).
+    """
+    m = re.search(r"(?m)^(title:[ \t]*)(.*)$", markdown_content)
+    if not m:
+        return markdown_content
+    prefix, rest = m.group(1), m.group(2)
+    cr = "\r" if rest.endswith("\r") else ""
+    if cr:
+        rest = rest[:-1]
+    value = rest.rstrip(" \t")
+    quoted = len(value) >= 2 and value[0] == '"' and value[-1] == '"'
+    inner = value[1:-1] if quoted else value
+
+    def _sub(mo: "re.Match") -> str:
+        before = mo.group(1)
+        sep = ", " if before[-1:] not in "?!." else " "
+        return before + sep
+
+    new_inner = re.sub(r"(.)\s+[—–]\s+", _sub, inner)
+    if new_inner == inner:
+        return markdown_content
+    new_inner = new_inner.rstrip()
+
+    new_value = f'"{new_inner}"' if quoted else new_inner
+    new_line = prefix + new_value + cr
+    return markdown_content[: m.start()] + new_line + markdown_content[m.end():]
+
+
 # ---------------------------------------------------------------------------
 # 공유 상수·유틸 (4개 자동화 스크립트 공통)
 # ---------------------------------------------------------------------------

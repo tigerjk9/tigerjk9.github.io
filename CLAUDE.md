@@ -18,6 +18,31 @@ bundle exec rake version        # 버전 일괄 업데이트
 `/wrap` — 작업 세션 마무리 전역 슬래시 커맨드 (`~/.claude/commands/wrap.md`).
 메모리 저장 → CLAUDE.md 정리 → PRD 정리 → git commit & push 4단계를 순서대로 실행한다.
 
+### 슬래시 커맨드 카탈로그
+
+블로그 자동화·유지보수 슬래시 커맨드 전체 목록. 상세는 각 커맨드 파일(`.claude/commands/<name>.md`)과 아래 해당 섹션 참고.
+
+| 커맨드 | 용도 | 상세 |
+|--------|------|------|
+| `/paper` | PDF 논문 → 고정 6섹션 리뷰 포스트 | 아래 "PDF 논문…" |
+| `/edit-paper` | PDF 논문 → 자유구조 리뷰(주인장 목소리, 복수 PDF `--edit`) | `edit-paper.md` |
+| `/video` | 유튜브 → 포스트 | 아래 "YouTube…" |
+| `/edit-video` | 유튜브 → 프레임 삽입 리뷰(`yt_to_post.py --edit`) | `edit-video.md` |
+| `/paraph` | 웹 아티클 → 패러프레이즈 | 아래 "웹 아티클…" |
+| `/edit-paraph` | 웹 → 주인장 목소리 리뷰(`web_to_post.py --edit`) | `edit-paraph.md` |
+| `/plain-paraph` | 웹 → 교육 앵커링 없는 담백한 포스트(`--plain`) | 아래 "담백한 전달…" |
+| `/plain-video` | 유튜브 → 담백한 포스트(`--plain`) | 아래 "담백한 전달…" |
+| `/yeonsu` | 다입력 → 교원 연수 자료 | 아래 "교원 연수…" |
+| `/edit-yeonsu` | 연수 자료 주인장 목소리 | `edit-yeonsu.md` |
+| `/digest` | 주간 다이제스트 | 아래 "주간 다이제스트…" |
+| `/cardnews` | 카드뉴스 PNG 세트 | 아래 "카드뉴스…" |
+| `/hook` | 후킹 티저 카드 1장 | 아래 "후킹 이미지 카드…" |
+| `/naver` | 네이버 블로그 크로스포스팅 | 아래 "네이버…" |
+| `/lecture-archive` | 강의자료 zip → `_lectures/` 큐레이션(개발 중) | 아래 "강의자료 큐레이션…" |
+| `/column` | 클로드 직접 집필 전문가 칼럼(유튜브 자막 지원) | `column.md` |
+| `/tidy-claude-md` | CLAUDE.md 진단·정리(6지표 채점, 교훈 보존) | `tidy-claude-md.md` |
+| `/wrap` | 세션 마무리(메모리→CLAUDE.md 정리→PRD→커밋) | 전역 `~/.claude/commands/wrap.md` |
+
 ## Architecture
 
 이 저장소는 **Minimal Mistakes Jekyll 테마 소스**(v4.27.3)이자 **개인 블로그** https://tigerjk9.github.io 이다.
@@ -133,7 +158,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 
 **본문 복사**: `.page__content` DOM 클론 → `.sidebar__right`, `[rel="permalink"]`, `.sr-only` 제거 → `innerText` 복사. 복사 텍스트에 `원문링크: <decoded URL>` 자동 삽입 (`## 출처` 섹션 앞, 없으면 맨 끝). URL은 `decodeURIComponent(window.location.href)`로 한글 디코딩.
 
-**출처 섹션**: 모든 자동화 포스트의 출처는 `## 출처` 헤딩으로 통일 (기존 `<출처>` 태그 폐기). 프롬프트 템플릿 7개 + 기존 포스트 54개 일괄 변환 완료 (2026-04-28).
+**출처 섹션**: 모든 자동화 포스트의 출처는 `## 출처` 헤딩으로 통일한다(기존 `<출처>` 태그 폐기 · 2026-04-28 프롬프트 7개·기존 포스트 54편 전량 변환).
 
 **링크 복사**: 포스트 URL만 단독 복사. raw `window.location.href` 사용 (NFC 인코딩 형태). iOS Safari는 한글을 NFD로 클립보드에 저장해 카카오톡·메모앱 등 NFC 기대 환경에서 깨지므로 디코딩된 한글 URL은 모바일에서 위험. 본문 복사 안의 "원문링크:" 표시는 사람이 읽는 텍스트라 디코딩 유지. **링크복사 버튼은 상단이 아니라 하단 소셜 공유 패널에 있음**(아래 참고). 상단 `.post-copy-wrap`엔 본문 복사만 남김.
 
@@ -245,9 +270,7 @@ scripts/
   requirements.txt       # Python 의존성 (pdf + yt + web 통합)
 .env                     # GEMINI_API_KEY + PEXELS_API_KEY 저장 (gitignore)
 .env.example             # 키 형식 예시 (git 추적됨)
-.claude/commands/video.md  # /video 슬래시 커맨드
-.claude/commands/paper.md  # /paper 슬래시 커맨드
-.claude/commands/paraph.md # /paraph 슬래시 커맨드
+.claude/commands/*.md    # 슬래시 커맨드 (전체 목록은 상단 "슬래시 커맨드 카탈로그" 표 참고)
 ```
 
 ### `--edit` 모드 — 영상 프레임 추출 (단일 URL 전용)
@@ -536,7 +559,11 @@ scripts/
 
 ---
 
-## 공통: 표 활용 규칙 (윤문화 방지)
+## 공통: 프롬프트 문체·안티슬롭 규칙
+
+> 자동화 스크립트(`/yeonsu`·`/paraph`·`/video`·`/paper` 등)의 Gemini 프롬프트 템플릿에 공통 적용되는 문체 규칙 묶음.
+
+### 표 활용 규칙 (윤문화 방지)
 
 `/yeonsu`, `/paraph`, `/video`, `/paper` 4개 스킬의 7개 프롬프트 템플릿 말미(AI 티 금지 표현 직전)에 **표 활용 규칙** 섹션이 포함되어 있다.
 
@@ -553,7 +580,7 @@ scripts/
 - `/video`(복수)·`/paraph`(복수): 영상 vs 영상, 출처 vs 출처 매트릭스 필수
 - `/paraph --into`: 기존 포스트 표 보존 + 신규 자료 표 신호 통합
 
-## 공통: 날카로움+따뜻함 원칙 (11개 프롬프트 템플릿 전체 적용)
+### 날카로움+따뜻함 원칙 (11개 프롬프트 템플릿 전체 적용)
 
 모든 Gemini 프롬프트 템플릿의 `비판적 낙관주의...제시한다.` 줄 바로 다음에 **[날카로움 + 따뜻함 원칙]** 블록이 삽입되어 있다 (2026-05-05 전체 적용).
 
@@ -565,7 +592,7 @@ scripts/
 - 한 섹션에 최소 한 문장은 독자가 멈추게 만드는 뾰족한 단언을 넣는다
 - 금지: 입장 없이 요약만 하는 섹션 / "앞으로 더 연구가 필요하다" 식 마무리 / 내용 없는 감탄 문장
 
-## 공통: AI 티 금지 표현 (4개 자동화 스크립트 전체 적용)
+### AI 티 금지 표현 (4개 자동화 스크립트 전체 적용)
 
 `/yeonsu`, `/paraph`, `/video`, `/paper` 4개 Gemini 프롬프트 템플릿 말미에 **Humanize KR v2.0.0** 기준 AI 표현 금지 규칙이 포함되어 있다.
 프롬프트를 수정할 때 이 섹션을 제거하거나 축소하지 않는다.
@@ -576,7 +603,7 @@ scripts/
 
 > 출처: [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) — Humanize KR v2.0.0
 
-## 공통: PLC 상투 마무리·콜론 헤딩 템플릿 레벨 차단 (2026-05-30)
+### PLC 상투 마무리·콜론 헤딩 템플릿 레벨 차단 (2026-05-30)
 
 `/edit-*` 자동화가 글마다 "전문적 학습 공동체(PLC)를 통한 집단 학습과 성찰 문화가 정착되어야" / "이 변화가 정착되려면 교사들이 함께 실험하고 성찰하는 구조가 먼저다" 같은 **동일 마무리를 반복**하던 근본 원인은, 프롬프트 "필자 관점/비판적 낙관" 항목이 PLC 마무리를 **직접 지시**하고 있었기 때문이다. `edit_paper_prompt_template.txt`·`edit_web_prompt_template.txt`·`edit_web_multi_prompt_template.txt` 3종에서 해당 지시문을 "상투구 절대 금지 + 매번 다른 구체적 협력 행위(동학년 점심 대화·학년 메신저 한 줄·의심 사례 함께 보기·관찰 일지)로 변주"로 교체했고, 콜론 헤딩 금지 규칙에 `###`(H3)를 포함시켰다.
 
@@ -623,6 +650,20 @@ scripts/
 - 부제 분리(2026-08-03 콜론 확장): `A — 부제`(em/en 대시)는 앞 절이 의문이면 대시 앞에 `?`, `A: 부제`(콜론)는 앞 절이 의문이면 콜론을 떼고 `A? 부제`로(`?:` 회피). 판정 순서는 `끝 의문(끝에 ?)` → `대시` → `콜론` — 그래서 `AI 피로: … 아는가`처럼 콜론이 라벨 접두어이고 의문이 끝에 오면 끝에 `?`가 붙고 콜론은 그대로 유지됨. 라벨 접두어(`스티븐 울프럼:`)는 강한 종결어미 게이트로 자동 제외
 - **자동 처리 안 함**(생성 후 QA 유지): `『책제목』` 내부 의문, `認可`·`閑暇` 같은 동형 명사, `…하나` 종결. 이런 애매 케이스는 7단계 후처리 QA에서 사람이 판단
 
+## 공통: 제목 대시(—) 부제 자동 쉼표 치환 (2026-08-18)
+
+`image_fetcher.normalize_title_dash(content)` 공용 함수가 `normalize_question_title` **바로 다음**(permalink·물음표 정규화 직후)에 4개 자동화 스크립트(`/paper`·`/video`·`/paraph`·`/yeonsu` 및 `/edit-*`·`/plain-*` 파생 전부)에서 호출되어, front matter `title:`의 em/en 대시 부제 구분자(` — `/` – `)를 **쉼표**로 치환한다.
+
+**왜**: Gemini·집필이 `본문 결론 — 대상 설명` 꼴 부제 제목을 반복 생성해 제목에서 대시가 AI 티로 몰렸다(2026-08-18 최근 16편에서 집중 확인 → 전수 쉼표 치환). 블로그 전체에서 제목의 대시 부제는 쉼표로 통일한다.
+
+**보수적 규칙 (오탐 방지)**:
+- **공백으로 감싼** 대시(` — `/` – `)만 대상. 하이픈(`GPT-4`)·복합어·붙여쓴 대시(`설계도—현장`)·숫자 범위는 건드리지 않음
+- 대시 앞 글자가 문장부호(`? ! .`)면 쉼표 대신 **공백**으로 치환(`?,` 표기 회피) — 그래서 `무엇인가? — 부제` → `무엇인가? 부제`
+- `title:` 라인만 손댐(본문·다른 front matter의 대시는 불변). 호출 순서는 반드시 물음표 정규화 **뒤** — 의문형 `A — 부제`가 먼저 `A? — 부제`로 바뀐 뒤 대시가 공백으로 정리되도록
+- 단위 테스트 9종(`plain`·`q-dash`·`book`·`hyphen`·`nospace-dash`·pipeline 2종·`body-untouched`) 전부 통과
+
+**클로드 집필(`/column`·수동)에도 동일 정책**: 위 함수는 자동화 스크립트(Gemini 출력) 전용이라 `/column` 등 클로드가 직접 쓰는 글은 거치지 않는다. 제목을 지을 때 **대시로 부제를 붙이지 말 것**(`본문 — 부제` 금지) — 한 문장으로 쓰거나 정보 보존이 필요하면 쉼표로 잇는다. 이미 있는 대시 제목은 쉼표 치환.
+
 ## 공통: git push 주의사항
 
 원격에 로컬에 없는 커밋이 있으면 push가 실패한다. `--autostash` 옵션이 unstaged 변경사항을 자동으로 처리한다:
@@ -668,7 +709,14 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 **격리 모드** — `_lectures/` collection은 `_posts` 흐름과 분리. 사이드바·지식그래프·검색에 침투 0건. `_posts` 400+개·`knowledge-graph.json`·`_includes/sidebar/*.html` 영향 없음.
 
-**도서 원고 섹션 (2026-07-07, 8권 갱신 2026-07-21)** — `/lectures/` 허브는 "워크숍 강의"(`_data/lectures.yml`) + "도서 원고"(`_data/books.yml`) 2섹션 구성. 도서 1~7권은 `tigerjk9/Book-Publisher`(비공개 레포) 완성 원고 — 전부 라이브 Vercel 웹 도서로 새 탭 연결(웹 도서가 단일 진실 소스, 원고 개정 시 Vercel만 재배포하면 블로그는 무수정. 1권은 teacher-claude-guide.vercel.app — 최초 편입 때 배포 없는 줄 알고 블로그 내 전문 렌더링했다가 사용자가 URL 확인해 줘 제거). **8권(2026-07-21)은 한빛미디어 신간(바이브 코딩, 교사를 위한 웹앱 만들기 · 가제 · 이상선·김진관·김상섭·이대형·윤신영 공저)으로 유일하게 블로그 내부 큐레이션 정리본(`_lectures/vibecode-for-teacher/`)에 연결** — 조판원고 전체 대신 목차·파트별 요약·실습 표·컴패니언 GitHub(lifeofpi-ux/vibecode-for-teacher)만. 통일 표지 재생성: `py scripts/gen_book_covers.py [볼륨…]` (인자 없으면 전체, `7 8`처럼 특정 권만 재생성 — 기존 01~06 무변경 유지용. 8권은 per-book `eyebrow`/`footer` 오버라이드로 닷커넥터 대신 한빛미디어 브랜딩. `.fonts/` Pretendard 필요, 출력 `assets/lectures/books/book-0N-cover.jpg`, 권별 액센트 컬러). 상태 배지: 최신(앰버)·이전 판(슬레이트) — **최신은 단일**이라 신간 추가 시 직전 최신 권의 `status: 최신` 제거 + 표지 재생성(8권 추가로 7권 최신 배지 해제). **잠금 카드**(`locked: true`+`locked_payload`)는 대상 URL을 **AES-256-GCM + PBKDF2-HMAC-SHA256(20만회)**로 암호화한 값이다(2026-07-30 기존 반복키 XOR에서 교체 — XOR은 known-plaintext로 비번 없이 URL 복원이 가능했음). payload(base64) 레이아웃 `[ver=2][salt:16][iv:12][ct+tag]`, 카드마다 salt/iv가 랜덤이라 동일 URL도 암호문이 다르고 카드 간 상관관계가 없다. 복호화 JS는 `_pages/lectures.md` — 비번 입력은 window.prompt가 아니라 **커스텀 모달**(`.lec-pw-*`, 스타일 `_sass/_lectures.scss`, 2026-07-30 모바일 비율 문제로 교체. 오류 인라인+shake, ≤600px 상단 배치, 팝업 차단 시 같은 탭 폴백, 잠금 카드 제목 표시 `.lec-pw-name`+등장 애니메이션은 같은 날 PC 폴리시). 재암호화 레시피·표준 절차는 메모리 `project_locked_cards`. 잠금 자료 전부 **하나의 공통 비번**을 공유하며 비번 값은 코드/문서에 남기지 않음(메모리에만). 내부 잠금 페이지(`_lectures/<slug>/`)는 front matter에 `sitemap: false` + `noindex: true`, 허브 카드 썸네일은 슬러그 없는 중립 경로(`/assets/lectures/covers/<hash>.jpg`)를 써서 URL 노출을 줄였다. **단 정적 사이트라 근본은 obscurity** — 콘텐츠 페이지·외부 Vercel 앱 자체엔 인증이 없어 URL이 알려지면 비번 없이 열린다(진짜 비공개는 서버측 게이트 필요). 4권 웹 도서와 `vibe-coding-git-github` 슬라이드 강의는 동일 주제의 별개 자산(도서 vs 강의)으로 의도적 공존. 카드에는 저자 크레딧 필수(도서 `author` 필드 + "저자" 라벨, 타사 원본 자료는 `author` 원작 + `curator` 2단 — AIEP 튜토리얼 선례), 섹션 도입 산문은 넣지 않는다(헤딩+카드 그리드만). 외부 링크형 강의 카드(학생용 생성형 AI 안내서·AIEP·AX 핸드북) 표지는 사이트 히어로 스크린샷 — 이 머신은 playwright·gstack browse가 없거나 고장이라 **Edge 헤드리스**(`--user-data-dir` 임시 프로필 필수)로 캡처한다.
+**도서 원고 섹션 (2026-07-07, 8권 갱신 2026-07-21)** — `/lectures/` 허브는 "워크숍 강의"(`_data/lectures.yml`) + "도서 원고"(`_data/books.yml`) 2섹션 구성.
+- 도서 1~7권은 `tigerjk9/Book-Publisher`(비공개 레포) 완성 원고 — 전부 라이브 Vercel 웹 도서로 새 탭 연결(웹 도서가 단일 진실 소스, 원고 개정 시 Vercel만 재배포하면 블로그는 무수정. 1권은 teacher-claude-guide.vercel.app — 최초 편입 때 배포 없는 줄 알고 블로그 내 전문 렌더링했다가 사용자가 URL 확인해 줘 제거).
+- **8권(2026-07-21)은 한빛미디어 신간(바이브 코딩, 교사를 위한 웹앱 만들기 · 가제 · 이상선·김진관·김상섭·이대형·윤신영 공저)으로 유일하게 블로그 내부 큐레이션 정리본(`_lectures/vibecode-for-teacher/`)에 연결** — 조판원고 전체 대신 목차·파트별 요약·실습 표·컴패니언 GitHub(lifeofpi-ux/vibecode-for-teacher)만.
+- 통일 표지 재생성: `py scripts/gen_book_covers.py [볼륨…]` (인자 없으면 전체, `7 8`처럼 특정 권만 재생성 — 기존 01~06 무변경 유지용. 8권은 per-book `eyebrow`/`footer` 오버라이드로 닷커넥터 대신 한빛미디어 브랜딩. `.fonts/` Pretendard 필요, 출력 `assets/lectures/books/book-0N-cover.jpg`, 권별 액센트 컬러).
+- 상태 배지: 최신(앰버)·이전 판(슬레이트) — **최신은 단일**이라 신간 추가 시 직전 최신 권의 `status: 최신` 제거 + 표지 재생성(8권 추가로 7권 최신 배지 해제).
+- **잠금 카드**(`locked: true`+`locked_payload`)는 대상 URL을 **AES-256-GCM + PBKDF2-HMAC-SHA256(20만회)**로 암호화한 값이다(2026-07-30 기존 반복키 XOR에서 교체 — XOR은 known-plaintext로 비번 없이 URL 복원이 가능했음). payload(base64) 레이아웃 `[ver=2][salt:16][iv:12][ct+tag]`, 카드마다 salt/iv가 랜덤이라 동일 URL도 암호문이 다르고 카드 간 상관관계가 없다. 복호화 JS는 `_pages/lectures.md` — 비번 입력은 window.prompt가 아니라 **커스텀 모달**(`.lec-pw-*`, 스타일 `_sass/_lectures.scss`, 2026-07-30 모바일 비율 문제로 교체. 오류 인라인+shake, ≤600px 상단 배치, 팝업 차단 시 같은 탭 폴백, 잠금 카드 제목 표시 `.lec-pw-name`+등장 애니메이션은 같은 날 PC 폴리시). 재암호화 레시피·표준 절차는 메모리 `project_locked_cards`. 잠금 자료 전부 **하나의 공통 비번**을 공유하며 비번 값은 코드/문서에 남기지 않음(메모리에만). 내부 잠금 페이지(`_lectures/<slug>/`)는 front matter에 `sitemap: false` + `noindex: true`, 허브 카드 썸네일은 슬러그 없는 중립 경로(`/assets/lectures/covers/<hash>.jpg`)를 써서 URL 노출을 줄였다. **단 정적 사이트라 근본은 obscurity** — 콘텐츠 페이지·외부 Vercel 앱 자체엔 인증이 없어 URL이 알려지면 비번 없이 열린다(진짜 비공개는 서버측 게이트 필요).
+- 4권 웹 도서와 `vibe-coding-git-github` 슬라이드 강의는 동일 주제의 별개 자산(도서 vs 강의)으로 의도적 공존.
+- 카드에는 저자 크레딧 필수(도서 `author` 필드 + "저자" 라벨, 타사 원본 자료는 `author` 원작 + `curator` 2단 — AIEP 튜토리얼 선례), 섹션 도입 산문은 넣지 않는다(헤딩+카드 그리드만). 외부 링크형 강의 카드(학생용 생성형 AI 안내서·AIEP·AX 핸드북) 표지는 사이트 히어로 스크린샷 — 이 머신은 playwright·gstack browse가 없거나 고장이라 **Edge 헤드리스**(`--user-data-dir` 임시 프로필 필수)로 캡처한다.
 
 **진입점**:
 ```powershell

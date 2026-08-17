@@ -54,7 +54,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
-from image_fetcher import fetch_and_inject_image, inject_permalink, normalize_question_title, get_existing_taxonomy, replace_image_markers, fetch_og_image_url, download_image, _parse_yaml_list  # noqa: E402
+from image_fetcher import fetch_and_inject_image, inject_permalink, normalize_question_title, normalize_title_dash, get_existing_taxonomy, replace_image_markers, fetch_og_image_url, download_image, _parse_yaml_list  # noqa: E402
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "lecture_prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_lecture_prompt_template.txt"
@@ -710,6 +710,7 @@ def main() -> None:
     post_content = _sanitize_content(post_content)
     post_content = inject_permalink(post_content, slug)
     post_content = normalize_question_title(post_content)
+    post_content = normalize_title_dash(post_content)
     out_path.write_text(post_content, encoding="utf-8")
     print(f"[OK] 저장 완료: {out_path}")
 

@@ -825,6 +825,16 @@
       "category": "인공지능교육 인사이트",
       "posted_at": "2026-08-06 17:36:08"
     },
+    "2026-08-10-rethinking-generative-ai-literacy.md": {
+      "url": "https://blog.naver.com/dot_connector/224374204387",
+      "category": "인공지능교육 인사이트",
+      "posted_at": "2026-08-10 17:42:12"
+    },
+    "2026-08-10-does-generative-ai-narrow-education-based-productivity-gaps.md": {
+      "url": "https://blog.naver.com/dot_connector/224374206974",
+      "category": "인공지능교육 인사이트",
+      "posted_at": "2026-08-10 17:44:20"
+    },
     "2026-06-29-paper37164.md": {
       "url": "https://blog.naver.com/dot_connector/224374207785",
       "category": "인공지능교육 인사이트",
@@ -874,16 +884,6 @@
       "url": "https://blog.naver.com/dot_connector/224374223128",
       "category": "인공지능교육 인사이트",
       "posted_at": "2026-08-10 17:59:05"
-    },
-    "2026-08-10-rethinking-generative-ai-literacy.md": {
-      "url": "https://blog.naver.com/dot_connector/224374204387",
-      "category": "인공지능교육 인사이트",
-      "posted_at": "2026-08-10 17:42:12"
-    },
-    "2026-08-10-does-generative-ai-narrow-education-based-productivity-gaps.md": {
-      "url": "https://blog.naver.com/dot_connector/224374206974",
-      "category": "인공지능교육 인사이트",
-      "posted_at": "2026-08-10 17:44:20"
     },
     "2026-07-09-the-impact-of-generative-ai-on-critical-thinking.md": {
       "url": "https://blog.naver.com/dot_connector/224375411957",
@@ -1134,6 +1134,7 @@
       "url": "https://blog.naver.com/dot_connector/224378624489",
       "category": "인공지능교육 인사이트",
       "posted_at": "2026-08-14 16:16:39"
+    }
     }
   }
 }

@@ -1,0 +1,98 @@
+---
+layout: single
+---
+<style>
+.layout--about .page__title{ display:none; }
+.layout--about .page__content{
+  --acc:#57a6df; --acc2:#e6b84a; --card:rgba(255,255,255,.045);
+  --bd:rgba(255,255,255,.11); --muted:#9aa4b0;
+}
+html[data-theme="light"] .layout--about .page__content{
+  --acc:#2f6f9f; --acc2:#c88a1f; --card:#ffffff; --bd:#e7e2d6; --muted:#6b7280;
+}
+
+/* ---------- 히어로 ---------- */
+.layout--about .page__content > figure:first-of-type{ margin:.4rem auto 1.3rem; text-align:center; max-width:none !important; }
+.layout--about .page__content > figure:first-of-type img{
+  width:150px; height:150px; border-radius:50%; object-fit:cover; object-position:center 22%;
+  border:3px solid var(--acc); box-shadow:0 10px 30px rgba(0,0,0,.35), 0 0 0 8px var(--card);
+}
+.layout--about .page__content > figure:first-of-type figcaption{ margin-top:.9rem; font-size:1.5rem; font-weight:800; opacity:1; }
+.layout--about .page__content > ul:first-of-type{
+  list-style:none; padding:0; margin:.2rem auto 1.4rem; max-width:640px; text-align:center;
+  color:var(--muted); font-size:.98rem; line-height:1.9;
+}
+.layout--about .page__content > ul:first-of-type li:first-child{ color:inherit; font-weight:600; }
+.layout--about .page__content blockquote{
+  border:1px solid var(--bd); border-left:4px solid var(--acc); background:var(--card);
+  border-radius:14px; max-width:680px; margin:1.4rem auto; padding:1.05rem 1.4rem; font-style:normal;
+}
+.layout--about .page__content blockquote p{ margin:.12rem 0; line-height:1.75; }
+
+/* 관심 분야 라벨 + 칩 */
+.layout--about .page__content > p:has(strong){ text-align:center; }
+.layout--about .page__content p:has(code){ text-align:center; margin:.4rem auto; }
+.layout--about .page__content code{
+  display:inline-block; background:transparent; border:1px solid var(--bd); color:var(--acc);
+  padding:.26em .8em; margin:.22em .16em; border-radius:999px; font-size:.84em; font-family:inherit; white-space:nowrap;
+}
+
+/* ---------- 섹션 헤더 ---------- */
+.layout--about .page__content h2{
+  font-size:1.5rem; font-weight:800; letter-spacing:-.01em; margin:2.6rem 0 1rem;
+  padding-bottom:.5rem; border-bottom:1px solid var(--bd);
+}
+.layout--about .page__content h2::before{
+  content:""; display:inline-block; width:.5rem; height:1.02rem; vertical-align:-1px;
+  background:linear-gradient(var(--acc),var(--acc2)); border-radius:3px; margin-right:.55rem;
+}
+
+/* ---------- 일반 목록 ---------- */
+.layout--about .page__content > ul:not(:first-of-type){ list-style:none; padding-left:0; }
+.layout--about .page__content > ul:not(:first-of-type) li{ position:relative; padding:.3rem 0 .3rem 1.1rem; line-height:1.6; }
+.layout--about .page__content > ul:not(:first-of-type) li::before{
+  content:""; position:absolute; left:.12rem; top:.72em; width:6px; height:6px; border-radius:50%; background:var(--acc2);
+}
+
+/* ---------- 접이식 연혁 ---------- */
+.layout--about .page__content details{
+  border:1px solid var(--bd); border-radius:14px; background:var(--card); margin:.7rem 0; overflow:hidden; transition:border-color .2s;
+}
+.layout--about .page__content details[open]{ border-color:var(--acc); }
+.layout--about .page__content summary{
+  cursor:pointer; list-style:none; padding:1rem 1.2rem; font-size:1.02rem; font-weight:600;
+  display:flex; align-items:center; gap:.6rem;
+}
+.layout--about .page__content summary::-webkit-details-marker{ display:none; }
+.layout--about .page__content summary:hover{ background:rgba(127,127,127,.06); }
+.layout--about .page__content summary::after{ content:"\25BE"; margin-left:auto; color:var(--acc); transition:transform .2s; }
+.layout--about .page__content details[open] summary::after{ transform:rotate(180deg); }
+.layout--about .page__content details > ul{ margin:0; padding:.2rem 1.2rem .5rem 1.6rem; list-style:none; border-top:1px solid var(--bd); }
+.layout--about .page__content details > ul li{
+  position:relative; padding:.34rem 0 .34rem .9rem; font-size:.9rem; color:var(--muted); line-height:1.55;
+  border-bottom:1px dashed rgba(127,127,127,.13);
+}
+.layout--about .page__content details > ul li:last-child{ border-bottom:none; }
+.layout--about .page__content details > ul li::before{
+  content:""; position:absolute; left:0; top:.72em; width:5px; height:5px; border-radius:50%; background:var(--acc); opacity:.7;
+}
+
+/* ---------- 테이블 ---------- */
+.layout--about .page__content table{
+  width:100%; border-collapse:separate; border-spacing:0; border:1px solid var(--bd);
+  border-radius:12px; overflow:hidden; margin:1rem 0; font-size:.93rem; display:table;
+}
+.layout--about .page__content th{ background:rgba(127,127,127,.10); text-align:left; padding:.7rem .9rem; font-weight:700; border-bottom:1px solid var(--bd); }
+.layout--about .page__content td{ padding:.62rem .9rem; border-bottom:1px solid var(--bd); }
+.layout--about .page__content tr:last-child td{ border-bottom:none; }
+.layout--about .page__content tbody tr:hover{ background:rgba(127,127,127,.05); }
+
+/* ---------- 링크 (라이트모드 앵커 트랩 방어) ---------- */
+.layout--about .page__content a{ color:var(--acc); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .15s; }
+.layout--about .page__content a:hover{ border-bottom-color:var(--acc); }
+
+/* ---------- 서재 등 나머지 figure ---------- */
+.layout--about .page__content figure:not(:first-of-type) img{ border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.25); }
+.layout--about .page__content figure:not(:first-of-type) figcaption{ text-align:center; color:var(--muted); font-size:.85rem; margin-top:.5rem; }
+</style>
+{{ content }}
