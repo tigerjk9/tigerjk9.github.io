@@ -85,6 +85,6 @@ toc_sticky: true
 강연 · 연수 · 집필 · 협업 — 어떤 제안이든 열려 있다.
 
 - 이메일 — [faithfuljk@naver.com](mailto:faithfuljk@naver.com)
-- 협업·강연 문의 — [링크트리 CONTACT](https://litt.ly/dot_connector)
+- 협업·강연 문의 — [리틀리 CONTACT](https://litt.ly/dot_connector)
 
 점 하나로 시작한 대화가 새로운 선이 된다.
