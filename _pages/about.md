@@ -50,6 +50,13 @@ html[data-theme="light"] #dot-manifesto .dm-nodes circle{fill:#0969da}
 html[data-theme="light"] #dot-manifesto p{color:#4a5157}
 html[data-theme="light"] #dot-manifesto .dm-key,html[data-theme="light"] #dot-manifesto .dm-last{color:#1f2328}
 html[data-theme="light"] #dot-manifesto .dm-last{border-top-color:rgba(31,35,40,.12)}
+#now-focus{margin:2.3em 0}
+#now-focus .nf-title{margin:0 0 .85em;font-size:1.34em;font-weight:700;letter-spacing:-.02em;color:#e6edf3;text-align:center}
+#now-focus .nf-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.55em;margin:0}
+#now-focus .nf-tags span{display:inline-block;padding:.44em 1.05em;border-radius:999px;font-size:1.03em;font-weight:600;line-height:1.45;color:#cfe4ff;background:rgba(88,166,255,.13);border:1px solid rgba(88,166,255,.34)}
+html[data-theme="light"] #now-focus .nf-title{color:#1f2328}
+html[data-theme="light"] #now-focus .nf-tags span{color:#0b4fa8;background:rgba(9,105,218,.08);border-color:rgba(9,105,218,.3)}
+@media (max-width:600px){#now-focus .nf-title{font-size:1.2em}#now-focus .nf-tags span{font-size:.97em;padding:.4em .9em}}
 </style>
 
 <div id="dot-manifesto">
@@ -161,14 +168,15 @@ html[data-theme="light"] #dot-manifesto .dm-last{border-top-color:rgba(31,35,40,
   </g>
 </svg>
 
-<p>지식이든 경험이든 사람이든, 모든 것은 저마다의 <span class="dm-dot">점(dot)</span>이다.</p>
-<p>흩어져 있으면 파편이지만, <span class="dm-key">선을 긋는 순간 길이 된다.</span></p>
-<p class="dm-last">이 블로그는 그 연결의 기록이다.</p>
+<p>지식이든 경험이든 사람이든, 모든 것은 저마다의 <span class="dm-dot">점(dot)</span>입니다.</p>
+<p>흩어져 있으면 파편이지만, <span class="dm-key">선을 긋는 순간 길이 됩니다.</span></p>
+<p class="dm-last">이 블로그는 그 연결의 기록입니다.</p>
 </div>
 
-**지금 파고드는 것들**
-
-`AI 디지털 교육` `질문 중심 수업·평가 설계` `깊이 있는 학습` `학습과학` `전문적 학습 공동체` `웹 서비스 개발` `집필·칼럼`
+<div id="now-focus">
+<p class="nf-title">지금 파고드는 것들</p>
+<p class="nf-tags"><span>AI 디지털 교육</span><span>질문 중심 수업·평가 설계</span><span>깊이 있는 학습</span><span>학습과학</span><span>전문적 학습 공동체</span><span>웹 서비스 개발</span><span>집필·칼럼</span></p>
+</div>
 
 ## 걸어온 길
 
