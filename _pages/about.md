@@ -16,7 +16,6 @@ toc_sticky: true
 - 연구 · 기여 · 연결 · 순환 · 성장을 추구하는 연결주의자
 - 대전둔천초등학교 교사
 - 대전AI교육 초중고 교사커뮤니티 AI 티처스쿨(AITS) 대표교사
-- 한국교원대학교 컴퓨터교육과 박사과정(휴학)
 
 <style>
 #dot-manifesto{position:relative;margin:2.3em 0;padding:2.1em 1.6em 1.9em;border:1px solid rgba(125,133,144,.28);border-radius:14px;background:radial-gradient(125% 100% at 50% 0%,rgba(88,166,255,.10),transparent 62%);text-align:center;overflow:hidden}
@@ -92,7 +91,6 @@ html[data-theme="light"] #dot-manifesto .dm-last{border-top-color:rgba(31,35,40,
 - (현) 교육부 교육과정·수업·평가 현장지원단, 학생질문중심 수업평가 선도교원
 - 교육부 전국단위 수업·평가 연구회 (전) TRIPOD 회장, (현) 운영진
 - (전) 대전교육정보원 대전AI교육지원체험센터 파견교사
-- 한국교원대학교 컴퓨터교육과 박사과정(휴학)
 
 <details markdown="1">
 <summary><strong>2011–2019 — 영재·STEAM·디지털교과서·SW교육</strong></summary>
@@ -337,7 +335,7 @@ html[data-theme="light"] #dot-manifesto .dm-last{border-top-color:rgba(31,35,40,
 
 </details>
 
-## 수상
+## 주요 수상
 
 - 2025 디지털기반교육혁신 유공 교육부장관 표창
 - 2025 제19회 전국 디지털교육연구대회 입상(디지털 교수학습분과)
