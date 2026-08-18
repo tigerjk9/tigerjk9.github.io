@@ -19,59 +19,146 @@ toc_sticky: true
 
 <style>
 #dot-manifesto{position:relative;margin:2.3em 0;padding:2.1em 1.6em 1.9em;border:1px solid rgba(125,133,144,.28);border-radius:14px;background:radial-gradient(125% 100% at 50% 0%,rgba(88,166,255,.10),transparent 62%);text-align:center;overflow:hidden}
-#dot-manifesto .dm-svg{display:block;width:100%;max-width:520px;height:auto;margin:0 auto 1.6em}
+#dot-manifesto .dm-svg{display:block;width:100%;max-width:400px;height:auto;margin:0 auto 1.5em}
 #dot-manifesto .dm-scatter circle{fill:#7d8590}
-#dot-manifesto .dm-path{fill:none;stroke:#58a6ff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-#dot-manifesto .dm-node{fill:#58a6ff}
+#dot-manifesto .dm-outline{fill:none;stroke:#7d8590;stroke-width:1.4;stroke-linecap:round;opacity:.34}
+#dot-manifesto .dm-feed line{stroke:#7d8590;stroke-width:1;stroke-linecap:round;stroke-dasharray:3 5;opacity:.34}
+#dot-manifesto .dm-net line{stroke:#58a6ff;stroke-width:1.1;stroke-linecap:round;opacity:.55}
+#dot-manifesto .dm-nodes circle{fill:#58a6ff}
+@keyframes dm-trace{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes dm-fade{from{opacity:0}to{opacity:1}}
+@keyframes dm-pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+#dot-manifesto .dm-outline{stroke-dasharray:100;stroke-dashoffset:0;animation:dm-trace 1.9s ease-out .2s both}
+#dot-manifesto .dm-net,#dot-manifesto .dm-feed{animation:dm-fade 1.1s ease-out .9s both}
+#dot-manifesto .dm-nodes circle{transform-box:fill-box;transform-origin:center;animation:dm-pop .5s ease-out both}
+#dot-manifesto .dm-nodes circle:nth-of-type(5n+1){animation-delay:.8s}
+#dot-manifesto .dm-nodes circle:nth-of-type(5n+2){animation-delay:1s}
+#dot-manifesto .dm-nodes circle:nth-of-type(5n+3){animation-delay:1.2s}
+#dot-manifesto .dm-nodes circle:nth-of-type(5n+4){animation-delay:1.4s}
+#dot-manifesto .dm-nodes circle:nth-of-type(5n+5){animation-delay:1.6s}
+@media (prefers-reduced-motion:reduce){#dot-manifesto .dm-outline,#dot-manifesto .dm-net,#dot-manifesto .dm-feed,#dot-manifesto .dm-nodes circle{animation:none}}
 #dot-manifesto p{margin:0 0 .5em;line-height:1.8;color:#c9d1d9;font-size:1.02em;word-break:keep-all}
 #dot-manifesto .dm-key{color:#e6edf3;font-weight:600}
 #dot-manifesto .dm-dot{color:#58a6ff;font-weight:600}
 #dot-manifesto .dm-last{margin:1.2em 0 0;padding-top:1.05em;border-top:1px solid rgba(125,133,144,.22);color:#e6edf3;font-size:1.12em;font-weight:600;letter-spacing:-.01em}
 html[data-theme="light"] #dot-manifesto{border-color:rgba(31,35,40,.14);background:radial-gradient(125% 100% at 50% 0%,rgba(9,105,218,.07),transparent 62%)}
 html[data-theme="light"] #dot-manifesto .dm-scatter circle{fill:#8b949e}
-html[data-theme="light"] #dot-manifesto .dm-path{stroke:#0969da}
-html[data-theme="light"] #dot-manifesto .dm-node{fill:#0969da}
+html[data-theme="light"] #dot-manifesto .dm-outline{stroke:#8b949e;opacity:.42}
+html[data-theme="light"] #dot-manifesto .dm-feed line{stroke:#8b949e;opacity:.42}
+html[data-theme="light"] #dot-manifesto .dm-net line{stroke:#0969da;opacity:.5}
+html[data-theme="light"] #dot-manifesto .dm-nodes circle{fill:#0969da}
 html[data-theme="light"] #dot-manifesto p{color:#4a5157}
 html[data-theme="light"] #dot-manifesto .dm-key,html[data-theme="light"] #dot-manifesto .dm-last{color:#1f2328}
 html[data-theme="light"] #dot-manifesto .dm-last{border-top-color:rgba(31,35,40,.12)}
-@keyframes dm-draw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
-@keyframes dm-pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
-#dot-manifesto .dm-path{stroke-dasharray:100;stroke-dashoffset:0;animation:dm-draw 1.7s ease-out .35s both}
-#dot-manifesto .dm-node{opacity:1;transform-box:fill-box;transform-origin:center;animation:dm-pop .5s ease-out both}
-#dot-manifesto .dm-node:nth-of-type(1){animation-delay:.5s}
-#dot-manifesto .dm-node:nth-of-type(2){animation-delay:.75s}
-#dot-manifesto .dm-node:nth-of-type(3){animation-delay:1s}
-#dot-manifesto .dm-node:nth-of-type(4){animation-delay:1.25s}
-#dot-manifesto .dm-node:nth-of-type(5){animation-delay:1.5s}
-#dot-manifesto .dm-node:nth-of-type(6){animation-delay:1.75s}
-@media (prefers-reduced-motion:reduce){#dot-manifesto .dm-path,#dot-manifesto .dm-node{animation:none}}
-@media (max-width:600px){#dot-manifesto{padding:1.7em 1.1em 1.6em}#dot-manifesto p{font-size:.97em}#dot-manifesto .dm-last{font-size:1.05em}}
 </style>
 
 <div id="dot-manifesto">
-<svg class="dm-svg" viewBox="0 0 520 96" role="img" aria-label="흩어져 있던 점들이 선으로 이어져 하나의 길이 되는 그림">
+<svg class="dm-svg" viewBox="0 0 400 220" role="img" aria-label="흩어져 있던 점들이 이어져 뇌 모양의 연결망을 이루는 그림">
   <g class="dm-scatter">
-    <circle cx="18" cy="22" r="2.2" opacity=".45"/>
-    <circle cx="44" cy="68" r="1.8" opacity=".38"/>
-    <circle cx="63" cy="38" r="2.6" opacity=".55"/>
-    <circle cx="88" cy="81" r="1.7" opacity=".35"/>
-    <circle cx="105" cy="16" r="2" opacity=".42"/>
-    <circle cx="127" cy="57" r="2.4" opacity=".55"/>
-    <circle cx="151" cy="79" r="1.8" opacity=".4"/>
-    <circle cx="169" cy="29" r="2.2" opacity=".5"/>
-    <circle cx="188" cy="63" r="1.8" opacity=".45"/>
-    <circle cx="208" cy="72" r="2" opacity=".55"/>
-    <circle cx="231" cy="33" r="2.2" opacity=".6"/>
-    <circle cx="253" cy="61" r="2" opacity=".65"/>
-    <circle cx="275" cy="41" r="2.3" opacity=".72"/>
+    <circle cx="18" cy="40" r="2.2" opacity="0.40"/>
+    <circle cx="40" cy="96" r="1.8" opacity="0.34"/>
+    <circle cx="30" cy="140" r="2.4" opacity="0.42"/>
+    <circle cx="58" cy="62" r="2.0" opacity="0.38"/>
+    <circle cx="66" cy="122" r="1.7" opacity="0.32"/>
+    <circle cx="78" cy="158" r="2.2" opacity="0.40"/>
+    <circle cx="52" cy="18" r="1.8" opacity="0.30"/>
+    <circle cx="86" cy="88" r="2.0" opacity="0.36"/>
+    <circle cx="94" cy="44" r="1.6" opacity="0.28"/>
   </g>
-  <path class="dm-path" pathLength="100" d="M300 54 C316 46 322 40 338 43 C356 46 360 53 376 52 C394 51 398 43 414 42 C432 41 436 50 452 50 C470 50 476 46 490 46"/>
-  <circle class="dm-node" cx="300" cy="54" r="3.2"/>
-  <circle class="dm-node" cx="338" cy="43" r="3.2"/>
-  <circle class="dm-node" cx="376" cy="52" r="3.2"/>
-  <circle class="dm-node" cx="414" cy="42" r="3.2"/>
-  <circle class="dm-node" cx="452" cy="50" r="3.2"/>
-  <circle class="dm-node" cx="490" cy="46" r="3.8"/>
+  <g class="dm-brain">
+    <path class="dm-outline" pathLength="100" d="M150 48 C168 24 214 16 242 34 C268 14 316 20 330 48 C364 54 382 84 366 110 C380 130 368 156 340 160 C336 178 312 188 288 180 C266 192 224 190 204 176 C176 182 148 170 140 148 C112 142 102 110 118 90 C108 70 124 50 150 48 Z"/>
+    <path class="dm-outline" pathLength="100" d="M141 148 C124 158 122 180 144 188 C163 194 182 186 187 173"/>
+    <path class="dm-outline dm-stem" pathLength="100" d="M166 188 C166 196 164 202 160 206"/>
+  </g>
+  <g class="dm-feed">
+    <line x1="94" y1="44" x2="163" y2="62"/>
+    <line x1="86" y1="88" x2="134" y2="92"/>
+    <line x1="78" y1="158" x2="152" y2="148"/>
+  </g>
+  <g class="dm-net">
+    <line x1="163" y1="62" x2="206" y2="46"/>
+    <line x1="163" y1="62" x2="134" y2="92"/>
+    <line x1="163" y1="62" x2="178" y2="84"/>
+    <line x1="206" y1="46" x2="250" y2="50"/>
+    <line x1="206" y1="46" x2="178" y2="84"/>
+    <line x1="206" y1="46" x2="222" y2="78"/>
+    <line x1="250" y1="50" x2="296" y2="62"/>
+    <line x1="250" y1="50" x2="222" y2="78"/>
+    <line x1="250" y1="50" x2="266" y2="86"/>
+    <line x1="296" y1="62" x2="330" y2="78"/>
+    <line x1="296" y1="62" x2="266" y2="86"/>
+    <line x1="296" y1="62" x2="310" y2="96"/>
+    <line x1="330" y1="78" x2="310" y2="96"/>
+    <line x1="330" y1="78" x2="350" y2="106"/>
+    <line x1="134" y1="92" x2="178" y2="84"/>
+    <line x1="134" y1="92" x2="126" y2="122"/>
+    <line x1="134" y1="92" x2="170" y2="114"/>
+    <line x1="178" y1="84" x2="222" y2="78"/>
+    <line x1="178" y1="84" x2="170" y2="114"/>
+    <line x1="178" y1="84" x2="214" y2="110"/>
+    <line x1="222" y1="78" x2="266" y2="86"/>
+    <line x1="222" y1="78" x2="214" y2="110"/>
+    <line x1="266" y1="86" x2="310" y2="96"/>
+    <line x1="266" y1="86" x2="258" y2="116"/>
+    <line x1="310" y1="96" x2="350" y2="106"/>
+    <line x1="310" y1="96" x2="302" y2="124"/>
+    <line x1="310" y1="96" x2="344" y2="134"/>
+    <line x1="350" y1="106" x2="344" y2="134"/>
+    <line x1="126" y1="122" x2="170" y2="114"/>
+    <line x1="126" y1="122" x2="152" y2="148"/>
+    <line x1="170" y1="114" x2="214" y2="110"/>
+    <line x1="170" y1="114" x2="152" y2="148"/>
+    <line x1="170" y1="114" x2="196" y2="142"/>
+    <line x1="214" y1="110" x2="258" y2="116"/>
+    <line x1="214" y1="110" x2="196" y2="142"/>
+    <line x1="214" y1="110" x2="240" y2="144"/>
+    <line x1="258" y1="116" x2="302" y2="124"/>
+    <line x1="258" y1="116" x2="240" y2="144"/>
+    <line x1="258" y1="116" x2="284" y2="152"/>
+    <line x1="302" y1="124" x2="344" y2="134"/>
+    <line x1="302" y1="124" x2="284" y2="152"/>
+    <line x1="302" y1="124" x2="322" y2="158"/>
+    <line x1="344" y1="134" x2="322" y2="158"/>
+    <line x1="152" y1="148" x2="196" y2="142"/>
+    <line x1="152" y1="148" x2="178" y2="168"/>
+    <line x1="196" y1="142" x2="240" y2="144"/>
+    <line x1="196" y1="142" x2="178" y2="168"/>
+    <line x1="196" y1="142" x2="222" y2="168"/>
+    <line x1="240" y1="144" x2="284" y2="152"/>
+    <line x1="240" y1="144" x2="222" y2="168"/>
+    <line x1="240" y1="144" x2="264" y2="174"/>
+    <line x1="284" y1="152" x2="322" y2="158"/>
+    <line x1="284" y1="152" x2="264" y2="174"/>
+    <line x1="178" y1="168" x2="222" y2="168"/>
+    <line x1="222" y1="168" x2="264" y2="174"/>
+  </g>
+  <g class="dm-nodes">
+    <circle cx="163" cy="62" r="3.4"/>
+    <circle cx="206" cy="46" r="2.6"/>
+    <circle cx="250" cy="50" r="2.6"/>
+    <circle cx="296" cy="62" r="2.6"/>
+    <circle cx="330" cy="78" r="2.6"/>
+    <circle cx="134" cy="92" r="3.4"/>
+    <circle cx="178" cy="84" r="2.6"/>
+    <circle cx="222" cy="78" r="2.6"/>
+    <circle cx="266" cy="86" r="2.6"/>
+    <circle cx="310" cy="96" r="2.6"/>
+    <circle cx="350" cy="106" r="3.4"/>
+    <circle cx="126" cy="122" r="2.6"/>
+    <circle cx="170" cy="114" r="2.6"/>
+    <circle cx="214" cy="110" r="2.6"/>
+    <circle cx="258" cy="116" r="2.6"/>
+    <circle cx="302" cy="124" r="3.4"/>
+    <circle cx="344" cy="134" r="2.6"/>
+    <circle cx="152" cy="148" r="2.6"/>
+    <circle cx="196" cy="142" r="2.6"/>
+    <circle cx="240" cy="144" r="2.6"/>
+    <circle cx="284" cy="152" r="3.4"/>
+    <circle cx="322" cy="158" r="2.6"/>
+    <circle cx="178" cy="168" r="2.6"/>
+    <circle cx="222" cy="168" r="2.6"/>
+    <circle cx="264" cy="174" r="2.6"/>
+  </g>
 </svg>
 
 <p>지식이든 경험이든 사람이든, 모든 것은 저마다의 <span class="dm-dot">점(dot)</span>이다.</p>
@@ -405,8 +492,6 @@ html[data-theme="light"] #dot-manifesto .dm-last{border-top-color:rgba(31,35,40,
 | [인스타그램](https://www.instagram.com/jinkwan_soul_groove) | 일상과 글 나눔 |
 
 ## 연락
-
-강연 · 연수 · 집필 · 협업 — 어떤 제안이든 열려 있다.
 
 - 이메일 — [faithfuljk@naver.com](mailto:faithfuljk@naver.com)
 - 협업·강연 문의 — [리틀리 CONTACT](https://litt.ly/dot_connector)
