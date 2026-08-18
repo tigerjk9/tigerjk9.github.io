@@ -15,6 +15,7 @@ permalink: /post/ailit-framework-ko/
 description: "OECD와 유럽연합이 2026년 공동 발표한 초·중등 AI 리터러시 프레임워크(AILit)의 한국어 전문 번역. 4개 영역 19개 역량과 학습자 기대수준, 수업 장면, 용어집까지 원문 순서 그대로 옮겼다."
 toc: true
 toc_sticky: true
+toc_h_max: 3
 header:
   teaser: /assets/ailit-fig2-shared-effort.jpg
 ---

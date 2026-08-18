@@ -1641,10 +1641,26 @@ html[data-theme="light"] {
   .pg-modal__close { color: #778088; &:hover { color: #111; } }
 }
 
-/* sticky 컬럼이 뷰포트를 넘지 않도록 그래프 높이만큼 TOC 내부 스크롤 영역 축소 */
+/* 긴 글의 TOC가 뷰포트를 넘어 흘러내리지 않도록 내부 스크롤 영역으로 만든다.
+   max-height 만으로는 넘친 항목이 그대로 보인다 - overflow-y 가 함께 있어야 한다. */
 @media (min-width: 1024px) {
+  .sidebar__right.sticky .toc .toc__menu {
+    max-height: calc(100vh - 7em);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(128, 128, 128, 0.4) transparent;
+  }
+
+  /* 그래프 뷰가 있으면 그 높이만큼 더 줄인다 */
   .sidebar__right.sticky #post-graph ~ .toc .toc__menu {
     max-height: calc(100vh - 7em - 290px);
+  }
+
+  .sidebar__right.sticky .toc .toc__menu::-webkit-scrollbar { width: 4px; }
+  .sidebar__right.sticky .toc .toc__menu::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.4);
+    border-radius: 2px;
   }
 }
 
