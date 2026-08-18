@@ -18,9 +18,67 @@ toc_sticky: true
 - 대전AI교육 초중고 교사커뮤니티 AI 티처스쿨(AITS) 대표교사
 - 한국교원대학교 컴퓨터교육과 박사과정(휴학)
 
-> 지식이든 경험이든 사람이든, 모든 것은 저마다의 점(dot)이다.
-> 흩어져 있으면 파편이지만, 선을 긋는 순간 길이 된다.
-> 이 블로그는 그 연결의 기록이다.
+<style>
+#dot-manifesto{position:relative;margin:2.3em 0;padding:2.1em 1.6em 1.9em;border:1px solid rgba(125,133,144,.28);border-radius:14px;background:radial-gradient(125% 100% at 50% 0%,rgba(88,166,255,.10),transparent 62%);text-align:center;overflow:hidden}
+#dot-manifesto .dm-svg{display:block;width:100%;max-width:520px;height:auto;margin:0 auto 1.6em}
+#dot-manifesto .dm-scatter circle{fill:#7d8590}
+#dot-manifesto .dm-path{fill:none;stroke:#58a6ff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#dot-manifesto .dm-node{fill:#58a6ff}
+#dot-manifesto p{margin:0 0 .5em;line-height:1.8;color:#c9d1d9;font-size:1.02em;word-break:keep-all}
+#dot-manifesto .dm-key{color:#e6edf3;font-weight:600}
+#dot-manifesto .dm-dot{color:#58a6ff;font-weight:600}
+#dot-manifesto .dm-last{margin:1.2em 0 0;padding-top:1.05em;border-top:1px solid rgba(125,133,144,.22);color:#e6edf3;font-size:1.12em;font-weight:600;letter-spacing:-.01em}
+html[data-theme="light"] #dot-manifesto{border-color:rgba(31,35,40,.14);background:radial-gradient(125% 100% at 50% 0%,rgba(9,105,218,.07),transparent 62%)}
+html[data-theme="light"] #dot-manifesto .dm-scatter circle{fill:#8b949e}
+html[data-theme="light"] #dot-manifesto .dm-path{stroke:#0969da}
+html[data-theme="light"] #dot-manifesto .dm-node{fill:#0969da}
+html[data-theme="light"] #dot-manifesto p{color:#4a5157}
+html[data-theme="light"] #dot-manifesto .dm-key,html[data-theme="light"] #dot-manifesto .dm-last{color:#1f2328}
+html[data-theme="light"] #dot-manifesto .dm-last{border-top-color:rgba(31,35,40,.12)}
+@keyframes dm-draw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes dm-pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+#dot-manifesto .dm-path{stroke-dasharray:100;stroke-dashoffset:0;animation:dm-draw 1.7s ease-out .35s both}
+#dot-manifesto .dm-node{opacity:1;transform-box:fill-box;transform-origin:center;animation:dm-pop .5s ease-out both}
+#dot-manifesto .dm-node:nth-of-type(1){animation-delay:.5s}
+#dot-manifesto .dm-node:nth-of-type(2){animation-delay:.75s}
+#dot-manifesto .dm-node:nth-of-type(3){animation-delay:1s}
+#dot-manifesto .dm-node:nth-of-type(4){animation-delay:1.25s}
+#dot-manifesto .dm-node:nth-of-type(5){animation-delay:1.5s}
+#dot-manifesto .dm-node:nth-of-type(6){animation-delay:1.75s}
+@media (prefers-reduced-motion:reduce){#dot-manifesto .dm-path,#dot-manifesto .dm-node{animation:none}}
+@media (max-width:600px){#dot-manifesto{padding:1.7em 1.1em 1.6em}#dot-manifesto p{font-size:.97em}#dot-manifesto .dm-last{font-size:1.05em}}
+</style>
+
+<div id="dot-manifesto">
+<svg class="dm-svg" viewBox="0 0 520 96" role="img" aria-label="흩어져 있던 점들이 선으로 이어져 하나의 길이 되는 그림">
+  <g class="dm-scatter">
+    <circle cx="18" cy="22" r="2.2" opacity=".45"/>
+    <circle cx="44" cy="68" r="1.8" opacity=".38"/>
+    <circle cx="63" cy="38" r="2.6" opacity=".55"/>
+    <circle cx="88" cy="81" r="1.7" opacity=".35"/>
+    <circle cx="105" cy="16" r="2" opacity=".42"/>
+    <circle cx="127" cy="57" r="2.4" opacity=".55"/>
+    <circle cx="151" cy="79" r="1.8" opacity=".4"/>
+    <circle cx="169" cy="29" r="2.2" opacity=".5"/>
+    <circle cx="188" cy="63" r="1.8" opacity=".45"/>
+    <circle cx="208" cy="72" r="2" opacity=".55"/>
+    <circle cx="231" cy="33" r="2.2" opacity=".6"/>
+    <circle cx="253" cy="61" r="2" opacity=".65"/>
+    <circle cx="275" cy="41" r="2.3" opacity=".72"/>
+  </g>
+  <path class="dm-path" pathLength="100" d="M300 54 C316 46 322 40 338 43 C356 46 360 53 376 52 C394 51 398 43 414 42 C432 41 436 50 452 50 C470 50 476 46 490 46"/>
+  <circle class="dm-node" cx="300" cy="54" r="3.2"/>
+  <circle class="dm-node" cx="338" cy="43" r="3.2"/>
+  <circle class="dm-node" cx="376" cy="52" r="3.2"/>
+  <circle class="dm-node" cx="414" cy="42" r="3.2"/>
+  <circle class="dm-node" cx="452" cy="50" r="3.2"/>
+  <circle class="dm-node" cx="490" cy="46" r="3.8"/>
+</svg>
+
+<p>지식이든 경험이든 사람이든, 모든 것은 저마다의 <span class="dm-dot">점(dot)</span>이다.</p>
+<p>흩어져 있으면 파편이지만, <span class="dm-key">선을 긋는 순간 길이 된다.</span></p>
+<p class="dm-last">이 블로그는 그 연결의 기록이다.</p>
+</div>
 
 **지금 파고드는 것들**
 
@@ -29,14 +87,12 @@ toc_sticky: true
 ## 걸어온 길
 
 - (현) 대전둔천초등학교 재직
-- (현) AI 티처스쿨 커뮤니티 대표교사
+- (현) 대전AI교육 초중고 교사커뮤니티 AI 티처스쿨(AITS) 대표교사
 - (현) 교육부 AI 디지털 교육혁신 선도교사, AIEDAP 마스터교원
 - (현) 교육부 교육과정·수업·평가 현장지원단, 학생질문중심 수업평가 선도교원
 - 교육부 전국단위 수업·평가 연구회 (전) TRIPOD 회장, (현) 운영진
 - (전) 대전교육정보원 대전AI교육지원체험센터 파견교사
 - 한국교원대학교 컴퓨터교육과 박사과정(휴학)
-
-2011년부터의 활동 전체를 시기별로 정리했다. 눌러서 펼친다.
 
 <details markdown="1">
 <summary><strong>2011–2019 — 영재·STEAM·디지털교과서·SW교육</strong></summary>
@@ -66,7 +122,7 @@ toc_sticky: true
 </details>
 
 <details markdown="1">
-<summary><strong>2020–2022 — AI·메타버스 교육</strong></summary>
+<summary><strong>2020–2022 — AI 교육</strong></summary>
 
 - 2020 SW교육 선도학교 운영 주무(대전자양초)
 - 2020 현장자율직무연수 '소나무 소프트웨어교실' 강사(대전천동초등학교)
@@ -145,7 +201,7 @@ toc_sticky: true
 - 2023–2024 대전지족중 영재학급 강사(한국과학창의재단)
 - 2023 대전서부지역공동영재(발명) 영재학급 강사
 - 2023–2024 흥미진진 인공지능 주말학교 강사(공주신월초등학교·공주교육지원청)
-- 2023~현재 AI티처스쿨(대전AI교육 교사 커뮤니티) 대표교사
+- 2023~현재 대전AI교육 초중고 교사커뮤니티 AI 티처스쿨(AITS) 대표교사
 - 2023 AI티처스쿨 세미나 강의·호스팅(AI 챗봇 사용 후기, 프롬프트 엔지니어링 기초, BIC로 그림그리기)
 - 2023 ChatGPT 인공지능 융합독서교육법 강사(대전둔원고)
 - 2023 미디어교육 교원 직무연수 'AI·챗GPT를 활용한 미디어 교육' 강사(대전교육연수원)
