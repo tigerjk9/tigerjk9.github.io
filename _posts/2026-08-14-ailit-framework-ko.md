@@ -48,6 +48,9 @@ OECD와 유럽연합이 2026년 7월 공동 발표한 초·중등 AI 리터러�
 .ailit-lvl--b{background:#2f7d4f}
 .ailit-lvl--i{background:#1f6feb}
 .ailit-lvl--a{background:#8250df}
+.ailit-fig{justify-content:center}
+.ailit-fig img{margin-left:auto;margin-right:auto}
+.ailit-fig figcaption{text-align:center;flex-basis:100%}
 .ailit-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:.45em 1.15em;margin:.7em 0 1.4em;font-size:.92em}
 .ailit-legend span{display:inline-flex;align-items:center;gap:.42em}
 .ailit-legend i{width:.85em;height:.85em;border-radius:3px;flex:none}
@@ -170,22 +173,22 @@ AILit 프레임워크는 교과와 발달 단계를 가로질러 학습자를 �
 
 <div style="display:flex;flex-wrap:wrap;gap:14px;margin:1.6em 0">
   <div style="flex:1 1 210px;border:1px solid rgba(128,128,128,.35);border-radius:10px;padding:16px;text-align:center">
-    <img src="/assets/ailit-domain-engage.png" alt="AI와 관계 맺기 영역 삽화" style="max-width:118px;height:auto;margin:0 auto">
+    <img src="/assets/ailit-domain-engage.png" alt="AI와 관계 맺기 영역 삽화" style="display:block;margin:0 auto;max-width:118px;height:auto;margin:0 auto">
     <div style="font-weight:700;margin-top:10px">AI와 관계 맺기</div>
     <div style="font-size:.92em;opacity:.85;margin-top:4px">AI가 스며든 세계에서 비판적이고 책임 있는 참여자가 된다</div>
   </div>
   <div style="flex:1 1 210px;border:1px solid rgba(128,128,128,.35);border-radius:10px;padding:16px;text-align:center">
-    <img src="/assets/ailit-domain-create.png" alt="AI로 창조하기 영역 삽화" style="max-width:118px;height:auto;margin:0 auto">
+    <img src="/assets/ailit-domain-create.png" alt="AI로 창조하기 영역 삽화" style="display:block;margin:0 auto;max-width:118px;height:auto;margin:0 auto">
     <div style="font-weight:700;margin-top:10px">AI로 창조하기</div>
     <div style="font-size:.92em;opacity:.85;margin-top:4px">인간의 주체성을 지키면서 AI를 창작 동반자로 사용한다</div>
   </div>
   <div style="flex:1 1 210px;border:1px solid rgba(128,128,128,.35);border-radius:10px;padding:16px;text-align:center">
-    <img src="/assets/ailit-domain-manage.png" alt="AI 관리하기 영역 삽화" style="max-width:118px;height:auto;margin:0 auto">
+    <img src="/assets/ailit-domain-manage.png" alt="AI 관리하기 영역 삽화" style="display:block;margin:0 auto;max-width:118px;height:auto;margin:0 auto">
     <div style="font-weight:700;margin-top:10px">AI 관리하기</div>
     <div style="font-size:.92em;opacity:.85;margin-top:4px">사람과 AI 사이에 일을 의도적으로 나눈다</div>
   </div>
   <div style="flex:1 1 210px;border:1px solid rgba(128,128,128,.35);border-radius:10px;padding:16px;text-align:center">
-    <img src="/assets/ailit-domain-shape.png" alt="AI 빚어 가기 영역 삽화" style="max-width:118px;height:auto;margin:0 auto">
+    <img src="/assets/ailit-domain-shape.png" alt="AI 빚어 가기 영역 삽화" style="display:block;margin:0 auto;max-width:118px;height:auto;margin:0 auto">
     <div style="font-weight:700;margin-top:10px">AI 빚어 가기</div>
     <div style="font-size:.92em;opacity:.85;margin-top:4px">인간의 가치를 반영하도록 AI 시스템을 개선한다</div>
   </div>
@@ -197,24 +200,24 @@ AILit 프레임워크는 교과와 발달 단계를 가로질러 학습자를 �
 
 프레임워크의 네 영역은 함께 서로를 딛고 쌓이면서, 젊은이가 자신과 타인을 위해 AI에 관한 정보에 근거한 판단을 내릴 주체성을 갖추도록 한다.
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-fig1-domains.png" alt="AILit 프레임워크의 네 영역을 꽃잎 모양으로 배치한 도형">
-<figcaption>그림 1. AILit 프레임워크의 네 영역. 원문 도판의 영문 라벨 대신 아래 범례로 옮겼다.</figcaption>
+<figcaption>그림 1. AILit 프레임워크의 네 영역. 아래 범례는 도판의 영문 라벨에 대응하는 한국어 명칭이다.</figcaption>
 </figure>
 
 <p class="ailit-legend"><span><i style="background:#7694cc"></i>AI 빚어 가기</span><span><i style="background:#e95235"></i>AI 관리하기</span><span><i style="background:#1b458b"></i>AI와 관계 맺기</span><span><i style="background:#cee07b"></i>AI로 창조하기</span></p>
 
 ### 지식, 기술, 태도
 
-<img src="/assets/ailit-icon-knowledge.png" alt="지식 영역을 나타내는 뇌 아이콘" style="max-width:74px;height:auto">
+<img src="/assets/ailit-icon-knowledge.png" alt="지식 영역을 나타내는 뇌 아이콘" style="display:block;margin:0 auto;max-width:74px;height:auto">
 
 **지식** 항목은 AI 시스템을 이해하고 그와 관련된 사회적·윤리적 함의를 살피는 데 필수적인 사실과 개념을 밝힌다.
 
-<img src="/assets/ailit-icon-skills.png" alt="기술 영역을 나타내는 손 아이콘" style="max-width:56px;height:auto">
+<img src="/assets/ailit-icon-skills.png" alt="기술 영역을 나타내는 손 아이콘" style="display:block;margin:0 auto;max-width:56px;height:auto">
 
 **기술** 항목은 협업과 비판적 사고 같은 인간의 기술을 어떻게 길러 AI와 책임 있고 창의적으로 상호작용할 수 있는지 상세히 밝힌다.
 
-<img src="/assets/ailit-icon-attitudes.png" alt="태도 영역을 나타내는 하트 아이콘" style="max-width:66px;height:auto">
+<img src="/assets/ailit-icon-attitudes.png" alt="태도 영역을 나타내는 하트 아이콘" style="display:block;margin:0 auto;max-width:66px;height:auto">
 
 **태도** 항목은 익숙한 상황과 낯선 상황 모두에서 AI 시스템을 사용할 때 학습자가 지녀야 할 마음가짐과 성향을 서술한다.
 
@@ -228,7 +231,7 @@ AILit 프레임워크는 교과와 발달 단계를 가로질러 학습자를 �
 
 **교실에서** 항목의 학습 시나리오는 초등과 중등 환경에 알맞고 교과를 가로질러 통합할 수 있는 사례를 제공한다. AI 리터러시는 폭넓은 개념과 실천을 아우르므로, 그 폭을 고려하면 한 명의 교육자가 모든 측면을 깊이 있게 다루는 일이 언제나 현실적이지는 않다. 교사와 교육자는 자신의 교수 전문성을 발휘해, 자기 학습자와 환경에 적절한 방식으로 AI 리터러시를 도입할 방법을 정하도록 권장된다.
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-classroom.png" alt="교실에서 교사와 학생들이 함께 활동하는 모습을 그린 삽화">
 <figcaption>학습자 기대수준과 교실 장면은 프레임워크를 실제 수업으로 옮기는 다리 역할을 한다.</figcaption>
 </figure>
@@ -237,23 +240,23 @@ AILit 프레임워크는 교과와 발달 단계를 가로질러 학습자를 �
 
 의미 있고 지속적인 변화를 이루려면 AI 리터러시는 교육 생태계 전반의 조율되고 협력적인 작업에 뿌리내려야 한다. 교사와 교육자가 AI 리터러시를 학습에 통합하는 최전선에 서 있지만, 이 책임을 그들이 홀로 짊어질 수는 없다. 교육 체제 안의 효과적인 협력 관계가 초·중등 학습자를 변화하는 세계의 신기술에 대비시킨다. 학교와 사회, 노동 현장 전반에서 AI의 확산이 커질수록 학습자의 AI 리터러시 발달을 뒷받침하는 일에는 그러한 공동의 주인의식이 필요하다. 이 프레임워크가 상정하는 독자로서 각 집단은 서로 구별되면서도 연결된 역할을 맡는다.
 
-<img src="/assets/ailit-aud-teachers.png" alt="교사와 교육자를 나타내는 아이콘" style="max-width:60px;height:auto">
+<img src="/assets/ailit-aud-teachers.png" alt="교사와 교육자를 나타내는 아이콘" style="display:block;margin:0 auto;max-width:60px;height:auto">
 
 **교사와 교육자**는 학습자가 AI 기술과 정보에 근거해 비판적이고 창의적으로 관계 맺도록 돕는다. AI 리터러시는 한 명의 교육자나 하나의 교과에 기대어 서지 않는다. 학년과 교과를 가로지르는 교사와 교육자는 초기 직업교육훈련(VET) 맥락의 훈련 담당자를 포함해 서로 협력하여 AI 리터러시의 특정 측면이 어디에 가장 잘 들어맞는지 정할 수 있다. AILit 프레임워크는 학습자 기대수준의 형태로 진입점을 제시하며, 교육자는 자신의 전문성을 발휘해 적절한 교수 접근을 결정해야 한다.
 
-<img src="/assets/ailit-aud-leaders.png" alt="학교와 교육 체제 리더를 나타내는 아이콘" style="max-width:60px;height:auto">
+<img src="/assets/ailit-aud-leaders.png" alt="학교와 교육 체제 리더를 나타내는 아이콘" style="display:block;margin:0 auto;max-width:60px;height:auto">
 
 **학교와 교육 체제의 리더**는 AI 리터러시를 기르는 이니셔티브를 실행하고 AI 리터러시 프레임워크를 실천에 옮긴다. 이들은 학교 공동체와 학부모, 학습자, 교육자 사이에서 AI 리터러시 발달과 역량 강화를 뒷받침할 협력 관계를 구축한다. AILit 프레임워크는 교육 리더가 여러 학문 분야에 걸쳐 우선순위를 두어야 할 역량을 밝힌다.
 
-<img src="/assets/ailit-aud-policymakers.png" alt="교육 정책 입안자를 나타내는 아이콘" style="max-width:60px;height:auto">
+<img src="/assets/ailit-aud-policymakers.png" alt="교육 정책 입안자를 나타내는 아이콘" style="display:block;margin:0 auto;max-width:60px;height:auto">
 
 **교육 정책 입안자**는 젊은이를 지원하고 변화하는 사회와 번영하는 노동 현장에 대비시키는 현대적이고 미래 지향적인 교육을 보장할 정책을 개발하고 시행한다. 이 작업은 AI 리터러시가 기초 역량이 된 교실 밖 세계로 학습자가 나아갈 때에도 지속적인 발달을 가능하게 한다. 이러한 정책은 거버넌스와 윤리, 책임 있는 사용을 지키면서 교육자와 학습자를 뒷받침할 여건을 마련한다.
 
-<img src="/assets/ailit-aud-designers.png" alt="학습 설계자와 연수 제공자를 나타내는 아이콘" style="max-width:60px;height:auto">
+<img src="/assets/ailit-aud-designers.png" alt="학습 설계자와 연수 제공자를 나타내는 아이콘" style="display:block;margin:0 auto;max-width:60px;height:auto">
 
 **학습 설계자와 연수 제공자**는 목표를 학습자와 교사, 교육자를 위한 경험으로 옮긴다. 이들은 활동과 평가로 학년과 교과를 가로질러 지식·기술·태도·역량을 강화할 수 있다. 연수 제공자는 교사와 교육자가 AI 리터러시를 계속 이해해 가도록 돕는 기반으로 AILit 프레임워크를 활용할 수 있다.
 
-<img src="/assets/ailit-aud-families.png" alt="학부모와 가족, 양육자를 나타내는 아이콘" style="max-width:60px;height:auto">
+<img src="/assets/ailit-aud-families.png" alt="학부모와 가족, 양육자를 나타내는 아이콘" style="display:block;margin:0 auto;max-width:60px;height:auto">
 
 **학부모와 가족, 양육자**는 AI와 디지털 기술이 아이의 웰빙과 관계, 의사결정을 어떻게 형성하는지 살핌으로써 젊은이의 AI 리터러시를 뒷받침한다. AILit 프레임워크는 학교 기반 학습에 초점을 두지만, 학부모와 가족은 가정에서 교실의 성과를 뒷받침할 수 있다. 가족은 이 프레임워크를 자신들에게 의미 있고 관련 있는 방식으로 AI에 관해 대화를 나누는 출발점으로 삼고, 학교에서는 나오지 않을 법한 주제를 꺼내는 계기로 쓸 수 있다. 이는 AI 리터러시 발달에 추가적인 지원을 보장하고, 학부모를 학습자를 적절히 인도할 수 있는 신뢰받는 어른의 자리에 세운다.
 
@@ -261,7 +264,7 @@ AILit 프레임워크는 교과와 발달 단계를 가로질러 학습자를 �
 
 ### 교사와 교육자의 역할
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-fig2-shared-effort.jpg" alt="세 명의 교육자가 바닥에 놓인 큰 퍼즐 조각을 함께 맞추는 삽화">
 <figcaption>그림 2. AI 리터러시는 공동의 책임이며, 교육자 각자가 고유한 전문성을 보탠다.</figcaption>
 </figure>
@@ -276,7 +279,7 @@ AI가 학습자의 삶과 학업 경험에 폭넓게 통합되면서 교사와 �
 
 이 새로운 책임은 든든한 지원을 요구한다. 학습자가 AI에 관해 건전한 결정을 내리도록 인도하려면 교사와 교육자 자신이 먼저 그렇게 하는 데 편안함을 느껴야 한다. 이러한 필요를 반영하듯 유럽집행위원회(2025b)의 플래시 유로바로미터 조사에서 유럽 시민의 81%가 "모든 교사가 생성형 AI를 포함해 AI를 사용하고 이해할 역량을 갖추어야 한다는 데 동의"했다. 그러나 2024년 OECD 교수·학습 국제조사(TALIS)의 증거에 따르면 평균적으로 교사 세 명 중 한 명만이 AI를 사용하며, 교사 네 명 중 세 명은 AI를 활용해 가르칠 지식과 역량이 부족하다고 답했다(OECD, 2025b). 교사와 교육자는 이미 기초 학업 목표와 평가 압박, 학교별 목표를 비롯한 상충하는 요구를 감당하고 있다. 전문성 신장을 위한 적절한 시간과 자원을 투자하지 않은 채 의미 있는 AI 리터러시 통합을 기대하는 일은 기존의 부담을 악화시킬 위험이 있다.
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-teachers.png" alt="교사를 그린 삽화">
 <figcaption>교사의 전문적 자율성을 지키고 지속적 성장을 우선에 두는 일이 기술 혁신을 학습자의 발달에 복무하게 만든다.</figcaption>
 </figure>
@@ -308,7 +311,7 @@ AI는 흔히 교사와 교육자의 효율을 높이기 위해 교실에 도입�
 
 이해관계자들은 초안 프레임워크가 교육의 실질적인 필요에 부응한다는 데 동의했고, 이미 자신들의 환경에 맞게 프레임워크를 조정하기 시작했다고 밝혔다. 또한 자료를 더 조정하기 쉽고 실용적이며 관련성 있게 만들 방안을 제안했다. 이해관계자 피드백 분석은 부속서 1에 실려 있다.
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-fig3-respondents.png" alt="AILit 피드백 설문 응답자의 직역 분포를 나타낸 원그래프">
 <figcaption>그림 3. AILit 피드백 설문 응답자의 직역 분포. 원문의 영문 도판을 그대로 실었다.</figcaption>
 </figure>
@@ -327,7 +330,7 @@ AI는 흔히 교사와 교육자의 효율을 높이기 위해 교실에 도입�
 
 [^2]: '기타' 응답에는 심리학자, 연구자, 엔지니어, 사서, 교수, 데이터 분석가 등의 직역이 포함되었다.
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-ethics.jpg" alt="윤리적 고려를 주제로 한 삽화">
 <figcaption>AILit 프레임워크는 윤리를 별도의 주제로 두지 않고 자료 전체에 엮어 넣는다.</figcaption>
 </figure>
@@ -344,7 +347,7 @@ AI는 흔히 교사와 교육자의 효율을 높이기 위해 교실에 도입�
 
 AILit 프레임워크는 여러 주제와 학문 분야에 걸친 학술적 성과를 반영한다. AI 리터러시 자체가 윤리학과 컴퓨터과학, 미디어 리터러시와 디지털 리터러시, 데이터 과학, 사회과에서 길어 올린 것이다.
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-fig4-disciplines.png" alt="AI 리터러시에 기여하는 여섯 개 학문 분야를 원으로 나타낸 그림">
 <figcaption>그림 4. AI 리터러시는 여러 주제의 학술적 성과에서 길어 올린 것이다. 원문의 영문 도판을 그대로 실었다.</figcaption>
 </figure>
@@ -508,7 +511,7 @@ AI와 상호작용할 때 자기 인식과 사회적 인식은 필수적이다. 
 
 역량은 학습자 기대수준 및 학습 시나리오와 함께 AI 리터러시가 시간에 따라 어떻게 발달할 수 있는지 보여 준다. 학습자 기대수준은 기본에서 중급, 심화에 이르는 사용의 진전을 상세히 밝힌다. 이 진전 수준은 초등과 중등 교육의 성과에 적용되지만 특정 연령대나 학년에 대응하지는 않는다. 이 수준들은 AI 리터러시 발달을 시간에 따라 변화하는 복합적 과제로 제시한다. 교사와 교육자는 이 학습자 기대수준을 활용해 자신만의 평가 루브릭을 만들고 각자의 고유한 환경에 맞는 학습 경험을 실행하도록 권장된다. '교실에서' 학습 시나리오로 제시된 활동은 지역의 맥락과 지침, 법령에 맞게 조정되어야 하며, 특히 교실에서의 소셜 미디어나 기술 사용과 관련될 때 더욱 그렇다.
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-fig5-domains.png" alt="AILit 프레임워크의 네 영역과 각 영역의 설명을 배치한 그림">
 <figcaption>그림 5. AILit 프레임워크의 영역들. 원문의 영문 도판을 그대로 실었다.</figcaption>
 </figure>
@@ -524,7 +527,7 @@ AI와 상호작용할 때 자기 인식과 사회적 인식은 필수적이다. 
 
 ## AI와 관계 맺기
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-engage-opener.png" alt="AI와 관계 맺기 영역을 여는 삽화">
 <figcaption>AI와 관계 맺기는 AI가 스며든 세계에서 비판적이고 책임 있는 참여자가 되는 것을 목표로 한다.</figcaption>
 </figure>
@@ -660,7 +663,7 @@ AI와 상호작용할 때 자기 인식과 사회적 인식은 필수적이다. 
 
 ## AI로 창조하기
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-create-opener.png" alt="AI로 창조하기 영역을 여는 삽화">
 <figcaption>AI로 창조하기는 인간의 주체성을 지키면서 AI를 창작 동반자로 사용하는 것을 목표로 한다.</figcaption>
 </figure>
@@ -745,7 +748,7 @@ AI와 상호작용할 때 자기 인식과 사회적 인식은 필수적이다. 
 
 ## AI 관리하기
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-manage-opener.png" alt="AI 관리하기 영역을 여는 삽화">
 <figcaption>AI 관리하기는 사람과 AI 사이에 일을 의도적으로 나누는 것을 목표로 한다.</figcaption>
 </figure>
@@ -830,7 +833,7 @@ AI와 상호작용할 때 자기 인식과 사회적 인식은 필수적이다. 
 
 ## AI 빚어 가기
 
-<figure>
+<figure class="ailit-fig">
 <img src="/assets/ailit-shape-opener.png" alt="AI 빚어 가기 영역을 여는 삽화">
 <figcaption>AI 빚어 가기는 인간의 가치를 반영하도록 AI 시스템을 개선하는 것을 목표로 한다.</figcaption>
 </figure>
