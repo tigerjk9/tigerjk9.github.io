@@ -129,7 +129,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 웰빙 코너 | `assets/js/wellbeing.js`, `wellbeing.md`, `_includes/footer.html`, `assets/css/main.scss` |
 | 리서치 허브 (논문 탐색+AI 검색) | `research.md`, `scripts/build_research_db.py`, `scripts/build_embeddings.py`, `assets/research-*.json` |
 | 프롬프트 라이브러리 (교육자용 큐레이션) | `prompt-library.md`(`/prompts/`), `scripts/build_prompt_library.py`, `assets/prompt-library.json` |
-| 강의자료 아카이브 (강의+도서 허브) | `_pages/lectures.md`, `_data/lectures.yml`, `_data/books.yml`, `scripts/gen_book_covers.py`, `_sass/_lectures.scss` |
+| 자료실 (강의+도서+교실자료 허브) | `_pages/lectures.md`, `_data/lectures.yml`, `_data/books.yml`, `_data/resources.yml`, `scripts/gen_book_covers.py`, `_sass/_lectures.scss` |
 | AI에게 묻기 (RAG 챗봇, 주인장 키 + 방문자 BYOK) | `ask.md`, `research-ask/` (Vercel `dotconnector-ask`) |
 | 주간 다이제스트 자동화 | `scripts/weekly_digest.py`, `.github/workflows/weekly-digest.yml`, `/digest` |
 | NE 수업 디자이너 (노벨 엔지니어링 수업 설계기) | `tools/ne-designer/index.html` (front matter 없는 정적 단독 HTML) |
@@ -717,6 +717,16 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 - **잠금 카드**(`locked: true`+`locked_payload`)는 대상 URL을 **AES-256-GCM + PBKDF2-HMAC-SHA256(20만회)**로 암호화한 값이다(2026-07-30 기존 반복키 XOR에서 교체 — XOR은 known-plaintext로 비번 없이 URL 복원이 가능했음). payload(base64) 레이아웃 `[ver=2][salt:16][iv:12][ct+tag]`, 카드마다 salt/iv가 랜덤이라 동일 URL도 암호문이 다르고 카드 간 상관관계가 없다. 복호화 JS는 `_pages/lectures.md` — 비번 입력은 window.prompt가 아니라 **커스텀 모달**(`.lec-pw-*`, 스타일 `_sass/_lectures.scss`, 2026-07-30 모바일 비율 문제로 교체. 오류 인라인+shake, ≤600px 상단 배치, 팝업 차단 시 같은 탭 폴백, 잠금 카드 제목 표시 `.lec-pw-name`+등장 애니메이션은 같은 날 PC 폴리시). 재암호화 레시피·표준 절차는 메모리 `project_locked_cards`. 잠금 자료 전부 **하나의 공통 비번**을 공유하며 비번 값은 코드/문서에 남기지 않음(메모리에만). 내부 잠금 페이지(`_lectures/<slug>/`)는 front matter에 `sitemap: false` + `noindex: true`, 허브 카드 썸네일은 슬러그 없는 중립 경로(`/assets/lectures/covers/<hash>.jpg`)를 써서 URL 노출을 줄였다. **단 정적 사이트라 근본은 obscurity** — 콘텐츠 페이지·외부 Vercel 앱 자체엔 인증이 없어 URL이 알려지면 비번 없이 열린다(진짜 비공개는 서버측 게이트 필요).
 - 4권 웹 도서와 `vibe-coding-git-github` 슬라이드 강의는 동일 주제의 별개 자산(도서 vs 강의)으로 의도적 공존.
 - 카드에는 저자 크레딧 필수(도서 `author` 필드 + "저자" 라벨, 타사 원본 자료는 `author` 원작 + `curator` 2단 — AIEP 튜토리얼 선례), 섹션 도입 산문은 넣지 않는다(헤딩+카드 그리드만). 외부 링크형 강의 카드(학생용 생성형 AI 안내서·AIEP·AX 핸드북) 표지는 사이트 히어로 스크린샷 — 이 머신은 playwright·gstack browse가 없거나 고장이라 **Edge 헤드리스**(`--user-data-dir` 임시 프로필 필수)로 캡처한다.
+
+### 자료실 탭과 대용량 자료 (2026-08-19)
+
+상단 탭 이름은 **자료실**이다(구 "강의자료" — 저서 10권·워크숍 강의·도서 원고에 교실 자료까지 들어와 범위가 안 맞았다). 라벨은 `_data/navigation.yml`·`_pages/lectures.md` front matter·`_layouts/lecture.html` breadcrumb 세 곳에 있으니 함께 고친다. 허브 섹션은 서재 → 워크숍 강의 → **교실 자료**(`_data/resources.yml`) → 도서 원고 순이며, 교실 자료 카드는 `.lecture-card--media` 마크업을 그대로 쓰되 크레딧 라벨만 원작/큐레이션 대신 **자료/아카이빙**이다.
+
+**대용량 자료는 저장소에 넣지 않는다 (CRITICAL)**. 발행 사이트가 이미 약 865MB인데 GitHub Pages 한도가 1GB다. 수십 MB 이상 다운로드 자료는 **GitHub 릴리스 자산**으로 올리고 페이지에서 링크만 건다(릴리스는 이 한도에 미포함, 파일당 2GB). 첫 사례가 `eval-assessment-2026` 태그 — 대전교육과학연구원 서·논술형 평가도구 29개 218MB, 안내 페이지 `_lectures/eval-assessment-tool/`.
+
+- **릴리스는 한글 파일명을 지운다**: `2026학년도 2학기 수학과 … 목록(3~6학년).hwp` → `2026.2.3.6.hwp`로 뭉개지고 서로 충돌한다. 업로드 전 영문 슬러그로 재명명한다(`2026-s2-math-g3-6-tools.pdf` 꼴). 매핑 스크립트는 누락·중복·미매핑을 assert로 막고 업로드 후 `gh api …/releases/tags/<tag>`의 자산 목록과 본문 링크를 대조한다.
+- 릴리스는 교차 출처라 `<a download="한글이름">`이 **무시된다**. 방문자는 영문 파일명으로 받으므로 페이지 표에 한글 제목·쪽수·용량을 함께 적는다.
+- 이 머신엔 Ruby가 없어 `jekyll build` 사전 검증이 불가하다. 푸시 후 `gh run watch`로 배포를 확인하고 라이브 URL을 Edge 헤드리스로 캡처해 검증한다.
 
 **진입점**:
 ```powershell
