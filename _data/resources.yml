@@ -1,0 +1,18 @@
+# 교실 자료 — 현장에서 바로 내려받아 쓰는 자료 아카이브.
+# 용량이 큰 원본 파일은 GitHub 릴리스에 두고 링크한다 (Pages 1GB 한도 보호).
+- slug: eval-assessment-tool
+  title: "2026학년도 초등학교 서·논술형 평가도구 개발 자료"
+  subtitle: "1·2학기 국어·수학·사회·과학 · 3~6학년 · 채점기준표·피드백·생기부 기재 예시 포함"
+  audience: "초등 교사"
+  meta: "PDF 2,519쪽 · 편집용 HWP"
+  date: "2026-08-19"
+  url: /lectures/eval-assessment-tool/
+  thumbnail: /assets/lectures/eval-assessment-tool/cover.jpg
+  author: "대전교육과학연구원 교육연지원부"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "학기·교과별로 찾아 받도록 정리한 원본 아카이브"
+  tags:
+    - 서논술형평가
+    - 과정중심평가
+    - 채점기준표
+    - 학생평가

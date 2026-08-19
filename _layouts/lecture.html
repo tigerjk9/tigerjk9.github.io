@@ -14,7 +14,7 @@ read_time: false
 
 <nav class="lecture-breadcrumb" aria-label="breadcrumb">
   <ol>
-    <li><a href="/lectures/">강의자료</a></li>
+    <li><a href="/lectures/">자료실</a></li>
     {% if page.lecture_slug %}
       {% assign lecture = site.data.lectures | where: "slug", page.lecture_slug | first %}
       <li><a href="{{ lecture.hub_url }}">{{ lecture.title }}</a></li>

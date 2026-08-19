@@ -1,5 +1,5 @@
 ---
-title: "강의자료 아카이브"
+title: "자료실"
 permalink: /lectures/
 layout: single
 author_profile: false
@@ -55,6 +55,32 @@ standalone: true
 {% endfor %}
 </div>
 {% endif %}
+
+## 교실 자료 <span class="lec-count">{{ site.data.resources | size }}</span>
+
+<div class="lecture-card-grid">
+{% for res in site.data.resources %}
+  <a href="{{ res.url }}" class="lecture-card lecture-card--media">
+    {% if res.thumbnail %}<div class="card-thumb"><img src="{{ res.thumbnail }}" alt="{{ res.title }}" loading="lazy"></div>{% endif %}
+    {% if res.curator %}<span class="card-badge">교육자 큐레이션</span>{% endif %}
+    <div class="card-body">
+      <div class="card-title">{{ res.title }}</div>
+      {% if res.subtitle %}<div class="card-sub">{{ res.subtitle }}</div>{% endif %}
+      <div class="card-meta">
+        <span>{{ res.audience }}</span>{% if res.meta %} <span class="dot"></span> <span>{{ res.meta }}</span>{% endif %}
+      </div>
+    </div>
+    {% if res.curator %}
+    <div class="card-credit">
+      <div><span class="credit-label">자료</span> <span class="credit-name">{{ res.author }}</span></div>
+      <div><span class="credit-label credit-curator">아카이빙</span> <span class="credit-name">{{ res.curator }}</span></div>
+    </div>
+    {% elsif res.author %}
+    <div class="card-credit"><div><span class="credit-label">자료</span> <span class="credit-name">{{ res.author }}</span></div></div>
+    {% endif %}
+  </a>
+{% endfor %}
+</div>
 
 ## 도서 원고 <span class="lec-count">{{ site.data.books | size }}</span>
 
