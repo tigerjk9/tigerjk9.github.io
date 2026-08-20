@@ -339,6 +339,33 @@ def sync_state_before_run(state: dict) -> dict:
     return merged
 
 
+def _resolve_ledger_rebase(rel: str) -> bool:
+    """rebase 충돌이 이력 파일 하나뿐이면 양쪽을 union 병합해 --continue 한다.
+
+    충돌 스테이지 :2:(origin/main 쪽)와 :3:(우리 이력 커밋)를 합쳐(merge_state)
+    한 건도 잃지 않고 이어붙인다. 이력 외 다른 파일이 충돌하면 자동 해소를
+    포기하고 False(호출부가 abort). 이력은 append 위주라 union 이 항상 안전하다.
+    """
+    conflicted = _git("diff", "--name-only", "--diff-filter=U").stdout.split()
+    if conflicted != [rel]:
+        return False
+    try:
+        ours = json.loads(_git("show", f":2:{rel}").stdout or "{}")    # origin/main 쪽
+        theirs = json.loads(_git("show", f":3:{rel}").stdout or "{}")  # 우리 이력 커밋
+    except Exception as e:
+        print(f"  [warn] 이력 union 파싱 실패: {e}")
+        return False
+    merged, _, _ = merge_state(theirs, ours)
+    save_json(STATE_FILE, merged)
+    if _git("add", "--", rel).returncode != 0:
+        return False
+    cont = _git("-c", "core.editor=true", "rebase", "--continue", timeout=60)
+    if cont.returncode != 0:
+        print(f"  [warn] rebase --continue 실패: {cont.stderr.strip()[:160]}")
+        return False
+    return True
+
+
 def push_state(note: str) -> None:
     """이력 파일만 커밋·푸시한다. 다른 작업 중인 변경은 건드리지 않는다."""
     if not _git_ok():
@@ -359,9 +386,13 @@ def push_state(note: str) -> None:
         _git("fetch", "origin", "--quiet", timeout=120)
         rb = _git("rebase", "origin/main", "--autostash", timeout=180)
         if rb.returncode != 0:
-            _git("rebase", "--abort")
-            print("[WARN] rebase 충돌 - 이력은 로컬에 커밋됨. 수동으로 push 하세요")
-            return
+            # 충돌이 이력 파일 하나뿐이면 union(합집합)으로 자동 해소하고 이어간다.
+            # 안 그러면 이력이 로컬에만 남아 유실될 수 있고, 그게 중복 발행의 씨앗이다.
+            if not _resolve_ledger_rebase(rel):
+                _git("rebase", "--abort")
+                print("[WARN] rebase 충돌 - 이력은 로컬에 커밋됨. 수동으로 push 하세요")
+                return
+            print("[SYNC] rebase 충돌을 이력 union 병합으로 자동 해소함")
         pu = _git("push", "origin", "HEAD:main", timeout=180)
         if pu.returncode != 0:
             print(f"[WARN] 이력 push 실패 (로컬 커밋은 남음): {pu.stderr.strip()[:200]}")
@@ -937,6 +968,68 @@ def fetch_logno_by_title(title: str) -> str | None:
     return None
 
 
+# 발행 전 네이버 실제 존재 확인 (중복 발행 방지의 최종 안전장치)
+#
+# 이력 파일(naver_crosspost_state.json)은 중복 방지의 1차 장치지만, 발행 후 이력이
+# 원격에 안 올라가면(로컬 커밋이 다른 git 조작에 유실되는 등) 다음 실행이 같은 글을
+# 다시 올린다(2026-08-20 실측: 16:00 배치 7편이 고아가 돼 재발행됨). 이력이 무엇을
+# 놓치든, 발행 직전에 네이버 자체를 조회해 같은 제목이 이미 있으면 건너뛴다.
+_naver_title_index = None
+
+
+def _load_naver_title_index(max_pages: int = 30) -> dict:
+    """공개 목록 API로 (정규화 제목 -> logNo) 색인을 만든다. 로그인 불필요."""
+    import html as _html
+    import ssl
+    import urllib.request
+    from urllib.parse import unquote_plus
+    item = re.compile(r'"logNo":"(\d+)".*?"title":"([^"]*)"', re.S)
+    idx = {"full": {}, "pre": {}}
+    seen: set = set()
+    for p in range(1, max_pages + 1):
+        url = (f"https://blog.naver.com/PostTitleListAsync.naver?blogId={BLOG_ID}"
+               f"&currentPage={p}&categoryNo=0&countPerPage=30")
+        try:
+            raw = urllib.request.urlopen(
+                urllib.request.Request(url, headers={
+                    "User-Agent": "Mozilla/5.0",
+                    "Referer": f"https://blog.naver.com/{BLOG_ID}"}),
+                context=ssl._create_unverified_context(), timeout=20
+            ).read().decode("utf-8", "replace")
+        except Exception as e:
+            print(f"  [warn] 네이버 제목목록 조회 실패 p{p}: {e}")
+            break
+        rows = item.findall(raw)
+        if not rows:
+            break
+        new = 0
+        for ln, ti in rows:
+            if ln in seen:
+                continue
+            seen.add(ln)
+            new += 1
+            norm = _norm_title(_html.unescape(unquote_plus(ti)))
+            if not norm:
+                continue
+            idx["full"].setdefault(norm, ln)      # 최신이 먼저 오므로 최신 우선
+            idx["pre"].setdefault(norm[:20], ln)
+        if new == 0:
+            break
+    print(f"  [guard] 네이버 기존 글 {len(seen)}편 색인 (중복 발행 방지)")
+    return idx
+
+
+def naver_existing_logno(title: str) -> "str | None":
+    """네이버에 같은 제목 글이 이미 있으면 그 logNo, 없으면 None. 색인은 1회 캐시."""
+    global _naver_title_index
+    if _naver_title_index is None:
+        _naver_title_index = _load_naver_title_index()
+    norm = _norm_title(title)
+    if not norm:
+        return None
+    return _naver_title_index["full"].get(norm) or _naver_title_index["pre"].get(norm[:20])
+
+
 def update_post(page, logno: str, html: str, debug: bool) -> str | None:
     """기존 발행 글의 본문만 교체 (제목·카테고리·태그는 유지).
 
@@ -1130,6 +1223,20 @@ def main():
                 cat_key = args.category or classify(post, overrides)
                 cat_name = CATEGORIES[cat_key]["name"]
                 print(f"\n[{i+1}/{len(batch)}] {post['file']} -> {cat_name}")
+                # 이력이 무엇을 놓치든, 네이버에 같은 제목이 이미 있으면 재발행하지 않는다.
+                # (--post 단건 강제 발행은 예외 — 주인장이 명시적으로 재발행하려는 경우)
+                if not args.post:
+                    exists = naver_existing_logno(post["title"])
+                    if exists:
+                        print(f"  [SKIP] 네이버에 이미 존재 (logNo {exists}) — 발행 생략, 이력만 보정")
+                        state["posted"][post["file"]] = {
+                            "url": f"https://blog.naver.com/{BLOG_ID}/{exists}",
+                            "category": cat_name,
+                            "posted_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+                            "note": "existence-guard",
+                        }
+                        save_json(STATE_FILE, state)
+                        continue
                 html = md_to_html(post, include_images=not args.no_images)
                 try:
                     url = write_post(page, post, cat_key, html,
