@@ -26,7 +26,7 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 <a class="ab-node" href="#music" data-x="33" data-y="80" data-d="1.3"><span class="t">음악 <em>1집</em></span><span class="s">CCM 'Oh My Soul'</span></a>
 <a class="ab-node" href="#dev" data-x="46" data-y="82" data-d="1.15"><span class="t">웹 도구 <em>40+</em></span><span class="s">바이브코딩 컬렉션 · 리서치 허브 · 챗봇</span></a>
 </nav>
-<p class="ab-chips"><span class="lb">지금 파고드는 것들</span><span class="hot">AI 디지털 교육</span><span class="hot">질문 중심 수업·평가 설계</span><span>깊이 있는 학습</span><span>학습과학</span><span>전문적 학습 공동체</span><span>웹 서비스 개발</span><span>집필·칼럼</span></p>
+<p class="ab-chips"><span class="hot">AI 디지털 교육</span><span class="hot">질문 중심 수업·평가 설계</span><span>깊이 있는 학습</span><span>학습과학</span><span>전문적 학습 공동체</span><span>웹 서비스 개발</span><span>집필·칼럼</span></p>
 </header>
 
 <section class="ab-stats" aria-label="한눈에 보는 기록">

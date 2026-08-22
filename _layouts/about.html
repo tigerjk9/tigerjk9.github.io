@@ -44,9 +44,6 @@ html[data-theme="light"] #about-app{
   transition:color .2s,border-color .2s}
 #about-app .ab-chips span:hover{color:var(--body);border-color:color-mix(in srgb,var(--acc) 40%,transparent)}
 #about-app .ab-chips span.hot{border-color:color-mix(in srgb,var(--acc) 38%,transparent);color:var(--acc)}
-#about-app .ab-chips .lb{border:none;padding:0;margin-right:.5em;font-size:.74rem;font-weight:600;
-  letter-spacing:.12em;color:var(--muted)}
-#about-app .ab-chips .lb::before{content:"◦ ";color:var(--amber)}
 
 #about-app .ab-me{margin:34px auto 0;text-align:center;width:240px}
 #about-app .ab-ring{position:relative;display:block;width:240px;height:240px;margin:0 auto}
@@ -77,12 +74,15 @@ html[data-theme="light"] #about-app{
 #about-app .ab-hero:not(.gm) .ab-nodes{position:relative;margin-top:36px}
 #about-app .ab-hero:not(.gm) .ab-nodes::before{content:"";position:absolute;left:50%;top:-32px;bottom:16px;
   width:1.6px;transform:translateX(-50%);
-  background:linear-gradient(color-mix(in srgb,var(--acc) 55%,transparent),color-mix(in srgb,var(--acc) 8%,transparent))}
+  background:linear-gradient(180deg,rgba(230,184,74,.8),rgba(241,143,165,.5) 35%,rgba(157,140,255,.45) 70%,rgba(108,184,255,.1))}
+html[data-theme="light"] #about-app .ab-hero:not(.gm) .ab-nodes::before{
+  background:linear-gradient(180deg,rgba(176,125,24,.8),rgba(209,86,124,.5) 35%,rgba(109,79,216,.45) 70%,rgba(9,105,218,.1))}
 #about-app .ab-hero:not(.gm) .ab-nodes::after{content:"";position:absolute;left:50%;top:-38px;
   width:6px;height:6px;border-radius:50%;background:var(--amber);transform:translateX(-50%)}
 #about-app .ab-hero:not(.gm) .ab-node{position:relative}
 #about-app .ab-hero:not(.gm) .ab-node::before{content:"";position:absolute;top:50%;width:5px;height:1.4px;
-  background:color-mix(in srgb,var(--acc) 32%,transparent)}
+  background:rgba(157,140,255,.45)}
+html[data-theme="light"] #about-app .ab-hero:not(.gm) .ab-node::before{background:rgba(109,79,216,.4)}
 #about-app .ab-hero:not(.gm) .ab-node:nth-child(odd)::before{right:-5px}
 #about-app .ab-hero:not(.gm) .ab-node:nth-child(even)::before{left:-5px}
 
