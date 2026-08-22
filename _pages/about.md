@@ -10,16 +10,15 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 <div class="ab-head">
 <p class="ab-eyebrow">DOT <i>●</i> CONNECTOR — ABOUT</p>
 <h1>사람도<br>하나의 <em>점</em>이다</h1>
-<p class="ab-intro">닷커넥터는 직함이 아니라 <b>연결</b>로 설명된다. 교실과 책과 코드와 음악이 서로 이어져 <b>하나의 지도</b>가 된다. 연구 · 기여 · 연결 · 순환 · 성장을 추구하는 <b>연결주의자</b>의 기록.</p>
-<p class="ab-chips"><span class="hot">AI 디지털 교육</span><span class="hot">질문 중심 수업·평가 설계</span><span>깊이 있는 학습</span><span>학습과학</span><span>전문적 학습 공동체</span><span>웹 서비스 개발</span><span>집필·칼럼</span></p>
+<p class="ab-intro">연구 · 기여 · 연결 · 순환 · 성장을 추구하는 <b>연결주의자</b>의 기록.</p>
 </div>
 <figure class="ab-me">
 <span class="ab-ring"><canvas id="ab-face" width="480" height="480" role="img" aria-label="김진관 — 점으로 이뤄진 초상"></canvas><noscript><img src="/assets/dot-connector-portrait.png" alt="김진관"></noscript></span>
 <figcaption><b>김진관</b>대전둔천초등학교 교사 · 닷커넥터</figcaption>
 </figure>
 <nav class="ab-nodes" aria-label="소개 섹션 바로가기">
-<a class="ab-node" href="/knowledge-graph/" data-x="48" data-y="21" data-d="1.2"><span class="t">블로그 기록 <em>{{ site.posts | size }}편</em></span><span class="s">논문 리뷰 · 지식그래프</span></a>
-<a class="ab-node" href="#path" data-x="44" data-y="31" data-d="0.9"><span class="t">수업·평가 설계</span><span class="s">질문 중심 · 깊이 있는 학습</span></a>
+<a class="ab-node" href="/knowledge-graph/" data-x="51" data-y="20" data-d="1.2"><span class="t">블로그 기록 <em>{{ site.posts | size }}편</em></span><span class="s">논문 리뷰 · 지식그래프</span></a>
+<a class="ab-node" href="#path" data-x="40" data-y="24" data-d="0.9"><span class="t">수업·평가 설계</span><span class="s">질문 중심 · 깊이 있는 학습</span></a>
 <a class="ab-node" href="#path" data-x="64" data-y="32" data-d="1.1"><span class="t">AI 디지털 교육 <em>선도교사</em></span><span class="s">교육부 · AIEDAP 마스터교원</span></a>
 <a class="ab-node" href="#books" data-x="71" data-y="58" data-d="1.0"><span class="t">함께 쓴 책 <em>{{ site.data.published_books | size }}권</em></span><span class="s">한빛미디어 · 박영사 · 앤써북</span></a>
 <a class="ab-node" href="#papers" data-x="62" data-y="74" data-d="1.25"><span class="t">학술 논문 <em>3편</em></span><span class="s">AI 스토리텔링 교육</span></a>
@@ -27,7 +26,7 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 <a class="ab-node" href="#music" data-x="33" data-y="80" data-d="1.3"><span class="t">음악 <em>1집</em></span><span class="s">CCM 'Oh My Soul'</span></a>
 <a class="ab-node" href="#dev" data-x="46" data-y="82" data-d="1.15"><span class="t">웹 도구 <em>6종</em></span><span class="s">리서치 허브 · RAG 챗봇</span></a>
 </nav>
-<p class="ab-hint">노드를 누르면 그 이야기로 이동합니다 — 그래프는 커서를 따라 천천히 움직입니다</p>
+<p class="ab-chips"><span class="lb">지금 파고드는 것들</span><span class="hot">AI 디지털 교육</span><span class="hot">질문 중심 수업·평가 설계</span><span>깊이 있는 학습</span><span>학습과학</span><span>전문적 학습 공동체</span><span>웹 서비스 개발</span><span>집필·칼럼</span></p>
 </header>
 
 <section class="ab-stats" aria-label="한눈에 보는 기록">
