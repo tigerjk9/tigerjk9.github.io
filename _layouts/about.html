@@ -62,7 +62,15 @@ html[data-theme="light"] #about-app{
 #about-app .ab-hint{display:none;text-align:center;font-size:.82rem;color:var(--muted);margin:0}
 #about-app .ab-hint::before{content:"◦ ";color:var(--amber)}
 
-/* 그래프 모드 (JS가 1024px 이상에서 .gm 부여) */
+/* 스택 모드 넓은 화면: 헤드 중앙 정렬 (그래프 모드 미만 태블릿·데스크톱) */
+@media (min-width:700px){
+  #about-app .ab-hero:not(.gm) .ab-head{max-width:640px;margin:0 auto;text-align:center}
+  #about-app .ab-hero:not(.gm) .ab-eyebrow{justify-content:center}
+  #about-app .ab-hero:not(.gm) .ab-intro{margin-left:auto;margin-right:auto;max-width:560px}
+  #about-app .ab-hero:not(.gm) .ab-chips{justify-content:center;max-width:640px;margin-left:auto;margin-right:auto}
+}
+
+/* 그래프 모드 (JS가 1260px 이상에서 .gm 부여) */
 #about-app .ab-hero.gm{height:700px;padding:0;overflow:hidden}
 #about-app .gm .ab-links{display:block;position:absolute;inset:0;width:100%;height:100%}
 #about-app .gm .ab-head{position:absolute;left:56px;top:56px;z-index:3;max-width:440px}
@@ -210,12 +218,8 @@ html[data-theme="light"] #about-app{
   for(var i=0;i<70;i++)AMB.push({x:rnd(),y:rnd(),r:0.8+rnd()*1.6,a:0.1+rnd()*0.28});
   var GM=false,mx=0,my=0,t0=0,rafId=null,heroVisible=true;
 
-  function nodePos(el){
-    var x=parseFloat(el.dataset.x)/100,y=parseFloat(el.dataset.y)/100;
-    return {x:x,y:y};
-  }
   function layout(){
-    var want=window.innerWidth>=1024&&!!lk;
+    var want=window.innerWidth>=1260&&!!lk;
     GM=want;
     if(hero)hero.classList.toggle('gm',want);
     if(!want){
@@ -223,11 +227,39 @@ html[data-theme="light"] #about-app{
       if(me){me.style.left='';me.style.top='';}
       stopLoop();return;
     }
+    var heroRect=hero.getBoundingClientRect(),W=heroRect.width,H=heroRect.height;
     nodes.forEach(function(el){
-      el.style.left=el.dataset.x+'%';el.style.top=el.dataset.y+'%';
+      el._bx=parseFloat(el.dataset.x)/100*W;
+      el._by=parseFloat(el.dataset.y)/100*H;
+      el.style.left=el._bx+'px';el.style.top=el._by+'px';
       el._dx=0;el._dy=0;el._tx=0;el._ty=0;
     });
-    if(me){me.style.left='50%';me.style.top='50%';}
+    if(me){me.style.left=W*0.5+'px';me.style.top=H*0.5+'px';}
+    /* 헤드 블록(제목·인트로·칩) 실측 사각형과 겹치는 노드는 그 아래로 밀어냄 —
+       폰트 로딩·줄바꿈 변화에도 겹침이 생기지 않도록 좌표가 아니라 측정으로 해소 */
+    var head=hero.querySelector('.ab-head');
+    if(head){
+      var kids=[].slice.call(head.children).map(function(k){
+        var r=k.getBoundingClientRect();
+        return {l:r.left-heroRect.left,t:r.top-heroRect.top,r:r.right-heroRect.left,b:r.bottom-heroRect.top};
+      });
+      nodes.forEach(function(el){
+        var w=el.offsetWidth,h=el.offsetHeight,PAD=12;
+        var nl=el._bx-w/2,nt=el._by-h/2,nr=el._bx+w/2,nb=el._by+h/2;
+        var hit=false,needB=0,needR=0;
+        kids.forEach(function(k){
+          if(nl<k.r+PAD&&nr>k.l-PAD&&nt<k.b+PAD&&nb>k.t-PAD)hit=true;
+          if(nl<k.r+PAD&&nr>k.l-PAD)needB=Math.max(needB,k.b+PAD);
+          if(nt<k.b+PAD&&nb>k.t-PAD)needR=Math.max(needR,k.r+PAD);
+        });
+        if(hit){
+          var dDown=(needB+h/2)-el._by,dRight=(needR+w/2)-el._bx;
+          if(dDown<=dRight)el._by=Math.min(needB+h/2,H-h/2-8);
+          else el._bx=Math.min(needR+w/2,W-w/2-8);
+          el.style.left=el._bx+'px';el.style.top=el._by+'px';
+        }
+      });
+    }
     draw();
     if(!reduce)startLoop();
   }
@@ -245,7 +277,7 @@ html[data-theme="light"] #about-app{
     c.lineWidth=1.1;c.globalAlpha=1;c.setLineDash([]);
     c.strokeStyle='rgba('+blue+',.42)';
     nodes.forEach(function(el,i){
-      var p=nodePos(el),x=p.x*W+(el._dx||0),y=p.y*H+(el._dy||0);
+      var x=(el._bx||0)+(el._dx||0),y=(el._by||0)+(el._dy||0);
       var mxp=(cxp+x)/2,myp=(cyp+y)/2;
       var dx=x-cxp,dy=y-cyp,len=Math.sqrt(dx*dx+dy*dy)||1;
       var sgn=(i%2?1:-1)*0.14;
@@ -255,9 +287,8 @@ html[data-theme="light"] #about-app{
     c.strokeStyle='rgba('+blue+',.2)';c.lineWidth=0.9;c.setLineDash([4,6]);
     PAIRS.forEach(function(pr){
       var a=nodes[pr[0]],b=nodes[pr[1]];if(!a||!b)return;
-      var pa=nodePos(a),pb=nodePos(b);
-      var ax=pa.x*W+(a._dx||0),ay=pa.y*H+(a._dy||0);
-      var bx=pb.x*W+(b._dx||0),by=pb.y*H+(b._dy||0);
+      var ax=(a._bx||0)+(a._dx||0),ay=(a._by||0)+(a._dy||0);
+      var bx=(b._bx||0)+(b._dx||0),by=(b._by||0)+(b._dy||0);
       c.beginPath();c.moveTo(ax,ay);
       c.quadraticCurveTo((ax+bx)/2+18,(ay+by)/2+14,bx,by);c.stroke();
     });
@@ -296,6 +327,7 @@ html[data-theme="light"] #about-app{
     var rt=null;
     window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(layout,150);});
     layout();
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
   }
 
   /* ---------- 테마 전환 시 캔버스 다시 그림 ---------- */
