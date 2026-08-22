@@ -39,7 +39,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | `/hook` | 후킹 티저 카드 1장 | 아래 "후킹 이미지 카드…" |
 | `/naver` | 네이버 블로그 크로스포스팅 | 아래 "네이버…" |
 | `/lecture-archive` | 강의자료 zip → `_lectures/` 큐레이션(개발 중) | 아래 "강의자료 큐레이션…" |
-| `/column` | 클로드 직접 집필 전문가 칼럼(유튜브 자막 지원) | `column.md` |
+| `/column` | 클로드 직접 집필 전문가 칼럼(유튜브 자막 지원, 저장 직후 `py scripts/column_qa.py`로 후처리 2패스 필수) | `column.md` |
 | `/tidy-claude-md` | CLAUDE.md 진단·정리(6지표 채점, 교훈 보존) | `tidy-claude-md.md` |
 | `/wrap` | 세션 마무리(메모리→CLAUDE.md 정리→PRD→커밋) | 전역 `~/.claude/commands/wrap.md` |
 
