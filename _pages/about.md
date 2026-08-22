@@ -31,7 +31,7 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 
 <section class="ab-stats" aria-label="한눈에 보는 기록">
 <div class="ab-wrap in">
-<div class="st"><p class="n">{{ 'now' | date: '%Y' | minus: 2006 }}<em>년+</em></p><p class="l">교직과 교실 — 2006 임용</p></div>
+<div class="st"><p class="n">{{ 'now' | date: '%Y' | minus: 2006 }}<em>년+</em></p><p class="l">교단에서 보낸 시간</p></div>
 <div class="st"><p class="n">{{ site.data.published_books | size }}<em>권</em></p><p class="l">함께 쓴 책</p></div>
 <div class="st"><p class="n">{{ site.posts | size }}<em>편</em></p><p class="l">블로그에 남긴 기록</p></div>
 <div class="st"><p class="n">3<em>편</em></p><p class="l">학술 논문</p></div>

@@ -72,6 +72,19 @@ html[data-theme="light"] #about-app{
 #about-app .ab-node .t em{font-style:normal;font-size:.82em;font-weight:700;color:var(--acc);margin-left:.4em}
 #about-app .ab-node .s{display:block;font-size:.73rem;color:var(--muted);margin-top:2px}
 
+/* 스택 모드: 초상에서 노드로 이어지는 연결 줄기 + 가지 (모바일·태블릿 그래프 표현) */
+#about-app .ab-hero:not(.gm) .ab-nodes{position:relative;margin-top:36px}
+#about-app .ab-hero:not(.gm) .ab-nodes::before{content:"";position:absolute;left:50%;top:-32px;bottom:16px;
+  width:1.6px;transform:translateX(-50%);
+  background:linear-gradient(color-mix(in srgb,var(--acc) 55%,transparent),color-mix(in srgb,var(--acc) 8%,transparent))}
+#about-app .ab-hero:not(.gm) .ab-nodes::after{content:"";position:absolute;left:50%;top:-38px;
+  width:6px;height:6px;border-radius:50%;background:var(--amber);transform:translateX(-50%)}
+#about-app .ab-hero:not(.gm) .ab-node{position:relative}
+#about-app .ab-hero:not(.gm) .ab-node::before{content:"";position:absolute;top:50%;width:5px;height:1.4px;
+  background:color-mix(in srgb,var(--acc) 32%,transparent)}
+#about-app .ab-hero:not(.gm) .ab-node:nth-child(odd)::before{right:-5px}
+#about-app .ab-hero:not(.gm) .ab-node:nth-child(even)::before{left:-5px}
+
 /* 스택 모드 넓은 화면: 헤드 중앙 정렬 (그래프 모드 미만 태블릿·데스크톱) */
 @media (min-width:700px){
   #about-app .ab-hero:not(.gm) .ab-head{max-width:640px;margin:0 auto;text-align:center}
@@ -253,7 +266,7 @@ html[data-theme="light"] #about-app{
     var ringEl=me?me.querySelector('.ab-ring'):null;
     if(ringEl){
       var rr=ringEl.getBoundingClientRect();
-      meX=rr.left+rr.width/2-heroRect.left;meY=rr.top+rr.height/2-heroRect.top;meR=rr.width/2+4;
+      meX=rr.left+rr.width/2-heroRect.left;meY=rr.top+rr.height/2-heroRect.top;meR=rr.width/2-9;
     }else{meX=W*0.5;meY=H*0.5;meR=126;}
     /* 헤드 블록(제목·인트로·칩) 실측 사각형과 겹치는 노드는 그 아래로 밀어냄 —
        폰트 로딩·줄바꿈 변화에도 겹침이 생기지 않도록 좌표가 아니라 측정으로 해소 */
@@ -304,7 +317,9 @@ html[data-theme="light"] #about-app{
       var x=(el._bx||0)+(el._dx||0),y=(el._by||0)+(el._dy||0);
       var dx=x-cxp,dy=y-cyp,len=Math.sqrt(dx*dx+dy*dy)||1;
       var ux=dx/len,uy=dy/len;
-      var x0=cxp+ux*R0,y0=cyp+uy*R0;
+      /* 아래쪽 방향은 흉상 도트에 가리므로 실루엣 밖에서 출발 */
+      var R=R0+(uy>0.72?18:0);
+      var x0=cxp+ux*R,y0=cyp+uy*R;
       var mxp=(x0+x)/2,myp=(y0+y)/2,bow=(len-R0)*0.16;
       var qx=mxp-uy*bow,qy=myp+ux*bow;
       c.strokeStyle='rgba('+blue+',.07)';c.lineWidth=3.2;
