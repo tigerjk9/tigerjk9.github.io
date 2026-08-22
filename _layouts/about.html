@@ -191,6 +191,7 @@ html[data-theme="light"] #about-app{
 
   /* ---------- 하프톤 도트 초상 ---------- */
   var face=document.getElementById('ab-face'),faceImg=null;
+  var SILH=null; /* 흉상 실루엣의 방향별(5도 단위) 가장자리 반경 — 선 출발점용 */
   function renderFace(){
     if(!face||!faceImg)return;
     try{
@@ -202,7 +203,8 @@ html[data-theme="light"] #about-app{
       var cx=face.getContext('2d'),W=480,cell=6,stepSrc=S/(W/cell);
       var hash=function(a,b){var h=a*374761393+b*668265263;h=(h^(h>>13))*1274126177;return((h^(h>>16))>>>0)/4294967295;};
       cx.clearRect(0,0,W,W);
-      var drawn=0;
+      var drawn=0,sil=[],si;
+      for(si=0;si<72;si++)sil[si]=0;
       for(var gy=0;gy<W/cell;gy++)for(var gx=0;gx<W/cell;gx++){
         var sx=Math.min(S-1,Math.floor(gx*stepSrc)),sy=Math.min(S-1,Math.floor(gy*stepSrc));
         var i=(sy*S+sx)*4,r=d[i],g=d[i+1],b=d[i+2];
@@ -220,8 +222,14 @@ html[data-theme="light"] #about-app{
         cx.fillStyle=(v<0.5&&drawn%37===0)?(light?'#8a6414':'#e6b84a'):(light?'#1c2f45':'#cfdae6');
         cx.globalAlpha=(light?0.92:0.9)*(0.6+fade*0.4);
         cx.beginPath();cx.arc(px,py,rr,0,7);cx.fill();
+        var ang=Math.atan2(py-W/2,px-W/2);
+        var sb=(((ang*180/Math.PI+360)%360)/5)|0;
+        var sd=Math.sqrt((px-W/2)*(px-W/2)+(py-W/2)*(py-W/2))/2;
+        if(sd>sil[sb])sil[sb]=sd;
       }
       cx.globalAlpha=1;
+      SILH=sil.map(function(v,i){return Math.max(v,sil[(i+71)%72],sil[(i+1)%72])||110;});
+      draw(lastT);
     }catch(e){ /* getImageData 실패 시 원본 사진 폴백 */
       if(face&&face.parentNode){
         var im=document.createElement('img');im.src='/assets/dot-connector-portrait.png';im.alt='김진관';
@@ -317,8 +325,10 @@ html[data-theme="light"] #about-app{
       var x=(el._bx||0)+(el._dx||0),y=(el._by||0)+(el._dy||0);
       var dx=x-cxp,dy=y-cyp,len=Math.sqrt(dx*dx+dy*dy)||1;
       var ux=dx/len,uy=dy/len;
-      /* 아래쪽 방향은 흉상 도트에 가리므로 실루엣 밖에서 출발 */
-      var R=R0+(uy>0.72?18:0);
+      /* 실측한 흉상 실루엣 가장자리에서 출발 (실루엣 미계산 시 링 반경 폴백) */
+      var ang=Math.atan2(dy,dx);
+      var base=SILH?SILH[(((ang*180/Math.PI+360)%360)/5)|0]:R0;
+      var R=Math.min(142,Math.max(38,base+7));
       var x0=cxp+ux*R,y0=cyp+uy*R;
       var mxp=(x0+x)/2,myp=(y0+y)/2,bow=(len-R0)*0.16;
       var qx=mxp-uy*bow,qy=myp+ux*bow;
