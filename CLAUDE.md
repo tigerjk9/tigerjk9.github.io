@@ -136,6 +136,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 | 학습자 친화적 어휘 사전 (497개, 등급 대조) | `tools/vocab/index.html`, `assets/vocab-db.json` |
 | 포스트 번호 표시 (홈·단일·검색 공통 넘버링) | `_layouts/single.html`, `_includes/archive-single.html`, `assets/js/lunr/lunr-store.js`·`lunr-en.js`, `assets/css/main.scss` |
 | 검색 키보드 단축키 (`/`·`Ctrl/Cmd+K`) | `assets/js/search-shortcut.js`, `_includes/search/search_form.html`, `_includes/scripts.html` |
+| 소개 페이지 그래프 히어로 (하프톤 도트 초상 + 지식그래프형 내비) | `_pages/about.md`, `_layouts/about.html` |
 | 이미 읽은 글 표시 (localStorage `readPosts`) | `assets/js/read-tracker.js`, `_includes/scripts.html`, `assets/css/main.scss` |
 
 **독자 편의 UI (2026-07-25)** — 기조(다크 에디토리얼·블루 액센트·미니멀) 유지하며 추가:
@@ -147,6 +148,8 @@ bundle exec rake version        # 버전 일괄 업데이트
 - **본문 이미지 지연 로딩**: `single.html`에서 `{{ content | replace: '<img ', '<img loading="lazy" decoding="async" ' }}` **빌드타임 주입**. end-of-body JS로는 이미 로드가 시작돼 늦으므로 Liquid 필터로 처리(508편 수정·재빌드 불필요)
 - **프로필**(`_includes/author-profile.html`): 이메일은 mailto 링크 대신 주소(`faithfuljk@naver.com`) 표시 + 클릭 복사(onclick, no-JS mailto 폴백). 소셜 링크(Website·Facebook·GitHub·Instagram = `author.links`)에 `target="_blank"` → 새 탭
 - **모바일 사이드바 토글**: `@media max-width:1023px` 안에 좌하단 FAB(2026-07-24) 뒤로 남아 있던 `.sidebar-toggle { top:70px }` 스테일 오버라이드 제거 → FAB가 상단으로 튀어 포스트 번호와 겹치던 문제 해소
+
+**소개 페이지 (2026-08-22 재설계)**: `/about/`은 layout `about`(`_layouts/about.html` — layout `default` 기반, `#about-app` 스코프 CSS/JS 전체 보유) + `_pages/about.md`(콘텐츠). 히어로는 하프톤 도트 초상(기존 `assets/dot-connector-portrait.png`를 클라이언트 캔버스로 렌더, 원형 액자 없음) + 성과 위성 노드 그래프(노드 = 섹션 앵커 내비, ≥1024px JS 그래프 모드·미만은 스택 폴백). 숫자 밴드는 Liquid 동적(`site.posts | size`·`site.data.published_books | size`·연차 `minus: 2006`). **본문 마크다운은 전부 사전 렌더링 HTML로 커밋됨** — kramdown 중첩 `markdown="1"` 의존 제거 목적이므로 활동 기록 추가는 해당 시대 `details` 안 `<li>`로 하고 summary 건수·`ab-sub` 총계(현재 219건)를 함께 갱신한다. Pretendard는 jsDelivr dynamic-subset CSS를 About 한정 로드. 설계 상세는 `docs/superpowers/specs/2026-08-22-about-redesign-design.md`.
 
 **`tools/` 정적 단독 페이지**: front matter 없는 `tools/<슬러그>/index.html`은 Jekyll이 정적 파일로 그대로 복사한다(exclude 목록에 없음). 테마 CSS·`sidebar-toggle.js`가 로드되지 않아 라이트모드 앵커 색·플로팅 ☰ 버튼 함정이 원천 차단된다 — layout default 커스텀 페이지에 필요한 `#앱ID` 스코핑도 불필요. 첫 사례가 NE 수업 디자이너(`/tools/ne-designer/`), 두 번째가 어휘 사전(`/tools/vocab/`). 검증은 스크래치패드 복사 후 Edge 헤드리스 `#demo` 해시 렌더 캡처(메모리 `project_tools_static_pages`). 데이터 fetch가 절대경로(`/assets/...`)면 로컬 file:// 에서 안 잡히므로 `window.fetch`를 목데이터로 덮어쓴 사본을 만들어 캡처한다.
 
