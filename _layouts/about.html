@@ -10,7 +10,8 @@ layout: default
   --nodebg:rgba(20,27,38,.72); --nodebd:rgba(88,166,255,.3);
   --card:rgba(255,255,255,.045); --cardbd:rgba(255,255,255,.11);
   font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',sans-serif;
-  color:var(--body); word-break:keep-all; overflow-x:hidden;
+  color:var(--body); word-break:keep-all;
+  overflow-x:hidden; overflow-x:clip; /* clip: 스크롤 컨테이너化 방지(이중 스크롤바) */
 }
 html[data-theme="light"] #about-app{
   --acc:#0969da; --amber:#a8781a;
@@ -331,8 +332,13 @@ html[data-theme="light"] #about-app{
     c.globalAlpha=1;
     var cxp=meX||0.5*W,cyp=meY||0.5*H,R0=meR||126;
     c.setLineDash([]);
-    var cometHead=light?'#2b7de0':'#bcd9ff';
-    var cometGlow=light?'#0969da':'#58a6ff';
+    /* 오로라 스레드 팔레트 — 사람(앰버)에서 성과(시안블루)로 식어 가는 그라디언트 */
+    var A1=light?'176,125,24':'230,184,74';
+    var A2=light?'209,86,124':'241,143,165';
+    var A3=light?'109,79,216':'157,140,255';
+    var A4=light?'9,105,218':'108,184,255';
+    var cometHead=light?'#5b43c9':'#ffffff';
+    var cometGlow=light?'#6d4fd8':'#9d8cff';
     nodes.forEach(function(el,i){
       var x=(el._bx||0)+(el._dx||0),y=(el._by||0)+(el._dy||0);
       var dx=x-cxp,dy=y-cyp,len=Math.sqrt(dx*dx+dy*dy)||1;
@@ -352,12 +358,14 @@ html[data-theme="light"] #about-app{
       if(ip<=0.005)return;
       var N=24,pts=[],k;
       for(k=0;k<=N;k++)pts.push(qpt(k/N*ip,x0,y0,qx,qy,x,y));
-      var hv=el._hotV||0;
-      strokePath(c,pts,'rgba('+blue+','+(0.07+hv*0.06).toFixed(3)+')',3.2+hv*1.6);
+      var hv=el._hotV||0,ha=1+hv*0.6;
+      strokePath(c,pts,'rgba('+A3+','+(0.08+hv*0.07).toFixed(3)+')',3.4+hv*1.8);
       var g2=c.createLinearGradient(x0,y0,x,y);
-      g2.addColorStop(0,'rgba('+blue+','+(0.6+hv*0.25).toFixed(3)+')');
-      g2.addColorStop(1,'rgba('+blue+','+(0.14+hv*0.3).toFixed(3)+')');
-      strokePath(c,pts,g2,1.2+hv*0.6);
+      g2.addColorStop(0,'rgba('+A1+','+Math.min(1,0.8*ha).toFixed(3)+')');
+      g2.addColorStop(0.42,'rgba('+A2+','+Math.min(1,0.5*ha).toFixed(3)+')');
+      g2.addColorStop(0.75,'rgba('+A3+','+Math.min(1,0.46*ha).toFixed(3)+')');
+      g2.addColorStop(1,'rgba('+A4+','+Math.min(1,0.62*ha).toFixed(3)+')');
+      strokePath(c,pts,g2,1.25+hv*0.65);
       c.fillStyle=amber;c.globalAlpha=.9*ip;
       c.beginPath();c.arc(x0,y0,2.1,0,7);c.fill();c.globalAlpha=1;
       /* 흐르는 빛 입자 — 사람에서 성과로 */
@@ -375,7 +383,7 @@ html[data-theme="light"] #about-app{
         c.globalAlpha=1;
       }
     });
-    c.strokeStyle='rgba('+blue+',.16)';c.lineWidth=0.9;c.setLineDash([4,7]);
+    c.strokeStyle='rgba('+A3+',.15)';c.lineWidth=0.9;c.setLineDash([4,7]);
     c.lineDashOffset=-(((t||0)*12)%22);
     PAIRS.forEach(function(pr){
       var a=nodes[pr[0]],b=nodes[pr[1]];if(!a||!b)return;
