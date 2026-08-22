@@ -19,11 +19,11 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 </figure>
 <nav class="ab-nodes" aria-label="소개 섹션 바로가기">
 <a class="ab-node" href="/knowledge-graph/" data-x="48" data-y="21" data-d="1.2"><span class="t">블로그 기록 <em>{{ site.posts | size }}편</em></span><span class="s">논문 리뷰 · 지식그래프</span></a>
-<a class="ab-node" href="#path" data-x="39" data-y="34" data-d="0.9"><span class="t">수업·평가 설계</span><span class="s">질문 중심 · 깊이 있는 학습</span></a>
+<a class="ab-node" href="#path" data-x="41" data-y="31" data-d="0.9"><span class="t">수업·평가 설계</span><span class="s">질문 중심 · 깊이 있는 학습</span></a>
 <a class="ab-node" href="#path" data-x="64" data-y="32" data-d="1.1"><span class="t">AI 디지털 교육 <em>선도교사</em></span><span class="s">교육부 · AIEDAP 마스터교원</span></a>
 <a class="ab-node" href="#books" data-x="71" data-y="58" data-d="1.0"><span class="t">함께 쓴 책 <em>{{ site.data.published_books | size }}권</em></span><span class="s">한빛미디어 · 박영사 · 앤써북</span></a>
 <a class="ab-node" href="#papers" data-x="62" data-y="74" data-d="1.25"><span class="t">학술 논문 <em>3편</em></span><span class="s">AI 스토리텔링 교육</span></a>
-<a class="ab-node" href="#path" data-x="31" data-y="61" data-d="1.05"><span class="t">AI 티처스쿨 <em>대표</em></span><span class="s">대전 초중고 교사 커뮤니티</span></a>
+<a class="ab-node" href="#path" data-x="28" data-y="67" data-d="1.05"><span class="t">AI 티처스쿨 <em>대표</em></span><span class="s">대전 초중고 교사 커뮤니티</span></a>
 <a class="ab-node" href="#music" data-x="33" data-y="80" data-d="1.3"><span class="t">음악 <em>1집</em></span><span class="s">CCM 'Oh My Soul'</span></a>
 <a class="ab-node" href="#dev" data-x="46" data-y="82" data-d="1.15"><span class="t">웹 도구 <em>6종</em></span><span class="s">리서치 허브 · RAG 챗봇</span></a>
 </nav>
