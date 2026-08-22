@@ -9,7 +9,7 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 <canvas class="ab-links" aria-hidden="true"></canvas>
 <div class="ab-head">
 <p class="ab-eyebrow">DOT <i>●</i> CONNECTOR — ABOUT</p>
-<h1>사람도<br>하나의 <em>점</em>이다</h1>
+<h1>점과 점을<br><em>잇는</em> 사람</h1>
 <p class="ab-intro">연구 · 기여 · 연결 · 순환 · 성장을 추구하는 <b>연결주의자</b>의 기록.</p>
 </div>
 <figure class="ab-me">
