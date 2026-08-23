@@ -5,9 +5,13 @@
 
 FAIL(치명, exit 1): S1 금지 표현, 존칭 어미(따옴표 인용 밖), 콜론 헤딩,
   상투구, 로컬 경로 잔존, YAML 오류, 칼럼 태그/permalink 누락,
-  제목 콜론·대시 부제, 출처 섹션이 맨 끝이 아님, 표 빈 셀, permalink 중복.
+  제목 콜론·대시 부제, 출처 섹션이 맨 끝이 아님, 표 빈 셀, permalink 중복,
+  의문문 규약 위반(의문 종결 뒤 물음표 누락, 사설투 의문 '~는가?/~인가?' —
+  '~일까?/~할까?' 꼴만 허용. 간접 인용 '~는가는'과 출처 섹션은 제외).
 WARN(주의, exit 0): 볼드 남용, '것이다' 반복, '아니라' 대구 과용,
-  문두 접속사 밀도, 명사형 종결, 의문형 제목 물음표 누락.
+  문두 접속사 밀도, 명사형 종결, 의문형 제목 물음표 누락,
+  A급 루브릭 기계 보조(상투 비유, 유보 마무리, 본문 구체 수치 부재).
+  루브릭 판정의 본체는 column.md '패스 3' 자기 채점 — 여기 WARN은 보조 신호다.
 
 주의: 존칭 검사는 큰따옴표 인용(" " · " ") 안을 제외한다 — 취재원 발언
 인용은 존칭일 수 있다. 작은따옴표는 용어 강조에 쓰이므로 제외하지 않는다.
@@ -35,8 +39,19 @@ CLICHES = [
     "아무리 강조해도 지나치지", "선택이 아닌 필수",
 ]
 
+CLICHE_ANALOGIES = [
+    "양날의 검", "빙산의 일각", "동전의 양면", "두 마리 토끼", "뜨거운 감자",
+    "판도라의 상자", "신의 한 수", "거스를 수 없는 대세", "속 빈 강정",
+]
+
+HEDGED_ENDINGS = re.compile(
+    r"(지켜봐야 한다|두고 볼 일이다|고민이 필요한 시점이다|숙제로 남는다|숙제로 남았다|귀추가 주목된다)"
+)
+
 HONORIFIC = re.compile(r"(합니다|됩니다|입니다|하세요|드립니다|해요|까요)[.!?\s]")
 STRONG_Q_END = re.compile(r"(는가|은가|운가|인가|던가|한가|까|까요|나요|냐|느냐)$")
+Q_NO_QMARK = re.compile(r"(일까|할까|을까|는가|은가|인가|런가|던가|떤가|운가|한가|것인가|겠는가|느냐|나요|까요)\.")
+EDITORIAL_Q = re.compile(r"(는가|은가|인가|런가|던가|떤가|운가|한가|것인가|겠는가)\?")
 
 
 def strip_quotes(text: str) -> str:
@@ -118,6 +133,18 @@ def check(path: str, all_permalinks: "dict[str, list[str]]") -> "tuple[list[str]
         if m:
             fails.append("본문 L%d 존칭 '%s': %s" % (i, m.group(1), l.strip()[:60]))
 
+    # --- 의문문 규약: 물음표 필수 + 사설투 종결 금지 (출처 섹션·인용 제외) ---
+    if re.search(r"(는가|은가|인가|것인가|겠는가)\?$", title):
+        fails.append("제목 사설투 의문 '%s' — '~일까?' 꼴로" % title)
+    for i, l in enumerate(body.split("## 출처")[0].splitlines(), 1):
+        s = re.sub(r"[『「][^』」]*[』」]", "〇", strip_quotes(l))
+        m = Q_NO_QMARK.search(s)
+        if m:
+            fails.append("본문 L%d 의문 종결 '%s.' 물음표 누락: %s" % (i, m.group(1), l.strip()[:60]))
+        m = EDITORIAL_Q.search(s)
+        if m:
+            fails.append("본문 L%d 사설투 의문 '%s?' — '~일까?' 꼴로: %s" % (i, m.group(1), l.strip()[:60]))
+
     # --- 출처 위치 ---
     idx = body.rfind("## 출처")
     if idx != -1:
@@ -142,6 +169,17 @@ def check(path: str, all_permalinks: "dict[str, list[str]]") -> "tuple[list[str]
     n = len(re.findall(r"[가-힣](함|임|됨)[.,]", body))
     if n > 2:
         warns.append("명사형 종결 %d회 (2회 이하 권장)" % n)
+
+    # --- WARN: A급 루브릭 기계 보조 (판정 본체는 column.md 패스 3 자기 채점) ---
+    body_main = body.split("## 출처")[0]
+    for c in CLICHE_ANALOGIES:
+        if c in body_main:
+            warns.append("상투 비유 '%s' (루브릭 6번 신선한 비유)" % c)
+    m = HEDGED_ENDINGS.search(body_main.rstrip()[-250:])
+    if m:
+        warns.append("유보 마무리 '%s' (루브릭 8번 착지)" % m.group(1))
+    if len(re.findall(r"[0-9]+(?:[.,][0-9]+)?%?", body_main)) < 3:
+        warns.append("본문 구체 수치 3개 미만 (루브릭 3번 근거 의심)")
 
     return fails, warns
 
