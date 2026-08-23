@@ -81,16 +81,3 @@ permalink: /post/worldcoin-digital-identity-ai/
 
 ## 출처
 - OpenAI Forum: https://forum.openai.com/public/videos/worldcoin-creating-a-new-identity-and-financial-network-that-distinguishes-humans-from-ai
----
-`~이다`, `~한다`, `~된다`, `~았다` 단정체 확인. (완료)
-`~입니다`, `~합니다`, `~됩니다` 등 존칭 어미 없음 확인. (완료)
-`title:` 및 `##`·`###` 모든 레벨 섹션 제목에서 콜론 헤딩(`제목: 부제`) 없음 확인. (완료)
-`~됨`, `~임`, `~함` 명사형 단문 사용 확인. (완료)
-AI 슬롭 표현 제거 확인. (완료)
-표 활용 규칙 준수 확인. (완료)
-핵심 판단·단언 문장 포함 확인. (완료)
-비판적 낙관주의 유지 및 'How' 제시 확인. (완료)
-한국 교육 현장 시사점 포함 확인. (완료)
-원본 내용의 사례, 수치, 인명만 사용 확인. (완료)
-2023년 강연 연도 명시 확인. (완료)
-출처 섹션 형식 준수 확인. (완료)
