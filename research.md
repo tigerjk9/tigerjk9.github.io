@@ -5,30 +5,35 @@ permalink: /research/
 description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 허브. 태그·연도·키워드로 걸러 주요 발견과 시사점을 바로 읽는다."
 ---
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
-  /* ===== 리서치 허브 — 사이트 테마(다크/라이트) 대응 스코프 스타일 ===== */
+  /* ===== 리서치 허브 — 다크 에디토리얼 + 오로라 스레드 (about 히어로와 같은 블루·앰버 아이덴티티) ===== */
   #rh-app {
     /* 다크(기본 스킨) 토큰 */
-    --rh-card: #2c313d;
-    --rh-card-hover: #333a48;
-    --rh-border: rgba(255,255,255,0.11);
-    --rh-border-strong: rgba(255,255,255,0.2);
-    --rh-text: #eaeaea;
+    --rh-card: #262c37;
+    --rh-card-hover: #2b3240;
+    --rh-border: rgba(240,246,252,0.09);
+    --rh-border-strong: rgba(240,246,252,0.18);
+    --rh-text: #e6edf3;
     --rh-muted: #9aa4b2;
     --rh-faint: #7c8593;
-    --rh-accent: #2ec4cc;
-    --rh-accent-ink: #1a2a2b;
-    --rh-accent-soft: rgba(46,196,204,0.14);
-    --rh-accent-line: rgba(46,196,204,0.4);
+    --rh-accent: #58a6ff;
+    --rh-accent-ink: #0b1524;
+    --rh-amber: #e6b84a;
+    --rh-accent-soft: rgba(88,166,255,0.13);
+    --rh-accent-line: rgba(88,166,255,0.42);
     --rh-chip: rgba(255,255,255,0.055);
-    --rh-panel: rgba(255,255,255,0.025);
-    --rh-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    --rh-panel: rgba(255,255,255,0.03);
+    --rh-shadow: 0 10px 30px rgba(2,8,20,0.4);
+    /* 오로라 스레드 — 앰버→로즈→바이올렛→블루 (about 연결선과 동일 팔레트) */
+    --rh-a1: 230,184,74; --rh-a2: 241,143,165; --rh-a3: 157,140,255; --rh-a4: 108,184,255;
+    --rh-aurora: linear-gradient(90deg, rgba(var(--rh-a1),.95), rgba(var(--rh-a2),.8) 34%, rgba(var(--rh-a3),.8) 66%, rgba(var(--rh-a4),.95));
 
     max-width: 1180px;
     margin: 0 auto;
     padding: 1.6em 1.4em 4em;
     color: var(--rh-text);
-    font-family: -apple-system, "Pretendard", "Segoe UI", "Malgun Gothic", sans-serif;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
     /* 한국어 어절 단위 줄바꿈 — 문장이 단어 중간에서 끊기지 않게. 긴 URL 등은 break-word로 방어 */
     word-break: keep-all;
     overflow-wrap: break-word;
@@ -38,93 +43,98 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
   #rh-app [hidden] { display: none !important; }
   html[data-theme="light"] #rh-app {
     --rh-card: #ffffff;
-    --rh-card-hover: #f7f9fb;
+    --rh-card-hover: #f7f9fc;
     --rh-border: #e4e8ee;
-    --rh-border-strong: #cdd4de;
-    --rh-text: #252a34;
-    --rh-muted: #5a6472;
-    --rh-faint: #838d9b;
-    --rh-accent: #0078c8;
+    --rh-border-strong: #c8d1dc;
+    --rh-text: #1f2328;
+    --rh-muted: #57606a;
+    --rh-faint: #828b96;
+    --rh-accent: #0969da;
     --rh-accent-ink: #ffffff;
-    --rh-accent-soft: rgba(0,120,200,0.08);
-    --rh-accent-line: rgba(0,120,200,0.35);
-    --rh-chip: #eef2f6;
+    --rh-amber: #a8781a;
+    --rh-accent-soft: rgba(9,105,218,0.08);
+    --rh-accent-line: rgba(9,105,218,0.35);
+    --rh-chip: #eef1f5;
     --rh-panel: #f7f9fb;
-    --rh-shadow: 0 6px 20px rgba(30,40,60,0.09);
+    --rh-shadow: 0 10px 26px rgba(30,40,60,0.1);
+    --rh-a1: 176,125,24; --rh-a2: 209,86,124; --rh-a3: 109,79,216; --rh-a4: 9,105,218;
   }
 
   /* ── Hero ── */
-  #rh-app .rh-hero { position: relative; margin-bottom: 1.6em; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  #rh-app .rh-hero::before {
-    content: ''; position: absolute; top: -70px; right: -30px;
-    width: 380px; height: 240px; border-radius: 50%;
-    background: radial-gradient(closest-side, var(--rh-accent-soft), transparent 72%);
-    pointer-events: none;
-  }
+  #rh-app .rh-hero { position: relative; margin-bottom: 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 0.6em; }
   #rh-app .rh-hero-text { flex: 1 1 30em; }
   #rh-app .rh-eyebrow {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--rh-accent); margin: 0 0 0.6em;
+    display: flex; align-items: center; gap: 2px;
+    font-size: 0.74rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rh-faint); margin: 0 0 0.85em;
   }
+  #rh-app .rh-eyebrow i { font-style: normal; color: var(--rh-amber); margin: 0 0.5em; font-size: 0.8em; }
   #rh-app .rh-eyebrow::after {
-    content: ''; height: 1px; width: 42px;
-    background: linear-gradient(90deg, var(--rh-accent-line), transparent);
+    content: ''; height: 1px; width: 46px; margin-left: 12px;
+    background: var(--rh-aurora); opacity: 0.75;
   }
   #rh-app .rh-hero h1 {
-    font-size: 2.05rem; font-weight: 800; margin: 0 0 0.35em;
-    letter-spacing: -0.015em; line-height: 1.22; color: var(--rh-text);
+    font-size: clamp(2.1rem, 4.2vw, 2.9rem); font-weight: 900; margin: 0 0 0.4em;
+    letter-spacing: -0.035em; line-height: 1.14; color: var(--rh-text);
     text-wrap: balance;
   }
-  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-    #rh-app .rh-hero h1 {
-      background: linear-gradient(120deg, var(--rh-text) 58%, var(--rh-accent) 100%);
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: transparent;
-    }
-  }
-  #rh-app .rh-sub { font-size: 0.98rem; color: var(--rh-muted); margin: 0; line-height: 1.65; max-width: 46em; text-wrap: pretty; }
+  #rh-app .rh-hero h1 em { font-style: normal; color: var(--rh-accent); }
+  #rh-app .rh-sub { font-size: 1rem; color: var(--rh-muted); margin: 0; line-height: 1.7; max-width: 46em; text-wrap: pretty; }
   #rh-app .rh-sub b { color: var(--rh-accent); font-weight: 700; }
-  #rh-app .rh-stats { display: flex; gap: 22px; margin-top: 1.15em; flex-wrap: wrap; }
-  #rh-app .rh-stat { display: flex; flex-direction: column; gap: 2px; padding-left: 12px; border-left: 2px solid var(--rh-accent-line); }
-  #rh-app .rh-stat b {
-    font-size: 1.18rem; font-weight: 800; color: var(--rh-text);
-    font-variant-numeric: tabular-nums; letter-spacing: -0.01em; line-height: 1.15;
-  }
-  #rh-app .rh-stat span { font-size: 0.72rem; color: var(--rh-faint); letter-spacing: 0.02em; }
   #rh-app .rh-ask-cta {
-    display: none; align-items: center; gap: 7px; align-self: center;
-    background: var(--rh-accent); color: var(--rh-accent-ink);
-    font-size: 0.9rem; font-weight: 700; padding: 0.65em 1.1em;
-    border-radius: 10px; text-decoration: none; white-space: nowrap;
-    opacity: 0; transition: opacity .35s ease, filter .16s;
+    display: none; align-items: center; gap: 7px; align-self: flex-start; margin-top: 2.1em;
+    background: none; color: var(--rh-accent);
+    border: 1px solid var(--rh-accent-line);
+    font-size: 0.88rem; font-weight: 700; padding: 0.6em 1.1em;
+    border-radius: 999px; text-decoration: none; white-space: nowrap;
+    opacity: 0; transition: opacity .35s ease, background .18s, color .18s, border-color .18s;
   }
-  #rh-app .rh-ask-cta:hover { filter: brightness(1.08); color: var(--rh-accent-ink); }
+  #rh-app .rh-ask-cta:hover { background: var(--rh-accent-soft); border-color: var(--rh-accent); color: var(--rh-accent); }
+  #rh-app .rh-ask-cta svg { flex: none; }
+
+  /* ── 스탯 밴드 — 헤어라인 사이 큰 숫자 (about 숫자 밴드와 동일 문법) ── */
+  #rh-app .rh-stats {
+    position: relative; display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--rh-border); border-bottom: 1px solid var(--rh-border);
+    margin: 1.5em 0 0;
+  }
+  #rh-app .rh-stats::before {
+    content: ''; position: absolute; top: -1px; left: 0; height: 2px; width: 190px;
+    background: var(--rh-aurora); border-radius: 2px;
+  }
+  #rh-app .rh-stat { display: flex; flex-direction: column; gap: 3px; align-items: center; text-align: center; padding: 20px 8px 17px; position: relative; }
+  #rh-app .rh-stat + .rh-stat::before { content: ''; position: absolute; left: 0; top: 28%; height: 44%; width: 1px; background: var(--rh-border); }
+  #rh-app .rh-stat b {
+    font-size: clamp(1.35rem, 2.3vw, 1.8rem); font-weight: 900; color: var(--rh-text);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1.12;
+  }
+  #rh-app .rh-stat span { font-size: 0.73rem; color: var(--rh-faint); letter-spacing: 0.05em; }
 
   /* ── Toolbar ── */
   #rh-app .rh-toolbar {
     display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-    margin: 1.4em 0 0.9em;
+    margin: 1.5em 0 0.9em;
   }
   #rh-app .rh-search-wrap { position: relative; flex: 1 1 240px; min-width: 180px; }
   #rh-search {
     width: 100%; box-sizing: border-box;
-    background: var(--rh-card); border: 1px solid var(--rh-border-strong);
-    border-radius: 9px; color: var(--rh-text);
-    font-size: 0.95rem; padding: 0.62em 0.9em 0.62em 2.2em; outline: none;
-    transition: border-color .18s, box-shadow .18s;
+    background: var(--rh-panel); border: 1px solid var(--rh-border-strong);
+    border-radius: 11px; color: var(--rh-text);
+    font-size: 0.95rem; padding: 0.66em 0.9em 0.66em 2.45em; outline: none;
+    font-family: inherit;
+    transition: border-color .18s, box-shadow .18s, background .18s;
   }
   #rh-search::placeholder { color: var(--rh-faint); }
-  #rh-search:focus { border-color: var(--rh-accent); box-shadow: 0 0 0 3px var(--rh-accent-soft); }
+  #rh-search:focus { border-color: var(--rh-accent); background: var(--rh-card); box-shadow: 0 0 0 3px var(--rh-accent-soft); }
   #rh-app .rh-search-ico {
-    position: absolute; left: 0.75em; top: 50%; transform: translateY(-50%);
-    color: var(--rh-faint); pointer-events: none; font-size: 0.95rem;
+    position: absolute; left: 0.85em; top: 50%; transform: translateY(-50%);
+    color: var(--rh-faint); pointer-events: none; display: inline-flex;
   }
   #rh-ai-toggle {
     display: none; align-items: center; gap: 6px;
     background: var(--rh-chip); border: 1px solid var(--rh-border-strong);
-    border-radius: 9px; color: var(--rh-muted); font-size: 0.85rem; font-weight: 600;
-    padding: 0.55em 0.9em; cursor: pointer; font-family: inherit;
+    border-radius: 11px; color: var(--rh-muted); font-size: 0.85rem; font-weight: 600;
+    padding: 0.6em 0.95em; cursor: pointer; font-family: inherit;
     opacity: 0; transition: opacity .35s ease, background .16s, color .16s, border-color .16s;
     white-space: nowrap;
   }
@@ -143,125 +153,149 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
     animation: rh-spin 0.8s linear infinite; display: inline-block;
   }
   @keyframes rh-spin { to { transform: rotate(360deg); } }
+  #rh-app .rh-sel { position: relative; display: inline-flex; }
+  #rh-app .rh-sel::after {
+    content: '\25BE'; position: absolute; right: 0.85em; top: 50%; transform: translateY(-50%);
+    color: var(--rh-faint); pointer-events: none; font-size: 0.75em;
+  }
   #rh-sort {
-    background: var(--rh-card); border: 1px solid var(--rh-border-strong);
-    border-radius: 9px; color: var(--rh-text); font-size: 0.9rem;
-    padding: 0.62em 0.7em; outline: none; cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+    background: var(--rh-panel); border: 1px solid var(--rh-border-strong);
+    border-radius: 11px; color: var(--rh-text); font-size: 0.88rem;
+    padding: 0.62em 2.1em 0.62em 0.9em; outline: none; cursor: pointer; font-family: inherit;
+    transition: border-color .18s;
   }
   #rh-sort:focus { border-color: var(--rh-accent); }
-  #rh-app .rh-years { display: inline-flex; gap: 4px; background: var(--rh-chip); padding: 3px; border-radius: 9px; }
+  #rh-app .rh-years { display: inline-flex; gap: 3px; background: var(--rh-chip); padding: 3px; border-radius: 11px; border: 1px solid var(--rh-border); }
   #rh-app .rh-year-btn {
     background: none; border: none; color: var(--rh-muted);
-    font-size: 0.85rem; padding: 0.4em 0.8em; border-radius: 7px; cursor: pointer;
+    font-size: 0.85rem; padding: 0.42em 0.85em; border-radius: 8px; cursor: pointer;
     transition: all .15s; font-family: inherit;
   }
   #rh-app .rh-year-btn:hover { color: var(--rh-text); }
-  #rh-app .rh-year-btn.active { background: var(--rh-accent); color: var(--rh-accent-ink); font-weight: 600; }
+  #rh-app .rh-year-btn.active { background: var(--rh-accent); color: var(--rh-accent-ink); font-weight: 700; }
 
   /* ── Tag bar ── */
   #rh-app .rh-tagbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.6em; align-items: center; }
   #rh-app .rh-tag-btn {
     background: var(--rh-chip); border: 1px solid transparent;
-    color: var(--rh-muted); font-size: 0.82rem; padding: 0.32em 0.7em;
+    color: var(--rh-muted); font-size: 0.82rem; padding: 0.34em 0.75em;
     border-radius: 999px; cursor: pointer; transition: all .15s;
     font-family: inherit; white-space: nowrap;
   }
   #rh-app .rh-tag-btn:hover { color: var(--rh-text); border-color: var(--rh-border-strong); }
   #rh-app .rh-tag-btn.active {
     background: var(--rh-accent); color: var(--rh-accent-ink);
-    border-color: var(--rh-accent); font-weight: 600;
+    border-color: var(--rh-accent); font-weight: 700;
   }
-  #rh-app .rh-tag-btn .rh-tag-n { opacity: 0.6; font-size: 0.88em; margin-left: 3px; }
+  #rh-app .rh-tag-btn .rh-tag-n { opacity: 0.55; font-size: 0.85em; margin-left: 4px; font-variant-numeric: tabular-nums; }
   #rh-app .rh-tag-more {
-    background: none; border: none; color: var(--rh-accent);
-    font-size: 0.82rem; cursor: pointer; padding: 0.32em 0.5em; font-family: inherit;
+    background: none; border: 1px dashed var(--rh-border-strong); border-radius: 999px;
+    color: var(--rh-accent); font-size: 0.8rem; cursor: pointer; padding: 0.32em 0.8em; font-family: inherit;
+    transition: border-color .15s;
   }
+  #rh-app .rh-tag-more:hover { border-color: var(--rh-accent); }
 
   /* ── Status row ── */
   #rh-app .rh-status {
     display: flex; align-items: center; gap: 12px;
-    margin: 0.4em 0 1.1em; font-size: 0.88rem; color: var(--rh-muted);
+    margin: 0.4em 0 1.2em; font-size: 0.86rem; color: var(--rh-muted);
     border-top: 1px solid var(--rh-border); padding-top: 0.9em;
   }
-  #rh-count b { color: var(--rh-text); font-weight: 700; }
+  #rh-count b { color: var(--rh-accent); font-weight: 800; font-variant-numeric: tabular-nums; }
   #rh-clear {
     background: none; border: 1px solid var(--rh-border-strong); color: var(--rh-muted);
-    font-size: 0.8rem; padding: 0.3em 0.7em; border-radius: 7px; cursor: pointer;
+    font-size: 0.8rem; padding: 0.3em 0.8em; border-radius: 999px; cursor: pointer;
     font-family: inherit; transition: all .15s;
   }
   #rh-clear:hover { color: var(--rh-text); border-color: var(--rh-accent); }
 
   /* ── Grid ── */
   #rh-app .rh-grid {
-    display: grid; gap: 14px;
+    display: grid; gap: 16px;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
+  @keyframes rh-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   #rh-app .rh-card {
     position: relative;
     background: var(--rh-card); border: 1px solid var(--rh-border);
-    border-radius: 13px; overflow: hidden; transition: border-color .18s, box-shadow .18s, transform .18s;
+    border-radius: 14px; overflow: hidden;
+    transition: border-color .18s, box-shadow .18s, transform .18s, background .18s;
     display: flex; flex-direction: column;
+    animation: rh-in .38s cubic-bezier(.16,1,.3,1) both;
   }
+  #rh-app .rh-card:nth-child(2) { animation-delay: .04s; }
+  #rh-app .rh-card:nth-child(3) { animation-delay: .08s; }
+  #rh-app .rh-card:nth-child(4) { animation-delay: .12s; }
+  #rh-app .rh-card:nth-child(5) { animation-delay: .16s; }
+  #rh-app .rh-card:nth-child(6) { animation-delay: .2s; }
+  /* 오로라 상단 스레드 — 호버·펼침 때 드러나는 시그니처 라인 */
   #rh-app .rh-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--rh-accent) 0%, transparent 75%);
-    opacity: 0; transition: opacity .18s; pointer-events: none;
+    background: var(--rh-aurora);
+    opacity: 0; transition: opacity .22s; pointer-events: none;
   }
-  #rh-app .rh-card:hover { border-color: var(--rh-border-strong); box-shadow: var(--rh-shadow); transform: translateY(-2px); }
+  #rh-app .rh-card:hover { border-color: var(--rh-border-strong); background: var(--rh-card-hover); box-shadow: var(--rh-shadow); transform: translateY(-3px); }
   #rh-app .rh-card:hover::before, #rh-app .rh-card--open::before { opacity: 1; }
   #rh-app .rh-card--open { border-color: var(--rh-accent-line); box-shadow: var(--rh-shadow); }
   #rh-app .rh-card--open:hover { transform: none; } /* 펼친 카드는 읽는 중 — 들썩임 방지 */
 
-  #rh-app .rh-card-head { padding: 15px 16px; cursor: pointer; }
+  #rh-app .rh-card-head { padding: 16px 17px; cursor: pointer; }
   #rh-app .rh-card-head:focus-visible { outline: 2px solid var(--rh-accent); outline-offset: -2px; }
   #rh-app .rh-card-meta {
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-    font-size: 0.74rem; color: var(--rh-faint); margin-bottom: 7px;
+    font-size: 0.74rem; color: var(--rh-faint); margin-bottom: 8px;
   }
-  #rh-app .rh-card-date { font-variant-numeric: tabular-nums; }
+  #rh-app .rh-card-date { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
   #rh-app .rh-card-src {
-    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em;
-    padding: 1px 6px; border-radius: 4px;
+    font-size: 0.67rem; font-weight: 700; letter-spacing: 0.04em;
+    padding: 1.5px 7px; border-radius: 5px;
     background: var(--rh-accent-soft); color: var(--rh-accent);
   }
   #rh-app .rh-card-fmt {
-    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em;
-    padding: 1px 6px; border-radius: 4px; margin-left: 4px;
-    background: var(--rh-chip); color: var(--rh-faint);
+    font-size: 0.67rem; font-weight: 600; letter-spacing: 0.04em;
+    padding: 1.5px 7px; border-radius: 5px; margin-left: 2px;
+    background: none; color: var(--rh-faint);
     border: 1px solid var(--rh-border);
   }
   #rh-app .rh-card-title {
-    font-size: 1.02rem; font-weight: 700; line-height: 1.4; margin: 0 0 8px;
-    color: var(--rh-text); letter-spacing: -0.005em; transition: color .15s;
+    font-size: 1.05rem; font-weight: 800; line-height: 1.42; margin: 0 0 8px;
+    color: var(--rh-text); letter-spacing: -0.012em; transition: color .15s;
+    text-wrap: pretty;
   }
   #rh-app .rh-card-head:hover .rh-card-title { color: var(--rh-accent); }
   #rh-app .rh-card-summary {
-    font-size: 0.87rem; color: var(--rh-muted); line-height: 1.62; margin: 0 0 11px;
+    font-size: 0.87rem; color: var(--rh-muted); line-height: 1.64; margin: 0 0 11px;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
   #rh-app .rh-card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
   #rh-app .rh-mini-tag {
     font-size: 0.72rem; color: var(--rh-faint);
-    background: var(--rh-chip); padding: 1px 8px; border-radius: 999px;
+    background: var(--rh-chip); padding: 1.5px 9px; border-radius: 999px;
     cursor: pointer; transition: color .15s;
   }
   #rh-app .rh-mini-tag:hover { color: var(--rh-accent); }
   #rh-app .rh-mini-tag.on { color: var(--rh-accent); font-weight: 600; }
   #rh-app .rh-card-expand {
-    margin-top: 11px; font-size: 0.8rem; color: var(--rh-accent);
-    display: inline-flex; align-items: center; gap: 4px; font-weight: 600;
+    margin-top: 12px; font-size: 0.8rem; color: var(--rh-accent);
+    display: inline-flex; align-items: center; gap: 4px; font-weight: 700;
   }
   #rh-app .rh-card-expand .rh-chev { transition: transform .2s; display: inline-block; }
   #rh-app .rh-card--open .rh-chev { transform: rotate(180deg); }
 
   /* ── Card body (detail) ── */
-  #rh-app .rh-card-body { display: none; padding: 0 16px 16px; }
+  #rh-app .rh-card-body { display: none; padding: 0 17px 17px; }
   #rh-app .rh-card--open .rh-card-body { display: block; }
   #rh-app .rh-sec { border-top: 1px solid var(--rh-border); padding-top: 13px; margin-top: 13px; }
   #rh-app .rh-sec:first-child { border-top: none; padding-top: 4px; margin-top: 0; }
   #rh-app .rh-sec-label {
+    display: flex; align-items: center;
     font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
     color: var(--rh-accent); text-transform: uppercase; margin: 0 0 7px;
+  }
+  #rh-app .rh-sec-label::before {
+    content: ''; width: 0.42rem; height: 0.85em; border-radius: 2px; margin-right: 0.55em;
+    background: linear-gradient(var(--rh-accent), var(--rh-amber)); flex: none;
   }
   #rh-app .rh-sec-body { font-size: 0.87rem; color: var(--rh-text); line-height: 1.7; }
   #rh-app .rh-sec-body p { margin: 0 0 0.6em; }
@@ -283,12 +317,12 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
   #rh-app .rh-tbl th { background: var(--rh-accent-soft); color: var(--rh-text); font-weight: 700; white-space: nowrap; }
   #rh-app .rh-tbl td { color: var(--rh-muted); min-width: 7em; }
 
-  #rh-app .rh-source { background: var(--rh-panel); border-radius: 9px; padding: 11px 13px; margin-top: 14px; }
+  #rh-app .rh-source { background: var(--rh-panel); border: 1px solid var(--rh-border); border-radius: 11px; padding: 11px 13px; margin-top: 14px; }
   #rh-app .rh-source-cite { font-size: 0.8rem; color: var(--rh-muted); line-height: 1.55; margin: 0 0 9px; white-space: pre-line; }
   #rh-app .rh-actions { display: flex; flex-wrap: wrap; gap: 8px; }
   #rh-app .rh-btn {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 0.82rem; font-weight: 600; padding: 0.45em 0.9em; border-radius: 8px;
+    font-size: 0.82rem; font-weight: 700; padding: 0.48em 1em; border-radius: 999px;
     text-decoration: none; transition: all .16s; cursor: pointer; border: 1px solid transparent;
   }
   #rh-app .rh-btn-primary { background: var(--rh-accent); color: var(--rh-accent-ink); }
@@ -298,25 +332,27 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
 
   /* ── Empty / loading ── */
   #rh-app .rh-empty, #rh-app .rh-loading { text-align: center; color: var(--rh-faint); padding: 3.5em 1em; font-size: 0.95rem; }
+  #rh-app .rh-empty { border: 1px dashed var(--rh-border-strong); border-radius: 14px; }
 
   /* ── Mobile ── */
   @media (max-width: 600px) {
     #rh-app { padding: 1em 0.9em 3em; }
-    #rh-app .rh-hero { gap: 10px; margin-bottom: 1.2em; }
-    #rh-app .rh-hero::before { top: -50px; right: -60px; width: 260px; height: 180px; }
-    #rh-app .rh-hero h1 { font-size: 1.5rem; }
+    #rh-app .rh-hero { gap: 10px; padding-top: 0.2em; }
+    #rh-app .rh-hero h1 { font-size: 1.65rem; }
     #rh-app .rh-sub { font-size: 0.92rem; }
-    #rh-app .rh-stats { gap: 14px; margin-top: 0.95em; }
-    #rh-app .rh-stat { padding-left: 10px; }
-    #rh-app .rh-stat b { font-size: 1.05rem; }
-    #rh-app .rh-ask-cta { width: 100%; justify-content: center; padding: 0.75em 1em; }
+    #rh-app .rh-stats { grid-template-columns: repeat(2, 1fr); margin-top: 1.15em; }
+    #rh-app .rh-stats::before { width: 120px; }
+    #rh-app .rh-stat { padding: 14px 6px 12px; }
+    #rh-app .rh-stat:nth-child(3)::before { display: none; }
+    #rh-app .rh-stat b { font-size: 1.2rem; }
+    #rh-app .rh-ask-cta { width: 100%; justify-content: center; padding: 0.75em 1em; margin-top: 0; }
     #rh-app .rh-grid { grid-template-columns: 1fr; gap: 11px; }
-    #rh-app .rh-toolbar { gap: 8px; margin-top: 1.1em; }
+    #rh-app .rh-toolbar { gap: 8px; margin-top: 1.2em; }
     #rh-app .rh-search-wrap { flex-basis: 100%; }
     /* iOS Safari는 입력 폰트가 16px 미만이면 포커스 시 강제 줌 */
     #rh-search, #rh-sort { font-size: 16px; }
-    #rh-ai-toggle { padding: 0.5em 0.8em; }
-    #rh-app .rh-tag-btn { font-size: 0.8rem; padding: 0.38em 0.75em; }
+    #rh-ai-toggle { padding: 0.55em 0.85em; }
+    #rh-app .rh-tag-btn { font-size: 0.8rem; padding: 0.38em 0.78em; }
     /* 태그바: 접힌 상태는 한 줄 가로 스크롤 스트립 (화면 절약), 전체 펼침은 줄바꿈 유지 */
     #rh-app .rh-tagbar:not(.rh-tagbar--all) {
       flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -324,15 +360,15 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
       margin-left: -0.9em; margin-right: -0.9em; padding-left: 0.9em; padding-right: 0.9em;
     }
     #rh-app .rh-tagbar:not(.rh-tagbar--all)::-webkit-scrollbar { display: none; }
-    #rh-app .rh-card-head { padding: 13px 14px; }
+    #rh-app .rh-card-head { padding: 14px 15px; }
     #rh-app .rh-card-title { font-size: 0.98rem; }
-    #rh-app .rh-card-body { padding: 0 14px 14px; }
+    #rh-app .rh-card-body { padding: 0 15px 15px; }
     #rh-app .rh-btn { padding: 0.55em 1em; }
     #rh-app .rh-actions { gap: 7px; }
     #rh-app .rh-actions .rh-btn { flex: 1 1 auto; justify-content: center; }
   }
   @media (prefers-reduced-motion: reduce) {
-    #rh-app .rh-card, #rh-app .rh-tag-btn, #rh-app .rh-year-btn, #rh-app .rh-btn, #rh-app .rh-chev, #rh-app .rh-card-title { transition: none; }
+    #rh-app .rh-card, #rh-app .rh-tag-btn, #rh-app .rh-year-btn, #rh-app .rh-btn, #rh-app .rh-chev, #rh-app .rh-card-title { transition: none; animation: none; }
     #rh-app .rh-card:hover { transform: none; }
   }
 </style>
@@ -340,31 +376,32 @@ description: "AI와 교육 논문리뷰를 한곳에서 탐색하는 리서치 �
 <div id="rh-app">
   <header class="rh-hero">
     <div class="rh-hero-text">
-      <p class="rh-eyebrow">Dot Connector &#183; Research</p>
-      <h1>AI · 교육 리서치 허브</h1>
+      <p class="rh-eyebrow">DOT <i>&#9679;</i> CONNECTOR &#8212; RESEARCH</p>
+      <h1>AI &#183; 교육 <em>리서치 허브</em></h1>
       <p class="rh-sub">AI와 교육을 다룬 논문 리뷰·아티클 <b id="rh-total">…</b>편을 한곳에 모았다. 태그·연도·키워드로 걸러 <b>주요 발견</b>과 <b>교육적 시사점</b>을 원문까지 가지 않고 바로 읽는다.</p>
-      <div class="rh-stats" id="rh-stats" hidden>
-        <div class="rh-stat"><b id="rh-stat-count">&#8230;</b><span>논문리뷰</span></div>
-        <div class="rh-stat"><b id="rh-stat-src">&#8230;</b><span>원문 링크</span></div>
-        <div class="rh-stat"><b id="rh-stat-tags">&#8230;</b><span>태그</span></div>
-        <div class="rh-stat"><b id="rh-stat-years">&#8230;</b><span>연도 범위</span></div>
-      </div>
     </div>
-    <a class="rh-ask-cta" id="rh-ask-cta" href="/ask/">&#128172; AI에게 묻기</a>
+    <a class="rh-ask-cta" id="rh-ask-cta" href="/ask/"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.6a8 8 0 0 1-8.4 8H5l2-2.5A8 8 0 1 1 21 11.6z"></path></svg> AI에게 묻기</a>
   </header>
+
+  <div class="rh-stats" id="rh-stats" hidden>
+    <div class="rh-stat"><b id="rh-stat-count">&#8230;</b><span>논문리뷰</span></div>
+    <div class="rh-stat"><b id="rh-stat-src">&#8230;</b><span>원문 링크</span></div>
+    <div class="rh-stat"><b id="rh-stat-tags">&#8230;</b><span>태그</span></div>
+    <div class="rh-stat"><b id="rh-stat-years">&#8230;</b><span>연도 범위</span></div>
+  </div>
 
   <div class="rh-toolbar">
     <div class="rh-search-wrap">
-      <span class="rh-search-ico" aria-hidden="true">&#128269;</span>
+      <span class="rh-search-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg></span>
       <input id="rh-search" type="search" placeholder="제목·발견·태그 검색…" aria-label="논문리뷰 검색" autocomplete="off">
     </div>
-    <button id="rh-ai-toggle" aria-pressed="false" title="의미 기반 검색 — 키워드가 달라도 관련 연구를 찾는다">&#10024; AI 검색</button>
+    <button id="rh-ai-toggle" aria-pressed="false" title="의미 기반 검색 — 키워드가 달라도 관련 연구를 찾는다"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12 2.6l1.9 5.7 5.7 1.9-5.7 1.9L12 17.8l-1.9-5.7-5.7-1.9 5.7-1.9L12 2.6z"></path><path d="M19.6 15.2l.8 2.4 2.4.8-2.4.8-.8 2.4-.8-2.4-2.4-.8 2.4-.8.8-2.4z" opacity=".65"></path></svg> AI 검색</button>
     <div class="rh-years" id="rh-years" role="group" aria-label="연도 필터"></div>
-    <select id="rh-sort" aria-label="정렬 기준">
+    <span class="rh-sel"><select id="rh-sort" aria-label="정렬 기준">
       <option value="new">최신순</option>
       <option value="old">오래된순</option>
       <option value="title">제목순</option>
-    </select>
+    </select></span>
   </div>
   <p class="rh-ai-note" id="rh-ai-note"></p>
 
