@@ -3,7 +3,7 @@
 # 블로그 내부 큐레이션 정리본(/lectures/vibecode-for-teacher/)에 연결된다.
 # 잠금 카드는 비밀번호 게이트 — URL을 locked_payload로 XOR 암호화(공통 비번). 표지 재생성: py scripts/gen_book_covers.py [7 8] (.fonts/ Pretendard 필요)
 - volume: 8
-  title: "바이브 코딩 신간 — 교사를 위한 웹앱 만들기"
+  title: "요즘 교사를 위한 웹앱 만들기 with 바이브 코딩"
   audience: "코딩 경험 없는 교사·비개발자"
   structure: "4부 8장 + 부록 · 한빛미디어"
   date: "2026-07-21"
