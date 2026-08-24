@@ -39,7 +39,7 @@ BOOKS = [
         "accent": (34, 211, 238),   # cyan-400
         "eyebrow": "한빛미디어 신간",
         "footer": "이상선 · 김진관 · 김상섭 · 이대형 · 윤신영 지음",
-        "title_lines": ["바이브 코딩", "교사를 위한 웹앱 만들기"],
+        "title_lines": ["요즘 교사를 위한", "웹앱 만들기 with 바이브 코딩"],
         "subtitle": "PRD·MVP에서 API·AI·Supabase·로컬 배포까지, 코드 없이 웹앱 만들기",
         "chips": ["4부 8장 + 부록", "교사 · 비개발자"],
         "status": "최신",
@@ -111,7 +111,11 @@ BOOKS = [
 
 
 def font(weight: str, size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(str(FONT_DIR / f"Pretendard-{weight}.otf"), size)
+    for ext in ("otf", "ttf"):
+        path = FONT_DIR / f"Pretendard-{weight}.{ext}"
+        if path.exists():
+            return ImageFont.truetype(str(path), size)
+    raise FileNotFoundError(f"Pretendard-{weight}.(otf|ttf) not found in {FONT_DIR}")
 
 
 def text_width(d: ImageDraw.ImageDraw, s: str, f: ImageFont.FreeTypeFont) -> int:
