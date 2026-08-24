@@ -28,6 +28,12 @@ html[data-theme="light"] #about-app{
 
 /* ---------- 그래프 히어로 ---------- */
 #about-app .ab-hero{position:relative;max-width:1440px;margin:0 auto;padding:40px 24px 8px}
+/* 라이트 모드 히어로 — 플랫 화이트 대신 오로라 팔레트의 옅은 기운 */
+html[data-theme="light"] #about-app .ab-hero{
+  background:
+    radial-gradient(52% 42% at 16% 10%, rgba(176,125,24,.07), transparent 70%),
+    radial-gradient(46% 40% at 84% 26%, rgba(9,105,218,.06), transparent 70%),
+    radial-gradient(42% 38% at 55% 82%, rgba(109,79,216,.05), transparent 72%)}
 #about-app .ab-links{display:none}
 #about-app .ab-eyebrow{display:flex;align-items:center;gap:2px;font-size:.8rem;font-weight:600;
   letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin:0 0 16px}
@@ -135,17 +141,27 @@ html[data-theme="light"] #about-app .ab-hero:not(.gm) .ab-node::before{backgroun
 #about-app .ab-sec > ul li::before,#about-app .ab-sec section > ul li::before{content:"";position:absolute;left:.12rem;top:.75em;
   width:6px;height:6px;border-radius:50%;background:var(--amber)}
 
-/* ---------- 지금 (현직) ---------- */
-#about-app .ab-now{border:1px solid var(--cardbd);border-left:4px solid var(--acc);background:var(--card);
-  border-radius:14px;padding:1.05rem 1.4rem;margin:0 0 2.2rem}
+/* ---------- 지금 (현직) — 오로라 상단 스레드 패널 ---------- */
+#about-app .ab-now{position:relative;border:1px solid var(--cardbd);background:var(--card);
+  border-radius:16px;padding:1.15rem 1.5rem;margin:0 0 2.2rem;overflow:hidden}
+#about-app .ab-now::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,rgba(230,184,74,.95),rgba(241,143,165,.8) 34%,rgba(157,140,255,.8) 66%,rgba(108,184,255,.95))}
+html[data-theme="light"] #about-app .ab-now::before{
+  background:linear-gradient(90deg,rgba(176,125,24,.95),rgba(209,86,124,.8) 34%,rgba(109,79,216,.8) 66%,rgba(9,105,218,.95))}
 #about-app .ab-now ul{list-style:none;padding:0;margin:0}
+@media (min-width:760px){
+  #about-app .ab-now ul{columns:2;column-gap:2.4rem}
+  #about-app .ab-now li{break-inside:avoid}
+}
 #about-app .ab-now li{position:relative;padding:.28rem 0 .28rem 1.1rem;line-height:1.65}
 #about-app .ab-now li::before{content:"";position:absolute;left:.1rem;top:.75em;width:6px;height:6px;border-radius:50%;background:var(--acc)}
 
 /* ---------- 타임라인 ---------- */
 #about-app .ab-tl{position:relative;padding-left:34px}
 #about-app .ab-tl::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;
-  background:linear-gradient(var(--acc),color-mix(in srgb,var(--acc) 22%,transparent))}
+  background:linear-gradient(180deg,rgba(230,184,74,.9),rgba(241,143,165,.6) 32%,rgba(157,140,255,.55) 66%,rgba(108,184,255,.12))}
+html[data-theme="light"] #about-app .ab-tl::before{
+  background:linear-gradient(180deg,rgba(176,125,24,.85),rgba(209,86,124,.55) 32%,rgba(109,79,216,.5) 66%,rgba(9,105,218,.1))}
 #about-app .ab-era{position:relative;padding:0 0 40px 22px}
 #about-app .ab-era::before{content:"";position:absolute;left:-32px;top:4px;width:13px;height:13px;border-radius:50%;
   background:var(--amber);border:3px solid var(--card);box-shadow:0 0 0 2px var(--amber)}
@@ -154,13 +170,21 @@ html[data-theme="light"] #about-app .ab-hero:not(.gm) .ab-node::before{backgroun
 #about-app .ab-era ul.hl{list-style:none;padding:0;margin:0}
 #about-app .ab-era ul.hl li{position:relative;padding:.26rem 0 .26rem 1.05rem;font-size:.94rem;line-height:1.65}
 #about-app .ab-era ul.hl li::before{content:"";position:absolute;left:.08rem;top:.85em;width:5px;height:5px;border-radius:50%;background:var(--amber);opacity:.8}
-#about-app details.ab-full{border:1px solid var(--cardbd);border-radius:12px;background:var(--card);margin:.7rem 0 0;overflow:hidden}
-#about-app details.ab-full[open]{border-color:color-mix(in srgb,var(--acc) 50%,transparent)}
-#about-app details.ab-full summary{cursor:pointer;list-style:none;padding:.68rem 1.1rem;font-size:.88rem;font-weight:600;color:var(--muted);display:flex;align-items:center}
+/* 전체 기록 펼치기 — 폼컨트롤형 회색 바 대신 알약 버튼 + 펼침 패널 */
+#about-app details.ab-full{border:none;background:none;margin:.85rem 0 0;overflow:visible}
+#about-app details.ab-full summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:.45em;
+  width:fit-content;padding:.52em 1.2em;border:1px solid var(--cardbd);border-radius:999px;background:var(--card);
+  font-size:.85rem;font-weight:600;color:var(--muted);
+  transition:color .18s,border-color .18s,transform .18s,box-shadow .18s}
+#about-app details.ab-full summary:hover{color:var(--text);
+  border-color:color-mix(in srgb,var(--acc) 45%,transparent);transform:translateY(-1px);
+  box-shadow:0 6px 18px color-mix(in srgb,var(--acc) 12%,transparent)}
 #about-app details.ab-full summary::-webkit-details-marker{display:none}
-#about-app details.ab-full summary::after{content:"▾";margin-left:auto;color:var(--acc);transition:transform .2s}
+#about-app details.ab-full summary::after{content:"▾";margin-left:.2em;color:var(--acc);transition:transform .2s}
+#about-app details.ab-full[open] summary{color:var(--text);border-color:color-mix(in srgb,var(--acc) 50%,transparent)}
 #about-app details.ab-full[open] summary::after{transform:rotate(180deg)}
-#about-app details.ab-full > ul{margin:0;padding:.3rem 1.1rem .6rem 1.5rem;list-style:none;border-top:1px solid var(--hair)}
+#about-app details.ab-full > ul{margin:.75rem 0 0;padding:.45rem 1.2rem .55rem 1.6rem;list-style:none;
+  border:1px solid var(--cardbd);border-radius:14px;background:var(--card)}
 #about-app details.ab-full > ul li{position:relative;padding:.32rem 0 .32rem .9rem;font-size:.88rem;color:var(--muted);line-height:1.55;border-bottom:1px dashed rgba(127,127,127,.13)}
 #about-app details.ab-full > ul li:last-child{border-bottom:none}
 #about-app details.ab-full > ul li::before{content:"";position:absolute;left:0;top:.75em;width:4px;height:4px;border-radius:50%;background:var(--acc);opacity:.7}
