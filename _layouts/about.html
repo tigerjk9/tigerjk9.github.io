@@ -216,7 +216,39 @@ html[data-theme="light"] #about-app .ab-tl::before{
 
   /* ---------- 하프톤 도트 초상 ---------- */
   var face=document.getElementById('ab-face'),faceImg=null;
-  var SILH=null; /* 흉상 실루엣의 방향별(5도 단위) 가장자리 반경 — 선 출발점용 */
+  /* 흉상 실루엣의 방향별 가장자리 반경(2도 단위, CSS px) — 선 출발점용.
+     도트가 아니라 원본 사진의 피사체 마스크에서 재므로 테마·디더링에 흔들리지 않는다. */
+  var SILH=null,SILN=180;
+  /* 원시 실루엣 반경을 '연결선이 흔들리지 않는' 프로파일로 다듬는다.
+     ① 빈 방향은 최근접 유효값으로 채움 ② +-28도 러닝맥스로 목 옆 오목한 구간을 메움
+     ③ +-20도 이동평균 2패스로 각도에 대해 매끄럽게. 계단(버킷 경계)이 사라져
+     노드가 미세하게 흔들려도 출발점이 튀지 않는다. */
+  function buildSilhouette(sil){
+    var n=SILN,i,k,any=false;
+    for(i=0;i<n;i++){if(sil[i]>0){any=true;break;}}
+    if(!any)return null;
+    var filled=sil.slice();
+    for(i=0;i<n;i++){
+      if(filled[i]>0)continue;
+      for(k=1;k<n;k++){
+        var a=sil[(i-k+n)%n],b=sil[(i+k)%n];
+        if(a>0||b>0){filled[i]=Math.max(a,b);break;}
+      }
+    }
+    var SPAN=14,env=[];
+    for(i=0;i<n;i++){
+      var m=0;
+      for(k=-SPAN;k<=SPAN;k++)m=Math.max(m,filled[(i+k+n)%n]);
+      env[i]=m;
+    }
+    function smooth(arr,w){
+      var out=[],j,t;
+      for(j=0;j<n;j++){t=0;for(k=-w;k<=w;k++)t+=arr[(j+k+n)%n];out[j]=t/(2*w+1);}
+      return out;
+    }
+    return smooth(smooth(env,10),10);
+  }
+
   function renderFace(){
     if(!face||!faceImg)return;
     try{
@@ -229,15 +261,20 @@ html[data-theme="light"] #about-app .ab-tl::before{
       var hash=function(a,b){var h=a*374761393+b*668265263;h=(h^(h>>13))*1274126177;return((h^(h>>16))>>>0)/4294967295;};
       cx.clearRect(0,0,W,W);
       var drawn=0,sil=[],si;
-      for(si=0;si<72;si++)sil[si]=0;
+      for(si=0;si<SILN;si++)sil[si]=0;
       for(var gy=0;gy<W/cell;gy++)for(var gx=0;gx<W/cell;gx++){
         var sx=Math.min(S-1,Math.floor(gx*stepSrc)),sy=Math.min(S-1,Math.floor(gy*stepSrc));
         var i=(sy*S+sx)*4,r=d[i],g=d[i+1],b=d[i+2];
         if(Math.sqrt((r-bgR)*(r-bgR)+(g-bgG)*(g-bgG)+(b-bgB)*(b-bgB))<42)continue;
+        var px=gx*cell+cell/2,py=gy*cell+cell/2;
+        /* 실루엣은 '그려진 도트'가 아니라 '피사체 픽셀'로 잰다 —
+           디더링·페이드·테마로 도트가 빠져도 가장자리 반경이 흔들리지 않도록 */
+        var sb=(((Math.atan2(py-W/2,px-W/2)*180/Math.PI+360)%360)/(360/SILN))|0;
+        var sd=Math.sqrt((px-W/2)*(px-W/2)+(py-W/2)*(py-W/2))/2;
+        if(sd>sil[sb])sil[sb]=sd;
         var L=(0.2126*r+0.7152*g+0.0722*b)/255;
         var v=light?(1-L):L;
         var rr=Math.pow(v,0.75)*cell*0.62;
-        var px=gx*cell+cell/2,py=gy*cell+cell/2;
         var dist=Math.sqrt((px-W*0.5)*(px-W*0.5)+(py-W*0.42)*(py-W*0.42))/(W*0.5);
         var fade=Math.max(0,Math.min(1,(1.08-dist)/0.30));
         if(fade<1&&hash(gx,gy)>fade)continue;
@@ -247,13 +284,9 @@ html[data-theme="light"] #about-app .ab-tl::before{
         cx.fillStyle=(v<0.5&&drawn%37===0)?(light?'#8a6414':'#e6b84a'):(light?'#1c2f45':'#cfdae6');
         cx.globalAlpha=(light?0.92:0.9)*(0.6+fade*0.4);
         cx.beginPath();cx.arc(px,py,rr,0,7);cx.fill();
-        var ang=Math.atan2(py-W/2,px-W/2);
-        var sb=(((ang*180/Math.PI+360)%360)/5)|0;
-        var sd=Math.sqrt((px-W/2)*(px-W/2)+(py-W/2)*(py-W/2))/2;
-        if(sd>sil[sb])sil[sb]=sd;
       }
       cx.globalAlpha=1;
-      SILH=sil.map(function(v,i){return Math.max(v,sil[(i+71)%72],sil[(i+1)%72])||110;});
+      SILH=buildSilhouette(sil);
       draw(lastT);
     }catch(e){ /* getImageData 실패 시 원본 사진 폴백 */
       if(face&&face.parentNode){
@@ -277,7 +310,7 @@ html[data-theme="light"] #about-app .ab-tl::before{
   function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
   for(var i=0;i<70;i++)AMB.push({x:rnd(),y:rnd(),r:0.8+rnd()*1.6,a:0.1+rnd()*0.28});
   var GM=false,mx=0,my=0,t0=0,rafId=null,heroVisible=true;
-  var meX=0,meY=0,meR=126,lastT=0,prevTs=null;
+  var meX=0,meY=0,meR=126,meRing=120,lastT=0,prevTs=null;
   function qpt(p,x0,y0,qx,qy,x1,y1){
     var u=1-p;
     return [u*u*x0+2*u*p*qx+p*p*x1, u*u*y0+2*u*p*qy+p*p*y1];
@@ -309,8 +342,9 @@ html[data-theme="light"] #about-app .ab-tl::before{
     var ringEl=me?me.querySelector('.ab-ring'):null;
     if(ringEl){
       var rr=ringEl.getBoundingClientRect();
-      meX=rr.left+rr.width/2-heroRect.left;meY=rr.top+rr.height/2-heroRect.top;meR=rr.width/2-9;
-    }else{meX=W*0.5;meY=H*0.5;meR=126;}
+      meX=rr.left+rr.width/2-heroRect.left;meY=rr.top+rr.height/2-heroRect.top;
+      meRing=rr.width/2||120;meR=meRing-9;
+    }else{meX=W*0.5;meY=H*0.5;meRing=120;meR=126;}
     /* 헤드 블록(제목·인트로·칩) 실측 사각형과 겹치는 노드는 그 아래로 밀어냄 —
        폰트 로딩·줄바꿈 변화에도 겹침이 생기지 않도록 좌표가 아니라 측정으로 해소 */
     var head=hero.querySelector('.ab-head');
@@ -339,6 +373,17 @@ html[data-theme="light"] #about-app .ab-tl::before{
     draw();
     if(!reduce)startLoop();
   }
+  /* 방향(라디안) -> 선 출발 반경. 이웃 버킷을 선형 보간하고 링 반경 대비
+     밴드[0.86R, 1.05R]로 묶는다 — 얼굴 안쪽에서 출발하거나 링 밖으로
+     튀어나가는 경우를 구조적으로 없앤다. 실루엣 미계산 시 밴드 중앙값 폴백. */
+  function silRadius(ang,fallback){
+    var lo=meRing*0.86,hi=meRing*1.05;
+    if(!SILH)return Math.min(hi,Math.max(lo,fallback||meRing*0.94));
+    var f=(((ang*180/Math.PI+360)%360)/(360/SILN)),i0=f|0,fr=f-i0;
+    var v=SILH[i0%SILN]*(1-fr)+SILH[(i0+1)%SILN]*fr;
+    return Math.min(hi,Math.max(lo,v+5));
+  }
+
   function draw(t){
     if(!GM||!lk)return;
     var rect=hero.getBoundingClientRect(),W=rect.width,H=rect.height;
@@ -367,10 +412,9 @@ html[data-theme="light"] #about-app .ab-tl::before{
       var x=(el._bx||0)+(el._dx||0),y=(el._by||0)+(el._dy||0);
       var dx=x-cxp,dy=y-cyp,len=Math.sqrt(dx*dx+dy*dy)||1;
       var ux=dx/len,uy=dy/len;
-      /* 실측한 흉상 실루엣 가장자리에서 출발 (실루엣 미계산 시 링 반경 폴백) */
+      /* 실측한 흉상 실루엣 가장자리에서 출발 — 각도로 보간해 밴드 안으로 묶는다 */
       var ang=Math.atan2(dy,dx);
-      var base=SILH?SILH[(((ang*180/Math.PI+360)%360)/5)|0]:R0;
-      var R=Math.min(142,Math.max(38,base+7));
+      var R=silRadius(ang,R0);
       var x0=cxp+ux*R,y0=cyp+uy*R;
       /* 곡선 숨쉬기 — 곡률이 미세하게 진동 */
       var bow=(len-R0)*0.16*(1+0.05*Math.sin((t||0)*0.6+i*1.3));
@@ -455,10 +499,25 @@ html[data-theme="light"] #about-app .ab-tl::before{
         if(heroVisible&&GM)startLoop();else stopLoop();
       }).observe(hero);
     }
-    var rt=null;
-    window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(layout,150);});
+    var rt=null,relayout=function(){clearTimeout(rt);rt=setTimeout(layout,150);};
+    window.addEventListener('resize',relayout);
     layout();
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+    /* 히어로 폭이나 헤드 블록 크기가 나중에 바뀌면(스크롤바 등장·지연 폰트 적용)
+       노드 좌표와 실측 중심이 어긋난 채 남는다 — 크기 변화를 관찰해 다시 배치한다 */
+    if('ResizeObserver' in window){
+      var lastSize='',headEl=hero.querySelector('.ab-head');
+      var ro=new ResizeObserver(function(){
+        var hr=hero.getBoundingClientRect(),kr=headEl?headEl.getBoundingClientRect():null;
+        var key=Math.round(hr.width)+'x'+Math.round(hr.height)+
+                (kr?'|'+Math.round(kr.width)+'x'+Math.round(kr.height):'');
+        if(key===lastSize)return;
+        lastSize=key;relayout();
+      });
+      ro.observe(hero);
+      if(headEl)ro.observe(headEl);
+    }
+    window.addEventListener('load',relayout);
   }
 
   /* ---------- 테마 전환 시 캔버스 다시 그림 ---------- */
