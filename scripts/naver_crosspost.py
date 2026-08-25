@@ -1095,9 +1095,9 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="대상 목록/분류 미리보기")
     ap.add_argument("--classify-gemini", action="store_true",
                     help="전체 대상 포스트를 Gemini로 일괄 분류해 overrides 파일에 저장")
-    ap.add_argument("--limit", type=int, default=10, help="이번 실행 최대 발행 수 (기본 10)")
-    ap.add_argument("--daily-cap", type=int, default=20,
-                    help="최근 24시간 발행 상한 (0=해제, 기본 20). 과발행 사고 방지")
+    ap.add_argument("--limit", type=int, default=15, help="이번 실행 최대 발행 수 (기본 15)")
+    ap.add_argument("--daily-cap", type=int, default=30,
+                    help="최근 24시간 발행 상한 (0=해제, 기본 30). 과발행 사고 방지")
     ap.add_argument("--post", help="특정 포스트 파일만 발행 (이미 게시된 글도 재발행)")
     ap.add_argument("--update", metavar="LOGNO",
                     help="기존 네이버 글의 본문을 교체 (--post와 함께 사용, 제목·카테고리 유지)")
@@ -1106,12 +1106,13 @@ def main():
     ap.add_argument("--no-publish", action="store_true", help="발행 직전까지만 진행")
     ap.add_argument("--no-tags", action="store_true", help="태그 입력 생략")
     ap.add_argument("--debug", action="store_true", help="단계별 스크린샷 저장")
-    # 글 간 대기. 2026-07-22부터 45~90초로 운영해 문제가 없었으므로 유지한다
-    # (10편이면 실행당 약 11분). 발행이 몰리는 게 걱정되면 값을 올려 쓸 것.
+    # 글 간 대기. 2026-08-25부터 25~50초로 단축(이전 45~90초).
+    # 15편이면 실행당 약 9분. 네이버는 짧은 시간 몰아쓰기를 스팸 신호로 보므로
+    # 검색 노출이 줄면 --min-wait 45 --max-wait 90으로 즉시 되돌릴 것.
     ap.add_argument("--no-git-sync", action="store_true",
                     help="게시 이력 원격 동기화·자동 커밋 끄기 (오프라인 실행용)")
-    ap.add_argument("--min-wait", type=int, default=45)
-    ap.add_argument("--max-wait", type=int, default=90)
+    ap.add_argument("--min-wait", type=int, default=25)
+    ap.add_argument("--max-wait", type=int, default=50)
     args = ap.parse_args()
 
     try:
@@ -1166,7 +1167,7 @@ def main():
                 # --force-login은 '이미 유효한 세션' 지름길을 건너뛰고 폼을 띄운다
                 if not do_login(ctx, page, check_existing=not args.force_login):
                     raise SystemExit(2)
-                print("이어서 발행하려면: py scripts/naver_crosspost.py --limit 10")
+                print("이어서 발행하려면: py scripts/naver_crosspost.py --limit 15")
                 return
 
             if args.check_session:
