@@ -13,7 +13,7 @@ header:
   og_image: /assets/lectures/books/book-08-cover.jpg
 ---
 
-한빛미디어에서 출간 예정인 『요즘 교사를 위한 웹앱 만들기 with 바이브 코딩』의 조판원고를 큐레이션한 정리본이다. 이 책은 코드를 직접 쓰지 않고도 교실의 불편함을 웹앱으로 해결하는 과정을, 문제 발견부터 로컬 개발·배포까지 한 흐름으로 담았다. 아래는 4부 8장과 부록의 구성·핵심 내용·실습을 요약한 것이다. 원문 전체는 싣지 않는다.
+한빛미디어에서 출간 예정인 『요즘 교사를 위한 웹앱 만들기 with 바이브 코딩』의 조판원고를 큐레이션한 정리본이다. 이 책은 코드를 직접 쓰지 않고도 교실의 불편함을 웹앱으로 해결하는 과정을, 문제 발견부터 로컬 개발·배포까지 한 흐름으로 담았다. 아래는 4부 8장과 부록의 구성·핵심 내용·실습을 요약한 것이며, 조판원고 전체는 아래에서 내려받을 수 있다.
 
 ## 도서 개요
 
@@ -26,6 +26,16 @@ header:
 | 핵심 흐름 | 문제 발견(PRD·MVP) → 외부 연결(API·AI) → 클라우드 저장(Supabase) → 로컬 개발·배포(Antigravity·Git·Vercel) |
 | 주요 도구 | Lovable · Google AI Studio · Supabase · Google Antigravity IDE · GitHub · Vercel |
 | 실습 저장소 | [github.com/lifeofpi-ux/vibecode-for-teacher](https://github.com/lifeofpi-ux/vibecode-for-teacher){:target="_blank"} |
+
+## 원고 내려받기
+
+인쇄 직전 4교지 수정 원고(2026-08-26)다. 조판이 끝난 상태의 전체 원고이며, 최종 출간본과 일부 표기가 다를 수 있다.
+
+<div class="gyoan-actions">
+  <a class="gyoan-btn gyoan-btn--download" href="https://github.com/tigerjk9/tigerjk9.github.io/releases/download/vibecode-for-teacher-book/vibecode-for-teacher-proof4-2026-08-26.pdf"><i class="fas fa-download" aria-hidden="true"></i> 조판원고 내려받기 <span class="gyoan-btn__meta">PDF · 145쪽 · 약 41MB</span></a>
+</div>
+
+파일이 커서 학교 망 환경에서는 내려받는 데 시간이 걸릴 수 있다. 저작권은 저자 5인과 한빛앤(주)에 있다.
 
 ## 함께 보는 실습 저장소
 
@@ -47,9 +57,9 @@ header:
 **PART 03. 앱에 클라우드 기능을 심다 — 앱에 날개 달기**
 - 6장 왜 데이터베이스가 필요할까요?
 
-**PART 04. 로컬환경에서 진짜 개발자처럼 일하기**
-- 7장 내 컴퓨터를 리액트 개발 서버로 만들기
-- 8장 개발부터 배포까지 모든 것을 내가 직접
+**PART 04. 로컬 환경에서 진짜 개발자처럼 일하기**
+- 7장 내 컴퓨터를 React 개발 서버로 만들기
+- 8장 개발부터 배포까지, 내 손으로 완성하기
 - 부록 그 밖의 인공지능 도구들 (Cursor · Claude Code)
 
 ## 파트별 핵심 요약
@@ -74,7 +84,7 @@ header:
 
 실습에서는 Supabase 프로젝트를 개설해 API 키를 발급받고, 복잡한 SQL 쿼리는 AI Studio에 맡겨 데이터를 실시간으로 저장·조회한다. 이어서 Supabase의 가장 강력한 무기인 Auth(사용자 인증)와 RLS(행 수준 보안)를 설정해 허락받은 사람만 접근하는 안전한 앱으로 발전시킨다. 마지막으로 규칙에 깐깐한 관계형 데이터베이스(RDBMS)와 유연한 NoSQL을 비교하며 어떤 앱에 어떤 구조가 맞는지 탐구한다.
 
-### PART 04. 로컬환경에서 진짜 개발자처럼 일하기
+### PART 04. 로컬 환경에서 진짜 개발자처럼 일하기
 
 남의 공유 오피스(웹 도구)에서 나와 내 컴퓨터에 개인 스튜디오를 차리는 파트다. 인터넷이 끊기거나 서비스가 유료로 바뀌어도 흔들리지 않는 로컬 개발 환경의 필요성을 짚고, VS Code 계보(Cursor·Windsurf·Antigravity) 안에서 이 책의 메인 도구인 Google Antigravity IDE(2.0, Agent-First)를 선택한 이유를 설명한다. localhost와 포트의 원리, Node.js 설치, Vite로 리액트 프로젝트 만들기, npm install과 npm run dev, Hot Reload 체험을 거쳐 '우리 반 실시간 칭찬 보드'를 만든다. 환경변수와 .env로 비밀 키를 안전하게 관리하는 법도 함께 배운다.
 
