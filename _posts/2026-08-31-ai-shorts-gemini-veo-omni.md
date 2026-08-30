@@ -10,7 +10,7 @@ permalink: /post/ai-shorts-gemini-veo-omni/
 개통 3일 만에 폐쇄된 런던 밀레니엄 브릿지의 이야기는 흥미로운 사실을 담고 있다. 이 영상은 이처럼 호기심을 자극하는 지식 쇼츠를 AI로 30분 만에 만드는 구체적인 방법을 공개한다. 레퍼런스 분석부터 스크립트 작성, AI 영상 생성, 그리고 편집까지 전체 과정을 다룬다.
 
 <figure>
-<img src="/assets/ai-shorts-gemini-veo-omni-src1-thumb.jpg" alt="AI 쇼츠 30분 제작: 제미나이와 Veo Omni 활용법">
+<img src="/assets/ai-shorts-gemini-veo-omni-src1-thumb.jpg" alt="AI 쇼츠 30분 제작, 제미나이와 Veo Omni 활용법">
 </figure>
 
 ## 예측 오류 기반 스토리텔링

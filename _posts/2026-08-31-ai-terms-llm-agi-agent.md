@@ -10,7 +10,7 @@ permalink: /post/ai-terms-llm-agi-agent/
 인공지능(AI) 기술이 빠르게 발전하면서 새로운 용어들이 쏟아져 나온다. 이러한 AI 용어들을 마치 신입 AI 직원을 회사에 맞춰 성장시키는 과정에 비유하여, 핵심 개념 12가지를 체계적으로 살펴본다. LLM의 기본부터 스스로 일하는 AI 에이전트, 그리고 궁극적인 AGI까지 AI 시스템의 발전 단계를 이해하는 데 도움을 준다.
 
 <figure>
-<img src="/assets/ai-terms-llm-agi-agent-src1-thumb.jpg" alt="AI 용어 12가지: LLM부터 AGI까지, AI 직원 키우기">
+<img src="/assets/ai-terms-llm-agi-agent-src1-thumb.jpg" alt="AI 용어 12가지, LLM부터 AGI까지, AI 직원 키우기">
 </figure>
 
 ## LLM의 역할, AI의 두뇌
@@ -43,7 +43,7 @@ permalink: /post/ai-terms-llm-agi-agent/
 
 ## MCP, 도구 연결 표준
 
-**MCP (Multimodal Communication Protocol)**는 AI가 다양한 외부 도구(애플리케이션, 서비스, API 등)와 연결되어 소통하는 표준 프로토콜이다. 이는 AI 직원이 필요한 도구(엑셀, 메신저 등)를 능숙하게 다루는 것과 같다. MCP를 활용하면 AI는 외부 시스템과 연동하여 복잡한 작업을 수행한다.
+**MCP (Model Context Protocol)**는 AI가 다양한 외부 도구(애플리케이션, 서비스, API 등)와 연결되어 소통하는 표준 프로토콜이다. 이는 AI 직원이 필요한 도구(엑셀, 메신저 등)를 능숙하게 다루는 것과 같다. MCP를 활용하면 AI는 외부 시스템과 연동하여 복잡한 작업을 수행한다.
 
 ## AI 에이전트, 스스로 일하는 직원
 

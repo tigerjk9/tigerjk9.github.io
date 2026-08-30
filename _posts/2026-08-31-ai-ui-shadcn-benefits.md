@@ -10,7 +10,7 @@ permalink: /post/ai-ui-shadcn-benefits/
 인공지능(AI)이 사용자 인터페이스(UI)를 빠르게 생성하는 시대, '만들어줘'라는 간단한 요청만으로는 만족스러운 결과물을 얻기 어렵다. 일관성 없고 파편화된 UI가 생성되는 문제를 해결하려면 AI에 명확한 기준을 제시해야 한다. 이때 **shadcn/ui**가 효과적인 해결책이 된다.
 
 <figure>
-<img src="/assets/ai-ui-shadcn-benefits-src1-thumb.png" alt="AI UI 개발 필수 도구: shadcn/ui 활용 가이드">
+<img src="/assets/ai-ui-shadcn-benefits-src1-thumb.png" alt="AI UI 개발 필수 도구, shadcn/ui 활용 가이드">
 </figure>
 
 ## AI 시대, 일관성 없는 UI의 문제
