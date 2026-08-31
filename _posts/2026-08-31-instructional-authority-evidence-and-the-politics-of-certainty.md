@@ -6,7 +6,12 @@ tags: [교육혁신, 교육정책, 교사전문성, 논문리뷰, 미래교육]
 header:
   teaser: /assets/instructional-authority-evidence-and-the-politics-of-certainty-fig-1.jpg
 permalink: /post/instructional-authority-evidence-and-the-politics-of-certainty/
+description: "호주 교육 개혁의 명시적 교수법·증거 기반 강조를 지식과 교수, 전문적 판단에 대한 권한을 재분배하는 교육과정 거버넌스로 읽어낸 논문 리뷰. 확실성의 정치가 어떻게 교육과정 폐쇄로 이어지는지 분석한다."
 ---
+
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/instructional-authority-evidence-and-the-politics-of-certainty-card.jpg" alt="교육 개혁, 명시적 교수법 강조가 교육의 자율성을 훼손하는가?">
+</figure>
 
 ## 1. 연구의 목적
 
