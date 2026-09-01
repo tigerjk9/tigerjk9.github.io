@@ -3,13 +3,14 @@ title: AI는 교실 수업을 어떻게 지능적으로 변화시키는가?
 date: 2026-08-31 01:20:07 +0900
 categories: [AI, 교육혁신]
 tags: [AI, 에듀테크, 교육혁신, 논문리뷰, 생성형AI, 학습과학, 교사전문성, 인간중심AI]
+description: "AI 교육 통합이 21세기 가장 중요한 교육 변화 중 하나임에도, AI 역량을 실제 교실 전략으로 전환하는 구체적 사례가 부족하다는 문제의식에서 출발한 연구."
 header:
   teaser: /assets/ai-teaching-case-study-thumb.jpg
 permalink: /post/ai-teaching-case-study/
 ---
 
-<figure>
-<img src="/assets/ai-teaching-case-study-thumb.jpg" alt="AI는 교실 수업을 어떻게 지능적으로 변화시키는가?">
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/ai-teaching-case-study-card.jpg" alt="AI는 날개, 중심은 교사다 — AI는 교실 수업을 어떻게 지능적으로 변화시키는가?">
 </figure>
 
 ## 1. 연구의 목적
