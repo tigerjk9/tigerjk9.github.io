@@ -936,7 +936,10 @@ def _norm_title(s: str) -> str:
     import unicodedata
     s = "".join(ch for ch in (s or "") if not 0xD800 <= ord(ch) <= 0xDFFF)
     s = unicodedata.normalize("NFC", s)
-    return re.sub(r"[\s'\"‘’“”]+", "", s)
+    # 물음표/느낌표까지 지운다. 네이버는 이 문자를 그대로 받지만, 블로그 쪽 제목이
+    # 발행 이후에 바뀌는 일이 있어(2026-08-02 의문문 물음표 일괄 통일로 38편 변경)
+    # 같은 글인데도 제목 대조가 어긋난다 - 실측 12편.
+    return re.sub(r"[\s'\"‘’“”?!]+", "", s)
 
 
 def fetch_logno_by_title(title: str) -> str | None:
@@ -977,14 +980,18 @@ def fetch_logno_by_title(title: str) -> str | None:
 _naver_title_index = None
 
 
-def _load_naver_title_index(max_pages: int = 30) -> dict:
-    """공개 목록 API로 (정규화 제목 -> logNo) 색인을 만든다. 로그인 불필요."""
+def _load_naver_title_index(max_pages: int = 200, quiet: bool = False) -> dict:
+    """공개 목록 API로 (정규화 제목 -> logNo) 색인을 만든다. 로그인 불필요.
+
+    기본값이 30페이지(900편)일 때는 그보다 오래된 글이 색인 밖이라 대조 자체가
+    불가능했다. 전체(2026-09 기준 2557편)를 읽어도 9초면 끝나므로 소진할 때까지 읽는다.
+    """
     import html as _html
     import ssl
     import urllib.request
     from urllib.parse import unquote_plus
     item = re.compile(r'"logNo":"(\d+)".*?"title":"([^"]*)"', re.S)
-    idx = {"full": {}, "pre": {}}
+    idx = {"full": {}, "pre": {}, "logno": set()}
     seen: set = set()
     for p in range(1, max_pages + 1):
         url = (f"https://blog.naver.com/PostTitleListAsync.naver?blogId={BLOG_ID}"
@@ -1007,6 +1014,7 @@ def _load_naver_title_index(max_pages: int = 30) -> dict:
             if ln in seen:
                 continue
             seen.add(ln)
+            idx["logno"].add(ln)
             new += 1
             norm = _norm_title(_html.unescape(unquote_plus(ti)))
             if not norm:
@@ -1015,7 +1023,8 @@ def _load_naver_title_index(max_pages: int = 30) -> dict:
             idx["pre"].setdefault(norm[:20], ln)
         if new == 0:
             break
-    print(f"  [guard] 네이버 기존 글 {len(seen)}편 색인 (중복 발행 방지)")
+    if not quiet:
+        print(f"  [guard] 네이버 기존 글 {len(seen)}편 색인 (중복 발행 방지)")
     return idx
 
 
@@ -1028,6 +1037,37 @@ def naver_existing_logno(title: str) -> "str | None":
     if not norm:
         return None
     return _naver_title_index["full"].get(norm) or _naver_title_index["pre"].get(norm[:20])
+
+
+def refresh_naver_index(pages: int = 3) -> None:
+    """최근 몇 페이지만 다시 읽어 캐시 색인에 합친다 (발행 직후 확인용)."""
+    global _naver_title_index
+    fresh = _load_naver_title_index(max_pages=pages, quiet=True)
+    if _naver_title_index is None:
+        _naver_title_index = fresh
+        return
+    for key in ("full", "pre"):
+        for k, v in fresh[key].items():
+            _naver_title_index[key].setdefault(k, v)
+    _naver_title_index["logno"] |= fresh["logno"]
+
+
+def confirm_published(title: str, tries: int = 3, delay: int = 8) -> "str | None":
+    """발행 후 URL을 못 잡았을 때, 네이버 목록을 다시 읽어 실제 게시를 확인한다.
+
+    예전에는 확인 실패를 url="unknown"으로 이력에 남겼다. 그런데 그 값은
+    '다른 주소로 올라갔다'가 아니라 '올라갔는지 모른다'이고, 실제로 발행되지 않은
+    글까지 영구히 게시 완료로 굳어 조용히 누락됐다(2026-08-31 배치 10편,
+    2026-08-18 1편 - 전부 네이버에 없음을 사후 실측). 존재가 확인될 때만 기록한다.
+    """
+    for i in range(tries):
+        time.sleep(delay)
+        refresh_naver_index()
+        ln = naver_existing_logno(title)
+        if ln:
+            return f"https://blog.naver.com/{BLOG_ID}/{ln}"
+        print(f"  [warn] 발행 확인 재시도 {i + 1}/{tries}")
+    return None
 
 
 def update_post(page, logno: str, html: str, debug: bool) -> str | None:
@@ -1083,6 +1123,90 @@ def update_post(page, logno: str, html: str, debug: bool) -> str | None:
 
 # ---------------------------------------------------------------- 메인
 
+# ---------------------------------------------------------------- 감사
+
+def audit_sync(state: dict, fix: bool = False, force: bool = False) -> dict:
+    """이력과 네이버 실제 게시 현황을 대조한다.
+
+    이력 파일은 '발행했다고 기록한 것'이지 '실제로 올라간 것'이 아니다.
+    발행 확인에 실패한 기록(url=unknown)이나 사후 삭제분은 이력만 보면 영원히
+    보이지 않아 싱크가 끝난 것 같은 착시를 만든다. 소스 오브 트루스는 네이버
+    자신이므로 공개 목록 API로 직접 대조한다.
+    """
+    idx = _load_naver_title_index()
+    lognos = idx.get("logno", set())
+    if len(lognos) < 100 and not force:
+        print(f"[ABORT] 네이버 목록을 제대로 읽지 못했습니다(색인 {len(lognos)}편). "
+              "네트워크 확인 후 다시 시도하세요.")
+        return {}
+    posted = state.get("posted", {})
+    phantom, digests, pre_base, unlisted, healed = [], [], [], [], []
+    for path in sorted(POSTS_DIR.glob("*.md")):
+        try:
+            post = parse_post(path)
+        except ValueError:
+            continue
+        norm = _norm_title(post["title"])
+        by_title = idx["full"].get(norm) or idx["pre"].get(norm[:20])
+        rec = posted.get(path.name)
+        by_url = None
+        if rec:
+            m = re.search(r"/(\d{6,})$", rec.get("url") or "")
+            if m and m.group(1) in lognos:
+                by_url = m.group(1)
+        live = by_url or by_title
+        if rec:
+            if not live:
+                phantom.append((path.name, post["title"], rec.get("url")))
+            continue
+        if EXCLUDE_TAG in post["tags"] or "weekly-digest" in path.name:
+            digests.append((path.name, bool(live)))
+        elif path.name <= BASELINE_FILENAME:
+            pre_base.append((path.name, post["title"], bool(live)))
+        elif live:
+            healed.append((path.name, live))
+        else:
+            unlisted.append((path.name, post["title"]))
+
+    print("")
+    print(f"네이버 실제 게시글 {len(lognos)}편 / 이력 기록 {len(posted)}편")
+    print("")
+    print(f"[1] 이력에는 있는데 네이버에 없음 (유령 기록): {len(phantom)}편")
+    for f, t, u in phantom:
+        print(f"    {f}")
+        print(f"        {t}")
+        print(f"        ledger url: {u}")
+    print("")
+    print(f"[2] 이력에도 네이버에도 없음 (진짜 미게시, baseline 이후): {len(unlisted)}편")
+    for f, t in unlisted:
+        print(f"    {f}")
+        print(f"        {t}")
+    print("")
+    print(f"[3] 이력에 없지만 네이버에는 있음 (이력 누락): {len(healed)}편")
+    for f, ln in healed:
+        print(f"    {f} -> logNo {ln}")
+    dg_on = sum(1 for _, ok in digests if ok)
+    pb_off = [x for x in pre_base if not x[2]]
+    print("")
+    print(f"[4] 주간 다이제스트(정책상 제외): {len(digests)}편 (네이버에 있는 것 {dg_on}편)")
+    print(f"[5] baseline 이전(대상 밖): {len(pre_base)}편 (네이버에 없는 것 {len(pb_off)}편)")
+
+    if fix and phantom:
+        ratio = len(phantom) / max(len(posted), 1)
+        if ratio > 0.2 and not force:
+            print("")
+            print(f"[ABORT] 유령 기록이 이력의 {ratio:.0%}입니다. 조회 오류일 수 있어 "
+                  "자동 정리를 중단합니다 (--force로 강행).")
+        else:
+            for f, _, _ in phantom:
+                state["posted"].pop(f, None)
+            save_json(STATE_FILE, state)
+            print("")
+            print(f"[FIX] 유령 기록 {len(phantom)}건을 이력에서 제거했습니다. "
+                  "다음 실행에서 재발행 대상이 됩니다.")
+    return {"phantom": phantom, "unlisted": unlisted, "healed": healed}
+
+
 def main():
     ap = argparse.ArgumentParser(description="GitHub 블로그 -> 네이버 블로그 크로스포스팅")
     ap.add_argument("--login", action="store_true", help="수동 로그인 (세션이 유효하면 건너뜀)")
@@ -1093,6 +1217,12 @@ def main():
     ap.add_argument("--no-auto-login", action="store_true",
                     help="세션 만료 시 로그인 창을 띄우지 않고 종료 (스케줄러용)")
     ap.add_argument("--dry-run", action="store_true", help="대상 목록/분류 미리보기")
+    ap.add_argument("--audit", action="store_true",
+                    help="네이버 실제 게시 현황과 이력을 대조 (로그인 불필요)")
+    ap.add_argument("--fix-ledger", action="store_true",
+                    help="--audit과 함께: 네이버에 없는 유령 이력을 지워 재발행 대상으로 되돌림")
+    ap.add_argument("--force", action="store_true",
+                    help="--fix-ledger 안전장치(20%% 상한/색인 최소치) 무시")
     ap.add_argument("--classify-gemini", action="store_true",
                     help="전체 대상 포스트를 Gemini로 일괄 분류해 overrides 파일에 저장")
     ap.add_argument("--limit", type=int, default=15, help="이번 실행 최대 발행 수 (기본 15)")
@@ -1129,6 +1259,12 @@ def main():
         state = sync_state_before_run(state)
     overrides = load_json(OVERRIDES_FILE, {})
     pending = collect_pending(state, args.post)
+
+    if args.audit or args.fix_ledger:
+        audit_sync(state, fix=args.fix_ledger, force=args.force)
+        if args.fix_ledger and not args.no_git_sync:
+            push_state(f"{len(state.get('posted', {}))}편 누적 (유령 이력 정리)")
+        return
 
     if args.classify_gemini:
         print(f"Gemini 일괄 분류 시작: {len(pending)}편")
@@ -1254,7 +1390,6 @@ def main():
                     print("  이 글은 미게시로 남깁니다. 다음 글로 넘어갑니다...")
                     time.sleep(15)
                     continue
-                fails = 0
                 if args.no_publish:
                     print("검수 모드: 브라우저 창을 직접 닫으면 종료됩니다.")
                     try:
@@ -1263,12 +1398,28 @@ def main():
                     except Exception:
                         pass
                     break
+                if not url:
+                    # URL을 못 잡았다고 발행이 성공한 것은 아니다. 네이버에서 직접
+                    # 확인될 때만 이력에 남긴다 (구버전은 "unknown"으로 기록해
+                    # 실제로 안 올라간 11편을 조용히 잃었다).
+                    url = confirm_published(post["title"])
+                if not url:
+                    print("  [UNVERIFIED] 네이버에서 이 글을 찾지 못했습니다 - "
+                          "이력에 남기지 않습니다(다음 실행에 재시도).")
+                    shot(page, f"{post['path'].stem}-unverified")
+                    fails += 1
+                    if fails >= 2:
+                        print("  연속 2회 발행 미확인 - 이번 실행을 중단합니다.")
+                        break
+                    time.sleep(15)
+                    continue
+                fails = 0
                 state["posted"][post["file"]] = {
-                    "url": url or "unknown", "category": cat_name,
+                    "url": url, "category": cat_name,
                     "posted_at": time.strftime("%Y-%m-%d %H:%M:%S"),
                 }
                 save_json(STATE_FILE, state)
-                print(f"  [OK] {url or '(URL 미확인)'}")
+                print(f"  [OK] {url}")
                 if i < len(batch) - 1:
                     wait = random.randint(args.min_wait, args.max_wait)
                     print(f"  다음 글까지 {wait}초 대기...")
