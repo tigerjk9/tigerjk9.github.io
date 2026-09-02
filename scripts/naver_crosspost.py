@@ -75,6 +75,20 @@ EXPIRY_WARN_DAYS = 7
 
 EXCLUDE_TAG = "주간다이제스트"
 
+# --backfill 제외 목록. baseline 이전 아카이브 99편을 검토해 고른 것으로(2026-09-02),
+# 시효가 지난 공지·단문 개발 알림이라 지금 새 글로 올리면 어색하다.
+# 나머지(논문리뷰·에세이·1300자 이상 개발 후기)는 상록수 콘텐츠라 백필한다.
+BACKFILL_EXCLUDE = {
+    "2025-08-20-first.md",               # 인사글 198자
+    "2025-09-26-Book-Invitation.md",     # 출간 '예정' 안내 - 이미 출간됨
+    "2025-09-27-AI-Hands-on-V2.md",      # 배포 안내 777자
+    "2025-10-11-AI-Digital-Insight.md",  # 출간 소식 - 위와 중복
+    "2025-11-05-Fluent-AI.md",           # 546자
+    "2025-11-07-Story-living.md",        # 953자
+    "2025-11-08-level-up-note.md",       # 712자
+    "2025-11-09-AI-Taro-Master.md",      # 849자
+}
+
 
 # ---------------------------------------------------------------- front matter
 
@@ -419,13 +433,16 @@ def recent_post_count(state: dict, hours: int = 24) -> int:
     return n
 
 
-def collect_pending(state: dict, only_file: str | None = None) -> list[dict]:
+def collect_pending(state: dict, only_file: str | None = None,
+                    backfill: bool = False) -> list[dict]:
     posts = []
     for path in sorted(POSTS_DIR.glob("*.md")):
         if only_file:
             if path.name != Path(only_file).name:
                 continue
-        elif path.name <= BASELINE_FILENAME:
+        elif path.name <= BASELINE_FILENAME and not backfill:
+            continue
+        if backfill and path.name in BACKFILL_EXCLUDE:
             continue
         if path.name in state["posted"]:
             if not only_file:
@@ -438,7 +455,42 @@ def collect_pending(state: dict, only_file: str | None = None) -> list[dict]:
         if EXCLUDE_TAG in post["tags"] or "weekly-digest" in path.name:
             continue
         posts.append(post)
+    if backfill:
+        # 파일명 순이면 2025년 아카이브가 앞자리를 다 차지해 신규 글이 굶는다.
+        # baseline 이후(신규)를 먼저, 그 다음 아카이브를 오래된 것부터.
+        posts.sort(key=lambda p: (p["file"] <= BASELINE_FILENAME, p["file"]))
     return posts
+
+
+def drop_already_on_naver(state: dict, pending: list, overrides: dict,
+                          save: bool = True) -> list:
+    """백필 대상 중 네이버에 이미 있는 글을 걸러내고 이력을 보정한다.
+
+    수동 크로스포스팅 시절에 올린 172편은 이력에 없다. 그대로 두면 batch 앞자리를
+    전부 차지하고 발행 루프의 guard가 하나씩 건너뛰느라 실제 발행이 0편이 된다
+    (batch = pending[:limit] 이므로 건너뛴 만큼 채워지지 않는다).
+    """
+    if not pending:
+        return pending
+    kept, healed = [], 0
+    for post in pending:
+        ln = naver_existing_logno(post["title"])
+        if not ln:
+            kept.append(post)
+            continue
+        state["posted"][post["file"]] = {
+            "url": f"https://blog.naver.com/{BLOG_ID}/{ln}",
+            "category": CATEGORIES[classify(post, overrides)]["name"],
+            "posted_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "note": "backfill-existing",
+        }
+        healed += 1
+    if healed:
+        if save:
+            save_json(STATE_FILE, state)
+        print(f"  [backfill] 네이버에 이미 있는 {healed}편을 이력에 보정하고 제외"
+              f"{'' if save else ' (dry-run: 저장 안 함)'}")
+    return kept
 
 
 # ---------------------------------------------------------------- 브라우저
@@ -1225,9 +1277,13 @@ def main():
                     help="--fix-ledger 안전장치(20%% 상한/색인 최소치) 무시")
     ap.add_argument("--classify-gemini", action="store_true",
                     help="전체 대상 포스트를 Gemini로 일괄 분류해 overrides 파일에 저장")
-    ap.add_argument("--limit", type=int, default=15, help="이번 실행 최대 발행 수 (기본 15)")
-    ap.add_argument("--daily-cap", type=int, default=30,
-                    help="최근 24시간 발행 상한 (0=해제, 기본 30). 과발행 사고 방지")
+    ap.add_argument("--backfill", action="store_true",
+                    help="baseline 이전 아카이브까지 대상에 포함 (저속 기본값 자동 적용). "
+                         "스케줄러는 이 플래그가 없어 신규 글만 다룬다")
+    ap.add_argument("--limit", type=int, default=None,
+                    help="이번 실행 최대 발행 수 (기본 15, --backfill이면 8)")
+    ap.add_argument("--daily-cap", type=int, default=None,
+                    help="최근 24시간 발행 상한 (0=해제, 기본 30, --backfill이면 10)")
     ap.add_argument("--post", help="특정 포스트 파일만 발행 (이미 게시된 글도 재발행)")
     ap.add_argument("--update", metavar="LOGNO",
                     help="기존 네이버 글의 본문을 교체 (--post와 함께 사용, 제목·카테고리 유지)")
@@ -1241,9 +1297,18 @@ def main():
     # 검색 노출이 줄면 --min-wait 45 --max-wait 90으로 즉시 되돌릴 것.
     ap.add_argument("--no-git-sync", action="store_true",
                     help="게시 이력 원격 동기화·자동 커밋 끄기 (오프라인 실행용)")
-    ap.add_argument("--min-wait", type=int, default=25)
-    ap.add_argument("--max-wait", type=int, default=50)
+    ap.add_argument("--min-wait", type=int, default=None)
+    ap.add_argument("--max-wait", type=int, default=None)
     args = ap.parse_args()
+
+    # 백필은 1년치 아카이브를 붓는 일이라 신규 발행과 같은 속도로 돌리면 안 된다.
+    # 네이버는 하루 총량보다 짧은 시간 몰아쓰기를 스팸 신호로 본다.
+    # 명시적으로 준 값이 있으면 그것을 우선한다.
+    _dflt = {"limit": 8, "daily_cap": 10, "min_wait": 60, "max_wait": 120} if args.backfill \
+        else {"limit": 15, "daily_cap": 30, "min_wait": 25, "max_wait": 50}
+    for k, v in _dflt.items():
+        if getattr(args, k) is None:
+            setattr(args, k, v)
 
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
@@ -1258,7 +1323,10 @@ def main():
     if not args.no_git_sync:
         state = sync_state_before_run(state)
     overrides = load_json(OVERRIDES_FILE, {})
-    pending = collect_pending(state, args.post)
+    pending = collect_pending(state, args.post, backfill=args.backfill)
+    if args.backfill and not args.post:
+        pending = drop_already_on_naver(state, pending, overrides,
+                                        save=not args.dry_run)
 
     if args.audit or args.fix_ledger:
         audit_sync(state, fix=args.fix_ledger, force=args.force)
@@ -1281,7 +1349,9 @@ def main():
 
     if args.dry_run:
         counts = {}
-        print(f"대상 {len(pending)}편 (기준: {BASELINE_FILENAME} 이후, 게시 이력 제외)\n")
+        scope = ("전체 아카이브 포함" if args.backfill
+                 else f"기준: {BASELINE_FILENAME} 이후")
+        print(f"대상 {len(pending)}편 ({scope}, 게시 이력 제외)\n")
         for p in pending:
             key = args.category or classify(p, overrides)
             counts[key] = counts.get(key, 0) + 1
