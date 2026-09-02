@@ -421,6 +421,12 @@ def recent_post_count(state: dict, hours: int = 24) -> int:
     cutoff = time.time() - hours * 3600
     n = 0
     for v in state.get("posted", {}).values():
+        # note가 붙은 항목은 이번에 우리가 올린 글이 아니라 '네이버에 이미 있어서
+        # 이력만 보정한 것'이다. posted_at은 발견 시각이라 지금 시각이 찍히는데,
+        # 이걸 세면 보정 한 번에 레이트리밋이 터진다 (2026-09-02 백필 172편 실측:
+        # 최근 24시간 184편으로 잡혀 발행이 통째로 건너뛰어짐).
+        if v.get("note"):
+            continue
         stamp = v.get("posted_at")
         if not stamp:
             continue

@@ -21,6 +21,9 @@ py -u scripts/naver_crosspost.py --limit 15
 `$ARGUMENTS`가 있으면 그대로 전달하세요. 주요 옵션:
 - `--dry-run` — 대상 목록·분류 미리보기 (브라우저 안 뜸)
 - `--audit` — **네이버 실제 게시 현황과 이력을 대조** (로그인 불필요, 9초). `--fix-ledger`로 유령 기록 제거, `--force`로 안전장치 무시
+- `--backfill` — **baseline 이전 아카이브(91편)까지 대상에 포함**. 저속 기본값
+  (`--limit 8 --daily-cap 10 --min-wait 60 --max-wait 120`)이 자동 적용되고,
+  명시한 값이 있으면 그것을 우선한다. 스케줄 태스크는 이 플래그가 없어 신규 글만 다룬다
 - `--post _posts/파일.md` — 특정 포스트만 발행 (게시 이력 무시하고 재발행)
 - `--category ai|brain|class` — 분류 수동 지정
 - `--limit N` — 이번 실행 발행 수 (기본 15)
@@ -60,6 +63,22 @@ py -u scripts/naver_crosspost.py --limit 15
 2. 첫 글 URL을 열어 서체(마루부리 15)·표·이미지 렌더링 확인 (모바일 API로 확인 가능:
    `curl -sk https://m.blog.naver.com/dot_connector/<logNo>` 에서 `se-ff-nanummaruburi`·`se-fs-fs15` 클래스)
 3. `scripts/naver_crosspost_state.json` 변경분 커밋 (게시 이력 = 중복 발행 방지 데이터)
+
+## 아카이브 백필 (2026-09-02~)
+
+크로스포스팅 시작 이전 글 271편 중 99편이 네이버에 없었다(수동 시절 못 따라간 분).
+시효 지난 공지 8편을 뺀 **91편**을 하루 10편씩 저속으로 채우는 중이다.
+
+```bash
+py -u scripts/naver_crosspost.py --backfill        # 저속 기본값 자동 (8편/실행, 하루 10편)
+py -u scripts/naver_crosspost.py --backfill --dry-run
+```
+
+- 대상 조정은 `scripts/naver_crosspost.py`의 `BACKFILL_EXCLUDE` 집합에서
+- 신규 글이 있으면 아카이브보다 **먼저** 발행된다(굶지 않게 정렬됨)
+- `--daily-cap`은 수동+스케줄을 합산하므로, 스케줄러가 신규 글을 올린 날은
+  백필 몫이 그만큼 줄어든다. 의도된 동작이다
+- 진행 상황은 `--audit`의 `[5] baseline 이전 ... (네이버에 없는 것 N편)`으로 확인
 
 ## 발행 속도 정책 (2026-08-25 상향)
 - **실행당 15편 / 글 간 25~50초 / 하루 상한 30편**. 스케줄 2회(10:00·16:00) 기준 하루 30편,
