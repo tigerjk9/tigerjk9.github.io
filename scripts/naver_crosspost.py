@@ -64,6 +64,8 @@ AI_SIGNALS = {
 }
 
 FONT_NAME = "마루부리"
+# 에디터/발행 문서가 마루부리에 붙이는 클래스. 서체 적용 검증에 쓴다.
+FONT_CLASS = "se-ff-nanummaruburi"
 FONT_SIZE = "15"
 
 # '로그인 상태 유지' 체크박스. 네이버가 id를 바꿔도 버티도록 후보를 순회한다
@@ -851,6 +853,15 @@ def apply_font(page):
         page.keyboard.press("End")  # 선택 해제
         if FONT_NAME in label:
             return True
+        # 본문에 이미지가 섞이면 Ctrl+A 선택이 단일 서체로 안 잡혀 툴바 라벨이
+        # '기본서체'로 표시된다. 서체는 정상 적용됐는데 경고만 나는 오탐이라
+        # (2026-09-02 백필 5편 실측 - 발행 문서에 마루부리 41~90개 확인),
+        # 라벨이 아니라 본문 DOM으로 최종 판정한다.
+        try:
+            if page.locator(f".{FONT_CLASS}").count() > 0:
+                return True
+        except Exception:
+            pass
         print(f"  [warn] 서체 적용 확인 실패 (라벨: {label!r})")
         return False
     except Exception as e:
@@ -1245,9 +1256,11 @@ def audit_sync(state: dict, fix: bool = False, force: bool = False) -> dict:
         print(f"    {f} -> logNo {ln}")
     dg_on = sum(1 for _, ok in digests if ok)
     pb_off = [x for x in pre_base if not x[2]]
+    pb_target = [x for x in pb_off if x[0] not in BACKFILL_EXCLUDE]
     print("")
     print(f"[4] 주간 다이제스트(정책상 제외): {len(digests)}편 (네이버에 있는 것 {dg_on}편)")
-    print(f"[5] baseline 이전(대상 밖): {len(pre_base)}편 (네이버에 없는 것 {len(pb_off)}편)")
+    print(f"[5] baseline 이전 미게시: {len(pb_off)}편 "
+          f"(--backfill 대상 {len(pb_target)}편 / 제외 목록 {len(pb_off) - len(pb_target)}편)")
 
     if fix and phantom:
         ratio = len(phantom) / max(len(posted), 1)
