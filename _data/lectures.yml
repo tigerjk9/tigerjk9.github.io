@@ -1,3 +1,19 @@
+- slug: ai-off-for-20-minutes
+  title: "40분 중 20분, AI를 껐습니다"
+  subtitle: "수업설계안에 담긴 판단과 성찰 · 2026 에듀테크 코리아 페어 발표"
+  audience: "초·중등 교사, 교육청·학교관리자, 에듀테크 관계자"
+  date: "2026-09-19"
+  hub_url: /lectures/ai-off-for-20-minutes/
+  locked: true
+  locked_payload: "Auhvdb8BKOUWw6yeR4BCDxfpQYiq8djRpqzyuDmddvNaLbqc6nJUeDHsOEeF50jleoRFUEb5SU75fm5VmOZa3lvY6GTzdeehoO3u990="
+  thumbnail: /assets/lectures/covers/8ce7362fa43676d6.jpg
+  tags:
+    - 교사전문성
+    - AI수업설계
+    - 디지털기반아날로그수업
+    - AI리터러시
+    - 발표자료
+
 - slug: elementary-assessment-expert
   title: "초등 학생평가 전문가 기본과정"
   subtitle: "개념기반 탐구수업 · 서논술형 평가 도구 · GRASPS 루브릭 · 과정중심평가"
