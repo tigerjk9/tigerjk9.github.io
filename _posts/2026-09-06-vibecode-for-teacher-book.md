@@ -1,0 +1,40 @@
+---
+title: "신간 《요즘 교사를 위한 웹앱 만들기 with 바이브 코딩》 출간"
+date: 2026-09-06 10:11:11 +0900
+categories: [소프트웨어개발, 교육공학]
+tags: [바이브코딩, 웹앱, 교사전문성, 코딩, 에듀테크, 한빛미디어, 이상선]
+header:
+  teaser: /assets/vibecode-for-teacher-book-cover.jpg
+permalink: /post/vibecode-for-teacher-book/
+---
+트라이팟이 수개월간 준비한 웹 서비스 개발 서적, **《요즘 교사를 위한 웹앱 만들기 with 바이브 코딩》**이 한빛미디어를 통해 출간되었다. 이 책은 코딩이나 웹 서비스 개발에 대한 기본 지식이 없는 교사들을 위해, 바이브 코딩을 활용한 웹 서비스 개발의 본질적인 개념을 친절하게 안내한다. 단순한 기능 소개를 넘어 초보자도 스스로 웹 서비스를 이해하고 구현하는 과정을 경험하게 한다.
+
+<figure style="max-width:360px;margin-inline:auto">
+<img src="/assets/vibecode-for-teacher-book-cover.jpg" alt="요즘 교사를 위한 웹앱 만들기 with 바이브 코딩 표지">
+<figcaption>한빛미디어 《요즘 교사를 위한 웹앱 만들기 with 바이브 코딩》 (이상선·김진관·이대형·윤신영·김상섭).</figcaption>
+</figure>
+
+## 요즘 교사 시리즈, 디지털 도구 활용의 시작
+
+이 책은 한빛미디어의 **요즘 교사 시리즈** 중 두 번째 참여작이다. 첫 번째 책이 AI 디지털 수업 설계와 다양한 실제 사례를 다루었다면, 이번 책은 **바이브 코딩**과 웹 서비스 개발이라는 구체적인 도구에 집중한다. 교육 현장의 교사뿐만 아니라 웹 개발에 관심을 가진 다양한 독자들이 기초부터 중급까지의 내용을 체계적으로 익히도록 돕는다.
+
+## 개발 초보자를 위한 친절한 길잡이
+
+저자들은 수많은 교사를 대상으로 AI 코딩 및 바이브 코딩 강의를 진행하며 공통적인 질문들을 마주했다. "웹 서비스가 무엇인지 쉽게 설명해달라", "바이브 코딩으로 만들었지만 작동 원리를 모르겠다", "러버블 사용 비용이 부담된다", "코딩 기초 학습이 너무 어렵다" 같은 물음이었다. 시중에 많은 바이브 코딩 개발서가 AI 통합 개발 도구(AI IDE)의 기능이나 **MCP(Model Context Protocol)**, **Skill** 같은 최신 개념을 다루지만, 정작 개발을 처음 시작하는 이들이 궁금해하는 가장 기본적인 개념을 차근차근 익힐 자료는 부족한 현실이다.
+
+이 책은 이러한 본질적인 질문에서 출발한다. 웹 서비스와 코딩의 기본 개념이 서로 연결되고, 그동안 막연하게 느꼈던 의문들이 자연스럽게 해소되는 경험을 독자에게 선사한다. 저자들은 이 책이 웹 개발에 도전하는 교사들에게 든든한 동반자가 되기를 바란다.
+
+저자 일동은 **이상선, 김진관, 이대형, 윤신영, 김상섭** 다섯 명이다.
+
+## 더 알아보기
+
+이 책에 대한 자세한 정보와 구매는 다음 링크에서 확인한다.
+
+*   YES24: [https://www.yes24.com/product/goods/196020146](https://www.yes24.com/product/goods/196020146)
+*   컴패니언 사이트: [https://lifeofpi-ux.github.io/vibecode-for-teacher/](https://lifeofpi-ux.github.io/vibecode-for-teacher/)
+*   블로그 내부 정리 페이지: [/lectures/vibecode-for-teacher/](/lectures/vibecode-for-teacher/)
+
+## 출처
+- 한빛미디어 《요즘 교사를 위한 웹앱 만들기 with 바이브 코딩》 (이상선·김진관·이대형·윤신영·김상섭)
+- YES24: <https://www.yes24.com/product/goods/196020146>
+- 컴패니언 사이트: <https://lifeofpi-ux.github.io/vibecode-for-teacher/>
