@@ -55,7 +55,11 @@ h1 em{font-style:italic;color:var(--warp);}
 .toggle input::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:left .2s}
 .toggle input:checked{background:var(--true)} .toggle input:checked::after{left:17px}
 .toggle input:focus-visible{outline:2px solid var(--warp);outline-offset:2px}
-.spot{margin-left:auto;font-family:var(--serif);font-weight:700;font-size:.95rem;color:#fff;background:var(--warp);border:0;border-radius:2px;padding:.6rem 1.15rem;cursor:pointer;box-shadow:0 2px 0 var(--warp-deep);transition:transform .12s,box-shadow .12s;}
+.spots{margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.spot{font-family:var(--serif);font-weight:700;font-size:.95rem;color:#fff;background:var(--warp);border:0;border-radius:2px;padding:.6rem 1.1rem;cursor:pointer;box-shadow:0 2px 0 var(--warp-deep);transition:transform .12s,box-shadow .12s;}
+.spot.alt{background:var(--true);box-shadow:0 2px 0 #155e52}
+.spot.alt:hover{box-shadow:0 3px 0 #155e52}
+.spot.alt:active{box-shadow:0 1px 0 #155e52}
 .spot:hover{transform:translateY(-1px);box-shadow:0 3px 0 var(--warp-deep)}
 .spot:active{transform:translateY(1px);box-shadow:0 1px 0 var(--warp-deep)}
 .spot:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
@@ -114,6 +118,14 @@ h1 em{font-style:italic;color:var(--warp);}
 .pbtns button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .verdict{font-family:var(--sans);font-weight:700;font-size:.82rem;margin-top:.35rem}
 .verdict.ok{color:var(--true)} .verdict.no{color:var(--warp-deep)}
+.overlaywrap{margin:1.4rem 0 0}
+.ovtitle{font-family:var(--serif);font-weight:800;font-size:1.2rem;display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.ovtitle span{font-family:var(--sans);font-weight:500;font-size:.78rem;color:var(--ink-3);letter-spacing:.02em}
+.ovplate{margin-top:.6rem;background:var(--plate);border:1px solid var(--edge);border-radius:3px;box-shadow:0 8px 26px -18px rgba(32,48,59,.5);overflow:hidden}
+#mapO{display:block;width:100%;height:auto;background:linear-gradient(180deg,#faf6ee,#eee6d4)}
+.ovlab{font-family:var(--sans);font-weight:700;font-size:13px;text-anchor:middle;paint-order:stroke;stroke:#faf6ee;stroke-width:3.5px;stroke-linejoin:round}
+.ovcap{margin-top:.7rem;font-size:.95rem;color:var(--ink-2);max-width:62ch;line-height:1.65}
+.ovcap b{color:var(--ink)}
 
 .essay{margin-top:clamp(2.4rem,6vw,3.6rem);max-width:62ch;}
 .essay h2{font-family:var(--serif);font-weight:800;font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.01em;}
@@ -209,7 +221,10 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
         <label class="toggle"><input type="checkbox" id="levelChk"> 초등용 쉬운 말</label>
       </div>
     </div>
-    <button class="spot" id="spotBtn" type="button">그린란드 착시 보기 &rarr;</button>
+    <div class="spots">
+      <button class="spot" id="spotBtn" type="button">그린란드 착시</button>
+      <button class="spot alt" id="africaBtn" type="button">아프리카 착시</button>
+    </div>
   </div>
 
   <div class="hintbar">
@@ -238,6 +253,12 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   </div>
 
   <div class="readout empty" id="readout" aria-live="polite"></div>
+
+  <section class="overlaywrap" id="overlaywrap" hidden>
+    <h3 class="ovtitle">실제 크기로 겹쳐보기 <span>같은 배율로 포갠 진짜 크기</span></h3>
+    <div class="ovplate"><svg id="mapO" viewBox="0 0 660 380" preserveAspectRatio="xMidYMid meet" role="img" aria-label="실제 크기 겹쳐보기"></svg></div>
+    <p class="ovcap" id="overlayCap"></p>
+  </section>
 
   <section class="essay" id="balance">
     <h2 id="balH">그런데 왜 아직 메르카토르를 쓸까?</h2>
@@ -420,13 +441,14 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     else { pending=null; reveal(name); }
   }
   function askPredict(name){
+    showPanel(false);
     var def=PROJ.find(function(p){return p.id===leftId;});
     setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body predict"><span class="pq"><b>'+def.label+'</b>에서 이 나라는 실제 면적 비중보다?</span><span class="pbtns"><button type="button" data-g="big">크게</button><button type="button" data-g="same">비슷</button><button type="button" data-g="small">작게</button></span></div>');
     ro.querySelectorAll(".pbtns button").forEach(function(b){b.addEventListener("click",function(){resolvePredict(name,b.dataset.g);});});
   }
   function resolvePredict(name,guess){var fac=factorFor(name),actual=cat(fac),ok=(guess===actual);pStats.tot++;if(ok)pStats.ok++;var st=document.getElementById("predictStat");st.hidden=false;document.getElementById("pTot").textContent=pStats.tot;document.getElementById("pOk").textContent=pStats.ok;reveal(name,{ok:ok,guess:guess,actual:actual});}
   function reveal(name,pv){
-    pending=null;selected=name;hlSingle(name,false);
+    pending=null;selected=name;hlSingle(name,false);showPanel(false);
     var fac=factorFor(name),def=PROJ.find(function(p){return p.id===leftId;});
     if(fac==null){setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body"><div class="ro-txt">이 지역은 극점을 포함해 이 도법에서 면적을 잴 수 없다.</div></div>');return;}
     var c=cat(fac),label,txt,barPct,barColor;
@@ -439,7 +461,7 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
 
   function pickCompare(name){
     if(isAntarctica(name))return;if(cmp.length>=2)cmp=[];if(cmp.indexOf(name)===-1)cmp.push(name);
-    if(cmp.length===1){hlCompare(cmp[0],null);setRO('<div class="ro-country"><span class="pchip a">①</span> '+nameKo(cmp[0])+'</div><div class="ro-body"><div class="ro-txt">비교할 <b>두 번째 나라</b>를 클릭하자.</div></div>');}
+    if(cmp.length===1){showPanel(false);hlCompare(cmp[0],null);setRO('<div class="ro-country"><span class="pchip a">①</span> '+nameKo(cmp[0])+'</div><div class="ro-body"><div class="ro-txt">비교할 <b>두 번째 나라</b>를 클릭하자.</div></div>');}
     else{hlCompare(cmp[0],cmp[1]);showCompare(cmp[0],cmp[1]);}
   }
   function showCompare(a,b){
@@ -448,13 +470,71 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     function phrase(r,na,nb,seem){var big=seem?"커 보인다":"크다",sim=seem?"비슷해 보인다":"비슷하다";if(r>=1.1)return '<b>'+na+'</b>가 <b>'+nb+'</b>보다 약 '+round1(r)+'배 '+big;if(r<=0.91)return '<b>'+nb+'</b>가 <b>'+na+'</b>보다 약 '+round1(1/r)+'배 '+big;return '<b>'+na+'</b>와 <b>'+nb+'</b>가 '+sim;}
     var ka=nameKo(a),kb=nameKo(b),mislead=(mr>=1.1&&tr<=0.91)||(mr<=0.91&&tr>=1.1)||(Math.abs(Math.log(mr)-Math.log(tr))>0.5);
     var concl=mislead?'지도에서 보이는 크기 관계가 <b>실제와 뒤집히거나 크게 다르다</b>. 눈에 보이는 것을 그대로 믿으면 안 되는 이유다.':'이 도법에서는 두 나라의 크기 관계가 실제와 <b>대체로 일치</b>한다.';
-    setRO('<div class="ro-country"><span class="pchip a">A</span> '+ka+' <span style="color:var(--ink-3)">vs</span> <span class="pchip b">B</span> '+kb+'</div><div class="ro-body"><div class="ro-txt"><b>'+def.label+' 지도에서는</b> — '+phrase(mr,ka,kb,true)+'.</div><div class="ro-txt"><b>실제로는</b> — '+phrase(tr,ka,kb,false)+'.</div><div class="ro-txt" style="margin-top:.45rem;border-top:1px dashed var(--edge);padding-top:.45rem">'+concl+'</div></div>');
+    setRO('<div class="ro-country"><span class="pchip a">A</span> '+ka+' <span style="color:var(--ink-3)">vs</span> <span class="pchip b">B</span> '+kb+'</div><div class="ro-body"><div class="ro-txt"><b>'+def.label+' 지도에서는</b> — '+phrase(mr,ka,kb,true)+'.</div><div class="ro-txt"><b>실제로는</b> — '+phrase(tr,ka,kb,false)+'.</div><div class="ro-txt" style="margin-top:.45rem;border-top:1px dashed var(--edge);padding-top:.45rem">'+concl+'</div></div>');overlayCountries(a,b);
+  }
+
+  // ---------- true-size overlay (equal-area, shared scale) ----------
+  var OC={warp:"#c0492e",warpD:"#9c3820",tru:"#1f7a6b",truD:"#155e52",cmpb:"#2b6ca3",cmpbD:"#1d4f7a",muted:"#d7cbb0",mutedS:"#ad9d7d"};
+  var AFRICA=["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cameroon","Central African Rep.","Chad","Congo","Côte d'Ivoire","Dem. Rep. Congo","Djibouti","Egypt","Eq. Guinea","Eritrea","Ethiopia","Gabon","Gambia","Ghana","Guinea","Guinea-Bissau","Kenya","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda","Senegal","Sierra Leone","Somalia","Somaliland","South Africa","S. Sudan","Sudan","eSwatini","Tanzania","Togo","Tunisia","Uganda","W. Sahara","Zambia","Zimbabwe"];
+  function africaFeats(){return countries.filter(function(f){return AFRICA.indexOf(f.properties.name)>=0;});}
+  function fcOf(fs){return {type:"FeatureCollection",features:fs};}
+  function areaOf(fs){var s=0;fs.forEach(function(f){if(f)s+=d3.geoArea(f);});return s;}
+  function azProj(fs,K){var c=d3.geoCentroid(fcOf(fs));return d3.geoAzimuthalEqualArea().rotate([-c[0],-c[1]]).scale(K).translate([0,0]);}
+  function fitK(fs,w,h){var p=azProj(fs,1),b=d3.geoPath(p).bounds(fcOf(fs));var dw=Math.max(1e-6,b[1][0]-b[0][0]),dh=Math.max(1e-6,b[1][1]-b[0][1]);return Math.min(w/dw,h/dh);}
+  var svgO=d3.select("#mapO"),OVW=660,OVH=380;
+  function drawLayer(fs,K,cx,cy,fill,stroke,op,label,above){
+    var proj=azProj(fs,K).translate([0,0]);var cen=d3.geoPath(proj).centroid(fcOf(fs));
+    proj.translate([OVW*cx-cen[0],OVH*cy-cen[1]]);var path=d3.geoPath(proj);
+    svgO.append("g").selectAll("path").data(fs).join("path").attr("d",path).attr("fill",fill).attr("fill-opacity",op==null?1:op).attr("stroke",stroke||"#faf6ee").attr("stroke-width",.5).attr("stroke-opacity",.6);
+    if(label){var b=path.bounds(fcOf(fs));svgO.append("text").attr("class","ovlab").attr("fill",fill).attr("x",OVW*cx).attr("y",above?b[0][1]-6:b[1][1]+15).text(label);}
+  }
+  function showPanel(on){document.getElementById("overlaywrap").hidden=!on;postH();}
+  function overlayGreenland(){
+    var af=africaFeats(),gr=[feat("Greenland")];if(!af.length||!gr[0])return;
+    var K=fitK(af,OVW*0.8,OVH*0.82);svgO.selectAll("*").remove();
+    drawLayer(af,K,.5,.52,OC.muted,OC.mutedS,.95,"아프리카",true);
+    drawLayer(gr,K,.5,.52,OC.warp,OC.warpD,1,null,false);
+    var ratio=Math.round(areaOf(af)/areaOf(gr));
+    document.getElementById("overlayCap").innerHTML="같은 배율로 포갠 실제 크기다. <b style=\"color:"+OC.warp+"\">그린란드</b>(빨강)는 <b>아프리카</b>(회색)의 약 <b>1/"+ratio+"</b>. 메르카토르에서는 둘이 비슷해 보였지만, 진짜 크기는 이만큼 차이 난다.";
+    showPanel(true);
+  }
+  function overlayAfrica(){
+    var af=africaFeats();if(!af.length)return;
+    var usa=feat("United States of America"),cn=feat("China"),ind=feat("India");
+    var K=fitK(af,OVW*0.78,OVH*0.82);svgO.selectAll("*").remove();
+    drawLayer(af,K,.5,.5,OC.muted,OC.mutedS,.92,null,false);
+    if(usa)drawLayer([usa],K,.4,.44,OC.cmpb,OC.cmpbD,.95,"미국",true);
+    if(cn)drawLayer([cn],K,.6,.5,OC.warp,OC.warpD,.95,"중국",false);
+    if(ind)drawLayer([ind],K,.5,.75,OC.tru,OC.truD,.95,"인도",false);
+    var sum=areaOf([usa,cn,ind]),aa=areaOf(af);
+    document.getElementById("overlayCap").innerHTML="<b>아프리카</b>(회색) 하나에 <b style=\"color:"+OC.cmpb+"\">미국</b>·<b style=\"color:"+OC.warp+"\">중국</b>·<b style=\"color:"+OC.tru+"\">인도</b>가 모두 들어가고도 남는다(세 나라를 합쳐도 아프리카의 약 "+Math.round(sum/aa*100)+"%). 메르카토르 지도는 아프리카의 이 거대함을 감춘다.";
+    showPanel(true);
+  }
+  function overlayCountries(a,b){
+    var fa=feat(a),fb=feat(b);if(!fa||!fb)return;
+    var aBig=areaOf([fa])>=areaOf([fb]),big=aBig?[fa]:[fb],small=aBig?[fb]:[fa];
+    var K=fitK(big,OVW*0.62,OVH*0.72);svgO.selectAll("*").remove();
+    drawLayer(big,K,.5,.5,aBig?OC.warp:OC.cmpb,aBig?OC.warpD:OC.cmpbD,.42,nameKo(aBig?a:b),true);
+    drawLayer(small,K,.5,.5,aBig?OC.cmpb:OC.warp,aBig?OC.cmpbD:OC.warpD,.95,nameKo(aBig?b:a),false);
+    var r=Math.round(areaOf(big)/areaOf(small)*10)/10;
+    document.getElementById("overlayCap").innerHTML="같은 배율로 가운데 포갠 실제 크기다. <b>"+nameKo(aBig?a:b)+"</b>가 <b>"+nameKo(aBig?b:a)+"</b>보다 약 <b>"+r+"배</b> 크다 — 세계지도의 왜곡 없이 진짜 크기를 견줄 수 있다.";
+    showPanel(true);
+  }
+  function africaSpot(){
+    if(mode!=="single")setMode("single");
+    if(leftId!=="mercator")setLeft("mercator");
+    selected=null;pending=null;
+    var af=africaFeats(),afset=af.map(function(f){return f.properties.name;});
+    svgL.selectAll("path.country").attr("class",function(d){return afset.indexOf(d.properties.name)>=0?"country sel-warp":"country dim";}).style("fill",null);
+    svgR.selectAll("path.country").attr("class",function(d){return afset.indexOf(d.properties.name)>=0?"country sel-true":"country dim";}).style("fill",null);
+    setRO('<div class="ro-country">아프리카<span class="en">AFRICA</span></div><div class="ro-body"><div class="ro-txt"><b>메르카토르에서 아프리카는 실제보다 작아 보인다.</b> 적도에 걸쳐 있어 부풀지 않는데, 고위도의 유럽·러시아·그린란드가 크게 부풀려져 상대적으로 더 왜소해 보인다. 아래에서 진짜 크기를 확인하자.</div></div>');
+    overlayAfrica();
   }
 
   // ---------- true-size drag (on Mercator) ----------
   var ghost=null,ghostHomeLat=0,ghostCx=0,ghostCy=0,ghostName="";
   function pickTrue(name){
-    var f=feat(name);if(!f||isAntarctica(f))return;
+    showPanel(false);var f=feat(name);if(!f||isAntarctica(f))return;
     if(leftId!=="mercator"){setLeft("mercator");}
     hlSingle(name,false);svgR.selectAll("path.country").attr("class",function(d){return d.properties.name===name?"country sel-true":"country dim";});
     var c=d3.geoCentroid(f);ghostHomeLat=c[1];
@@ -480,7 +560,7 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   function clearGhost(){if(ghost){ghost.remove();ghost=null;}}
 
   function setMode(m){
-    mode=m;selected=null;pending=null;cmp=[];clearGhost();clearHL();
+    mode=m;selected=null;pending=null;cmp=[];clearGhost();clearHL();showPanel(false);
     document.querySelectorAll("#modeseg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===m));});
     var h=document.getElementById("modeHint");svgL.classed("dragmode",m==="truesize");
     if(m==="compare"){h.textContent="두 나라를 차례로 클릭하면, 지도상 크기와 실제 크기 관계를 비교한다.";setRO("비교할 <b>첫 번째 나라</b>를 클릭하자. 그린란드와 오스트레일리아처럼 위도가 크게 다른 두 나라를 골라 보면 흥미롭다.",true);}
@@ -550,7 +630,7 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     if(mode!=="single")setMode("single");
     if(leftId!=="mercator")setLeft("mercator");
     var g=feat("Greenland");
-    if(g){pending=null;reveal("Greenland");ro.innerHTML+='<div class="ro-txt" style="flex-basis:100%;border-top:1px dashed var(--edge);padding-top:.6rem;margin-top:.2rem"><b>착시의 대표 사례.</b> 메르카토르에서 그린란드는 아프리카만큼 커 보인다. 그러나 실제 아프리카는 그린란드의 <b>약 14배</b>다. Equal Earth(오른쪽)에서 둘의 진짜 크기 차이를 확인해 보자.</div>';postH();}
+    if(g){pending=null;reveal("Greenland");ro.innerHTML+='<div class="ro-txt" style="flex-basis:100%;border-top:1px dashed var(--edge);padding-top:.6rem;margin-top:.2rem"><b>착시의 대표 사례.</b> 메르카토르에서 그린란드는 아프리카만큼 커 보인다. 그러나 실제 아프리카는 그린란드의 <b>약 14배</b>다. Equal Earth(오른쪽)에서 둘의 진짜 크기 차이를 확인해 보자.</div>';overlayGreenland();postH();}
   }
 
   function boot(world){
@@ -565,6 +645,7 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     leftProj=build(leftId,VBL.w,VBL.h);leftPath=d3.geoPath(leftProj);renderMap(svgL,leftProj);computeStats();
     setLeft(leftId);applyLevel();buildQuiz();
     document.getElementById("spotBtn").addEventListener("click",spotlight);
+    document.getElementById("africaBtn").addEventListener("click",africaSpot);
     document.getElementById("copyBtn").addEventListener("click",function(){exportAnswers("copy");});
     document.getElementById("dlBtn").addEventListener("click",function(){exportAnswers("dl");});
     document.getElementById("tissotChk").addEventListener("change",function(){tissot=this.checked;document.getElementById("tissotCap").hidden=!tissot;renderMap(svgL,leftProj);renderMap(svgR,rightProj);reapply();postH();});
@@ -576,6 +657,7 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTG();});
     // deep links (undocumented; teacher presets)
     if(SP.get("spot"))spotlight();
+    else if(SP.get("africa"))africaSpot();
     else if(SP.get("cmp")){setMode("compare");SP.get("cmp").split(",").slice(0,2).forEach(function(n){pickCompare(n.trim());});}
     else if(SP.get("ask")&&!SP.has("nopredict")){setMode("single");var an=SP.get("ask");pending=an;hlSingle(an,true);askPredict(an);}
     else if(SP.get("drag")){setMode("truesize");pickTrue(SP.get("drag"));}
