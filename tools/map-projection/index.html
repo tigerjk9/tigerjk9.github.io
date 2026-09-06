@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>지도는 중립적일까? — 도법으로 배우는 관점·프레임·편향</title>
-<meta name="description" content="메르카토르와 Equal Earth 같은 서로 다른 세계지도 도법을 나란히 비교하며, 지도가 어떻게 우리의 관점·프레임·인식·편향을 만드는지 예측하고 탐구하는 교육용 웹앱.">
+<meta name="description" content="메르카토르와 Equal Earth 같은 서로 다른 세계지도 도법을 나란히 비교·예측하고, 왜곡 눈금·진짜 크기 끌어보기로 지도가 만드는 관점·프레임·편향을 탐구하는 교육용 웹앱.">
 <meta property="og:title" content="지도는 중립적일까? — 도법으로 배우는 관점·프레임·편향">
 <meta property="og:description" content="메르카토르와 Equal Earth를 나란히 놓고 크기 왜곡을 예측·비교하고, 관점·프레임·편향을 스스로 탐구하는 교육용 웹앱.">
 <meta property="og:type" content="website">
@@ -15,27 +15,24 @@
 :root{
   --paper:#f4efe4; --paper-2:#efe8d8; --plate:#faf6ee; --edge:#ded2b8;
   --ink:#20303b; --ink-2:#455663; --ink-3:#7d8a91;
-  --sea:#e7e2d4; --land:#e9dfc6; --land-line:#b9a986;
-  --grat:#cdbf9f;
+  --sea:#e7e2d4; --land:#e9dfc6; --land-line:#b9a986; --grat:#cdbf9f;
   --warp:#c0492e; --warp-deep:#9c3820; --warp-soft:#f0d9cf;
   --true:#1f7a6b; --true-soft:#d6e7e1;
-  --cmpb:#2b6ca3; --cmpb-deep:#1d4f7a;
-  --brass:#a9822f;
-  --serif:'Nanum Myeongjo',serif;
-  --sans:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+  --cmpb:#2b6ca3; --cmpb-deep:#1d4f7a; --brass:#a9822f;
+  --serif:'Nanum Myeongjo',serif; --sans:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
   --sp:clamp(1rem,3.5vw,2.2rem);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{
-  font-family:var(--sans);color:var(--ink);background:var(--paper);
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);
   background-image:linear-gradient(var(--grat) 1px,transparent 1px),linear-gradient(90deg,var(--grat) 1px,transparent 1px);
-  background-size:44px 44px;background-position:center;
-  line-height:1.7;font-size:15.5px;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;
-}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(120% 90% at 50% -10%,rgba(255,253,247,.9),rgba(244,239,228,.2) 55%,rgba(230,222,203,.55));}
+  background-size:44px 44px;background-position:center;line-height:1.7;font-size:15.5px;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(120% 90% at 50% -10%,rgba(255,253,247,.9),rgba(244,239,228,.2) 55%,rgba(230,222,203,.55));}
 .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 var(--sp) 4rem;}
+
+.tg-trigger{position:absolute;top:1rem;right:var(--sp);font-size:.7rem;letter-spacing:.06em;color:var(--ink-3);background:rgba(250,246,238,.7);border:1px solid var(--edge);border-radius:2px;padding:.32rem .6rem;cursor:pointer;z-index:6;display:inline-flex;align-items:center;gap:.35rem}
+.tg-trigger:hover{color:var(--ink);background:var(--paper-2)}
+.tg-trigger::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brass)}
 
 header.hero{padding:clamp(2.4rem,6vw,4.6rem) 0 clamp(1.2rem,3vw,2rem);}
 .eyebrow{font-weight:600;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--warp-deep);display:flex;align-items:center;gap:.7rem;}
@@ -48,19 +45,24 @@ h1 em{font-style:italic;color:var(--warp);}
 .controls{display:flex;flex-wrap:wrap;gap:.9rem 1.4rem;align-items:flex-end;margin:1.8rem 0 1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--edge);}
 .ctl-label{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:.4rem;}
 .seg{display:inline-flex;background:var(--paper-2);border:1px solid var(--edge);border-radius:2px;overflow:hidden;}
-.seg button{font-family:var(--serif);font-size:.92rem;font-weight:700;color:var(--ink-2);background:transparent;border:0;padding:.5rem .9rem;cursor:pointer;transition:background .18s,color .18s;border-right:1px solid var(--edge);white-space:nowrap;}
+.seg button{font-family:var(--serif);font-size:.9rem;font-weight:700;color:var(--ink-2);background:transparent;border:0;padding:.5rem .85rem;cursor:pointer;transition:background .18s,color .18s;border-right:1px solid var(--edge);white-space:nowrap;}
 .seg button:last-child{border-right:0}
 .seg button:hover{background:#fff}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
 .seg button:focus-visible{outline:2px solid var(--warp);outline-offset:1px}
+.toggle{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--serif);font-weight:700;font-size:.9rem;color:var(--ink-2);cursor:pointer;user-select:none}
+.toggle input{appearance:none;width:34px;height:19px;border-radius:11px;background:var(--edge);position:relative;cursor:pointer;transition:background .2s;flex:none}
+.toggle input::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle input:checked{background:var(--true)} .toggle input:checked::after{left:17px}
+.toggle input:focus-visible{outline:2px solid var(--warp);outline-offset:2px}
 .spot{margin-left:auto;font-family:var(--serif);font-weight:700;font-size:.95rem;color:#fff;background:var(--warp);border:0;border-radius:2px;padding:.6rem 1.15rem;cursor:pointer;box-shadow:0 2px 0 var(--warp-deep);transition:transform .12s,box-shadow .12s;}
 .spot:hover{transform:translateY(-1px);box-shadow:0 3px 0 var(--warp-deep)}
 .spot:active{transform:translateY(1px);box-shadow:0 1px 0 var(--warp-deep)}
 .spot:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-.hintbar{display:flex;flex-wrap:wrap;gap:.6rem 1.1rem;align-items:center;margin:-.2rem 0 .9rem;font-size:.85rem;color:var(--ink-3);}
-.hintbar .stat{color:var(--true);font-weight:600}
-.hintbar .stat b{color:var(--warp-deep)}
+.hintbar{display:flex;flex-wrap:wrap;gap:.5rem 1.1rem;align-items:center;margin:-.2rem 0 .9rem;font-size:.85rem;color:var(--ink-3);}
+.hintbar .stat{color:var(--true);font-weight:600} .hintbar .stat b{color:var(--warp-deep)}
+.tissot-cap{font-size:.82rem;color:var(--brass)}
 
 .plates{display:grid;grid-template-columns:1fr 1fr;gap:clamp(.8rem,2.5vw,1.6rem);align-items:start;}
 .plate{background:var(--plate);border:1px solid var(--edge);border-radius:3px;box-shadow:0 1px 0 #fff inset, 0 8px 26px -18px rgba(32,48,59,.5);overflow:hidden;position:relative;}
@@ -70,9 +72,11 @@ h1 em{font-style:italic;color:var(--warp);}
 .plate-head .kind.warp{color:var(--warp-deep)} .plate-head .kind.true{color:var(--true)}
 .plate-sub{padding:0 1rem .5rem;font-size:.82rem;color:var(--ink-3);min-height:2.1em;}
 .map{display:block;width:100%;height:auto;background:var(--sea);cursor:crosshair;}
+.map.dragmode{cursor:grab}
 .grat{fill:none;stroke:var(--grat);stroke-width:.5;stroke-opacity:.9;}
 .sphere{fill:none;stroke:var(--land-line);stroke-width:1;stroke-opacity:.6;}
-.country{fill:var(--land);stroke:var(--land-line);stroke-width:.4;stroke-linejoin:round;transition:fill .16s;outline:none;}
+.tissot{fill:var(--brass);fill-opacity:.16;stroke:var(--brass);stroke-width:.5;stroke-opacity:.7;pointer-events:none}
+.country{fill:var(--land);stroke:var(--land-line);stroke-width:.4;stroke-linejoin:round;outline:none;transition:fill .16s;}
 .country:hover{fill:#dcae86;}
 .country:focus-visible{stroke:#10202b;stroke-width:1.5;fill:#e8c58f;}
 .country.sel-warp{fill:var(--warp);stroke:var(--warp-deep);stroke-width:.7;}
@@ -81,6 +85,9 @@ h1 em{font-style:italic;color:var(--warp);}
 .country.cmp-a{fill:var(--warp);stroke:var(--warp-deep);stroke-width:.7;}
 .country.cmp-b{fill:var(--cmpb);stroke:var(--cmpb-deep);stroke-width:.7;}
 .country.dim{fill:#e4dcc9;opacity:.5;}
+.ghost path{fill:var(--warp);fill-opacity:.75;stroke:var(--warp-deep);stroke-width:1;cursor:grab}
+.ghost.drag path{cursor:grabbing}
+.ghost .home{fill:none;stroke:var(--ink-3);stroke-width:.8;stroke-dasharray:3 2;fill-opacity:0}
 .maploading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.6rem;font-family:var(--serif);font-style:italic;color:var(--ink-3);background:var(--sea);}
 .maploading .dot{width:8px;height:8px;border-radius:50%;background:var(--warp);animation:pulse 1s infinite ease-in-out}
 @keyframes pulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
@@ -108,63 +115,78 @@ h1 em{font-style:italic;color:var(--warp);}
 .verdict{font-family:var(--sans);font-weight:700;font-size:.82rem;margin-top:.35rem}
 .verdict.ok{color:var(--true)} .verdict.no{color:var(--warp-deep)}
 
-.reflect{margin-top:clamp(2.6rem,6vw,4.2rem);}
-.reflect h2{font-family:var(--serif);font-weight:800;font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.01em;}
-.reflect .sub{color:var(--ink-2);max-width:52ch;margin:.3rem 0 1.4rem;font-size:.98rem;}
+.essay{margin-top:clamp(2.4rem,6vw,3.6rem);max-width:62ch;}
+.essay h2{font-family:var(--serif);font-weight:800;font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.01em;}
+.essay p{margin-top:.8rem;color:var(--ink-2)} .essay p b{color:var(--ink);font-weight:600}
+.essay .kicker{font-family:var(--serif);font-weight:800;color:var(--warp);font-style:italic;font-size:1.1rem;margin-top:1rem}
+
+.reflect{margin-top:clamp(2.4rem,6vw,3.6rem);}
+.reflect h2, .quiz h2{font-family:var(--serif);font-weight:800;font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.01em;}
+.reflect .sub, .quiz .sub{color:var(--ink-2);max-width:52ch;margin:.3rem 0 1.4rem;font-size:.98rem;}
 .qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;}
 .q{background:var(--plate);border:1px solid var(--edge);border-radius:3px;padding:1.1rem 1.15rem 1rem;display:flex;flex-direction:column;}
 .q .tag{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--warp-deep);}
 .q .qt{font-family:var(--serif);font-weight:700;font-size:1.06rem;line-height:1.45;margin:.35rem 0 .7rem;}
 .q textarea{font-family:var(--sans);font-size:.92rem;color:var(--ink);line-height:1.6;resize:vertical;min-height:4.6rem;border:1px solid var(--edge);border-radius:2px;background:#fffdf8;padding:.6rem .7rem;width:100%;}
 .q textarea:focus{outline:2px solid var(--warp-soft);border-color:var(--warp);}
-.q .saved{font-size:.68rem;color:var(--true);margin-top:.4rem;height:1em;opacity:0;transition:opacity .3s;}
-.q .saved.on{opacity:1}
+.q .saved{font-size:.68rem;color:var(--true);margin-top:.4rem;height:1em;opacity:0;transition:opacity .3s;} .q .saved.on{opacity:1}
 .exports{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.1rem}
 .exports button{font-family:var(--sans);font-weight:600;font-size:.88rem;border:1px solid var(--ink-2);color:var(--ink);background:#fff;border-radius:2px;padding:.5rem 1rem;cursor:pointer;transition:background .15s}
 .exports button:hover{background:var(--paper-2)}
 .exports button:focus-visible{outline:2px solid var(--warp);outline-offset:1px}
-.exports .msg{align-self:center;font-size:.82rem;color:var(--true);opacity:0;transition:opacity .3s}
-.exports .msg.on{opacity:1}
+.exports .msg{align-self:center;font-size:.82rem;color:var(--true);opacity:0;transition:opacity .3s} .exports .msg.on{opacity:1}
 .note{margin-top:1rem;font-size:.82rem;color:var(--ink-3);font-style:italic;font-family:var(--serif);}
 
-.teacher{margin-top:clamp(2rem,5vw,3rem);background:var(--plate);border:1px solid var(--edge);border-radius:3px;}
-.teacher>summary{cursor:pointer;list-style:none;padding:1rem 1.2rem;font-family:var(--serif);font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:.6rem;}
-.teacher>summary::-webkit-details-marker{display:none}
-.teacher>summary::before{content:"▸";color:var(--warp);transition:transform .2s;display:inline-block}
-.teacher[open]>summary::before{transform:rotate(90deg)}
-.teacher .tbody{padding:0 1.2rem 1.3rem;font-size:.92rem;color:var(--ink-2)}
-.teacher h4{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:1rem;margin:1.1rem 0 .4rem}
-.teacher table{width:100%;border-collapse:collapse;margin:.3rem 0 .5rem;font-size:.86rem}
-.teacher th,.teacher td{border:1px solid var(--edge);padding:.4rem .55rem;text-align:left;vertical-align:top}
-.teacher th{background:var(--paper-2);font-weight:600;white-space:nowrap}
-.teacher code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--paper-2);border:1px solid var(--edge);border-radius:2px;padding:.05em .35em;font-size:.85em}
-.teacher ul{margin:.2rem 0 .2rem 1.1rem}
-.teacher li{margin:.2rem 0}
+.quiz{margin-top:clamp(2.4rem,6vw,3.6rem)}
+.quizlist{display:flex;flex-direction:column;gap:1rem;max-width:760px}
+.qz{background:var(--plate);border:1px solid var(--edge);border-radius:3px;padding:1rem 1.1rem}
+.qz .qzq{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.qz .opts{display:flex;flex-direction:column;gap:.4rem}
+.qz .opts button{font-family:var(--sans);font-size:.92rem;text-align:left;border:1px solid var(--edge);background:#fffdf8;color:var(--ink);border-radius:2px;padding:.5rem .7rem;cursor:pointer;transition:background .15s,border-color .15s}
+.qz .opts button:hover{background:var(--paper-2)}
+.qz .opts button:focus-visible{outline:2px solid var(--warp);outline-offset:1px}
+.qz .opts button.correct{border-color:var(--true);background:var(--true-soft)}
+.qz .opts button.wrong{border-color:var(--warp);background:var(--warp-soft)}
+.qz .opts button:disabled{cursor:default}
+.qz .fb{font-size:.88rem;margin-top:.6rem;color:var(--ink-2);display:none}
+.qz .fb.on{display:block}
+.qz .fb .mk{font-weight:700} .qz .fb .mk.ok{color:var(--true)} .qz .fb .mk.no{color:var(--warp-deep)}
+.quizscore{margin-top:1rem;font-family:var(--serif);font-weight:700;color:var(--true)}
 
 footer.site{margin-top:clamp(2.6rem,6vw,4rem);padding-top:1.4rem;border-top:1px solid var(--edge);font-size:.82rem;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:space-between;}
-footer.site a{color:var(--warp-deep);text-decoration:none;border-bottom:1px solid var(--warp-soft);}
-footer.site a:hover{border-bottom-color:var(--warp)}
+footer.site a{color:var(--warp-deep);text-decoration:none;border-bottom:1px solid var(--warp-soft);} footer.site a:hover{border-bottom-color:var(--warp)}
 
-@media (max-width:720px){
-  .plates{grid-template-columns:1fr}
-  .spot{margin-left:0;width:100%}
-  .qgrid{grid-template-columns:1fr}
-}
+.tg-overlay{position:fixed;inset:0;background:rgba(32,48,59,.45);display:none;align-items:flex-start;justify-content:center;z-index:60;padding:5vh 1rem;overflow:auto}
+.tg-overlay.on{display:flex}
+.tg-modal{background:var(--plate);border:1px solid var(--edge);border-radius:4px;max-width:660px;width:100%;padding:1.4rem 1.6rem 1.6rem;box-shadow:0 24px 70px -22px rgba(0,0,0,.55)}
+.tg-modal h3{font-family:var(--serif);font-weight:800;font-size:1.35rem;display:inline-block}
+.tg-close{float:right;border:0;background:transparent;font-size:1.5rem;line-height:1;cursor:pointer;color:var(--ink-3)}
+.tg-close:hover{color:var(--ink)}
+.tg-modal .tbody{font-size:.92rem;color:var(--ink-2);clear:both}
+.tg-modal h4{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:1rem;margin:1.1rem 0 .4rem}
+.tg-modal table{width:100%;border-collapse:collapse;margin:.3rem 0 .5rem;font-size:.85rem}
+.tg-modal th,.tg-modal td{border:1px solid var(--edge);padding:.4rem .55rem;text-align:left;vertical-align:top}
+.tg-modal th{background:var(--paper-2);font-weight:600;white-space:nowrap}
+.tg-modal ul{margin:.2rem 0 .2rem 1.1rem} .tg-modal li{margin:.25rem 0}
+
+@media (max-width:720px){.plates{grid-template-columns:1fr}.spot{margin-left:0;width:100%}.qgrid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 body.embed{background:var(--paper);}
 body.embed .wrap{padding:0.2rem .6rem 1rem;max-width:none}
-body.embed header.hero, body.embed .reflect, body.embed footer.site, body.embed .note, body.embed .teacher{display:none}
+body.embed header.hero, body.embed .reflect, body.embed .quiz, body.embed .essay, body.embed footer.site, body.embed .note, body.embed .tg-trigger{display:none}
 body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <button class="tg-trigger" id="tgTrigger" type="button" aria-haspopup="dialog">교사용 가이드</button>
+
   <header class="hero">
     <div class="eyebrow">비판적 지도학 · Critical Cartography</div>
     <h1>지도는 정말<br><em>중립적일까?</em></h1>
-    <p class="lead">우리가 500년간 표준으로 써 온 세계지도는 세상을 있는 그대로 그리지 않았다. 도법이 바뀌면 대륙의 크기가, 그리고 <b>우리가 세상을 보는 프레임</b>이 함께 바뀐다. 먼저 <b>예측</b>하고, 두 지도를 나란히 놓고 직접 확인해 보자.</p>
+    <p class="lead" id="lead"></p>
   </header>
 
   <div class="controls">
@@ -177,13 +199,22 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
       <div class="seg" id="modeseg" role="group" aria-label="탐구 방식 선택">
         <button type="button" data-mode="single" aria-pressed="true">한 나라 예측</button>
         <button type="button" data-mode="compare" aria-pressed="false">두 나라 비교</button>
+        <button type="button" data-mode="truesize" aria-pressed="false">진짜 크기 끌기</button>
+      </div>
+    </div>
+    <div>
+      <div class="ctl-label">보기 설정</div>
+      <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <label class="toggle"><input type="checkbox" id="tissotChk"> 왜곡 눈금</label>
+        <label class="toggle"><input type="checkbox" id="levelChk"> 초등용 쉬운 말</label>
       </div>
     </div>
     <button class="spot" id="spotBtn" type="button">그린란드 vs 아프리카 &rarr;</button>
   </div>
 
   <div class="hintbar">
-    <span id="modeHint">나라를 클릭(또는 Tab·Enter)해 크기를 먼저 예측해 보자.</span>
+    <span id="modeHint"></span>
+    <span class="tissot-cap" id="tissotCap" hidden>동그라미는 '왜곡 눈금'. 메르카토르는 모양은 그대로지만 극지로 갈수록 <b>커지고</b>, Equal Earth는 넓이는 같지만 모양이 눌린다.</span>
     <span class="stat" id="predictStat" hidden>예측 <b><span id="pTot">0</span></b>개 중 <span id="pOk">0</span>개 적중</span>
   </div>
 
@@ -206,7 +237,12 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     </figure>
   </div>
 
-  <div class="readout empty" id="readout" aria-live="polite">지도의 나라를 클릭하면, 먼저 크기를 예측한 뒤 그 나라가 실제보다 얼마나 크게(또는 작게) 그려지는지 확인한다.</div>
+  <div class="readout empty" id="readout" aria-live="polite"></div>
+
+  <section class="essay" id="balance">
+    <h2 id="balH">그런데 왜 아직 메르카토르를 쓸까?</h2>
+    <div id="balBody"></div>
+  </section>
 
   <section class="reflect">
     <h2>스스로 답해보기</h2>
@@ -220,36 +256,12 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     <p class="note">이 도구는 '어떤 지도가 옳은가'가 아니라 '왜 우리는 특정 지도를 당연하게 여겼는가'를 묻는다.</p>
   </section>
 
-  <details class="teacher">
-    <summary>교사용 가이드 — 40분 수업에 이렇게 쓴다</summary>
-    <div class="tbody">
-      <p>이 도구는 '결론 전달'이 아니라 '예측 → 확인 → 성찰'의 탐구 흐름을 위해 설계했다. 아래 40분 구성을 그대로 쓰거나 상황에 맞게 잘라 쓴다.</p>
-      <h4>차시 흐름 (40분 예시)</h4>
-      <table>
-        <tr><th>단계</th><th>시간</th><th>활동</th><th>교사 발문</th></tr>
-        <tr><td>도입</td><td>5분</td><td>'그린란드 vs 아프리카' 버튼으로 착시 제시</td><td>"두 지도에서 그린란드 크기가 왜 다를까?"</td></tr>
-        <tr><td>예측·탐구</td><td>15분</td><td>'한 나라 예측' 모드로 각자 5개국 이상 예측→확인. 이어 '두 나라 비교'로 두 나라 골라 비교</td><td>"예측이 빗나간 나라는 어디였나? 왜 그렇게 예측했나?"</td></tr>
-        <tr><td>성찰</td><td>12분</td><td>아래 4개 질문에 각자 작성 후 답 복사·제출</td><td>"더 크게 그려진 곳을 우리는 어떻게 느끼는가?"</td></tr>
-        <tr><td>공유·정리</td><td>8분</td><td>답 몇 개 공유, '지도 밖'의 편향 사례로 전이</td><td>"지도 말고 또 어디에 이런 프레임이 숨어 있을까?"</td></tr>
-      </table>
-      <h4>예상 반응과 대응</h4>
-      <ul>
-        <li>"그럼 메르카토르는 나쁜 지도네요" → 각도(방향)를 보존해 항해·웹 지도에 쓴다는 점을 짚어, <b>목적에 따른 선택</b>임을 안내한다.</li>
-        <li>"어느 게 진짜예요?" → 3차원 구를 2차원에 펴면 <b>어떤 지도든 무언가는 반드시 왜곡</b>된다는 점을 강조한다.</li>
-        <li>예측 적중률이 낮다 → 오답이 곧 학습 신호. "예상과 왜 달랐는지"를 쓰게 한다.</li>
-      </ul>
-      <h4>딥링크 (특정 상태로 바로 열기)</h4>
-      <ul>
-        <li><code>?spot=1</code> — 그린란드 착시 화면으로 즉시 시작</li>
-        <li><code>?sel=Australia</code> — 특정 나라 미리 선택(영문 국가명)</li>
-        <li><code>?ask=Greenland</code> — 한 나라를 '예측 대기' 상태로 열기(전체 학급 투표용)</li>
-        <li><code>?mode=compare</code> — 두 나라 비교 모드로 시작</li>
-        <li><code>?cmp=Greenland,Australia</code> — 두 나라 비교를 미리 지정</li>
-        <li><code>?nopredict</code> — 예측 단계 없이 바로 결과(시연용)</li>
-        <li><code>?embed=1</code> — 머리말·질문을 감춘 삽입용(수업 자료 임베드)</li>
-      </ul>
-    </div>
-  </details>
+  <section class="quiz">
+    <h2>스스로 점검하기</h2>
+    <p class="sub">탐구한 내용을 짧게 확인해 보자. 답을 고르면 바로 해설이 나온다.</p>
+    <div class="quizlist" id="quizlist"></div>
+    <div class="quizscore" id="quizscore" hidden></div>
+  </section>
 
   <footer class="site">
     <span>출처 · 유엔총회 결의안 A/80/L.104 「Correct the Map」(2026) · 지도 데이터 Natural Earth / world-atlas</span>
@@ -257,9 +269,39 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   </footer>
 </div>
 
-<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
-<script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
-<script src="https://unpkg.com/d3-geo-projection@4/dist/d3-geo-projection.min.js"></script>
+<div class="tg-overlay" id="tgOverlay" role="dialog" aria-modal="true" aria-label="교사용 가이드">
+  <div class="tg-modal">
+    <button class="tg-close" id="tgClose" type="button" aria-label="닫기">×</button>
+    <h3>교사용 가이드</h3>
+    <div class="tbody">
+      <p>이 도구는 '결론 전달'이 아니라 <b>예측 → 확인 → 성찰</b>의 탐구 흐름을 위해 만들었다. 아래 40분 구성을 그대로 쓰거나 상황에 맞게 잘라 쓴다.</p>
+      <h4>차시 흐름 (40분 예시)</h4>
+      <table>
+        <tr><th>단계</th><th>시간</th><th>활동</th><th>발문</th></tr>
+        <tr><td>도입</td><td>5분</td><td>'그린란드 vs 아프리카' 버튼으로 착시 제시</td><td>"두 지도에서 그린란드 크기가 왜 다를까?"</td></tr>
+        <tr><td>예측·탐구</td><td>15분</td><td>'한 나라 예측'으로 5개국 이상 예측→확인, '두 나라 비교'와 '진짜 크기 끌기'로 심화</td><td>"예측이 빗나간 나라는? 왜 그렇게 예측했나?"</td></tr>
+        <tr><td>성찰·점검</td><td>12분</td><td>'스스로 답해보기' 작성 후 답 복사·제출, '스스로 점검하기'로 확인</td><td>"더 크게 그려진 곳을 우리는 어떻게 느끼는가?"</td></tr>
+        <tr><td>공유·전이</td><td>8분</td><td>답 공유, '지도 밖'의 편향 사례로 확장</td><td>"지도 말고 또 어디에 이런 프레임이 숨어 있을까?"</td></tr>
+      </table>
+      <h4>예상 반응과 대응</h4>
+      <ul>
+        <li>"그럼 메르카토르는 나쁜 지도네요" → 아래 <b>'왜 아직 메르카토르를 쓸까'</b> 절을 함께 읽고, 각도(방향)를 지켜 항해·웹 지도에 쓰이는 <b>목적에 따른 선택</b>임을 짚는다.</li>
+        <li>"어느 게 진짜예요?" → 3차원 구를 2차원에 펴면 <b>어떤 지도든 무언가는 반드시 왜곡</b>된다는 점을 강조한다.</li>
+        <li>예측 적중률이 낮다 → 오답이 곧 학습 신호. "예상과 왜 달랐는지"를 쓰게 한다.</li>
+      </ul>
+      <h4>화면 설정</h4>
+      <ul>
+        <li><b>왜곡 눈금</b> 켜면 티소 지시원(왜곡의 크기·모양)을 함께 볼 수 있다.</li>
+        <li><b>초등용 쉬운 말</b>로 어휘와 질문을 학년에 맞게 바꿀 수 있다.</li>
+        <li>학생 답은 이 브라우저에만 저장된다. '답 복사하기'로 과제·패들릿에 붙여 제출하게 한다.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/d3.v7.min.js"></script>
+<script src="vendor/topojson-client.min.js"></script>
+<script src="vendor/d3-geo-projection.min.js"></script>
 <script>
 (function(){
   "use strict";
@@ -271,25 +313,46 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   window.addEventListener("resize",postH);
   if(EMBED && window.ResizeObserver){ try{ new ResizeObserver(postH).observe(document.body); }catch(e){} }
 
-  var KO={
-    "Greenland":"그린란드","Canada":"캐나다","Russia":"러시아","United States of America":"미국","China":"중국","India":"인도",
-    "Brazil":"브라질","Australia":"오스트레일리아","Argentina":"아르헨티나","Kazakhstan":"카자흐스탄","Algeria":"알제리",
-    "Dem. Rep. Congo":"콩고민주공화국","Saudi Arabia":"사우디아라비아","Mexico":"멕시코","Indonesia":"인도네시아","Sudan":"수단",
-    "Libya":"리비아","Iran":"이란","Mongolia":"몽골","Peru":"페루","Chad":"차드","Niger":"니제르","Angola":"앙골라","Mali":"말리",
-    "South Africa":"남아프리카 공화국","Colombia":"콜롬비아","Ethiopia":"에티오피아","Bolivia":"볼리비아","Mauritania":"모리타니",
-    "Egypt":"이집트","Nigeria":"나이지리아","Norway":"노르웨이","Sweden":"스웨덴","Finland":"핀란드","Germany":"독일","France":"프랑스",
-    "Spain":"스페인","Ukraine":"우크라이나","Turkey":"튀르키예","Japan":"일본","South Korea":"대한민국","North Korea":"북한",
-    "Thailand":"태국","Vietnam":"베트남","Iceland":"아이슬란드","United Kingdom":"영국","Italy":"이탈리아","Poland":"폴란드",
-    "Pakistan":"파키스탄","Afghanistan":"아프가니스탄","Myanmar":"미얀마","Somalia":"소말리아","Kenya":"케냐","Tanzania":"탄자니아",
-    "Namibia":"나미비아","Botswana":"보츠와나","Chile":"칠레","Venezuela":"베네수엘라","Antarctica":"남극","New Zealand":"뉴질랜드"
-  };
+  var KO={"Greenland":"그린란드","Canada":"캐나다","Russia":"러시아","United States of America":"미국","China":"중국","India":"인도","Brazil":"브라질","Australia":"오스트레일리아","Argentina":"아르헨티나","Kazakhstan":"카자흐스탄","Algeria":"알제리","Dem. Rep. Congo":"콩고민주공화국","Saudi Arabia":"사우디아라비아","Mexico":"멕시코","Indonesia":"인도네시아","Sudan":"수단","Libya":"리비아","Iran":"이란","Mongolia":"몽골","Peru":"페루","Chad":"차드","Niger":"니제르","Angola":"앙골라","Mali":"말리","South Africa":"남아프리카 공화국","Colombia":"콜롬비아","Ethiopia":"에티오피아","Bolivia":"볼리비아","Mauritania":"모리타니","Egypt":"이집트","Nigeria":"나이지리아","Norway":"노르웨이","Sweden":"스웨덴","Finland":"핀란드","Germany":"독일","France":"프랑스","Spain":"스페인","Ukraine":"우크라이나","Turkey":"튀르키예","Japan":"일본","South Korea":"대한민국","North Korea":"북한","Thailand":"태국","Vietnam":"베트남","Iceland":"아이슬란드","United Kingdom":"영국","Italy":"이탈리아","Poland":"폴란드","Pakistan":"파키스탄","Afghanistan":"아프가니스탄","Myanmar":"미얀마","Somalia":"소말리아","Kenya":"케냐","Tanzania":"탄자니아","Namibia":"나미비아","Botswana":"보츠와나","Chile":"칠레","Venezuela":"베네수엘라","Antarctica":"남극","New Zealand":"뉴질랜드"};
   function nameKo(n){return KO[n]||n;}
 
-  var Q=[
-    {tag:"프레임 · Frame",q:"왜 500년 동안 메르카토르 도법이 '표준 지도'가 되었을까? 이 지도는 누구에게, 왜 편리했을까?"},
-    {tag:"인식 · Perception",q:"지도에서 더 크게 그려진 지역을 우리는 무의식적으로 더 중요하거나 힘센 곳으로 느끼지 않을까? 근거를 들어 보자."},
-    {tag:"관점 · Perspective",q:"어떤 지도가 '정확하다'고 말할 수 있을까? 목적(항해·면적 비교·수업)이 달라지면 답도 달라질까?"},
-    {tag:"편향 · Bias & 전이",q:"지도 말고, 우리가 매일 접하는 것 중 '중립적으로 보이지만 실은 특정 관점을 담은' 것은 무엇이 있을까?"}
+  var LV={
+    general:{
+      lead:'우리가 500년간 표준으로 써 온 세계지도는 세상을 있는 그대로 그리지 않았다. 도법이 바뀌면 대륙의 크기가, 그리고 <b>우리가 세상을 보는 프레임</b>이 함께 바뀐다. 먼저 <b>예측</b>하고, 두 지도를 나란히 놓고 직접 확인해 보자.',
+      empty:'지도의 나라를 클릭하면, 먼저 크기를 예측한 뒤 그 나라가 실제보다 얼마나 크게(또는 작게) 그려지는지 확인한다.',
+      hintSingle:'나라를 클릭(또는 Tab·Enter)해 크기를 먼저 예측해 보자.',
+      Q:[
+        {tag:"프레임 · Frame",q:"왜 500년 동안 메르카토르 도법이 '표준 지도'가 되었을까? 이 지도는 누구에게, 왜 편리했을까?"},
+        {tag:"인식 · Perception",q:"지도에서 더 크게 그려진 지역을 우리는 무의식적으로 더 중요하거나 힘센 곳으로 느끼지 않을까? 근거를 들어 보자."},
+        {tag:"관점 · Perspective",q:"어떤 지도가 '정확하다'고 말할 수 있을까? 목적(항해·면적 비교·수업)이 달라지면 답도 달라질까?"},
+        {tag:"편향 · Bias & 전이",q:"지도 말고, 우리가 매일 접하는 것 중 '중립적으로 보이지만 실은 특정 관점을 담은' 것은 무엇이 있을까?"}
+      ],
+      balH:"그런데 왜 아직 메르카토르를 쓸까?",
+      balBody:'<p>메르카토르가 면적을 왜곡한다고 해서 '+"'나쁜 지도'"+'인 것은 아니다. 이 도법은 <b>각도(방향)를 정확히 지킨다.</b> 그래서 나침반으로 항해할 때 일정한 방향을 유지하는 항로가 지도 위에서 직선으로 그려진다. 대항해시대에 표준이 된 이유다.</p>'+
+        '<p>오늘날 구글지도·네이버지도 같은 <b>웹 지도도 메르카토르 계열</b>을 쓴다. 어느 축척으로 확대해도 도시의 모양이 찌그러지지 않고, 정사각형 타일로 이어 붙이기 좋기 때문이다.</p>'+
+        '<p>핵심은 이것이다. 3차원 지구를 2차원 종이에 펴는 순간, <b>넓이·모양·거리·방향을 동시에 지킬 수는 없다.</b> 무엇을 지키고 무엇을 포기할지는 목적에 따른 선택이다. Equal Earth는 넓이를, 메르카토르는 방향을 택했다.</p>'+
+        '<p class="kicker">문제는 도법 자체가 아니라, 특정 목적(항해)의 지도를 '+"'세상의 표준 모습'"+'으로 무비판적으로 받아들인 데 있다.</p>'
+    },
+    basic:{
+      lead:'우리가 늘 보던 세계지도는 나라의 <b>진짜 크기</b>를 그대로 그리지 않았다. 지도를 그리는 방법이 바뀌면 나라 크기가 달라 보인다. 먼저 <b>어림해 보고</b>, 두 지도를 나란히 놓고 확인해 보자.',
+      empty:'지도에서 나라를 눌러 보자. 실제보다 크게 그려졌는지 작게 그려졌는지 먼저 맞혀 본 뒤 확인한다.',
+      hintSingle:'나라를 눌러(또는 Tab·Enter) 크기를 먼저 어림해 보자.',
+      Q:[
+        {tag:"살펴보기",q:"지도에서 가장 크게 그려진 나라는 어디였나요? 실제로도 그렇게 클까요?"},
+        {tag:"느낌",q:"지도에서 큰 나라를 보면 어떤 느낌이 드나요? 더 힘세거나 중요해 보이나요?"},
+        {tag:"생각",q:"어떤 지도가 '맞는' 지도일까요? 딱 하나만 맞을까요, 목적마다 다를까요?"},
+        {tag:"넓혀보기",q:"지도 말고, 실제와 다르게 '보이도록' 만든 것이 또 있을까요? (예: 사진, 그래프)"}
+      ],
+      balH:"그럼 메르카토르는 나쁜 지도일까?",
+      balBody:'<p>아니다. 이 지도는 <b>방향을 정확히</b> 알려 준다. 그래서 옛날 뱃사람들이 바다에서 길을 찾을 때 아주 편리했다. 지금도 휴대폰 지도 앱이 이 방법을 쓴다. 확대해도 도시 모양이 안 찌그러지기 때문이다.</p>'+
+        '<p>둥근 지구를 평평한 종이에 펴면 <b>크기·모양·거리·방향을 한꺼번에 다 지킬 수는 없다.</b> 그래서 지도마다 지키는 것이 다르다. 메르카토르는 방향을, Equal Earth는 크기를 택했다.</p>'+
+        '<p class="kicker">중요한 건, 한 가지 지도를 '+"'세상의 진짜 모습'"+'이라고 그냥 믿지 않는 것이다.</p>'
+    }
+  };
+  var QUIZ=[
+    {q:"메르카토르 지도에서 실제보다 가장 크게 부풀려지는 곳은?",opts:["적도 부근","고위도(극지 부근)","중위도"],a:1,ex:"위도가 높을수록 sec(위도)만큼 커진다. 그린란드·남극처럼 극에 가까운 곳이 가장 심하게 부풀려진다."},
+    {q:"Equal Earth 도법이 지키려는 것은?",opts:["대륙의 모양","대륙의 넓이(면적)","두 지점 사이 거리"],a:1,ex:"Equal Earth는 등적(等積) 도법으로, 모든 대륙의 면적 비율을 실제와 같게 유지한다. 대신 모양은 조금 눌린다."},
+    {q:"실제 아프리카는 그린란드의 약 몇 배 넓이일까?",opts:["비슷하다","약 3배","약 14배"],a:2,ex:"아프리카는 약 3,037만 km², 그린란드는 약 216만 km²로 약 14배다. 메르카토르에서는 둘이 비슷해 보인다."}
   ];
 
   var PROJ=[
@@ -305,10 +368,13 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
 
   var VBL={w:500,h:320},VBR={w:500,h:300};
   var svgL=d3.select("#mapL"),svgR=d3.select("#mapR"),graticule=d3.geoGraticule10();
-  var countries=[],leftId="mercator",leftPath=null,trueSum=0,leftSum=0;
-  var predict=!SP.has("nopredict");
-  var mode=(SP.get("mode")==="compare")?"compare":"single";
-  var selected=null,pending=null,cmp=[],pStats={tot:0,ok:0};
+  var countries=[],leftId="mercator",leftProj=null,leftPath=null,rightProj=null,trueSum=0,leftSum=0;
+  var level="general",tissot=false;
+  var mode="single",selected=null,pending=null,cmp=[],pStats={tot:0,ok:0};
+
+  // Tissot indicatrix centers
+  var TIS=[];(function(){for(var la=-60;la<=60;la+=30)for(var lo=-150;lo<=150;lo+=60)TIS.push([lo,la]);})();
+  var tisCircles=TIS.map(function(c){return d3.geoCircle().center(c).radius(4.5)();});
 
   function isAntarctica(f){return f.properties&&f.properties.name==="Antarctica";}
   function feat(name){return countries.find(function(d){return d.properties.name===name;});}
@@ -319,22 +385,17 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     svg.append("path").attr("class","sphere").attr("d",path({type:"Sphere"}));
     svg.append("path").attr("class","grat").attr("d",path(graticule));
     svg.append("g").selectAll("path.country").data(countries).join("path")
-      .attr("class","country").attr("d",path)
-      .attr("data-name",function(d){return d.properties.name;})
-      .attr("tabindex",0).attr("role","button")
-      .attr("aria-label",function(d){return nameKo(d.properties.name);})
+      .attr("class","country").attr("d",path).attr("data-name",function(d){return d.properties.name;})
+      .attr("tabindex",0).attr("role","button").attr("aria-label",function(d){return nameKo(d.properties.name);})
       .on("mouseover",function(){ if(!selected&&!pending&&mode==="single"&&cmp.length===0) d3.select(this).style("fill","#dcae86"); })
       .on("mouseout",function(){ if(!selected&&!pending&&mode==="single"&&cmp.length===0) d3.select(this).style("fill",null); })
       .on("click",function(ev,d){ onPick(d.properties.name); })
       .on("keydown",function(ev,d){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); onPick(d.properties.name); } });
+    if(tissot){ svg.append("g").selectAll("path.tissot").data(tisCircles).join("path").attr("class","tissot").attr("d",path); }
     return path;
   }
 
-  function computeStats(){
-    leftPath=d3.geoPath(build(leftId,VBL.w,VBL.h));
-    trueSum=0;leftSum=0;
-    countries.forEach(function(f){ if(isAntarctica(f))return; trueSum+=d3.geoArea(f); leftSum+=Math.abs(leftPath.area(f)); });
-  }
+  function computeStats(){leftPath=d3.geoPath(leftProj);trueSum=0;leftSum=0;countries.forEach(function(f){if(isAntarctica(f))return;trueSum+=d3.geoArea(f);leftSum+=Math.abs(leftPath.area(f));});}
   function factorFor(name){var f=feat(name);if(!f||isAntarctica(f)||!leftSum||!trueSum)return null;var t=d3.geoArea(f)/trueSum;if(!t)return null;return (Math.abs(leftPath.area(f))/leftSum)/t;}
   function trueRel(a,b){var fa=feat(a),fb=feat(b);if(!fa||!fb)return null;var ta=d3.geoArea(fa),tb=d3.geoArea(fb);if(!tb)return null;return ta/tb;}
   function mapRel(a,b){var fa=feat(a),fb=feat(b);if(!fa||!fb)return null;var ma=Math.abs(leftPath.area(fa)),mb=Math.abs(leftPath.area(fb));if(!mb)return null;return ma/mb;}
@@ -342,109 +403,89 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   function round1(x){return Math.round(x*10)/10;}
 
   function clearFills(){svgL.selectAll("path.country").style("fill",null);svgR.selectAll("path.country").style("fill",null);}
-  function applyClasses(fnL,fnR){
-    svgL.selectAll("path.country").attr("class",fnL);
-    svgR.selectAll("path.country").attr("class",fnR);
-    clearFills();
-  }
-  function hlSingle(name,pendingMode){
-    var cls=pendingMode?"sel-pending":null;
-    applyClasses(
-      function(d){return d.properties.name===name?("country "+(cls||"sel-warp")):"country dim";},
-      function(d){return d.properties.name===name?("country "+(cls||"sel-true")):"country dim";}
-    );
-  }
-  function hlCompare(a,b){
-    function f(d){var n=d.properties.name;return n===a?"country cmp-a":(n===b?"country cmp-b":"country dim");}
-    applyClasses(f,f);
-  }
+  function applyClasses(fnL,fnR){svgL.selectAll("path.country").attr("class",fnL);svgR.selectAll("path.country").attr("class",fnR);clearFills();}
+  function hlSingle(name,pendingMode){var cls=pendingMode?"sel-pending":null;applyClasses(function(d){return d.properties.name===name?("country "+(cls||"sel-warp")):"country dim";},function(d){return d.properties.name===name?("country "+(cls||"sel-true")):"country dim";});}
+  function hlCompare(a,b){function f(d){var n=d.properties.name;return n===a?"country cmp-a":(n===b?"country cmp-b":"country dim");}applyClasses(f,f);}
   function clearHL(){applyClasses(function(){return "country";},function(){return "country";});}
 
   var ro=document.getElementById("readout");
   function setRO(html,empty){ro.className="readout"+(empty?" empty":"");ro.innerHTML=html;postH();}
 
-  // ---------- single mode: predict then reveal ----------
   function onPick(name){
     var f=feat(name); if(!f) return;
     if(mode==="compare"){ pickCompare(name); return; }
+    if(mode==="truesize"){ pickTrue(name); return; }
     selected=null;
-    if(predict && !isAntarctica(f) && factorFor(name)!=null){
-      pending=name; hlSingle(name,true); askPredict(name);
-    } else {
-      pending=null; reveal(name);
-    }
+    if(!SP.has("nopredict") && !isAntarctica(f) && factorFor(name)!=null){ pending=name; hlSingle(name,true); askPredict(name); }
+    else { pending=null; reveal(name); }
   }
   function askPredict(name){
     var def=PROJ.find(function(p){return p.id===leftId;});
-    setRO(
-      '<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div>'+
-      '<div class="ro-body predict"><span class="pq"><b>'+def.label+'</b>에서 이 나라는 실제 면적 비중보다?</span>'+
-      '<span class="pbtns">'+
-        '<button type="button" data-g="big">크게</button>'+
-        '<button type="button" data-g="same">비슷</button>'+
-        '<button type="button" data-g="small">작게</button>'+
-      '</span></div>');
+    setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body predict"><span class="pq"><b>'+def.label+'</b>에서 이 나라는 실제 면적 비중보다?</span><span class="pbtns"><button type="button" data-g="big">크게</button><button type="button" data-g="same">비슷</button><button type="button" data-g="small">작게</button></span></div>');
     ro.querySelectorAll(".pbtns button").forEach(function(b){b.addEventListener("click",function(){resolvePredict(name,b.dataset.g);});});
   }
-  function resolvePredict(name,guess){
-    var fac=factorFor(name),actual=cat(fac),ok=(guess===actual);
-    pStats.tot++; if(ok)pStats.ok++;
-    var st=document.getElementById("predictStat");st.hidden=false;
-    document.getElementById("pTot").textContent=pStats.tot;document.getElementById("pOk").textContent=pStats.ok;
-    reveal(name,{ok:ok,guess:guess,actual:actual});
-  }
+  function resolvePredict(name,guess){var fac=factorFor(name),actual=cat(fac),ok=(guess===actual);pStats.tot++;if(ok)pStats.ok++;var st=document.getElementById("predictStat");st.hidden=false;document.getElementById("pTot").textContent=pStats.tot;document.getElementById("pOk").textContent=pStats.ok;reveal(name,{ok:ok,guess:guess,actual:actual});}
   function reveal(name,pv){
     pending=null;selected=name;hlSingle(name,false);
     var fac=factorFor(name),def=PROJ.find(function(p){return p.id===leftId;});
-    if(fac==null){
-      setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body"><div class="ro-txt">이 지역은 극점을 포함해 이 도법에서 면적을 잴 수 없다.</div></div>');
-      return;
-    }
+    if(fac==null){setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body"><div class="ro-txt">이 지역은 극점을 포함해 이 도법에서 면적을 잴 수 없다.</div></div>');return;}
     var c=cat(fac),label,txt,barPct,barColor;
     if(c==="big"){var f1=round1(fac);label='<span class="ro-fig big">'+f1+'<sup>배</sup></span>';txt="<b>"+def.label+"</b> 지도에서는 실제 면적 비중보다 약 "+f1+"배 <b>크게</b> 그려진다. 그만큼 우리 눈에 더 크고 중요하게 각인된다.";barColor="var(--warp)";barPct=Math.min(100,50+(Math.log(fac)/Math.log(8))*50);}
     else if(c==="small"){var inv=round1(1/fac);label='<span class="ro-fig small">'+inv+'<sup>배 작게</sup></span>';txt="<b>"+def.label+"</b> 지도에서는 실제보다 약 "+inv+"배 <b>작게</b> 그려진다. 실제 크기에 비해 눈에 덜 띈다.";barColor="var(--true)";barPct=Math.max(0,50-(Math.log(1/fac)/Math.log(8))*50);}
     else{label='<span class="ro-fig same">≈ 실제</span>';txt="<b>"+def.label+"</b> 지도에서 이 지역은 실제 면적 비중과 <b>거의 같게</b> 그려진다."+(def.warp?" 하지만 형태(모양)는 왜곡될 수 있다.":"");barColor="var(--ink-3)";barPct=50;}
-    var verdict="";
-    if(pv){var kmap={big:"크게",same:"비슷",small:"작게"};verdict=pv.ok?'<div class="verdict ok">예측 적중 — '+kmap[pv.actual]+' 그려진다고 맞혔다.</div>':'<div class="verdict no">예측은 \''+kmap[pv.guess]+'\'였지만 실제로는 \''+kmap[pv.actual]+'\'다. 왜 그렇게 예상했는지 생각해 보자.</div>';}
-    setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div>'+
-      '<div class="ro-body">'+label+'<div class="ro-txt">'+txt+'</div>'+verdict+
-      '<div class="ro-bar"><i></i><b style="left:'+(barPct<50?barPct:50)+'%;width:'+Math.abs(barPct-50)+'%;background:'+barColor+'"></b></div></div>');
+    var verdict="";if(pv){var km={big:"크게",same:"비슷",small:"작게"};verdict=pv.ok?'<div class="verdict ok">예측 적중 — '+km[pv.actual]+' 그려진다고 맞혔다.</div>':'<div class="verdict no">예측은 \''+km[pv.guess]+'\'였지만 실제로는 \''+km[pv.actual]+'\'다. 왜 그렇게 예상했는지 생각해 보자.</div>';}
+    setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body">'+label+'<div class="ro-txt">'+txt+'</div>'+verdict+'<div class="ro-bar"><i></i><b style="left:'+(barPct<50?barPct:50)+'%;width:'+Math.abs(barPct-50)+'%;background:'+barColor+'"></b></div></div>');
   }
 
-  // ---------- compare mode ----------
   function pickCompare(name){
-    if(isAntarctica(name)) return;
-    if(cmp.length>=2) cmp=[];
-    if(cmp.indexOf(name)===-1) cmp.push(name);
-    if(cmp.length===1){ hlCompare(cmp[0],null); setRO('<div class="ro-country"><span class="pchip a">①</span> '+nameKo(cmp[0])+'</div><div class="ro-body"><div class="ro-txt">비교할 <b>두 번째 나라</b>를 클릭하자.</div></div>'); }
-    else { hlCompare(cmp[0],cmp[1]); showCompare(cmp[0],cmp[1]); }
+    if(isAntarctica(name))return;if(cmp.length>=2)cmp=[];if(cmp.indexOf(name)===-1)cmp.push(name);
+    if(cmp.length===1){hlCompare(cmp[0],null);setRO('<div class="ro-country"><span class="pchip a">①</span> '+nameKo(cmp[0])+'</div><div class="ro-body"><div class="ro-txt">비교할 <b>두 번째 나라</b>를 클릭하자.</div></div>');}
+    else{hlCompare(cmp[0],cmp[1]);showCompare(cmp[0],cmp[1]);}
   }
   function showCompare(a,b){
-    var def=PROJ.find(function(p){return p.id===leftId;});
-    var mr=mapRel(a,b),tr=trueRel(a,b);
+    var def=PROJ.find(function(p){return p.id===leftId;}),mr=mapRel(a,b),tr=trueRel(a,b);
     if(mr==null||tr==null){setRO('<div class="ro-body"><div class="ro-txt">이 조합은 비교할 수 없다(극지 포함).</div></div>');return;}
-    function phrase(r,na,nb,seem){ var big=seem?"커 보인다":"크다",sim=seem?"비슷해 보인다":"비슷하다"; if(r>=1.1) return '<b>'+na+'</b>가 <b>'+nb+'</b>보다 약 '+round1(r)+'배 '+big; if(r<=0.91) return '<b>'+nb+'</b>가 <b>'+na+'</b>보다 약 '+round1(1/r)+'배 '+big; return '<b>'+na+'</b>와 <b>'+nb+'</b>가 '+sim; }
-    var ka=nameKo(a),kb=nameKo(b);
-    var mislead=(mr>=1.1&&tr<=0.91)||(mr<=0.91&&tr>=1.1)||(Math.abs(Math.log(mr)-Math.log(tr))>0.5);
-    var concl=mislead
-      ? '지도에서 보이는 크기 관계가 <b>실제와 뒤집히거나 크게 다르다</b>. 눈에 보이는 것을 그대로 믿으면 안 되는 이유다.'
-      : '이 도법에서는 두 나라의 크기 관계가 실제와 <b>대체로 일치</b>한다.';
-    setRO('<div class="ro-country"><span class="pchip a">A</span> '+ka+' <span style="color:var(--ink-3)">vs</span> <span class="pchip b">B</span> '+kb+'</div>'+
-      '<div class="ro-body">'+
-      '<div class="ro-txt"><b>'+def.label+' 지도에서는</b> — '+phrase(mr,ka,kb,true)+'.</div>'+
-      '<div class="ro-txt"><b>실제로는</b> — '+phrase(tr,ka,kb,false)+'.</div>'+
-      '<div class="ro-txt" style="margin-top:.45rem;border-top:1px dashed var(--edge);padding-top:.45rem">'+concl+'</div>'+
-      '</div>');
+    function phrase(r,na,nb,seem){var big=seem?"커 보인다":"크다",sim=seem?"비슷해 보인다":"비슷하다";if(r>=1.1)return '<b>'+na+'</b>가 <b>'+nb+'</b>보다 약 '+round1(r)+'배 '+big;if(r<=0.91)return '<b>'+nb+'</b>가 <b>'+na+'</b>보다 약 '+round1(1/r)+'배 '+big;return '<b>'+na+'</b>와 <b>'+nb+'</b>가 '+sim;}
+    var ka=nameKo(a),kb=nameKo(b),mislead=(mr>=1.1&&tr<=0.91)||(mr<=0.91&&tr>=1.1)||(Math.abs(Math.log(mr)-Math.log(tr))>0.5);
+    var concl=mislead?'지도에서 보이는 크기 관계가 <b>실제와 뒤집히거나 크게 다르다</b>. 눈에 보이는 것을 그대로 믿으면 안 되는 이유다.':'이 도법에서는 두 나라의 크기 관계가 실제와 <b>대체로 일치</b>한다.';
+    setRO('<div class="ro-country"><span class="pchip a">A</span> '+ka+' <span style="color:var(--ink-3)">vs</span> <span class="pchip b">B</span> '+kb+'</div><div class="ro-body"><div class="ro-txt"><b>'+def.label+' 지도에서는</b> — '+phrase(mr,ka,kb,true)+'.</div><div class="ro-txt"><b>실제로는</b> — '+phrase(tr,ka,kb,false)+'.</div><div class="ro-txt" style="margin-top:.45rem;border-top:1px dashed var(--edge);padding-top:.45rem">'+concl+'</div></div>');
   }
 
+  // ---------- true-size drag (on Mercator) ----------
+  var ghost=null,ghostHomeLat=0,ghostCx=0,ghostCy=0,ghostName="";
+  function pickTrue(name){
+    var f=feat(name);if(!f||isAntarctica(f))return;
+    if(leftId!=="mercator"){setLeft("mercator");}
+    hlSingle(name,false);svgR.selectAll("path.country").attr("class",function(d){return d.properties.name===name?"country sel-true":"country dim";});
+    var c=d3.geoCentroid(f);ghostHomeLat=c[1];
+    var p=leftPath.centroid(f);ghostCx=p[0];ghostCy=p[1];ghostName=name;
+    svgL.select(".ghost").remove();
+    var g=svgL.append("g").attr("class","ghost");
+    g.append("path").attr("class","home").attr("d",leftPath(f));
+    var gp=g.append("path").attr("d",leftPath(f));
+    ghost=g;
+    var drag=d3.drag().on("start",function(){g.classed("drag",true);}).on("drag",function(ev){moveGhost(ev.x,ev.y);}).on("end",function(){g.classed("drag",false);});
+    gp.call(drag);
+    setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body"><div class="ro-txt">이 나라 덩어리를 <b>끌어서</b> 다른 위도로 옮겨 보자. 적도(가운데)로 갈수록 '+"'진짜 크기'"+'에 가까워진다.</div></div>');
+  }
+  function moveGhost(mx,my){
+    if(!ghost)return;
+    var inv=leftProj.invert&&leftProj.invert([mx,my]);var lat=inv?inv[1]:0;lat=Math.max(-80,Math.min(80,lat));
+    var scale=Math.cos(ghostHomeLat*Math.PI/180)/Math.cos(lat*Math.PI/180);scale=Math.max(.15,Math.min(8,scale));
+    ghost.attr("transform","translate("+mx+","+my+") scale("+scale+") translate("+(-ghostCx)+","+(-ghostCy)+")");
+    var pct=Math.round(scale*100);
+    var eqPct=Math.round((Math.cos(ghostHomeLat*Math.PI/180))*100);
+    setRO('<div class="ro-country">'+nameKo(ghostName)+'<span class="en">'+ghostName+'</span></div><div class="ro-body"><div class="ro-fig '+(scale<0.9?"small":(scale>1.1?"big":"same"))+'">'+pct+'<sup>%</sup></div><div class="ro-txt">지금 위치에서는 <b>고향(원래 자리)</b>에서보다 약 '+round1(scale)+'배 크기로 보인다. 적도까지 내리면 원래의 약 <b>'+eqPct+'%</b>로 줄어든다 — 그것이 실제 크기에 가장 가깝다.</div></div>');
+  }
+  function clearGhost(){if(ghost){ghost.remove();ghost=null;}}
+
   function setMode(m){
-    mode=m;selected=null;pending=null;cmp=[];clearHL();
+    mode=m;selected=null;pending=null;cmp=[];clearGhost();clearHL();
     document.querySelectorAll("#modeseg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===m));});
-    var h=document.getElementById("modeHint");
-    if(m==="compare"){h.textContent="두 나라를 차례로 클릭하면, 지도상 크기와 실제 크기 관계를 비교한다.";
-      setRO("비교할 <b>첫 번째 나라</b>를 클릭하자. 그린란드와 오스트레일리아처럼 위도가 크게 다른 두 나라를 골라 보면 흥미롭다.",true);}
-    else{h.textContent=predict?"나라를 클릭(또는 Tab·Enter)해 크기를 먼저 예측해 보자.":"나라를 클릭하면 크기 왜곡을 바로 보여준다.";
-      setRO("지도의 나라를 클릭하면, 먼저 크기를 예측한 뒤 그 나라가 실제보다 얼마나 크게(또는 작게) 그려지는지 확인한다.",true);}
+    var h=document.getElementById("modeHint");svgL.classed("dragmode",m==="truesize");
+    if(m==="compare"){h.textContent="두 나라를 차례로 클릭하면, 지도상 크기와 실제 크기 관계를 비교한다.";setRO("비교할 <b>첫 번째 나라</b>를 클릭하자. 그린란드와 오스트레일리아처럼 위도가 크게 다른 두 나라를 골라 보면 흥미롭다.",true);}
+    else if(m==="truesize"){if(leftId!=="mercator")setLeft("mercator");h.textContent="메르카토르에서 나라를 클릭한 뒤 끌어서 다른 위도로 옮겨 보자.";setRO("메르카토르 지도에서 나라를 클릭하면 그 덩어리를 <b>끌 수 있다</b>. 적도로 옮길수록 '진짜 크기'로 줄어드는 것을 확인하자.",true);}
+    else{h.textContent=LV[level].hintSingle;setRO(LV[level].empty,true);}
   }
 
   function setLeft(id){
@@ -453,79 +494,104 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     var lk=document.getElementById("leftKind");lk.textContent=def.kind;lk.className="kind "+(def.warp?"warp":"true");
     document.getElementById("leftSub").textContent=def.sub;
     document.querySelectorAll("#projseg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.id===id));});
-    renderMap(svgL,build(id,VBL.w,VBL.h));computeStats();
+    leftProj=build(id,VBL.w,VBL.h);leftPath=d3.geoPath(leftProj);renderMap(svgL,leftProj);computeStats();clearGhost();
     if(mode==="compare"&&cmp.length===2){hlCompare(cmp[0],cmp[1]);showCompare(cmp[0],cmp[1]);}
     else if(mode==="compare"&&cmp.length===1){hlCompare(cmp[0],null);}
-    else if(selected){reveal(selected);}
+    else if(mode==="single"&&selected){reveal(selected);}
     else clearHL();
   }
 
-  function spotlight(){
-    if(mode!=="single") setMode("single");
-    if(leftId!=="mercator") setLeft("mercator");
-    var g=feat("Greenland");
-    if(g){ pending=null; reveal("Greenland");
-      ro.innerHTML+='<div class="ro-txt" style="flex-basis:100%;border-top:1px dashed var(--edge);padding-top:.6rem;margin-top:.2rem"><b>착시의 대표 사례.</b> 메르카토르에서 그린란드는 아프리카만큼 커 보인다. 그러나 실제 아프리카는 그린란드의 <b>약 14배</b>다. Equal Earth(오른쪽)에서 둘의 진짜 크기 차이를 확인해 보자.</div>';
-      postH();
-    }
+  function applyLevel(){
+    document.getElementById("lead").innerHTML=LV[level].lead;
+    document.getElementById("balH").textContent=LV[level].balH;
+    document.getElementById("balBody").innerHTML=LV[level].balBody;
+    buildQuestions();
+    if(mode==="single"&&!selected&&!pending){setRO(LV[level].empty,true);document.getElementById("modeHint").textContent=LV[level].hintSingle;}
   }
 
   function buildQuestions(){
-    var g=document.getElementById("qgrid");
-    Q.forEach(function(item,i){
-      var key="mapproj.q"+i,card=document.createElement("div");card.className="q";
+    var g=document.getElementById("qgrid");g.innerHTML="";
+    LV[level].Q.forEach(function(item,i){
+      var key="mapproj."+level+".q"+i,card=document.createElement("div");card.className="q";
       card.innerHTML='<div class="tag">'+item.tag+'</div><div class="qt">'+item.q+'</div><textarea placeholder="여기에 내 생각을 적어 보자…" aria-label="'+item.q+'"></textarea><div class="saved">저장됨 ✓</div>';
       var ta=card.querySelector("textarea"),sv=card.querySelector(".saved"),t;
       try{ta.value=localStorage.getItem(key)||"";}catch(e){}
       ta.addEventListener("input",function(){try{localStorage.setItem(key,ta.value);}catch(e){}sv.classList.add("on");clearTimeout(t);t=setTimeout(function(){sv.classList.remove("on");},1200);});
       g.appendChild(card);
     });
-    document.getElementById("copyBtn").addEventListener("click",function(){exportAnswers("copy");});
-    document.getElementById("dlBtn").addEventListener("click",function(){exportAnswers("dl");});
   }
-  function gatherAnswers(){
-    var lines=["지도는 중립적일까? — 나의 생각 정리","(https://tigerjk9.github.io/tools/map-projection/)",""];
-    Q.forEach(function(it,i){var v="";try{v=(localStorage.getItem("mapproj.q"+i)||"").trim();}catch(e){}lines.push("["+it.tag+"]");lines.push(it.q);lines.push("→ "+(v||"(미작성)"));lines.push("");});
-    return lines.join("\n");
+  function gatherAnswers(){var lines=["지도는 중립적일까? — 나의 생각 정리","(https://tigerjk9.github.io/tools/map-projection/)",""];LV[level].Q.forEach(function(it,i){var v="";try{v=(localStorage.getItem("mapproj."+level+".q"+i)||"").trim();}catch(e){}lines.push("["+it.tag+"]");lines.push(it.q);lines.push("→ "+(v||"(미작성)"));lines.push("");});return lines.join("\n");}
+  function exportAnswers(kind){var txt=gatherAnswers(),msg=document.getElementById("expMsg");function flash(t){msg.textContent=t;msg.classList.add("on");setTimeout(function(){msg.classList.remove("on");},1600);}if(kind==="copy"){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){flash("복사했어요 ✓");},function(){flash("복사 실패 — 길게 눌러 복사하세요");});}else{flash("이 브라우저는 복사를 지원하지 않아요");}}else{try{var blob=new Blob([txt],{type:"text/plain;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="지도는-중립적일까-내생각.txt";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);flash("내려받았어요 ✓");}catch(e){flash("내려받기 실패");}}}
+
+  var quizAnswered=0,quizOk=0;
+  function buildQuiz(){
+    var list=document.getElementById("quizlist");
+    QUIZ.forEach(function(item,i){
+      var card=document.createElement("div");card.className="qz";
+      var opts=item.opts.map(function(o,j){return '<button type="button" data-i="'+i+'" data-j="'+j+'">'+o+'</button>';}).join("");
+      card.innerHTML='<div class="qzq">'+(i+1)+'. '+item.q+'</div><div class="opts">'+opts+'</div><div class="fb"></div>';
+      list.appendChild(card);
+      var fb=card.querySelector(".fb"),btns=card.querySelectorAll(".opts button"),done=false;
+      btns.forEach(function(b){b.addEventListener("click",function(){
+        if(done)return;done=true;var j=+b.dataset.j,ok=(j===item.a);quizAnswered++;if(ok)quizOk++;
+        btns.forEach(function(x,k){x.disabled=true;if(k===item.a)x.classList.add("correct");});
+        if(!ok)b.classList.add("wrong");
+        fb.innerHTML='<span class="mk '+(ok?"ok":"no")+'">'+(ok?"정답":"아쉬워요")+'</span> — '+item.ex;fb.classList.add("on");
+        var sc=document.getElementById("quizscore");sc.hidden=false;sc.textContent="점검 "+quizAnswered+"문항 중 "+quizOk+"개 정답";postH();
+      });});
+    });
   }
-  function exportAnswers(kind){
-    var txt=gatherAnswers(),msg=document.getElementById("expMsg");
-    function flash(t){msg.textContent=t;msg.classList.add("on");setTimeout(function(){msg.classList.remove("on");},1600);}
-    if(kind==="copy"){
-      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){flash("복사했어요 ✓");},function(){flash("복사 실패 — 길게 눌러 복사하세요");});}
-      else{flash("이 브라우저는 복사를 지원하지 않아요");}
-    } else {
-      try{var blob=new Blob([txt],{type:"text/plain;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="지도는-중립적일까-내생각.txt";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);flash("내려받았어요 ✓");}catch(e){flash("내려받기 실패");}
-    }
+
+  // teacher modal
+  function openTG(){document.getElementById("tgOverlay").classList.add("on");document.getElementById("tgClose").focus();}
+  function closeTG(){document.getElementById("tgOverlay").classList.remove("on");}
+
+  function spotlight(){
+    if(mode!=="single")setMode("single");
+    if(leftId!=="mercator")setLeft("mercator");
+    var g=feat("Greenland");
+    if(g){pending=null;reveal("Greenland");ro.innerHTML+='<div class="ro-txt" style="flex-basis:100%;border-top:1px dashed var(--edge);padding-top:.6rem;margin-top:.2rem"><b>착시의 대표 사례.</b> 메르카토르에서 그린란드는 아프리카만큼 커 보인다. 그러나 실제 아프리카는 그린란드의 <b>약 14배</b>다. Equal Earth(오른쪽)에서 둘의 진짜 크기 차이를 확인해 보자.</div>';postH();}
   }
 
   function boot(world){
-    var geo=topojson.feature(world,world.objects.countries);
-    countries=geo.features.filter(function(f){return f.properties&&f.properties.name;});
+    countries=topojson.feature(world,world.objects.countries).features.filter(function(f){return f.properties&&f.properties.name;});
+    if(SP.get("level")==="basic")level="basic";
+    if(SP.has("tissot"))tissot=true;
     var seg=document.getElementById("projseg");
     PROJ.forEach(function(p){var b=document.createElement("button");b.type="button";b.textContent=p.label;b.dataset.id=p.id;b.setAttribute("aria-pressed",String(p.id===leftId));b.addEventListener("click",function(){setLeft(p.id);});seg.appendChild(b);});
     document.querySelectorAll("#modeseg button").forEach(function(b){b.addEventListener("click",function(){setMode(b.dataset.mode);});});
-    renderMap(svgR,EE(VBR.w,VBR.h));
-    document.getElementById("loadL").remove();document.getElementById("loadR").remove();
-    setLeft(leftId);
-    document.querySelectorAll("#modeseg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===mode));});
+    rightProj=EE(VBR.w,VBR.h);renderMap(svgR,rightProj);
+    var lL=document.getElementById("loadL"),lR=document.getElementById("loadR");if(lL)lL.remove();if(lR)lR.remove();
+    leftProj=build(leftId,VBL.w,VBL.h);leftPath=d3.geoPath(leftProj);renderMap(svgL,leftProj);computeStats();
+    setLeft(leftId);applyLevel();buildQuiz();
     document.getElementById("spotBtn").addEventListener("click",spotlight);
-    if(!EMBED) buildQuestions();
-    // deep links
-    if(SP.get("spot")){ spotlight(); }
-    else if(SP.get("cmp")){ setMode("compare"); SP.get("cmp").split(",").slice(0,2).forEach(function(n){pickCompare(n.trim());}); }
-    else if(SP.get("ask")&&predict){ setMode("single"); var an=SP.get("ask"); pending=an; hlSingle(an,true); askPredict(an); }
-    else if(SP.get("sel")){ if(mode==="compare"){pickCompare(SP.get("sel"));} else { pending=null; reveal(SP.get("sel")); } }
-    else if(mode==="compare"){ setMode("compare"); }
+    document.getElementById("copyBtn").addEventListener("click",function(){exportAnswers("copy");});
+    document.getElementById("dlBtn").addEventListener("click",function(){exportAnswers("dl");});
+    document.getElementById("tissotChk").addEventListener("change",function(){tissot=this.checked;document.getElementById("tissotCap").hidden=!tissot;renderMap(svgL,leftProj);renderMap(svgR,rightProj);reapply();postH();});
+    document.getElementById("levelChk").addEventListener("change",function(){level=this.checked?"basic":"general";applyLevel();});
+    document.getElementById("tissotChk").checked=tissot;document.getElementById("levelChk").checked=(level==="basic");document.getElementById("tissotCap").hidden=!tissot;
+    document.getElementById("tgTrigger").addEventListener("click",openTG);
+    document.getElementById("tgClose").addEventListener("click",closeTG);
+    document.getElementById("tgOverlay").addEventListener("click",function(e){if(e.target===this)closeTG();});
+    document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTG();});
+    // deep links (undocumented; teacher presets)
+    if(SP.get("spot"))spotlight();
+    else if(SP.get("cmp")){setMode("compare");SP.get("cmp").split(",").slice(0,2).forEach(function(n){pickCompare(n.trim());});}
+    else if(SP.get("ask")&&!SP.has("nopredict")){setMode("single");var an=SP.get("ask");pending=an;hlSingle(an,true);askPredict(an);}
+    else if(SP.get("drag")){setMode("truesize");pickTrue(SP.get("drag"));}
+    else if(SP.get("sel")){if(mode==="compare"){pickCompare(SP.get("sel"));}else{pending=null;reveal(SP.get("sel"));}}
+    else if(mode==="compare")setMode("compare");
+    else setMode("single");
     postH();
   }
+  function reapply(){
+    if(mode==="compare"&&cmp.length===2)hlCompare(cmp[0],cmp[1]);
+    else if(mode==="compare"&&cmp.length===1)hlCompare(cmp[0],null);
+    else if(mode==="single"&&selected)hlSingle(selected,false);
+  }
 
-  d3.json("https://unpkg.com/world-atlas@2/countries-110m.json").then(boot).catch(function(err){
-    console.error(err);
-    var m="지도 데이터를 불러오지 못했다. 인터넷 연결을 확인하고 새로고침해 보자.";
-    var l=document.getElementById("loadL"),r=document.getElementById("loadR");
-    if(l)l.innerHTML=m; if(r)r.innerHTML="…";
-    setRO('<div class="ro-txt">'+m+'</div>');
+  d3.json("vendor/countries-110m.json").then(boot).catch(function(err){
+    console.error(err);var l=document.getElementById("loadL"),r=document.getElementById("loadR");var m="지도 데이터를 불러오지 못했다. 새로고침해 보자.";if(l)l.innerHTML=m;if(r)r.innerHTML="…";setRO('<div class="ro-txt">'+m+'</div>');
   });
 })();
 </script>
