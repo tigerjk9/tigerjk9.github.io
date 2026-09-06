@@ -32,7 +32,6 @@ permalink: /post/vibecode-for-teacher-book/
 
 *   YES24: [https://www.yes24.com/product/goods/196020146](https://www.yes24.com/product/goods/196020146)
 *   컴패니언 사이트: [https://lifeofpi-ux.github.io/vibecode-for-teacher/](https://lifeofpi-ux.github.io/vibecode-for-teacher/)
-*   블로그 내부 정리 페이지: [/lectures/vibecode-for-teacher/](/lectures/vibecode-for-teacher/)
 
 ## 출처
 - 한빛미디어 《요즘 교사를 위한 웹앱 만들기 with 바이브 코딩》 (이상선·김진관·이대형·윤신영·김상섭)
