@@ -26,7 +26,8 @@
 html{-webkit-text-size-adjust:100%}
 body{font-family:var(--sans);color:var(--ink);background:var(--paper);
   background-image:linear-gradient(var(--grat) 1px,transparent 1px),linear-gradient(90deg,var(--grat) 1px,transparent 1px);
-  background-size:44px 44px;background-position:center;line-height:1.7;font-size:15.5px;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;}
+  background-size:44px 44px;background-position:center;line-height:1.7;font-size:15.5px;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;}
+h1,h2,h3,.ovtitle,.q .qt,.qz .qzq,.predict .pq,.plate-head .nm{text-wrap:balance}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(120% 90% at 50% -10%,rgba(255,253,247,.9),rgba(244,239,228,.2) 55%,rgba(230,222,203,.55));}
 .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 var(--sp) 4rem;}
 
@@ -355,19 +356,19 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
         '<p class="kicker">문제는 도법 자체가 아니라, 특정 목적(항해)의 지도를 '+"'세상의 표준 모습'"+'으로 무비판적으로 받아들인 데 있다.</p>'
     },
     basic:{
-      lead:'우리가 늘 보던 세계지도는 나라의 <b>진짜 크기</b>를 그대로 그리지 않았다. 지도를 그리는 방법이 바뀌면 나라 크기가 달라 보인다. 먼저 <b>어림해 보고</b>, 두 지도를 나란히 놓고 확인해 보자.',
-      empty:'지도에서 나라를 눌러 보자. 실제보다 크게 그려졌는지 작게 그려졌는지 먼저 맞혀 본 뒤 확인한다.',
-      hintSingle:'나라를 눌러(또는 Tab·Enter) 크기를 먼저 어림해 보자.',
+      lead:'우리가 자주 보는 세계지도는 나라의 <b>진짜 크기</b>를 있는 그대로 그리지 않았어요. 지도를 그리는 방법이 바뀌면, 같은 나라도 더 크게 보이거나 작게 보여요. 먼저 크기를 <b>상상해 보고</b>, 두 지도를 나란히 놓고 함께 확인해 볼까요?',
+      empty:'지도에서 나라를 눌러 보세요. \'실제보다 클까, 작을까?\' 먼저 맞혀 본 다음에 정답을 확인해요.',
+      hintSingle:'지도에서 나라를 눌러 보세요. 크기를 먼저 상상해 보는 거예요.',
       Q:[
-        {tag:"살펴보기",q:"지도에서 가장 크게 그려진 나라는 어디였나요? 실제로도 그렇게 클까요?"},
-        {tag:"느낌",q:"지도에서 큰 나라를 보면 어떤 느낌이 드나요? 더 힘세거나 중요해 보이나요?"},
-        {tag:"생각",q:"어떤 지도가 '맞는' 지도일까요? 딱 하나만 맞을까요, 목적마다 다를까요?"},
-        {tag:"넓혀보기",q:"지도 말고, 실제와 다르게 '보이도록' 만든 것이 또 있을까요? (예: 사진, 그래프)"}
+        {tag:"살펴보기",q:"지도에서 가장 크게 그려진 나라는 어디였나요? 진짜로도 그렇게 클까요?"},
+        {tag:"내 느낌",q:"지도에서 큰 나라를 보면 어떤 느낌이 드나요? 왠지 더 힘세거나 중요해 보이지는 않나요?"},
+        {tag:"생각해 보기",q:"\'진짜 지도\'는 딱 하나뿐일까요? 길을 찾을 때와 크기를 비교할 때, 좋은 지도가 서로 다를까요?"},
+        {tag:"더 찾아보기",q:"지도 말고도, 실제와 다르게 보이도록 만든 것이 또 있을까요? (예: 사진, 광고 그림)"}
       ],
-      balH:"그럼 메르카토르는 나쁜 지도일까?",
-      balBody:'<p>아니다. 이 지도는 <b>방향을 정확히</b> 알려 준다. 그래서 옛날 뱃사람들이 바다에서 길을 찾을 때 아주 편리했다. 지금도 휴대폰 지도 앱이 이 방법을 쓴다. 확대해도 도시 모양이 안 찌그러지기 때문이다.</p>'+
-        '<p>둥근 지구를 평평한 종이에 펴면 <b>크기·모양·거리·방향을 한꺼번에 다 지킬 수는 없다.</b> 그래서 지도마다 지키는 것이 다르다. 메르카토르는 방향을, Equal Earth는 크기를 택했다.</p>'+
-        '<p class="kicker">중요한 건, 한 가지 지도를 '+"'세상의 진짜 모습'"+'이라고 그냥 믿지 않는 것이다.</p>'
+      balH:"그럼 메르카토르는 나쁜 지도일까요?",
+      balBody:'<p>아니에요. 이 지도는 <b>방향</b>을 아주 정확하게 알려 줘요. 그래서 옛날에 배를 타고 바다를 건너던 사람들에게 꼭 필요했어요. 지금도 휴대폰 지도 앱이 이 방법을 써요. 확대해도 길과 골목이 반듯하게 보이거든요.</p>'+
+        '<p>둥근 지구를 평평한 종이에 펴려면, <b>크기·모양·거리·방향을 한꺼번에 다 지킬 수는 없어요.</b> 그래서 지도마다 지키는 것이 서로 달라요. 메르카토르는 \'방향\'을, Equal Earth는 \'크기\'를 골랐어요.</p>'+
+        '<p class="kicker">가장 중요한 건, 한 가지 지도만 보고 \'세상은 원래 이렇게 생겼구나\' 하고 그냥 믿지 않는 거예요.</p>'
     }
   };
   var QUIZ=[
@@ -443,7 +444,7 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   function askPredict(name){
     showPanel(false);
     var def=PROJ.find(function(p){return p.id===leftId;});
-    setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body predict"><span class="pq"><b>'+def.label+'</b>에서 이 나라는 실제 면적 비중보다?</span><span class="pbtns"><button type="button" data-g="big">크게</button><button type="button" data-g="same">비슷</button><button type="button" data-g="small">작게</button></span></div>');
+    setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body predict"><span class="pq"><b>'+def.label+'</b>에서 이 나라는 '+(level==="basic"?"실제 크기보다 어떻게 그려졌을까요?":"실제 면적 비중보다?")+'</span><span class="pbtns"><button type="button" data-g="big">크게</button><button type="button" data-g="same">비슷</button><button type="button" data-g="small">작게</button></span></div>');
     ro.querySelectorAll(".pbtns button").forEach(function(b){b.addEventListener("click",function(){resolvePredict(name,b.dataset.g);});});
   }
   function resolvePredict(name,guess){var fac=factorFor(name),actual=cat(fac),ok=(guess===actual);pStats.tot++;if(ok)pStats.ok++;var st=document.getElementById("predictStat");st.hidden=false;document.getElementById("pTot").textContent=pStats.tot;document.getElementById("pOk").textContent=pStats.ok;reveal(name,{ok:ok,guess:guess,actual:actual});}
@@ -451,11 +452,12 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
     pending=null;selected=name;hlSingle(name,false);showPanel(false);
     var fac=factorFor(name),def=PROJ.find(function(p){return p.id===leftId;});
     if(fac==null){setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body"><div class="ro-txt">이 지역은 극점을 포함해 이 도법에서 면적을 잴 수 없다.</div></div>');return;}
+    var B=level==="basic";
     var c=cat(fac),label,txt,barPct,barColor;
-    if(c==="big"){var f1=round1(fac);label='<span class="ro-fig big">'+f1+'<sup>배</sup></span>';txt="<b>"+def.label+"</b> 지도에서는 실제 면적 비중보다 약 "+f1+"배 <b>크게</b> 그려진다. 그만큼 우리 눈에 더 크고 중요하게 각인된다.";barColor="var(--warp)";barPct=Math.min(100,50+(Math.log(fac)/Math.log(8))*50);}
-    else if(c==="small"){var inv=round1(1/fac);label='<span class="ro-fig small">'+inv+'<sup>배 작게</sup></span>';txt="<b>"+def.label+"</b> 지도에서는 실제보다 약 "+inv+"배 <b>작게</b> 그려진다. 실제 크기에 비해 눈에 덜 띈다.";barColor="var(--true)";barPct=Math.max(0,50-(Math.log(1/fac)/Math.log(8))*50);}
-    else{label='<span class="ro-fig same">≈ 실제</span>';txt="<b>"+def.label+"</b> 지도에서 이 지역은 실제 면적 비중과 <b>거의 같게</b> 그려진다."+(def.warp?" 하지만 형태(모양)는 왜곡될 수 있다.":"");barColor="var(--ink-3)";barPct=50;}
-    var verdict="";if(pv){var km={big:"크게",same:"비슷",small:"작게"};verdict=pv.ok?'<div class="verdict ok">예측 적중 — '+km[pv.actual]+' 그려진다고 맞혔다.</div>':'<div class="verdict no">예측은 \''+km[pv.guess]+'\'였지만 실제로는 \''+km[pv.actual]+'\'다. 왜 그렇게 예상했는지 생각해 보자.</div>';}
+    if(c==="big"){var f1=round1(fac);label='<span class="ro-fig big">'+f1+'<sup>배</sup></span>';txt=B?("<b>"+def.label+"</b> 지도에서는 실제 크기보다 약 "+f1+"배나 크게 그려져요. 그래서 우리 눈에 더 크고 중요해 보여요."):("<b>"+def.label+"</b> 지도에서는 실제 면적 비중보다 약 "+f1+"배 <b>크게</b> 그려진다. 그만큼 우리 눈에 더 크고 중요하게 각인된다.");barColor="var(--warp)";barPct=Math.min(100,50+(Math.log(fac)/Math.log(8))*50);}
+    else if(c==="small"){var inv=round1(1/fac);label='<span class="ro-fig small">'+inv+'<sup>배 작게</sup></span>';txt=B?("<b>"+def.label+"</b> 지도에서는 실제보다 약 "+inv+"배 작게 그려져요. 진짜 크기보다 눈에 덜 띄어요."):("<b>"+def.label+"</b> 지도에서는 실제보다 약 "+inv+"배 <b>작게</b> 그려진다. 실제 크기에 비해 눈에 덜 띈다.");barColor="var(--true)";barPct=Math.max(0,50-(Math.log(1/fac)/Math.log(8))*50);}
+    else{label='<span class="ro-fig same">≈ 실제</span>';txt=B?("<b>"+def.label+"</b> 지도에서 이곳은 실제 크기와 거의 똑같이 그려져요."):("<b>"+def.label+"</b> 지도에서 이 지역은 실제 면적 비중과 <b>거의 같게</b> 그려진다."+(def.warp?" 하지만 형태(모양)는 왜곡될 수 있다.":""));barColor="var(--ink-3)";barPct=50;}
+    var verdict="";if(pv){var km={big:"크게",same:"비슷하게",small:"작게"};verdict=pv.ok?('<div class="verdict ok">'+(B?"맞혔어요! "+km[pv.actual]+" 그려진 게 맞아요.":"예측 적중 — "+km[pv.actual]+" 그려진다고 맞혔다.")+'</div>'):('<div class="verdict no">'+(B?"아쉬워요. \'"+km[pv.guess]+"\'라고 했는데 실제로는 \'"+km[pv.actual]+"\'예요. 왜 그렇게 생각했는지 이야기해 볼까요?":"예측은 \'"+km[pv.guess]+"\'였지만 실제로는 \'"+km[pv.actual]+"\'다. 왜 그렇게 예상했는지 생각해 보자.")+'</div>');}
     setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body">'+label+'<div class="ro-txt">'+txt+'</div>'+verdict+'<div class="ro-bar"><i></i><b style="left:'+(barPct<50?barPct:50)+'%;width:'+Math.abs(barPct-50)+'%;background:'+barColor+'"></b></div></div>');
   }
 
@@ -479,6 +481,7 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   function africaFeats(){return countries.filter(function(f){return AFRICA.indexOf(f.properties.name)>=0;});}
   function fcOf(fs){return {type:"FeatureCollection",features:fs};}
   function areaOf(fs){var s=0;fs.forEach(function(f){if(f)s+=d3.geoArea(f);});return s;}
+  function mainland(f){if(!f||!f.geometry||f.geometry.type!=="MultiPolygon")return f;var best=null,ba=-1;f.geometry.coordinates.forEach(function(poly){var a=d3.geoArea({type:"Polygon",coordinates:poly});if(a>ba){ba=a;best=poly;}});return {type:"Feature",properties:f.properties,geometry:{type:"Polygon",coordinates:best}};}
   function azProj(fs,K){var c=d3.geoCentroid(fcOf(fs));return d3.geoAzimuthalEqualArea().rotate([-c[0],-c[1]]).scale(K).translate([0,0]);}
   function fitK(fs,w,h){var p=azProj(fs,1),b=d3.geoPath(p).bounds(fcOf(fs));var dw=Math.max(1e-6,b[1][0]-b[0][0]),dh=Math.max(1e-6,b[1][1]-b[0][1]);return Math.min(w/dw,h/dh);}
   var svgO=d3.select("#mapO"),OVW=660,OVH=380;
@@ -500,14 +503,14 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   }
   function overlayAfrica(){
     var af=africaFeats();if(!af.length)return;
-    var usa=feat("United States of America"),cn=feat("China"),ind=feat("India");
-    var K=fitK(af,OVW*0.78,OVH*0.82);svgO.selectAll("*").remove();
+    var usa=mainland(feat("United States of America")),cn=mainland(feat("China")),ind=mainland(feat("India"));
+    var K=fitK(af,OVW*0.74,OVH*0.82);svgO.selectAll("*").remove();
     drawLayer(af,K,.5,.5,OC.muted,OC.mutedS,.92,null,false);
-    if(usa)drawLayer([usa],K,.4,.44,OC.cmpb,OC.cmpbD,.95,"미국",true);
-    if(cn)drawLayer([cn],K,.6,.5,OC.warp,OC.warpD,.95,"중국",false);
-    if(ind)drawLayer([ind],K,.5,.75,OC.tru,OC.truD,.95,"인도",false);
+    if(usa)drawLayer([usa],K,.355,.47,OC.cmpb,OC.cmpbD,.95,"미국",true);
+    if(cn)drawLayer([cn],K,.57,.51,OC.warp,OC.warpD,.95,"중국",true);
+    if(ind)drawLayer([ind],K,.475,.76,OC.tru,OC.truD,.95,"인도",false);
     var sum=areaOf([usa,cn,ind]),aa=areaOf(af);
-    document.getElementById("overlayCap").innerHTML="<b>아프리카</b>(회색) 하나에 <b style=\"color:"+OC.cmpb+"\">미국</b>·<b style=\"color:"+OC.warp+"\">중국</b>·<b style=\"color:"+OC.tru+"\">인도</b>가 모두 들어가고도 남는다(세 나라를 합쳐도 아프리카의 약 "+Math.round(sum/aa*100)+"%). 메르카토르 지도는 아프리카의 이 거대함을 감춘다.";
+    document.getElementById("overlayCap").innerHTML="<b>아프리카</b>(회색) 하나에 <b style=\"color:"+OC.cmpb+"\">미국</b>·<b style=\"color:"+OC.warp+"\">중국</b>·<b style=\"color:"+OC.tru+"\">인도</b>를 나란히 넣고도 자리가 남는다(세 나라 본토를 합쳐도 아프리카의 약 "+Math.round(sum/aa*100)+"%). 메르카토르 지도는 아프리카의 이 거대함을 감춘다.";
     showPanel(true);
   }
   function overlayCountries(a,b){
