@@ -1,6 +1,6 @@
 # 닷커넥터의 서재 — 정식 출간(공저 포함) 도서 11권. /lectures/ 허브 최상단 섹션에서 소비.
 # 표지: 대부분 서점 공식 표지(교보·알라딘·테크빌·예스24 CDN). 서점 링크 전권 완비.
-#   (vibecode-for-teacher만 닷커넥터 통일 표지 /assets/lectures/books/book-08-cover.jpg 재사용 — 예스24 공식 표지 미확보)
+#   (vibecode-for-teacher는 예스24 공식 표지 사용: /assets/lectures/books/vibecode-for-teacher-cover.jpg)
 # 순서는 "닷커넥터의 서재" 이미지 배열 그대로 (윗줄 좌→우, 아랫줄 좌→우). 최상단은 최신 신간(NEW).
 - slug: vibecode-for-teacher
   title: "요즘 교사를 위한 웹앱 만들기 with 바이브 코딩"
@@ -10,7 +10,7 @@
   badge: "NEW"
   url: "https://www.yes24.com/product/goods/196020146"
   store: "예스24"
-  cover: /assets/lectures/books/book-08-cover.jpg
+  cover: /assets/lectures/books/vibecode-for-teacher-cover.jpg
 
 - slug: ai-tool-library-revised
   title: "교육자를 위한 디지털 AI 도구 라이브러리"
