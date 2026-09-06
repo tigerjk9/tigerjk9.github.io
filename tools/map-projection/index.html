@@ -536,32 +536,36 @@ body.embed .controls{margin:.4rem 0 .6rem;padding-bottom:.8rem}
   }
 
   // ---------- true-size drag (on Mercator) ----------
-  var ghost=null,ghostHomeLat=0,ghostCx=0,ghostCy=0,ghostName="";
+  var ghost=null,ghostLive=null,ghostHomeLat=0,ghostCx=0,ghostCy=0,ghostName="",gX=0,gY=0;
   function pickTrue(name){
     showPanel(false);var f=feat(name);if(!f||isAntarctica(f))return;
     if(leftId!=="mercator"){setLeft("mercator");}
     hlSingle(name,false);svgR.selectAll("path.country").attr("class",function(d){return d.properties.name===name?"country sel-true":"country dim";});
-    var c=d3.geoCentroid(f);ghostHomeLat=c[1];
-    var p=leftPath.centroid(f);ghostCx=p[0];ghostCy=p[1];ghostName=name;
+    var p=leftPath.centroid(f);ghostCx=p[0];ghostCy=p[1];gX=p[0];gY=p[1];ghostName=name;
+    // 위도 기준을 '드래그 중 위도 측정'과 동일하게(픽셀 중심 역투영) 잡아야 home에서 scale=1(100%)이 된다.
+    var hinv=leftProj.invert?leftProj.invert([ghostCx,ghostCy]):null;ghostHomeLat=hinv?hinv[1]:d3.geoCentroid(f)[1];
     svgL.select(".ghost").remove();
     var g=svgL.append("g").attr("class","ghost");
     g.append("path").attr("class","home").attr("d",leftPath(f));
-    var gp=g.append("path").attr("d",leftPath(f));
-    ghost=g;
-    var drag=d3.drag().on("start",function(){g.classed("drag",true);}).on("drag",function(ev){moveGhost(ev.x,ev.y);}).on("end",function(){g.classed("drag",false);});
+    var gp=g.append("path").attr("class","live").attr("d",leftPath(f));
+    ghost=g;ghostLive=gp;
+    // 그룹이 아니라 사본(gp)에만 transform → 점선(home)은 제자리 유지. 상대 이동(dx/dy)이라 잡는 순간 튀지 않음.
+    var drag=d3.drag().on("start",function(){g.classed("drag",true);}).on("drag",function(ev){gX+=ev.dx;gY+=ev.dy;renderGhost(false);}).on("end",function(){g.classed("drag",false);});
     gp.call(drag);
-    setRO('<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div><div class="ro-body"><div class="ro-txt">이 나라 덩어리를 <b>끌어서</b> 다른 위도로 옮겨 보자. 적도(가운데)로 갈수록 '+"'진짜 크기'"+'에 가까워진다.</div></div>');
+    renderGhost(true);
   }
-  function moveGhost(mx,my){
+  function renderGhost(initial){
     if(!ghost)return;
-    var inv=leftProj.invert&&leftProj.invert([mx,my]);var lat=inv?inv[1]:0;lat=Math.max(-80,Math.min(80,lat));
-    var scale=Math.cos(ghostHomeLat*Math.PI/180)/Math.cos(lat*Math.PI/180);scale=Math.max(.15,Math.min(8,scale));
-    ghost.attr("transform","translate("+mx+","+my+") scale("+scale+") translate("+(-ghostCx)+","+(-ghostCy)+")");
-    var pct=Math.round(scale*100);
-    var eqPct=Math.round((Math.cos(ghostHomeLat*Math.PI/180))*100);
-    setRO('<div class="ro-country">'+nameKo(ghostName)+'<span class="en">'+ghostName+'</span></div><div class="ro-body"><div class="ro-fig '+(scale<0.9?"small":(scale>1.1?"big":"same"))+'">'+pct+'<sup>%</sup></div><div class="ro-txt">지금 위치에서는 <b>고향(원래 자리)</b>에서보다 약 '+round1(scale)+'배 크기로 보인다. 적도까지 내리면 원래의 약 <b>'+eqPct+'%</b>로 줄어든다 — 그것이 실제 크기에 가장 가깝다.</div></div>');
+    gX=Math.max(8,Math.min(VBL.w-8,gX));gY=Math.max(8,Math.min(VBL.h-8,gY));
+    var inv=leftProj.invert&&leftProj.invert([gX,gY]);var lat=inv?inv[1]:0;lat=Math.max(-82,Math.min(82,lat));
+    var scale=Math.cos(ghostHomeLat*Math.PI/180)/Math.cos(lat*Math.PI/180);scale=Math.max(.12,Math.min(9,scale));
+    ghostLive.attr("transform","translate("+gX+","+gY+") scale("+scale+") translate("+(-ghostCx)+","+(-ghostCy)+")");
+    var pct=Math.round(scale*100),eqPct=Math.round(Math.cos(ghostHomeLat*Math.PI/180)*100);
+    var tip=initial?('이 나라 덩어리를 <b>끌어서</b> 다른 위도로 옮겨 보자. 점선은 원래 자리다. 적도(가운데)로 내릴수록 '+"'진짜 크기'"+'에 가까워진다.')
+      :('지금 크기는 원래 자리의 약 <b>'+round1(scale)+'배</b>다. 적도까지 내리면 원래의 약 <b>'+eqPct+'%</b>(실제 크기에 가장 가까움)로 줄어든다.');
+    setRO('<div class="ro-country">'+nameKo(ghostName)+'<span class="en">'+ghostName+'</span></div><div class="ro-body"><div class="ro-fig '+(scale<0.9?"small":(scale>1.1?"big":"same"))+'">'+pct+'<sup>%</sup></div><div class="ro-txt">'+tip+'</div></div>');
   }
-  function clearGhost(){if(ghost){ghost.remove();ghost=null;}}
+  function clearGhost(){if(ghost){ghost.remove();ghost=null;ghostLive=null;}}
 
   function setMode(m){
     mode=m;selected=null;pending=null;cmp=[];clearGhost();clearHL();showPanel(false);
