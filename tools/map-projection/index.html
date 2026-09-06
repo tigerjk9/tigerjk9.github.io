@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>지도는 중립적일까? — 도법으로 배우는 관점·프레임·편향</title>
+<meta name="description" content="메르카토르와 Equal Earth 같은 서로 다른 세계지도 도법을 나란히 비교하며, 지도가 어떻게 우리의 관점·프레임·인식·편향을 만드는지 스스로 탐구하는 교육용 웹앱.">
+<meta property="og:title" content="지도는 중립적일까? — 도법으로 배우는 관점·프레임·편향">
+<meta property="og:description" content="메르카토르와 Equal Earth를 나란히 놓고 크기 왜곡을 직접 체감하고, 관점·프레임·편향을 스스로 탐구하는 교육용 웹앱.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4efe4; --paper-2:#efe8d8; --plate:#faf6ee; --edge:#ded2b8;
+  --ink:#20303b; --ink-2:#455663; --ink-3:#7d8a91;
+  --sea:#e7e2d4; --land:#e9dfc6; --land-line:#b9a986;
+  --grat:#cdbf9f;
+  --warp:#c0492e; --warp-deep:#9c3820; --warp-soft:#f0d9cf;
+  --true:#1f7a6b; --true-soft:#d6e7e1;
+  --brass:#a9822f;
+  --serif:'Nanum Myeongjo',serif;
+  --sans:'IBM Plex Sans KR','Malgun Gothic',sans-serif;
+  --sp:clamp(1rem,3.5vw,2.2rem);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);color:var(--ink);
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--grat) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grat) 1px,transparent 1px);
+  background-size:44px 44px;
+  background-position:center;
+  line-height:1.7;font-size:15.5px;letter-spacing:-0.003em;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(120% 90% at 50% -10%,rgba(255,253,247,.9),rgba(244,239,228,.2) 55%,rgba(230,222,203,.55));}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 var(--sp) 4rem;}
+
+/* ---- header ---- */
+header.hero{padding:clamp(2.4rem,6vw,4.6rem) 0 clamp(1.4rem,3vw,2.2rem);}
+.eyebrow{font-family:var(--sans);font-weight:600;font-size:.72rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--warp-deep);display:flex;align-items:center;gap:.7rem;}
+.eyebrow::before{content:"";width:38px;height:1px;background:var(--warp);display:inline-block;}
+h1{font-family:var(--serif);font-weight:800;line-height:1.12;letter-spacing:-.02em;
+  font-size:clamp(2.1rem,6.4vw,4rem);margin:.5rem 0 .2rem;color:var(--ink);}
+h1 em{font-style:italic;color:var(--warp);}
+.lead{max-width:46ch;font-size:clamp(1rem,2.4vw,1.16rem);color:var(--ink-2);margin-top:.7rem;}
+.lead b{color:var(--ink);font-weight:600;}
+
+/* ---- controls ---- */
+.controls{display:flex;flex-wrap:wrap;gap:.9rem 1.4rem;align-items:flex-end;
+  margin:1.8rem 0 1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--edge);}
+.ctl-label{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:600;margin-bottom:.4rem;}
+.seg{display:inline-flex;background:var(--paper-2);border:1px solid var(--edge);border-radius:2px;overflow:hidden;}
+.seg button{font-family:var(--serif);font-size:.92rem;font-weight:700;color:var(--ink-2);
+  background:transparent;border:0;padding:.5rem .9rem;cursor:pointer;transition:background .18s,color .18s;
+  border-right:1px solid var(--edge);white-space:nowrap;}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:#fff}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+.spot{margin-left:auto;font-family:var(--serif);font-weight:700;font-size:.95rem;
+  color:#fff;background:var(--warp);border:0;border-radius:2px;padding:.6rem 1.15rem;cursor:pointer;
+  box-shadow:0 2px 0 var(--warp-deep);transition:transform .12s,box-shadow .12s;}
+.spot:hover{transform:translateY(-1px);box-shadow:0 3px 0 var(--warp-deep)}
+.spot:active{transform:translateY(1px);box-shadow:0 1px 0 var(--warp-deep)}
+
+/* ---- maps ---- */
+.plates{display:grid;grid-template-columns:1fr 1fr;gap:clamp(.8rem,2.5vw,1.6rem);align-items:start;}
+.plate{background:var(--plate);border:1px solid var(--edge);border-radius:3px;
+  box-shadow:0 1px 0 #fff inset, 0 8px 26px -18px rgba(32,48,59,.5);overflow:hidden;}
+.plate-head{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;
+  padding:.85rem 1rem .2rem;}
+.plate-head .nm{font-family:var(--serif);font-weight:800;font-size:1.12rem;color:var(--ink);}
+.plate-head .kind{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;}
+.plate-head .kind.warp{color:var(--warp-deep)}
+.plate-head .kind.true{color:var(--true)}
+.plate-sub{padding:0 1rem .5rem;font-size:.82rem;color:var(--ink-3);min-height:2.1em;}
+.map{display:block;width:100%;height:auto;background:var(--sea);cursor:crosshair;}
+.grat{fill:none;stroke:var(--grat);stroke-width:.5;stroke-opacity:.9;}
+.sphere{fill:none;stroke:var(--land-line);stroke-width:1;stroke-opacity:.6;}
+.country{fill:var(--land);stroke:var(--land-line);stroke-width:.4;stroke-linejoin:round;
+  transition:fill .16s;}
+.country:hover{fill:#dcae86;}
+.country.sel-warp{fill:var(--warp);stroke:var(--warp-deep);stroke-width:.6;}
+.country.sel-true{fill:var(--true);stroke:#155e52;stroke-width:.6;}
+.country.dim{fill:#e4dcc9;opacity:.55;}
+
+/* ---- readout ---- */
+.readout{margin:1.2rem 0 0;background:var(--plate);border:1px solid var(--edge);border-left:3px solid var(--warp);
+  border-radius:3px;padding:1.1rem 1.2rem;min-height:5.2rem;display:flex;gap:1.3rem;align-items:center;flex-wrap:wrap;}
+.readout.empty{border-left-color:var(--edge);color:var(--ink-3);font-style:italic;font-family:var(--serif);}
+.ro-country{font-family:var(--serif);font-weight:800;font-size:1.35rem;color:var(--ink);min-width:8ch;}
+.ro-country .en{display:block;font-family:var(--sans);font-weight:400;font-size:.72rem;letter-spacing:.06em;
+  color:var(--ink-3);text-transform:uppercase;}
+.ro-body{flex:1;min-width:15rem;}
+.ro-fig{font-family:var(--serif);font-weight:800;font-size:1.9rem;line-height:1;}
+.ro-fig.big{color:var(--warp)}.ro-fig.small{color:var(--true)}.ro-fig.same{color:var(--ink-2)}
+.ro-fig sup{font-size:.9rem}
+.ro-txt{font-size:.92rem;color:var(--ink-2);margin-top:.2rem}
+.ro-bar{height:9px;background:var(--paper-2);border:1px solid var(--edge);border-radius:6px;margin-top:.6rem;overflow:hidden;position:relative;}
+.ro-bar i{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--ink-3);opacity:.5}
+.ro-bar b{position:absolute;top:0;bottom:0;display:block;border-radius:5px}
+
+/* ---- reflection ---- */
+.reflect{margin-top:clamp(2.6rem,6vw,4.2rem);}
+.reflect h2{font-family:var(--serif);font-weight:800;font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.01em;}
+.reflect .sub{color:var(--ink-2);max-width:52ch;margin:.3rem 0 1.6rem;font-size:.98rem;}
+.qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;}
+.q{background:var(--plate);border:1px solid var(--edge);border-radius:3px;padding:1.1rem 1.15rem 1rem;
+  display:flex;flex-direction:column;position:relative;}
+.q .tag{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--warp-deep);}
+.q .qt{font-family:var(--serif);font-weight:700;font-size:1.06rem;line-height:1.45;margin:.35rem 0 .7rem;color:var(--ink);}
+.q textarea{font-family:var(--sans);font-size:.92rem;color:var(--ink);line-height:1.6;resize:vertical;
+  min-height:4.6rem;border:1px solid var(--edge);border-radius:2px;background:#fffdf8;padding:.6rem .7rem;width:100%;}
+.q textarea:focus{outline:2px solid var(--warp-soft);border-color:var(--warp);}
+.q .saved{font-size:.68rem;color:var(--true);margin-top:.4rem;height:1em;opacity:0;transition:opacity .3s;}
+.q .saved.on{opacity:1}
+.note{margin-top:1.1rem;font-size:.82rem;color:var(--ink-3);font-style:italic;font-family:var(--serif);}
+
+/* ---- footer ---- */
+footer.site{margin-top:clamp(2.6rem,6vw,4rem);padding-top:1.4rem;border-top:1px solid var(--edge);
+  font-size:.82rem;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:space-between;}
+footer.site a{color:var(--warp-deep);text-decoration:none;border-bottom:1px solid var(--warp-soft);}
+footer.site a:hover{border-bottom-color:var(--warp)}
+.loading{padding:3rem 0;text-align:center;color:var(--ink-3);font-family:var(--serif);font-style:italic;}
+
+@media (max-width:720px){
+  .plates{grid-template-columns:1fr}
+  .spot{margin-left:0;width:100%}
+  .qgrid{grid-template-columns:1fr}
+  .controls{gap:.8rem}
+}
+
+/* ---- embed mode (iframed in blog post) ---- */
+body.embed{background:var(--paper);}
+body.embed .wrap{padding:0.2rem .6rem 1rem;max-width:none}
+body.embed header.hero, body.embed .reflect, body.embed footer.site, body.embed .note{display:none}
+body.embed .controls{margin:.4rem 0 .8rem;padding-bottom:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">비판적 지도학 · Critical Cartography</div>
+    <h1>지도는 정말<br><em>중립적일까?</em></h1>
+    <p class="lead">우리가 500년간 표준으로 써 온 세계지도는 세상을 있는 그대로 그리지 않았다. 도법이 바뀌면 대륙의 크기가, 그리고 <b>우리가 세상을 보는 프레임</b>이 함께 바뀐다. 두 지도를 나란히 놓고 직접 확인해 보자.</p>
+  </header>
+
+  <div class="controls">
+    <div>
+      <div class="ctl-label">왼쪽 지도 도법</div>
+      <div class="seg" id="projseg" role="group" aria-label="왼쪽 지도 도법 선택"></div>
+    </div>
+    <button class="spot" id="spotBtn" type="button">그린란드 vs 아프리카 &rarr;</button>
+  </div>
+
+  <div class="plates">
+    <figure class="plate">
+      <figcaption class="plate-head"><span class="nm" id="leftName">메르카토르</span><span class="kind warp" id="leftKind">형태 보존 · 면적 왜곡</span></figcaption>
+      <div class="plate-sub" id="leftSub">고위도를 극단적으로 부풀린다.</div>
+      <svg class="map" id="mapL" viewBox="0 0 500 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="왼쪽 지도"></svg>
+    </figure>
+    <figure class="plate">
+      <figcaption class="plate-head"><span class="nm">Equal Earth</span><span class="kind true">면적 보존 기준</span></figcaption>
+      <div class="plate-sub">대륙의 실제 면적 비율을 지킨다. 유엔이 권고한 도법.</div>
+      <svg class="map" id="mapR" viewBox="0 0 500 300" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Equal Earth 지도"></svg>
+    </figure>
+  </div>
+
+  <div class="readout empty" id="readout">지도의 나라를 클릭하면, 그 나라가 실제보다 얼마나 크게(또는 작게) 그려지는지 보여준다.</div>
+
+  <section class="reflect">
+    <h2>스스로 답해보기</h2>
+    <p class="sub">정답은 없다. 지도가 던지는 질문에 자기 생각을 적어 보자. 답은 이 브라우저에만 저장되며 어디에도 전송되지 않는다.</p>
+    <div class="qgrid" id="qgrid"></div>
+    <p class="note">이 도구는 '어떤 지도가 옳은가'가 아니라 '왜 우리는 특정 지도를 당연하게 여겼는가'를 묻는다.</p>
+  </section>
+
+  <footer class="site">
+    <span>출처 · 유엔총회 결의안 A/80/L.104 「Correct the Map」(2026) · 지도 데이터 Natural Earth / world-atlas</span>
+    <span>닷커넥터 · <a href="/post/equal-earth-map-un/">관련 글 읽기</a></span>
+  </footer>
+</div>
+
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="https://unpkg.com/d3-geo-projection@4/dist/d3-geo-projection.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var EMBED = /(\?|&)embed\b/.test(location.search);
+  if(EMBED) document.body.classList.add('embed');
+  function postH(){ if(!EMBED) return; try{parent.postMessage({mapprojHeight:Math.ceil(document.documentElement.getBoundingClientRect().height)+4},"*");}catch(e){} }
+  window.addEventListener("load",function(){postH();setTimeout(postH,600);});
+  window.addEventListener("resize",postH);
+  if(EMBED && window.ResizeObserver){ try{ new ResizeObserver(postH).observe(document.body); }catch(e){} }
+
+  // ----- Korean names for commonly explored countries (fallback = English) -----
+  var KO = {
+    "Greenland":"그린란드","Canada":"캐나다","Russia":"러시아","United States of America":"미국",
+    "China":"중국","India":"인도","Brazil":"브라질","Australia":"오스트레일리아","Argentina":"아르헨티나",
+    "Kazakhstan":"카자흐스탄","Algeria":"알제리","Dem. Rep. Congo":"콩고민주공화국","Greenland ":"그린란드",
+    "Saudi Arabia":"사우디아라비아","Mexico":"멕시코","Indonesia":"인도네시아","Sudan":"수단",
+    "Libya":"리비아","Iran":"이란","Mongolia":"몽골","Peru":"페루","Chad":"차드","Niger":"니제르",
+    "Angola":"앙골라","Mali":"말리","South Africa":"남아프리카 공화국","Colombia":"콜롬비아",
+    "Ethiopia":"에티오피아","Bolivia":"볼리비아","Mauritania":"모리타니","Egypt":"이집트",
+    "Nigeria":"나이지리아","Norway":"노르웨이","Sweden":"스웨덴","Finland":"핀란드","Germany":"독일",
+    "France":"프랑스","Spain":"스페인","Ukraine":"우크라이나","Turkey":"튀르키예","Japan":"일본",
+    "South Korea":"대한민국","Korea":"대한민국","North Korea":"북한","Thailand":"태국","Vietnam":"베트남",
+    "Iceland":"아이슬란드","United Kingdom":"영국","Italy":"이탈리아","Poland":"폴란드","Pakistan":"파키스탄",
+    "Afghanistan":"아프가니스탄","Myanmar":"미얀마","Somalia":"소말리아","Kenya":"케냐","Tanzania":"탄자니아",
+    "Namibia":"나미비아","Botswana":"보츠와나","Chile":"칠레","Venezuela":"베네수엘라","Antarctica":"남극"
+  };
+  function nameKo(n){return KO[n]||n;}
+
+  // ----- reflection questions -----
+  var Q=[
+    {tag:"프레임 · Frame",q:"왜 500년 동안 메르카토르 도법이 '표준 지도'가 되었을까? 이 지도는 누구에게, 왜 편리했을까?"},
+    {tag:"인식 · Perception",q:"지도에서 더 크게 그려진 지역을 우리는 무의식적으로 더 중요하거나 힘센 곳으로 느끼지 않을까? 근거를 들어 보자."},
+    {tag:"관점 · Perspective",q:"어떤 지도가 '정확하다'고 말할 수 있을까? 목적(항해·면적 비교·수업)이 달라지면 답도 달라질까?"},
+    {tag:"편향 · Bias & 전이",q:"지도 말고, 우리가 매일 접하는 것 중 '중립적으로 보이지만 실은 특정 관점을 담은' 것은 무엇이 있을까?"}
+  ];
+
+  // ----- projection registry (mercator & equalearth are core d3; others via d3-geo-projection) -----
+  var PROJ = [
+    {id:"mercator", label:"메르카토르", kind:"형태 보존 · 면적 왜곡", sub:"항해용으로 태어나 고위도를 극단적으로 부풀린다.", make:function(){return d3.geoMercator();}, fit:"box", warp:true},
+    {id:"gallpeters", label:"갈-페터스", kind:"면적 보존 · 형태 왜곡", sub:"면적은 정확하지만 대륙이 위아래로 길게 늘어난다.", make:function(){return d3.geoCylindricalEqualArea && d3.geoCylindricalEqualArea().parallel(45);}, fit:"sphere", warp:false},
+    {id:"robinson", label:"로빈슨", kind:"절충 도법", sub:"면적과 형태를 적당히 타협해 '보기 좋게' 그린다.", make:function(){return d3.geoRobinson && d3.geoRobinson();}, fit:"sphere", warp:true},
+    {id:"equirect", label:"정거원통", kind:"단순 격자", sub:"위·경도를 그대로 사각 격자에 편다. 가장 단순하다.", make:function(){return d3.geoEquirectangular();}, fit:"sphere", warp:true}
+  ].filter(function(p){ try{return !!p.make();}catch(e){return false;} });
+
+  var BOX82={type:"Polygon",coordinates:[[[-180,-82],[180,-82],[180,82],[-180,82],[-180,-82]]]};
+  function build(id,w,h){
+    var def=PROJ.find(function(p){return p.id===id;})||PROJ[0];
+    var p=def.make();
+    if(def.fit==="box") p.fitSize([w,h],BOX82); else p.fitSize([w,h],{type:"Sphere"});
+    return p;
+  }
+  var EE=function(w,h){var p=d3.geoEqualEarth();p.fitSize([w,h],{type:"Sphere"});return p;};
+
+  var VBL={w:500,h:320}, VBR={w:500,h:300};
+  var svgL=d3.select("#mapL"), svgR=d3.select("#mapR");
+  var graticule=d3.geoGraticule10();
+  var countries=[], selected=null, leftId="mercator";
+  var trueSum=0, leftSum=0, leftPath=null;
+
+  function isAntarctica(f){return f.properties && (f.properties.name==="Antarctica");}
+
+  function renderMap(svg,proj,vb,role){
+    svg.selectAll("*").remove();
+    var path=d3.geoPath(proj);
+    svg.append("path").attr("class","sphere").attr("d",path({type:"Sphere"}));
+    svg.append("path").attr("class","grat").attr("d",path(graticule));
+    svg.append("g").selectAll("path.country").data(countries).join("path")
+      .attr("class","country").attr("d",path)
+      .attr("data-name",function(d){return d.properties.name;})
+      .on("mouseover",function(){ if(!selected) d3.select(this).style("fill","#dcae86"); })
+      .on("mouseout",function(){ if(!selected) d3.select(this).style("fill",null); })
+      .on("click",function(ev,d){ selectCountry(d.properties.name); });
+    return path;
+  }
+
+  function computeStats(){
+    leftPath=d3.geoPath(build(leftId,VBL.w,VBL.h));
+    trueSum=0; leftSum=0;
+    countries.forEach(function(f){
+      if(isAntarctica(f)) return;               // Mercator sends the pole to infinity
+      trueSum += d3.geoArea(f);
+      leftSum += Math.abs(leftPath.area(f));
+    });
+  }
+
+  function factorFor(name){
+    var f=countries.find(function(d){return d.properties.name===name;});
+    if(!f||isAntarctica(f)||!leftSum||!trueSum) return null;
+    var pxFrac=Math.abs(leftPath.area(f))/leftSum;
+    var truFrac=d3.geoArea(f)/trueSum;
+    if(!truFrac) return null;
+    return pxFrac/truFrac; // >1 = drawn larger than its true share; <1 = smaller
+  }
+
+  function highlight(name){
+    svgL.selectAll("path.country").attr("class",function(d){
+      if(!name) return "country";
+      return d.properties.name===name ? "country sel-warp" : "country dim";
+    }).style("fill",null);
+    svgR.selectAll("path.country").attr("class",function(d){
+      if(!name) return "country";
+      return d.properties.name===name ? "country sel-true" : "country dim";
+    }).style("fill",null);
+  }
+
+  function selectCountry(name){
+    selected=name; highlight(name);
+    var fac=factorFor(name);
+    var ro=document.getElementById("readout");
+    var def=PROJ.find(function(p){return p.id===leftId;});
+    if(fac==null){
+      ro.className="readout"; ro.innerHTML='<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div>'+
+        '<div class="ro-body"><div class="ro-txt">이 지역은 극점을 포함해 이 도법에서 면적을 잴 수 없다.</div></div>';
+      return;
+    }
+    var cls,label,txt,barPct,barColor;
+    var f1=Math.round(fac*10)/10;
+    if(fac>=1.2){cls="big";label='<span class="ro-fig big">'+f1+'<sup>배</sup></span>';
+      txt="<b>"+def.label+"</b> 지도에서는 실제 면적 비중보다 약 "+f1+"배 <b>크게</b> 그려진다. 그만큼 우리 눈에 더 크고 중요하게 각인된다.";
+      barColor="var(--warp)"; barPct=Math.min(100,50+ (Math.log(fac)/Math.log(8))*50);}
+    else if(fac<=0.83){var inv=Math.round((1/fac)*10)/10;cls="small";label='<span class="ro-fig small">'+inv+'<sup>배 작게</sup></span>';
+      txt="<b>"+def.label+"</b> 지도에서는 실제보다 약 "+inv+"배 <b>작게</b> 그려진다. 실제 크기에 비해 눈에 덜 띈다.";
+      barColor="var(--true)"; barPct=Math.max(0,50- (Math.log(1/fac)/Math.log(8))*50);}
+    else{cls="same";label='<span class="ro-fig same">≈ 실제</span>';
+      txt="<b>"+def.label+"</b> 지도에서 이 지역은 실제 면적 비중과 <b>거의 같게</b> 그려진다."+ (def.warp?" 하지만 형태(모양)는 왜곡될 수 있다.":"");
+      barColor="var(--ink-3)"; barPct=50;}
+    ro.className="readout";
+    ro.innerHTML=
+      '<div class="ro-country">'+nameKo(name)+'<span class="en">'+name+'</span></div>'+
+      '<div class="ro-body">'+label+
+      '<div class="ro-txt">'+txt+'</div>'+
+      '<div class="ro-bar"><i></i><b style="left:'+(barPct<50?barPct:50)+'%;width:'+Math.abs(barPct-50)+'%;background:'+barColor+'"></b></div>'+
+      '</div>';
+  }
+
+  function setLeft(id){
+    leftId=id;
+    var def=PROJ.find(function(p){return p.id===id;});
+    document.getElementById("leftName").textContent=def.label;
+    var lk=document.getElementById("leftKind"); lk.textContent=def.kind; lk.className="kind "+(def.warp?"warp":"true");
+    document.getElementById("leftSub").textContent=def.sub;
+    document.querySelectorAll("#projseg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.id===id));});
+    renderMap(svgL,build(id,VBL.w,VBL.h),VBL,"left");
+    computeStats();
+    if(selected) selectCountry(selected); else highlight(null);
+  }
+
+  function spotlight(){
+    // Greenland is the classic Mercator illusion; show it against the Africa fact.
+    if(leftId!=="mercator") setLeft("mercator");
+    var g=countries.find(function(d){return d.properties.name==="Greenland";});
+    if(g){ selectCountry("Greenland");
+      var ro=document.getElementById("readout");
+      ro.innerHTML += '<div class="ro-txt" style="flex-basis:100%;border-top:1px dashed var(--edge);padding-top:.6rem;margin-top:.2rem"><b>착시의 대표 사례.</b> 메르카토르에서 그린란드는 아프리카만큼 커 보인다. 그러나 실제 아프리카는 그린란드의 <b>약 14배</b>다. Equal Earth(오른쪽)에서 둘의 진짜 크기 차이를 확인해 보자.</div>';
+    }
+  }
+
+  // ----- reflection questions with localStorage -----
+  function buildQuestions(){
+    var g=document.getElementById("qgrid");
+    Q.forEach(function(item,i){
+      var key="mapproj.q"+i;
+      var card=document.createElement("div"); card.className="q";
+      card.innerHTML='<div class="tag">'+item.tag+'</div><div class="qt">'+item.q+'</div>'+
+        '<textarea placeholder="여기에 내 생각을 적어 보자…" aria-label="'+item.q+'"></textarea><div class="saved">저장됨 ✓</div>';
+      var ta=card.querySelector("textarea"), sv=card.querySelector(".saved");
+      try{ta.value=localStorage.getItem(key)||"";}catch(e){}
+      var t;
+      ta.addEventListener("input",function(){
+        try{localStorage.setItem(key,ta.value);}catch(e){}
+        sv.classList.add("on"); clearTimeout(t); t=setTimeout(function(){sv.classList.remove("on");},1200);
+      });
+      g.appendChild(card);
+    });
+  }
+
+  function boot(world){
+    var geo=topojson.feature(world,world.objects.countries);
+    countries=geo.features.filter(function(f){return f.properties && f.properties.name;});
+    // segmented control
+    var seg=document.getElementById("projseg");
+    PROJ.forEach(function(p){
+      var b=document.createElement("button"); b.type="button"; b.textContent=p.label; b.dataset.id=p.id;
+      b.setAttribute("aria-pressed",String(p.id===leftId));
+      b.addEventListener("click",function(){setLeft(p.id);});
+      seg.appendChild(b);
+    });
+    renderMap(svgR,EE(VBR.w,VBR.h),VBR,"right");
+    setLeft(leftId);
+    document.getElementById("spotBtn").addEventListener("click",spotlight);
+    if(!EMBED) buildQuestions();
+    // deep-link: ?spot=1 opens the Greenland/Africa spotlight; ?sel=<EN name> preselects a country
+    var sp=new URLSearchParams(location.search);
+    if(sp.get("spot")) spotlight();
+    else if(sp.get("sel")) selectCountry(sp.get("sel"));
+  }
+
+  d3.json("https://unpkg.com/world-atlas@2/countries-110m.json").then(boot).catch(function(err){
+    console.error(err);
+    document.getElementById("readout").innerHTML='<div class="ro-txt">지도 데이터를 불러오지 못했다. 인터넷 연결을 확인하고 새로고침해 보자.</div>';
+  });
+})();
+</script>
+</body>
+</html>

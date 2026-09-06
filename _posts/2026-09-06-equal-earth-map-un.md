@@ -21,6 +21,17 @@ permalink: /post/equal-earth-map-un/
 <figcaption>유엔이 사용을 권고한 Equal Earth 도법 세계지도. 대륙 간 실제 면적 비율을 반영한다.</figcaption>
 </figure>
 
+## 두 지도를 나란히 놓고 직접 확인하기
+
+말로만 읽으면 잘 와닿지 않는다. 아래는 **메르카토르와 Equal Earth를 나란히 띄운 대화형 지도**다. 나라를 클릭하면 그 나라가 실제 면적 비중보다 얼마나 크게(또는 작게) 그려지는지 알려준다. 왼쪽 도법을 갈-페터스·로빈슨 등으로 바꿔 비교할 수도 있다. 먼저 그린란드가 두 지도에서 어떻게 달라지는지 보라.
+
+<iframe id="mapproj-embed" src="/tools/map-projection/?embed=1&amp;spot=1" title="메르카토르 vs Equal Earth 대화형 비교" loading="lazy" style="width:100%;height:820px;border:1px solid rgba(128,128,128,.35);border-radius:10px;background:#f4efe4;margin:0.5rem 0 0.7rem"></iframe>
+
+<p style="text-align:center;margin:0 0 1.2rem"><a href="/tools/map-projection/" target="_blank" rel="noopener"><strong>전체 화면으로 탐구하기 — 관점·프레임·편향 질문까지 →</strong></a></p>
+
+<script>
+(function(){window.addEventListener("message",function(e){var d=e&&e.data;if(d&&d.mapprojHeight){var f=document.getElementById("mapproj-embed");if(f&&d.mapprojHeight>200)f.style.height=d.mapprojHeight+"px";}});})();
+</script>
 
 ## 유엔의 '지도 바로잡기' 선언
 
