@@ -9,8 +9,8 @@ author_profile: false
 toc: true
 toc_sticky: true
 header:
-  teaser: /assets/lectures/books/book-08-cover.jpg
-  og_image: /assets/lectures/books/book-08-cover.jpg
+  teaser: /assets/lectures/books/vibecode-for-teacher-cover.jpg
+  og_image: /assets/lectures/books/vibecode-for-teacher-cover.jpg
 ---
 
 한빛미디어에서 출간 예정인 『요즘 교사를 위한 웹앱 만들기 with 바이브 코딩』의 조판원고를 큐레이션한 정리본이다. 이 책은 코드를 직접 쓰지 않고도 교실의 불편함을 웹앱으로 해결하는 과정을, 문제 발견부터 로컬 개발·배포까지 한 흐름으로 담았다. 아래는 4부 8장과 부록의 구성·핵심 내용·실습을 요약한 것이며, 조판원고 전체는 아래에서 내려받을 수 있다.
