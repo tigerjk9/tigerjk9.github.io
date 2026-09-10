@@ -20,6 +20,15 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 
 5단계(전역 자산 동기화)는 `~/.claude`의 스킬·에이전트·커맨드를 비공개 저장소 `tigerjk9/claude-config`로 밀어 **다른 머신에서도 잡히게** 한다(2026-09-09 추가). 프로젝트 저장소 push는 `~/.claude`를 건드리지 않아, 한 머신에서 만든 전역 스킬이 wrap을 해도 다른 머신에 전달되지 않는 문제가 있었다. `~/.claude/.gitignore`가 `/*`로 전부 무시한 뒤 `skills/`·`agents/`·`commands/`·`CLAUDE.md`만 여는 허용목록 방식이라 **새로 만드는 전역 스킬은 자동으로 대상에 포함**되고, 자격증명·세션·메모리는 구조적으로 올라가지 않는다. 대량설치분(gstack 555MB 포함 스킬 92·에이전트 19)과 외부 클론 `hwpx-skill`은 제외 — 새 머신은 `~/.claude/bootstrap.ps1`로 받는다.
 
+**새 머신 온보딩 (2026-09-10, 이 머신에 적용)**: `bootstrap.ps1`이 저장소 안에 있어 닭-달걀이다. 먼저 `gh repo clone tigerjk9/claude-config <임시경로>` 한 뒤 **그 사본의** `bootstrap.ps1`을 실행한다 — 스크립트가 `~/.claude`에서 `git init` → `fetch` → `reset`(인덱스만) → **로컬에 없는 파일만** `checkout` 한다. 비파괴적이라 로컬이 더 최신인 파일은 덮어쓰지 않고 목록만 보고한다(이 머신은 OMC 4.13.7 `CLAUDE.md`·`_workspace` 회전 규칙이 든 `orchestrator-template.md` 2건이 로컬 우선이었다). 실행에서 걸린 함정 넷:
+
+- **BOM 필수** — Windows PowerShell 5.1은 BOM 없는 UTF-8 `.ps1`을 cp949로 읽어 한글 주석에서 `Missing closing '}'` 파서 오류로 죽는다. `pwsh`(7)가 없는 머신은 **실행 자체가 불가능**했다
+- **`core.quotePath=false` 필수** — `git ls-files --deleted`가 비ASCII 경로를 `í…` 8진 이스케이프로 출력해 그대로 `checkout`에 넘기면 pathspec 매칭에 실패한다(`skills/탐구부스/SKILL.md` 복원 실패로 실측). `[Console]::OutputEncoding = UTF8`도 함께 필요
+- **대량설치 제외 목록은 머신별** — 머신마다 스킬 디렉토리 이름 체계가 달라(이 머신은 `gstack-*`·`superpowers*`·`supanova-*`·영문 제네릭 팩) 기존 목록으로는 안 걸러진다. 온보딩 직후 `.gitignore` 확장이 **필수 단계** — 안 하면 첫 wrap이 서드파티 83개·86MB를 통째로 올린다
+- **구버전 `commands/wrap.md` 제거** — 5단계짜리 구 커맨드가 남아 있으면 같은 `/wrap` 이름을 선점해 **6단계 스킬이 등록되지 않는다**(실측: 삭제 직후 스킬 등록됨)
+
+앞의 둘은 `bootstrap.ps1`에 수정 반영했다(claude-config `a367a64`).
+
 ### 슬래시 커맨드 카탈로그
 
 블로그 자동화·유지보수 슬래시 커맨드 전체 목록. 상세는 각 커맨드 파일(`.claude/commands/<name>.md`)과 아래 해당 섹션 참고.
