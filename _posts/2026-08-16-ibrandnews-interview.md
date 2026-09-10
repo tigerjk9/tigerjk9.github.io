@@ -150,9 +150,9 @@ AI 티처스쿨은 저에게 아주 특별하고 소중한 의미가 있는 곳�
 
 ## 닷커넥터 김진관은
 
-<figure style="max-width:560px;margin-inline:auto">
-<img src="/assets/dot-connector-books.png" alt="닷커넥터의 서재 — 김진관 저서 표지 모음">
-<figcaption>닷커넥터의 서재.</figcaption>
+<figure style="display:block;max-width:100%;margin-inline:auto;text-align:center">
+<img src="/assets/dot-connector-library.jpg" alt="닷커넥터의 서재 — 김진관 저서 표지 모음">
+<figcaption style="width:100%;text-align:center">닷커넥터의 서재</figcaption>
 </figure>
 
 대전둔천초등학교에 재직 중인 초등 교사이자, 교사 연구회 'AI 티처스쿨(AITS)'의 대표교사다. 블로그에서는 '닷커넥터(dot_connector)'라는 이름으로 기술과 사람, 데이터와 오랜 믿음 사이의 점을 잇는 기록을 남긴다. 한국교원대학교 컴퓨터교육과 박사과정을 밟고 있다(휴학 중).

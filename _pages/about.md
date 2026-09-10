@@ -346,9 +346,9 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 
 <section class="ab-sec" id="books">
 <h2>집필</h2>
-<figure style="max-width:560px;margin-inline:auto">
-<img src="/assets/dot-connector-books.png" alt="닷커넥터의 서재 — 김진관 저서 표지 모음">
-<figcaption>닷커넥터의 서재.</figcaption>
+<figure style="max-width:100%;margin-inline:auto">
+<img src="/assets/dot-connector-library.jpg" alt="닷커넥터의 서재 — 김진관 저서 표지 모음">
+<figcaption>닷커넥터의 서재</figcaption>
 </figure>
 
 <p>『요즘 교사를 위한 웹앱 만들기 with 바이브 코딩』·『요즘 교사를 위한 AI 디지털 수업 설계 가이드』(한빛미디어), 『대한민국 교육 르네상스』(앤써북), 『교실 속 AI 디지털 교육 인사이트』·『교육자를 위한 디지털 AI 도구 라이브러리』(박영사), 『교사가 이끄는 교실혁명 100% 활용하기』 시리즈 초등편·중등편·특수교육편(박영사), 『챗GPT로 시작하는 생성형 AI 프로젝트 수업』(테크빌), 『명탐정 준의 AI 파란 노트』(에이블북스), 『너도 한번 AI 만들어 볼래?』(미디어숲) 등을 함께 썼다.</p>
