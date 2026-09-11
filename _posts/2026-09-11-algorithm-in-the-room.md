@@ -13,9 +13,9 @@ AI가 교육을 재편하고 있다는 말은 이제 공리처럼 들린다. 유
 
 이 책은 26편의 짧은 글(싱크피스)을 여섯 가지 질문으로 묶었다. 주체성, 청소년 발달, 교수법과 평가, 사고와 표현, 공공재 거버넌스, 미래 상상력이다. 필자는 교사와 연구자, 학생, 정책 담당자로 갈리고 결론도 서로 어긋난다. 다만 한 가지 전제는 같다. AI 시대의 교육은 아직 결정되지 않았다.
 
-<figure style="max-width:420px;margin-inline:auto">
-<img src="/assets/algorithm-in-the-room-cover.jpg" alt="유네스코 「방 안의 알고리즘」 한국어판 표지">
-<figcaption>유네스코 「방 안의 알고리즘」 한국어판 표지. 표지 그림은 Jamillah Knowles &amp; Reset.Tech Australia / betterimagesofai.org (CC BY 4.0).</figcaption>
+<figure style="max-width:560px;margin-inline:auto">
+<img src="/assets/algorithm-in-the-room-card.jpg" alt="교실 AI 파멸의 순환, AI가 내고 AI가 풀고 AI가 채점한다">
+<figcaption>카드 배경은 원서 표지 그림. Jamillah Knowles &amp; Reset.Tech Australia / betterimagesofai.org (CC BY 4.0).</figcaption>
 </figure>
 
 ## 누가 주체성과 자율성을 쥘 것인가
