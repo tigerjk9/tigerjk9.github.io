@@ -18,6 +18,12 @@ AI가 교육을 재편하고 있다는 말은 이제 공리처럼 들린다. 유
 <figcaption>카드 배경은 원서 표지 그림. Jamillah Knowles &amp; Reset.Tech Australia / betterimagesofai.org (CC BY 4.0).</figcaption>
 </figure>
 
+<div class="gyoan-actions">
+  <a class="gyoan-btn gyoan-btn--download" href="https://github.com/tigerjk9/tigerjk9.github.io/releases/download/algorithm-in-the-room-ko/algorithm-in-the-room-ko-2026.pdf" target="_blank" rel="noopener"><i class="fas fa-download" aria-hidden="true"></i> 한국어판 전문 내려받기 <span class="gyoan-btn__meta">PDF · 173쪽 · 약 11MB</span></a>
+</div>
+
+원서가 CC BY-SA 3.0 IGO 라이선스로 공개돼 있어 한국어판도 같은 조건으로 쓰고 나눌 수 있다. 파일은 GitHub 릴리스에 두었고, 내려받는 이름은 영문(algorithm-in-the-room-ko-2026.pdf)이다.
+
 ## 누가 주체성과 자율성을 쥘 것인가
 
 결정과 행동이 점점 더 인간과 AI의 ‘공동 창작물’이 되는 시대다. 교육의 핵심 목표 중 하나는 학생의 주체성을 기르는 것이다. 하지만 효율성이라는 압박 속에서 학생과 교사는 인지적으로 까다로운 작업까지 기꺼이 AI에 위임하고 있다. 인간의 자율성은 이 과정에서 얼마나 지켜질 수 있는가.
@@ -100,3 +106,4 @@ AI는 개인 맞춤형 학습과 즉각적인 피드백을 약속하며 교육 �
 - 유네스코(UNESCO). 2026. 「방 안의 알고리즘, AI가 교육의 미래에 미칠 영향을 보고 마주하기」(원서 *The algorithm in the room: Seeing and confronting the implications of AI for the future of education*). Paris, UNESCO. ISBN 978-92-3-100897-9. https://doi.org/10.54675/PMRO5023
 - 이 글은 CC BY-SA 3.0 IGO 라이선스로 공개된 원서의 한국어판 전문을 바탕으로 정리했다.
 - 표지 그림: Jamillah Knowles & Reset.Tech Australia / https://betterimagesofai.org (CC BY 4.0)
+- 한국어판 전문 PDF: https://github.com/tigerjk9/tigerjk9.github.io/releases/download/algorithm-in-the-room-ko/algorithm-in-the-room-ko-2026.pdf
