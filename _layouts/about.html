@@ -27,7 +27,7 @@ html[data-theme="light"] #about-app{
 #about-app .rv.in{opacity:1;transform:none}
 
 /* ---------- 그래프 히어로 ---------- */
-#about-app .ab-hero{position:relative;max-width:1440px;margin:0 auto;padding:40px 24px 8px}
+#about-app .ab-hero{position:relative;max-width:1440px;margin:0 auto;padding:40px 24px 8px;background:radial-gradient(58% 48% at 20% 16%,rgba(120,90,230,.16),transparent 70%),radial-gradient(52% 46% at 84% 28%,rgba(30,130,200,.13),transparent 72%),radial-gradient(48% 52% at 62% 92%,rgba(150,70,200,.10),transparent 72%)}
 /* 라이트 모드 히어로 — 플랫 화이트 대신 오로라 팔레트의 옅은 기운 */
 html[data-theme="light"] #about-app .ab-hero{
   background:
@@ -45,11 +45,15 @@ html[data-theme="light"] #about-app .ab-hero{
 #about-app .ab-intro b{color:var(--text);font-weight:600}
 #about-app .ab-chips{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
   gap:7px;margin:26px auto 0;max-width:600px}
-#about-app .ab-chips span{padding:.32em .85em;border:1px solid var(--line);border-radius:999px;
-  font-size:.78rem;font-weight:500;color:var(--muted);letter-spacing:.01em;
-  transition:color .2s,border-color .2s}
-#about-app .ab-chips span:hover{color:var(--body);border-color:color-mix(in srgb,var(--acc) 40%,transparent)}
-#about-app .ab-chips span.hot{border-color:color-mix(in srgb,var(--acc) 38%,transparent);color:var(--acc)}
+#about-app .ab-chips span{display:inline-flex;align-items:center;gap:.5em;
+  padding:.36em .95em;border:1px solid color-mix(in srgb,var(--acc) 20%,var(--line));border-radius:999px;
+  font-size:.78rem;font-weight:500;color:var(--body);letter-spacing:.01em;
+  background:color-mix(in srgb,var(--acc) 5%,transparent);
+  transition:color .2s,border-color .2s,box-shadow .2s}
+#about-app .ab-chips span::before{content:"";width:5px;height:5px;border-radius:50%;flex:none;
+  background:linear-gradient(135deg,var(--amber),var(--acc))}
+#about-app .ab-chips span:hover{color:var(--text);border-color:color-mix(in srgb,var(--acc) 45%,transparent);
+  box-shadow:0 4px 14px color-mix(in srgb,var(--acc) 14%,transparent)}
 
 #about-app .ab-me{margin:34px auto 0;text-align:center;width:240px}
 #about-app .ab-ring{position:relative;display:block;width:240px;height:240px;margin:0 auto}
@@ -68,7 +72,8 @@ html[data-theme="light"] #about-app .ab-hero{
   margin:26px auto 0;max-width:560px}
 #about-app .ab-node{display:block;background:var(--nodebg);border:1px solid var(--nodebd);
   border-radius:16px;padding:.6em 1.1em;text-align:center;text-decoration:none;
-  box-shadow:0 8px 26px rgba(2,8,20,.26);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:0 8px 26px rgba(2,8,20,.42),0 0 0 1px rgba(120,200,255,.05),0 0 20px rgba(96,196,255,.07);
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
   transition:border-color .2s,transform .2s,box-shadow .2s}
 #about-app .ab-node:hover{border-color:var(--amber);transform:translateY(-2px);
   box-shadow:0 12px 32px color-mix(in srgb,var(--acc) 20%,transparent)}
@@ -308,7 +313,7 @@ html[data-theme="light"] #about-app .ab-tl::before{
   var PAIRS=[[2,3],[1,0],[5,6],[3,4]];
   var AMB=[],seed=7;
   function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
-  for(var i=0;i<70;i++)AMB.push({x:rnd(),y:rnd(),r:0.8+rnd()*1.6,a:0.1+rnd()*0.28});
+  for(var i=0;i<140;i++)AMB.push({x:rnd(),y:rnd(),r:0.6+rnd()*2.0,a:0.08+rnd()*0.34,tw:rnd()*6.28,ts:0.6+rnd()*1.4});
   var GM=false,mx=0,my=0,t0=0,rafId=null,heroVisible=true;
   var meX=0,meY=0,meR=126,meRing=120,lastT=0,prevTs=null;
   function qpt(p,x0,y0,qx,qy,x1,y1){
@@ -394,20 +399,31 @@ html[data-theme="light"] #about-app .ab-tl::before{
     var blue=light?'9,105,218':'88,166,255';
     var amber=light?'#a8781a':'#e6b84a';
     AMB.forEach(function(p,ai){
-      c.fillStyle=(ai%9===0)?amber:(light?'#6b7280':'#7d8590');
-      c.globalAlpha=(ai%9===0)?p.a*0.9:p.a;
-      c.beginPath();c.arc(p.x*W,p.y*H,p.r,0,7);c.fill();
+      var tw=0.55+0.45*Math.sin((t||0)*p.ts+p.tw),bright=(ai%11===0);
+      if(bright){c.shadowBlur=8;c.shadowColor=light?'#6d4fd8':'#9fd8ff';c.fillStyle=light?'#8a6414':'#dff0ff';}
+      else{c.shadowBlur=0;c.fillStyle=light?'#9aa4b2':'#8aa0c8';}
+      c.globalAlpha=(bright?p.a*1.15:p.a*0.9)*tw;
+      c.beginPath();c.arc(p.x*W,p.y*H,bright?p.r*1.3:p.r,0,7);c.fill();
     });
-    c.globalAlpha=1;
+    c.shadowBlur=0;c.globalAlpha=1;
     var cxp=meX||0.5*W,cyp=meY||0.5*H,R0=meR||126;
     c.setLineDash([]);
     /* 오로라 스레드 팔레트 — 사람(앰버)에서 성과(시안블루)로 식어 가는 그라디언트 */
-    var A1=light?'176,125,24':'230,184,74';
-    var A2=light?'209,86,124':'241,143,165';
-    var A3=light?'109,79,216':'157,140,255';
-    var A4=light?'9,105,218':'108,184,255';
-    var cometHead=light?'#5b43c9':'#ffffff';
-    var cometGlow=light?'#6d4fd8':'#9d8cff';
+    var A1=light?'176,125,24':'240,206,120';
+    var A2=light?'147,79,214':'176,130,255';
+    var A3=light?'20,124,196':'96,196,255';
+    var A4=light?'9,105,218':'190,232,255';
+    var cometHead=light?'#4b3bd0':'#ffffff';
+    var cometGlow=light?'#6d4fd8':'#8fd4ff';
+    /* 궤도 링 — 초상 주위 동심 파선(공전 느낌) */
+    var _R0=meR||126,_rings=[_R0*1.55,_R0*2.2,_R0*3.0];
+    for(var _ri=0;_ri<_rings.length;_ri++){
+      c.strokeStyle='rgba('+A3+','+(0.11-_ri*0.025).toFixed(3)+')';
+      c.lineWidth=1;c.setLineDash([2,11]);
+      c.lineDashOffset=-(((t||0)*(5+_ri*3))%13)*(_ri%2?-1:1);
+      c.beginPath();c.arc(meX||0.5*W,meY||0.5*H,_rings[_ri],0,7);c.stroke();
+    }
+    c.setLineDash([]);c.lineDashOffset=0;
     nodes.forEach(function(el,i){
       var x=(el._bx||0)+(el._dx||0),y=(el._by||0)+(el._dy||0);
       var dx=x-cxp,dy=y-cyp,len=Math.sqrt(dx*dx+dy*dy)||1;
@@ -433,7 +449,9 @@ html[data-theme="light"] #about-app .ab-tl::before{
       g2.addColorStop(0.42,'rgba('+A2+','+Math.min(1,0.5*ha).toFixed(3)+')');
       g2.addColorStop(0.75,'rgba('+A3+','+Math.min(1,0.46*ha).toFixed(3)+')');
       g2.addColorStop(1,'rgba('+A4+','+Math.min(1,0.62*ha).toFixed(3)+')');
+      c.shadowBlur=5+hv*7;c.shadowColor='rgba('+A3+',0.85)';
       strokePath(c,pts,g2,1.25+hv*0.65);
+      c.shadowBlur=0;
       c.fillStyle=amber;c.globalAlpha=.9*ip;
       c.beginPath();c.arc(x0,y0,2.1,0,7);c.fill();c.globalAlpha=1;
       /* 흐르는 빛 입자 — 사람에서 성과로 */
