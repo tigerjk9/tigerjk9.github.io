@@ -21,7 +21,7 @@ permalink: /post/a-guided-inquiry-approach-to-students-co-designing-generative-a
 (1) 이 연구는 안내된 탐구 학습 접근 방식을 채택함. 이는 학생들이 AI 관련 자료를 탐색하고, 개인적인 정책 제안을 개발하며, 이후 동료들과 협력하여 다양한 이해관계자의 관점을 통합하는 집단 정책을 만드는 일련의 과정으로 구성됨. 학생들이 직접 정책을 설계함과 동시에 정책 수립 과정에 대한 성찰을 유도함.
 
 <figure>
-<img src="/assets/a-guided-inquiry-approach-to-students-co-designing-generative-ai-course-policies-fig-2.png" alt="생성형 AI 모듈의 주별 활동 흐름도">
+<img src="/assets/a-guided-inquiry-approach-to-students-co-designing-generative-ai-course-policies-fig-1.png" alt="생성형 AI 모듈의 주별 활동 흐름도">
 <figcaption>생성형 AI 모듈의 주별 활동 흐름</figcaption>
 </figure>
 
@@ -63,14 +63,14 @@ permalink: /post/a-guided-inquiry-approach-to-students-co-designing-generative-a
 | | 7.3 정책 적극 검토 및 업데이트 | 기술 발전에 맞춰 정책을 정기적으로 검토하고 학생 의견을 반영해야 함. |
 
 <figure>
-<img src="/assets/a-guided-inquiry-approach-to-students-co-designing-generative-ai-course-policies-fig-3.png" alt="그룹이 설계한 생성형 AI 교과 정책의 일부 발췌">
+<img src="/assets/a-guided-inquiry-approach-to-students-co-designing-generative-ai-course-policies-fig-2.png" alt="그룹이 설계한 생성형 AI 교과 정책의 일부 발췌">
 <figcaption>그룹이 설계한 생성형 AI 교과 정책의 일부 발췌</figcaption>
 </figure>
 
 (3) 정책 설계 과정에 대한 학생들의 성찰에서 다음 세 가지 주제가 두드러지게 나타남.
 
 <figure>
-<img src="/assets/a-guided-inquiry-approach-to-students-co-designing-generative-ai-course-policies-fig-1.png" alt="참가자의 생성형 AI 모듈 및 활동에 대한 성찰 빈도">
+<img src="/assets/a-guided-inquiry-approach-to-students-co-designing-generative-ai-course-policies-fig-3.png" alt="참가자의 생성형 AI 모듈 및 활동에 대한 성찰 빈도">
 <figcaption>참가자의 생성형 AI 모듈 및 활동에 대한 성찰 빈도</figcaption>
 </figure>
 
