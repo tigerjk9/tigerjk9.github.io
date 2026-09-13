@@ -65,6 +65,7 @@ permalink: /post/exploring-how-ancestral-digital-self-influences-history-learnin
 | 적응 단계(Adaptation Phase) | 디지털 자아 강사를 학습 초기에 점진적으로 소개함. | 새로움 효과와 불쾌감을 완화하여 학습자가 AI에 적응하도록 함. |
 | 선택적 존재(Selective Presence) | 핵심적인 교육 순간에만 강사를 강조하고, 상세한 정보 전달 시에는 최소화함. | 주의 분산을 줄이고 학습 내용에 대한 집중력을 높임. |
 | 양식화된 추상화(Stylized Abstraction) | 불쾌한 골짜기를 줄이면서도 식별 가능한 특징은 유지하도록 비사실적인 표현 방식(만화풍 등)을 사용함. | 시각적 불편함을 줄여 정서적 몰입을 방해하지 않음. |
+
 이러한 전략은 몰입감 있는 자기 표현과 교육적 효과성 사이의 균형을 찾는 데 기여함.
 
 ## 5. 리뷰어의 ADD(+) One: 생각 더하기
