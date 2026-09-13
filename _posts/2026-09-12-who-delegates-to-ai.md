@@ -34,10 +34,11 @@ permalink: /post/who-delegates-to-ai/
 </figure>
 
 이 그림은 AI 노출의 네 가지 중첩된 계층을 보여줌.
-*   능력 노출(Capability Exposure): AI가 기술적으로 수행할 수 있는 작업의 범위.
-*   가용성 노출(Availability Exposure): AI 능력이 실제 소프트웨어 도구로 구현되어 작업자들이 사용할 수 있는 상태.
-*   관찰된 노출(Observed Exposure): 작업자들이 실제로 AI 도구를 사용하는 정도.
-*   **위임된 노출(Delegated Exposure)**: 일회성 사용과 달리, 작업자들이 특정 작업을 AI에 의도적으로 위임하여 워크플로우에 통합하는 정도. 이 연구가 집중하는 부분이 바로 이 위임된 노출임.
+
+- 능력 노출(Capability Exposure): AI가 기술적으로 수행할 수 있는 작업의 범위.
+- 가용성 노출(Availability Exposure): AI 능력이 실제 소프트웨어 도구로 구현되어 작업자들이 사용할 수 있는 상태.
+- 관찰된 노출(Observed Exposure): 작업자들이 실제로 AI 도구를 사용하는 정도.
+- **위임된 노출(Delegated Exposure)**: 일회성 사용과 달리, 작업자들이 특정 작업을 AI에 의도적으로 위임하여 워크플로우에 통합하는 정도. 이 연구가 집중하는 부분이 바로 이 위임된 노출임.
 
 <figure>
 <img src="/assets/who-delegates-to-ai-fig-5.png" alt="GitSkill 파일과 O*NET 작업 간의 매핑 구조 예시. 스킬 설명이 O*NET 작업 설명과 코사인 유사도로 비교되어 직업 수준 AAI로 집계됨을 보여줌.">
