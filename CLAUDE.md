@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 한국어 글쓰기 상시 규칙
+
+블로그 글을 작성·수정할 때마다 [im-not-ai](https://github.com/epoko77-ai/im-not-ai)의 한국어 윤문 원칙을 적용한다(사용자 지정, 2026-09-15). 상세한 공통 규칙은 `~/.claude/codex-port/korean-writing.md`에 있다. 번역투, 상투적인 강조, 반복 대구, 같은 문장 리듬, 과도한 볼드·대시·불릿을 점검하되 사실·수치·인용·조건·장르와 필요한 수업 절차는 보존한다. 공개 본문에는 자료를 제공받은 경위나 AI의 작성·검토 과정을 넣지 않는다. 출처는 서지 정보로 간결하게 남기고 가상 사례는 표시한다. 초안 작성 후 전체 윤문과 의미 대조를 마쳐야 게시한다.
+
 ## Commands
 
 ```bash
