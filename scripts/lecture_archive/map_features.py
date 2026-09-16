@@ -86,7 +86,7 @@ def call_gemini(slide: Dict[str, Any], catalog: List[Dict[str, Any]]) -> Optiona
 {catalog_text}
 
 분류 결과를 기능명만 한 줄로 답하라. 매칭되는 것이 없으면 'NONE'."""
-    model = genai.GenerativeModel("gemini-2.0-flash-exp")
+    model = genai.GenerativeModel("gemini-2.5-flash")
     resp = model.generate_content(prompt)
     name = resp.text.strip()
     if name == "NONE":

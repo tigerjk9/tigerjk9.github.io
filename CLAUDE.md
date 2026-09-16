@@ -15,6 +15,7 @@ bundle exec jekyll build        # 사이트 빌드
 bundle exec rake preview        # 테마 테스트 (http://localhost:4000/test/)
 bundle exec rake js             # JS 번들 빌드
 bundle exec rake version        # 버전 일괄 업데이트
+py -X utf8 scripts/health_check.py   # 자동화 건강검진 (무과금, 배치 전 권장)
 ```
 
 ### 마무리 커맨드
@@ -59,7 +60,25 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 | `/lecture-archive` | 강의자료 zip → `_lectures/` 큐레이션(개발 중) | 아래 "강의자료 큐레이션…" |
 | `/column` | 클로드 직접 집필 전문가 칼럼(유튜브 자막 지원, 저장 직후 `py scripts/column_qa.py`로 후처리 2패스 필수) | `column.md` |
 | `/tidy-claude-md` | CLAUDE.md 진단·정리(6지표 채점, 교훈 보존) | `tidy-claude-md.md` |
+| (스크립트) `health_check.py` | 자동화 건강검진 — 죽은 모델 ID·낡은 UA·만료 세션·용량 | 아래 "자동화 건강검진" |
 | `/wrap` | 세션 마무리(PRD→CLAUDE.md→메모리→커밋→전역 동기화→Codex 재생성) | 전역 `~/.claude/skills/wrap/SKILL.md` |
+
+## 자동화 건강검진 (`scripts/health_check.py`, 2026-09-16)
+
+`py -X utf8 scripts/health_check.py` — **생성 호출을 하지 않아 무과금**이고 4초면 끝난다. 실패가 있으면 종료코드 1.
+`--quick`은 네트워크 점검을 건너뛰고, `--json`은 기계 판독용이다. `/paper`·`/video`·`/naver` 배치 전에 먼저 돌린다.
+
+**왜 만들었나**: `yt_to_post.py`의 기본 모델이 서비스에서 내려간 `gemini-2.0-flash`로 박혀 있어 `/video`·`/plain-video`가 404로 죽고 있었는데, **언제부터인지 모른 채** 그날 배치가 통째로 실패하고서야 드러났다. 첫 실행에서 죽은 모델 2개(`gemini-2.0-flash-exp` in `lecture_archive/map_features.py`, `gemini-2.5-flash-image-preview` in `cardnews.py`)와 낡은 UA 4곳을 즉시 잡아냈다.
+
+**점검 항목**: `.env` 키 · 모델 ID 실존(소스를 정규식으로 긁어 `list_models`와 대조) · requirements 임포트 · git/gh/Edge/ffmpeg · **브라우저 UA 신선도** · 콘텐츠 소스 6곳 · 리서치 허브·임베딩 신선도 · 네이버(세션 만료 D-day·스케줄 작업·이력 `url=unknown`) · `assets/` 용량 대 Pages 1GB 한도.
+
+**설계 원칙 둘 (고칠 때 지킬 것)**:
+1. **모델 목록을 코드에 박지 않는다.** `MODEL_RE`로 소스를 긁으므로 새 스크립트의 참조도 자동으로 잡힌다.
+2. **점검은 본체와 같은 헤더를 써야 한다.** 비슷하지만 다른 UA로 찔렀더니 GeekNews가 200을 줘 **거짓 통과**가 났다. `pipeline_headers()`가 `web_to_post.py` 소스에서 UA를 직접 읽고, Jina는 `Accept: text/plain`으로 따로 찌른다.
+
+**낡은 UA = 조용한 403 (2026-09-16 실측)**: GeekNews가 `Chrome/120`에는 403, `Chrome/125`·`141`에는 200을 준다. UA 메이저 버전 하나 차이였다. 네 곳(`web_to_post`·`lecture_script`·`image_fetcher`·`cardnews`)을 `Chrome/141`로 올려 **GeekNews URL을 `/paraph`에 그대로 넘길 수 있게** 됐다. 추출이 403·빈 본문으로 실패하면 사이트를 탓하기 전에 UA부터 의심한다.
+
+**상시 경고 둘은 고장이 아니다**: 네이버 세션은 30일 상한이라 주기적 `--login`이 필요하고, `assets/`는 930MB로 한도에 근접해 대용량 자료는 GitHub 릴리스로 보낸다.
 
 ## Architecture
 

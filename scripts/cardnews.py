@@ -49,7 +49,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 ssl._create_default_https_context = ssl._create_unverified_context
 
 CARD_W, CARD_H = 1080, 1350
-IMG_MODEL_CANDIDATES = ["gemini-2.5-flash-image", "gemini-2.5-flash-image-preview"]
+IMG_MODEL_CANDIDATES = ["gemini-2.5-flash-image", "gemini-3.1-flash-image"]
 
 # 레퍼런스 카드의 이미지 톤: 어두운 배경 + 강한 단일 광원 + 얕은 심도
 STYLE_SUFFIX = (
@@ -75,7 +75,7 @@ EDGE_PATHS = [
 ]
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/122.0 Safari/537.36")
+      "(KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36")
 
 BAD_IMG_HINTS = ("logo", "icon", "avatar", "sprite", "banner", "profile", "badge",
                  "button", "emoji", "favicon", "pixel", "tracking", "ads", "advert")
