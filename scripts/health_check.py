@@ -272,9 +272,16 @@ def check_naver() -> None:
                 exp = datetime.fromtimestamp(max(c["expires"] for c in auth), tz=timezone.utc)
                 days = (exp - datetime.now(timezone.utc)).days
                 status = OK if days > 7 else (WARN if days > 0 else FAIL)
+                hint = ""
+                if 0 < days <= 7:
+                    # 2026-09-16에 --force-login이 자격증명 입력 없이 갱신됐다(1회 관측).
+                    # 재현되면 월 1회 예약으로 수동 단계를 없앤다 — 지금이 확인할 차례다.
+                    hint = (" → py -u scripts/naver_crosspost.py --force-login"
+                            " (입력 없이 갱신되는지 확인. 되면 월 1회 예약으로 자동화)")
+                elif days <= 0:
+                    hint = " → 만료됨. --force-login으로 직접 로그인 필요"
                 add("네이버", status,
-                    f"세션 만료까지 {days}일 ({exp.astimezone():%Y-%m-%d})"
-                    + ("" if days > 7 else " → --login 재실행 필요"))
+                    f"세션 만료까지 {days}일 ({exp.astimezone():%Y-%m-%d}){hint}")
         except Exception as exc:  # noqa: BLE001
             add("네이버", WARN, f"쿠키 파싱 실패 — {type(exc).__name__}")
 
