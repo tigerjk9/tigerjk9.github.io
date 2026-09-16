@@ -13,7 +13,7 @@ AI와 미디어 기술이 급변하며 우리 삶의 모든 영역에 스며든�
 <img src="/assets/pisa-2029-mail-media-ai-literacy-thumb.jpg" alt="PISA 2029 미디어·AI 리터러시와 교육의 새로운 방향">
 </figure>
 
-> 이 글이 분석한 원문 보고서 전문을 PDF로 내려받을 수 있다. [원문 PDF 내려받기 (19쪽)](/assets/pisa-2029-mail-media-ai-literacy.pdf)
+> 이 글이 분석한 원문 보고서 전문을 PDF로 내려받을 수 있다. [원문 PDF 내려받기 (19쪽)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/pisa-2029-mail-media-ai-literacy.pdf)
 
 ## AI 시대의 새로운 도전
 
@@ -118,4 +118,4 @@ AI는 이미 한국 교실의 일상이 되었다. '학생들에게 AI를 어떻
 
 ## 출처
 - 주정흔, 「미디어·AI 리터러시 통합 평가의 등장과 AI 리터러시 교육의 방향 찾기 - PISA 2029 Media and Artificial Intelligence Literacy(MAIL) Assessment Framework 보고서를 중심으로」, 서울교육 이슈페이퍼 2026년 제2호(통권 제66호), 서울특별시교육청교육연구정보원 교육정책연구소, 2026.
-- 원문 PDF 전문: [내려받기](/assets/pisa-2029-mail-media-ai-literacy.pdf)
+- 원문 PDF 전문: [내려받기](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/pisa-2029-mail-media-ai-literacy.pdf)

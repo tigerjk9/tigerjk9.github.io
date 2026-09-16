@@ -26,7 +26,7 @@ AI에게 자연어로 지시해 소프트웨어를 만드는 바이브 코딩에
 
 ## 자료 내려받기
 
-- **[슬라이드 전체 내려받기 (PDF · 40장 · 약 4.7MB)](/assets/lectures/vibe-coding-git-github/slides.pdf){:target="_blank"}**
+- **[슬라이드 전체 내려받기 (PDF · 40장 · 약 4.7MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/vibe-coding-git-github-slides.pdf){:target="_blank"}**
 
 ## 1부. 바이브 코딩의 원리
 

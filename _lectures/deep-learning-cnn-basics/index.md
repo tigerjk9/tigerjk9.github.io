@@ -26,7 +26,7 @@ header:
 
 ## 자료 내려받기
 
-- **[교재 전체 내려받기 (PDF · 89쪽 · 약 6.6MB)](/assets/lectures/deep-learning-cnn-basics/manual.pdf){:target="_blank"}**
+- **[교재 전체 내려받기 (PDF · 89쪽 · 약 6.6MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/manual.pdf){:target="_blank"}**
 
 ## 교재 구성
 

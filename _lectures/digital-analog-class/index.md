@@ -28,7 +28,7 @@ AI 디지털 도구가 아날로그 수업을 대체하는 것이 아니라, 아
 
 ## 자료 내려받기
 
-- **[슬라이드 전체 내려받기 (PDF · 102장 · 약 9MB)](/assets/lectures/digital-analog-class/slides.pdf){:target="_blank"}**
+- **[슬라이드 전체 내려받기 (PDF · 102장 · 약 9MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/digital-analog-class-slides.pdf){:target="_blank"}**
 
 챕터별 슬라이드는 아래 갤러리에서 바로 볼 수 있다. 이미지를 누르면 확대되고, 좌우 화살표나 키보드로 넘긴다.
 

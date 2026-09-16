@@ -25,7 +25,7 @@ header:
 
 ## 자료 내려받기
 
-- **[슬라이드 전체 내려받기 (PDF · 43장 · 약 2.6MB)](/assets/lectures/perceptron-neural-network/slides.pdf){:target="_blank"}**
+- **[슬라이드 전체 내려받기 (PDF · 43장 · 약 2.6MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/perceptron-neural-network-slides.pdf){:target="_blank"}**
 
 ## 강의 내용
 

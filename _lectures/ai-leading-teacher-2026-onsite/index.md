@@ -91,12 +91,12 @@ header:
 
 | 과정 | 제목 | 분량 | 내려받기 |
 |------|------|------|----------|
-| 8 | 원격에서 집합으로, 실천의 문을 열다 | 35장 · 4.3MB | [PDF](/assets/lectures/ai-leading-teacher-2026-onsite/files/session8-slides.pdf){:target="_blank"} |
-| 9 | 실행 가능한 수업으로, 동료와 함께 다듬는 나의 수업 | 49장 · 6.2MB | [PDF](/assets/lectures/ai-leading-teacher-2026-onsite/files/session9-slides.pdf){:target="_blank"} |
-| 10 | 학생이 살아나는 수업, AI 기반 수업·평가 설계 | 77장 · 17.7MB | [PDF](/assets/lectures/ai-leading-teacher-2026-onsite/files/session10-slides.pdf){:target="_blank"} |
-| 11 | 데이터로 학생 성장을 마주하다 | 44장 · 6.5MB | [PDF](/assets/lectures/ai-leading-teacher-2026-onsite/files/session11-slides.pdf){:target="_blank"} |
-| 12 | 실천의 기록, 교육의 답을 쓰다 | 82장 · 14.4MB | [PDF](/assets/lectures/ai-leading-teacher-2026-onsite/files/session12-slides.pdf){:target="_blank"} |
-| 13 | 배움을 돌아보고, 성장을 설계하다 | 78장 · 4.9MB | [PDF](/assets/lectures/ai-leading-teacher-2026-onsite/files/session13-slides.pdf){:target="_blank"} |
+| 8 | 원격에서 집합으로, 실천의 문을 열다 | 35장 · 4.3MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session8-slides.pdf){:target="_blank"} |
+| 9 | 실행 가능한 수업으로, 동료와 함께 다듬는 나의 수업 | 49장 · 6.2MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session9-slides.pdf){:target="_blank"} |
+| 10 | 학생이 살아나는 수업, AI 기반 수업·평가 설계 | 77장 · 17.7MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session10-slides.pdf){:target="_blank"} |
+| 11 | 데이터로 학생 성장을 마주하다 | 44장 · 6.5MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session11-slides.pdf){:target="_blank"} |
+| 12 | 실천의 기록, 교육의 답을 쓰다 | 82장 · 14.4MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session12-slides.pdf){:target="_blank"} |
+| 13 | 배움을 돌아보고, 성장을 설계하다 | 78장 · 4.9MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session13-slides.pdf){:target="_blank"} |
 
 앞 단계인 [원격 일곱 과정 교안 481장](/lectures/ai-leading-teacher-2026/#자료-내려받기)도 같은 방식으로 올려 두었다.
 

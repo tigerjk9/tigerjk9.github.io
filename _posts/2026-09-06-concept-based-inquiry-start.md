@@ -139,7 +139,7 @@ permalink: /post/concept-based-inquiry-start/
 
 개념기반 탐구수업의 첫걸음 자료집은 다음 링크에서 내려받을 수 있다.
 
-- [개념기반 탐구수업의 첫걸음 (PDF 내려받기)](/assets/concept-based-inquiry-start-guide.pdf)
+- [개념기반 탐구수업의 첫걸음 (PDF 내려받기)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/concept-based-inquiry-start-guide.pdf)
 
 ---
 ## 출처

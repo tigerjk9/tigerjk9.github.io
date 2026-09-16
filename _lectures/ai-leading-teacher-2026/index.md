@@ -80,13 +80,13 @@ Triple E 프레임워크는 4과정에서 처음 나와 7과정에서 다시 쓰
 
 | 과정 | 제목 | 분량 | 내려받기 |
 |------|------|------|----------|
-| 1 | AI 시대, 교육의 중심을 다시 묻다 | 55장 · 7.3MB | [PDF](/assets/lectures/ai-leading-teacher-2026/files/session1-slides.pdf){:target="_blank"} |
-| 2 | AI 디지털 시대의 교사의 역할과 학생 성장지원 | 52장 · 7.3MB | [PDF](/assets/lectures/ai-leading-teacher-2026/files/session2-slides.pdf){:target="_blank"} |
-| 3 | AI 디지털 윤리의 이해 | 80장 · 15.2MB | [PDF](/assets/lectures/ai-leading-teacher-2026/files/session3-slides.pdf){:target="_blank"} |
-| 4 | 사례로 읽는 AI 수업 설계의 본질 | 70장 · 17.6MB | [PDF](/assets/lectures/ai-leading-teacher-2026/files/session4-slides.pdf){:target="_blank"} |
-| 5 | AI 시대, 평가와 수업은 함께 설계된다 | 84장 · 13.0MB | [PDF](/assets/lectures/ai-leading-teacher-2026/files/session5-slides.pdf){:target="_blank"} |
-| 6 | AI·디지털 도구의 숲에서 본질을 찾다 | 54장 · 7.4MB | [PDF](/assets/lectures/ai-leading-teacher-2026/files/session6-slides.pdf){:target="_blank"} |
-| 7 | AI 디지털 도구로 수업과 평가를 설계하다 | 86장 · 12.3MB | [PDF](/assets/lectures/ai-leading-teacher-2026/files/session7-slides.pdf){:target="_blank"} |
+| 1 | AI 시대, 교육의 중심을 다시 묻다 | 55장 · 7.3MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session1-slides.pdf){:target="_blank"} |
+| 2 | AI 디지털 시대의 교사의 역할과 학생 성장지원 | 52장 · 7.3MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session2-slides.pdf){:target="_blank"} |
+| 3 | AI 디지털 윤리의 이해 | 80장 · 15.2MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session3-slides.pdf){:target="_blank"} |
+| 4 | 사례로 읽는 AI 수업 설계의 본질 | 70장 · 17.6MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session4-slides.pdf){:target="_blank"} |
+| 5 | AI 시대, 평가와 수업은 함께 설계된다 | 84장 · 13.0MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session5-slides.pdf){:target="_blank"} |
+| 6 | AI·디지털 도구의 숲에서 본질을 찾다 | 54장 · 7.4MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session6-slides.pdf){:target="_blank"} |
+| 7 | AI 디지털 도구로 수업과 평가를 설계하다 | 86장 · 12.3MB | [PDF](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/session7-slides.pdf){:target="_blank"} |
 
 이어지는 [집합 여섯 과정 교안 365장](/lectures/ai-leading-teacher-2026-onsite/#자료-내려받기)도 같은 방식으로 올려 두었다.
 
@@ -101,16 +101,16 @@ Triple E 프레임워크는 4과정에서 처음 나와 7과정에서 다시 쓰
 | 7과정 | [과정중심평가와 AI 디지털 도구 추천기 안내](/assets/lectures/ai-leading-teacher-2026/files/assessment-tool-recommender.pptx){:target="_blank"} | PPTX |
 | 7과정 | [AI 수업 설계안 웹앱 안내](/assets/lectures/ai-leading-teacher-2026/files/lesson-design-webapp.pptx){:target="_blank"} | PPTX |
 | 7과정 | [수업 설계안 생성 예시](/assets/lectures/ai-leading-teacher-2026/files/example-lesson-design.pdf){:target="_blank"} | PDF |
-| 7과정 | [2022 개정 교육과정에 따른 초등학교 학생평가 톺아보기(2026)](/assets/lectures/ai-leading-teacher-2026/files/assessment-guide-elementary-2026.pdf){:target="_blank"} | PDF |
-| 7과정 | [과정을 중시하는 수행평가 어떻게 할까요(초등)](/assets/lectures/ai-leading-teacher-2026/files/performance-assessment-elementary.pdf){:target="_blank"} | PDF |
+| 7과정 | [2022 개정 교육과정에 따른 초등학교 학생평가 톺아보기(2026)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/assessment-guide-elementary-2026.pdf){:target="_blank"} | PDF |
+| 7과정 | [과정을 중시하는 수행평가 어떻게 할까요(초등)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/performance-assessment-elementary.pdf){:target="_blank"} | PDF |
 | 4·7과정 | [Triple E 평가 문항표](/assets/lectures/ai-leading-teacher-2026/files/review-lesson-design.png){:target="_blank"} | PNG |
 | 4·7과정 | [Triple E 평가 분석 도구](/assets/lectures/ai-leading-teacher-2026/files/triple-e-analyzer.html){:target="_blank"} | HTML |
 | 4과정 | [시사점 도출 카드 만들기](/assets/lectures/ai-leading-teacher-2026/files/insight-card-maker.html){:target="_blank"} | HTML |
 | 3과정 | [국가 인공지능 윤리기준](/assets/lectures/ai-leading-teacher-2026/files/ethics-national-ai-standard.pdf){:target="_blank"} | PDF |
-| 3과정 | [교육분야 인공지능 윤리원칙 상세 설명자료](/assets/lectures/ai-leading-teacher-2026/files/ethics-education-principles.pdf){:target="_blank"} | PDF |
+| 3과정 | [교육분야 인공지능 윤리원칙 상세 설명자료](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/ethics-education-principles.pdf){:target="_blank"} | PDF |
 | 3과정 | [디지털 심화 시대의 교육이 지향하는 가치와 원칙에 대한 선언](/assets/lectures/ai-leading-teacher-2026/files/ethics-digital-education-norms.pdf){:target="_blank"} | PDF |
-| 3과정 | [생성형 AI 윤리 가이드북](/assets/lectures/ai-leading-teacher-2026/files/ethics-genai-guidebook.pdf){:target="_blank"} | PDF |
-| 3과정 | [국내외 인공지능 윤리교육 사례 분석과 시사점](/assets/lectures/ai-leading-teacher-2026/files/ethics-keris-rm2024-10.pdf){:target="_blank"} | PDF |
+| 3과정 | [생성형 AI 윤리 가이드북](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/ethics-genai-guidebook.pdf){:target="_blank"} | PDF |
+| 3과정 | [국내외 인공지능 윤리교육 사례 분석과 시사점](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/ai-leading-teacher-2026/ethics-keris-rm2024-10.pdf){:target="_blank"} | PDF |
 
 HTML 도구 두 개는 내려받아 브라우저에서 열면 그대로 실행된다. 서버가 필요 없다.
 

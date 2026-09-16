@@ -21,8 +21,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -93,10 +95,27 @@ def main() -> int:
             for tf, body in texts.items():
                 if url in body:
                     hits.append((tf, url))
-        plan.append((name, canon, paths, canon.stat().st_size, hits))
+        plan.append([name, canon, paths, canon.stat().st_size, hits])
+
+    # 강의마다 slides.pdf 같은 이름을 쓰므로, 겹치면 강의 슬러그를 앞에 붙인다
+    taken: dict[str, int] = {}
+    for item in plan:
+        taken[item[0]] = taken.get(item[0], 0) + 1
+    for item in plan:
+        if taken[item[0]] <= 1:
+            continue
+        parts = item[1].relative_to(REPO / "assets").parts
+        slug = parts[1] if len(parts) > 2 and parts[0] == "lectures" else parts[0]
+        candidate = slug + "-" + item[0]
+        if not SAFE_NAME.match(candidate):
+            bad.append(item[1])
+            item[0] = None
+            continue
+        item[0] = candidate
+    plan = [item for item in plan if item[0]]
 
     names = [n for n, *_ in plan]
-    assert len(names) == len(set(names)), "릴리스 자산 이름이 겹친다: " + str(
+    assert len(names) == len(set(names)), "이름 충돌을 못 풀었다: " + str(
         [n for n in names if names.count(n) > 1])
 
     total = sum(s for _, _, paths, s, _ in plan for _ in paths)
@@ -118,9 +137,18 @@ def main() -> int:
         return 0
 
     # 1) 릴리스 보장 + 업로드
+    #    gh는 파일 basename을 자산 이름으로 쓴다. 계획한 이름과 맞추려면
+    #    그 이름으로 복사한 사본을 올려야 한다.
     subprocess.run(["gh", "release", "view", a.tag], capture_output=True, check=False)
-    up = ["gh", "release", "upload", a.tag, "--clobber"] + [str(c) for _, c, *_ in plan]
-    r = subprocess.run(up, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    with tempfile.TemporaryDirectory() as tmp:
+        staged = []
+        for name, canon, *_ in plan:
+            dest = Path(tmp) / name
+            shutil.copyfile(canon, dest)
+            staged.append(str(dest))
+        up = ["gh", "release", "upload", a.tag, "--clobber"] + staged
+        r = subprocess.run(up, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
     if r.returncode != 0:
         print("[FAIL] 업로드 실패:", r.stderr[:400])
         return 1

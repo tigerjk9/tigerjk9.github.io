@@ -21,7 +21,7 @@ AI 티처스쿨 온라인 세미나에서, 교사 16명이 모인 게시판 한 
 
 이 자료는 그 연수 기록을 정리하면서, 처음 해 보는 교사도 이 글만 보고 바로 따라 할 수 있도록 다시 썼다. 복사해 그대로 쓰는 프롬프트, 준비물, 10분 따라하기 실습, 자주 막히는 지점의 해결법을 모두 담았다. 도구는 ChatGPT 이미지 생성과 Gemini, 정리에는 NotebookLM과 Notion을 썼다.
 
-> 같은 내용을 연수 현장에서 나눠 쓸 수 있도록 A4 인쇄용 핸드아웃으로도 정리했다. [A4 핸드아웃 내려받기 (PDF, 4쪽)](/assets/handouts/ai-learning-comics-handout.pdf)
+> 같은 내용을 연수 현장에서 나눠 쓸 수 있도록 A4 인쇄용 핸드아웃으로도 정리했다. [A4 핸드아웃 내려받기 (PDF, 4쪽)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/ai-learning-comics-handout.pdf)
 
 ## 1. 학습만화로 수업을 설계한다는 것
 
@@ -259,7 +259,7 @@ AI는 초안을 5분 만에 만든다. 그 초안을 수업에 맞게 다듬고 
 - 신일여자고등학교 교사 이두연 — AITS, QuizN Show 온라인 게시판 학습만화로 수업설계 (2026.06.27~28, 참여 16명) — [게시판 바로가기](https://quizn.show/pbd/info/board/0014905)
 - 제미나이로 5분 만에 고퀄 4컷 만화 만들기, YouTube — [https://youtu.be/nQWqKFQBF58](https://youtu.be/nQWqKFQBF58)
 - 만화 AICE Associate 15유형 한 페이지 모아보기 — [Notion 정리본](https://app.notion.com/p/3837c4a8e156815d9070e668060cf155)
-- A4 인쇄용 핸드아웃 — [PDF 내려받기](/assets/handouts/ai-learning-comics-handout.pdf)
+- A4 인쇄용 핸드아웃 — [PDF 내려받기](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/ai-learning-comics-handout.pdf)
 
 본문 만화 이미지는 연수 참가자가 ChatGPT 이미지 생성과 Gemini로 제작한 결과물이다. 주제별 원본 대화는 아래에서 볼 수 있다.
 
