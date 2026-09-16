@@ -778,6 +778,9 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 **대용량 자료는 저장소에 넣지 않는다 (CRITICAL)**. 발행 사이트가 이미 약 865MB인데 GitHub Pages 한도가 1GB다. 수십 MB 이상 다운로드 자료는 **GitHub 릴리스 자산**으로 올리고 페이지에서 링크만 건다(릴리스는 이 한도에 미포함, 파일당 2GB). 첫 사례가 `eval-assessment-2026` 태그 — 대전교육과학연구원 서·논술형 평가도구 29개 218MB, 안내 페이지 `_lectures/eval-assessment-tool/`. 두 번째가 `vibecode-for-teacher-book` 태그(8권 4교지 원고 43MB)다.
 
+- **이관 도구 `scripts/offload_to_release.py` (2026-09-16)**: `--dir`/`--extra`로 모은 문서(pdf·hwp·hwpx·pptx·zip)를 릴리스로 올리고 `_posts`·`_lectures`의 `/assets/...` 링크를 릴리스 URL로 바꾼 뒤 원본을 `git rm` 한다. **미리보기가 기본**, `--apply`로 실행. **내용 해시로 중복을 묶어** 같은 파일이 두 벌 있어도 한 번만 올리고 양쪽 링크가 같은 자산을 가리킨다 — 실제로 포스트용(assets 루트)과 강의용(lectures/)으로 갈라져 있던 3쌍 44MB가 이렇게 정리됐다. `--min-size`(기본 1MB) 미만은 저장소에 그대로 둔다. 자산 이름이 겹치면 assert로 멈춘다.
+- **첫 대량 이관 (2026-09-16)**: 태그 `student-question-assessment` — 질문수업 연수 자료 35개(고유 32개) 221MB. `assets/` 804MB → 583MB. 이관 후 저장소 내 문서 링크 56개 실존 확인, 라이브에서 강의 페이지·포스트·릴리스 다운로드 검증.
+- **`git add -A` 금지 (2026-09-16 사고)**: 이관 커밋에서 `-A`를 썼다가 `.agents/`·`AGENTS.md`·`output/`(3MB PDF 포함)이 함께 들어갔다. `output/`은 exclude 목록에 없어 **발행 사이트로 복사된다** — 방금 확보한 용량을 도로 까먹는 셈이다. 셋 다 gitignore에 넣었지만, 커밋은 경로를 명시해서 하는 편이 안전하다.
 - **릴리스는 한글 파일명을 지운다**: `2026학년도 2학기 수학과 … 목록(3~6학년).hwp` → `2026.2.3.6.hwp`로 뭉개지고 서로 충돌한다. 업로드 전 영문 슬러그로 재명명한다(`2026-s2-math-g3-6-tools.pdf` 꼴). 매핑 스크립트는 누락·중복·미매핑을 assert로 막고 업로드 후 `gh api …/releases/tags/<tag>`의 자산 목록과 본문 링크를 대조한다.
 - 릴리스는 교차 출처라 `<a download="한글이름">`이 **무시된다**. 방문자는 영문 파일명으로 받으므로 페이지 표에 한글 제목·쪽수·용량을 함께 적는다.
 - 이 머신엔 Ruby가 없어 `jekyll build` 사전 검증이 불가하다. 푸시 후 `gh run watch`로 배포를 확인하고 라이브 URL을 Edge 헤드리스로 캡처해 검증한다.
