@@ -99,3 +99,7 @@ scripts/.vocab_targets.json
 scripts/.vocab_build.log
 
 scripts/.vocab_build2.log
+
+# 건강검진 산출물 (머신 로컬)
+scripts/.health_status.json
+scripts/health_check.log

@@ -324,12 +324,50 @@ def check_size() -> None:
         + ("" if status == OK else " · 대용량 자료는 GitHub 릴리스로"))
 
 
+def notice(path: Path) -> int:
+    """예약 점검이 남긴 결과를 세션 시작 때 한 줄로 알린다.
+
+    로그만 쌓고 아무도 안 읽으면 조용한 고장을 못 잡는다는 원래 문제로 돌아간다.
+    """
+    try:
+        Path.cwd().relative_to(REPO)          # 이 저장소 밖에서는 조용히 넘어간다
+    except ValueError:
+        return 0
+    if not path.exists():
+        return 0
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return 0
+    age_days = (time.time() - path.stat().st_mtime) / 86400
+    if age_days > 3:
+        print(f"[건강검진] 마지막 점검이 {age_days:.0f}일 전이다 — "
+              f"py -X utf8 scripts/health_check.py")
+        return 0
+    counts = data.get("summary", {})
+    problems = data.get("problems", [])
+    if not counts.get("fail") and not problems:
+        return 0
+    head = "실패 %d · 경고 %d" % (counts.get("fail", 0), counts.get("warn", 0))
+    first = problems[0]["message"] if problems else ""
+    print(f"[건강검진] {head} — {first}"
+          + (f" 외 {len(problems) - 1}건" if len(problems) > 1 else ""))
+    return 0
+
+
 # ── 실행 ────────────────────────────────────────────────────────────────────
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--quick", action="store_true", help="네트워크 점검 생략")
     ap.add_argument("--json", action="store_true", help="JSON으로 출력")
+    ap.add_argument("--notice", action="store_true",
+                    help="점검을 돌리지 않고 마지막 결과만 한 줄로 알린다 (훅용)")
+    ap.add_argument("--status-file", type=Path, default=None,
+                    help="요약을 JSON 파일로 남긴다 (예약 실행용)")
     a = ap.parse_args()
+
+    if a.notice:
+        return notice(a.status_file or SCRIPTS / ".health_status.json")
 
     started = time.time()
     env = load_env()
@@ -359,6 +397,17 @@ def main() -> int:
             print(f"[{MARK[status]}] {section:<{width}}  {message}")
         print(f"\n통과 {counts[OK]} · 경고 {counts[WARN]} · 실패 {counts[FAIL]} "
               f"({time.time() - started:.1f}초)")
+    if a.status_file:
+        payload = {
+            "checked_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+            "summary": counts,
+            "problems": [{"section": s, "status": st, "message": m}
+                         for s, st, m in results if st != OK],
+        }
+        a.status_file.parent.mkdir(parents=True, exist_ok=True)
+        a.status_file.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + chr(10), encoding="utf-8")
+
     return 1 if counts[FAIL] else 0
 
 

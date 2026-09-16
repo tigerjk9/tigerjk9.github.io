@@ -78,6 +78,10 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 
 **낡은 UA = 조용한 403 (2026-09-16 실측)**: GeekNews가 `Chrome/120`에는 403, `Chrome/125`·`141`에는 200을 준다. UA 메이저 버전 하나 차이였다. 네 곳(`web_to_post`·`lecture_script`·`image_fetcher`·`cardnews`)을 `Chrome/141`로 올려 **GeekNews URL을 `/paraph`에 그대로 넘길 수 있게** 됐다. 추출이 403·빈 본문으로 실패하면 사이트를 탓하기 전에 UA부터 의심한다.
 
+**예약 실행 (2026-09-16 등록)**: Windows 작업 스케줄러 `BlogHealthCheck`가 매일 09:30에 돌린다 — 네이버 배치(10:00)보다 먼저 돌아 문제가 있으면 그 전에 드러난다. 로그 `scripts/health_check.log`, 요약 `scripts/.health_status.json`(둘 다 gitignore). 수동 실행 전 `Get-ScheduledTaskInfo -TaskName BlogHealthCheck`로 존재를 확인하는 습관을 유지한다 — `NaverCrosspost`가 한 번 소실된 전례가 있다.
+
+**로그만 쌓으면 원래 문제로 돌아간다**: 그래서 `--notice` 모드를 `SessionStart` 훅(`~/.claude/settings.json`)에 걸어, 마지막 점검에 문제가 있으면 Claude Code 세션을 열 때 한 줄로 알린다. **이 저장소 안에서 일할 때만** 뜬다(cwd 가드). 점검이 3일 넘게 안 돌았으면 그것도 알린다.
+
 **상시 경고 둘은 고장이 아니다**: 네이버 세션은 30일 상한이라 주기적 `--login`이 필요하고, `assets/`는 930MB로 한도에 근접해 대용량 자료는 GitHub 릴리스로 보낸다.
 
 ## Architecture
