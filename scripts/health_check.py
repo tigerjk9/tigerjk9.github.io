@@ -212,16 +212,21 @@ def probe(item: tuple[str, str, str]) -> tuple[str, str, str]:
     """
     name, url, kind = item
     headers = {"jina": {"Accept": "text/plain"}, "plain": {}}.get(kind) or pipeline_headers()
-    try:
-        import requests
-        import urllib3
-        urllib3.disable_warnings()
-        r = requests.get(url, timeout=12, verify=False, headers=headers)
-        if r.status_code < 400:
-            return ("소스", OK, f"{name} {r.status_code}")
-        return ("소스", WARN, f"{name} {r.status_code} — 차단 가능성, 우회 경로 확인")
-    except Exception as exc:  # noqa: BLE001
-        return ("소스", WARN, f"{name} 실패 — {type(exc).__name__}")
+    import requests
+    import urllib3
+    urllib3.disable_warnings()
+    last = None
+    for attempt in range(2):          # 일시적 끊김 한 번에 경고를 띄우지 않는다
+        try:
+            r = requests.get(url, timeout=12, verify=False, headers=headers)
+            if r.status_code < 400:
+                return ("소스", OK, f"{name} {r.status_code}")
+            return ("소스", WARN, f"{name} {r.status_code} — 차단 가능성, 우회 경로 확인")
+        except Exception as exc:  # noqa: BLE001
+            last = exc
+            if attempt == 0:
+                time.sleep(2)
+    return ("소스", WARN, f"{name} 실패 — {type(last).__name__} (2회 시도)")
 
 
 def check_sources() -> None:
