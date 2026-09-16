@@ -39,20 +39,22 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 
 ### 슬래시 커맨드 카탈로그
 
+`edit-*` 4개는 **전역**(`~/.claude/commands/`)이다(2026-09-16 이관). 프로젝트 스코프였을 때는 다른 폴더에서도, Codex에서도 잡히지 않았다 — `codex-port/sync.py`가 `~/.claude/`만 읽고 Codex는 프로젝트별 스킬을 지원하지 않기 때문이다. 이관하면서 문서에 박혀 있던 `C:/Users/windo/...` **다른 PC 경로를 걷어내고**, `BLOG_ROOT` 환경변수 → 관례 경로 후보 순으로 저장소를 찾는 절을 넣었다. 나머지 커맨드는 여전히 프로젝트 스코프라 이 저장소에서만 잡힌다.
+
 블로그 자동화·유지보수 슬래시 커맨드 전체 목록. 상세는 각 커맨드 파일(`.claude/commands/<name>.md`)과 아래 해당 섹션 참고.
 
 | 커맨드 | 용도 | 상세 |
 |--------|------|------|
 | `/paper` | PDF 논문 → 고정 6섹션 리뷰 포스트 | 아래 "PDF 논문…" |
-| `/edit-paper` | PDF 논문 → 자유구조 리뷰(주인장 목소리, 복수 PDF `--edit`) | `edit-paper.md` |
+| `/edit-paper` | PDF 논문 → 자유구조 리뷰(주인장 목소리, 복수 PDF `--edit`) | **전역** `~/.claude/commands/edit-paper.md` |
 | `/video` | 유튜브 → 포스트 | 아래 "YouTube…" |
-| `/edit-video` | 유튜브 → 프레임 삽입 리뷰(`yt_to_post.py --edit`) | `edit-video.md` |
+| `/edit-video` | 유튜브 → 프레임 삽입 리뷰(`yt_to_post.py --edit`) | **전역** `~/.claude/commands/edit-video.md` |
 | `/paraph` | 웹 아티클 → 패러프레이즈 | 아래 "웹 아티클…" |
-| `/edit-paraph` | 웹 → 주인장 목소리 리뷰(`web_to_post.py --edit`) | `edit-paraph.md` |
+| `/edit-paraph` | 웹 → 주인장 목소리 리뷰(`web_to_post.py --edit`) | **전역** `~/.claude/commands/edit-paraph.md` |
 | `/plain-paraph` | 웹 → 교육 앵커링 없는 담백한 포스트(`--plain`) | 아래 "담백한 전달…" |
 | `/plain-video` | 유튜브 → 담백한 포스트(`--plain`) | 아래 "담백한 전달…" |
 | `/yeonsu` | 다입력 → 교원 연수 자료 | 아래 "교원 연수…" |
-| `/edit-yeonsu` | 연수 자료 주인장 목소리 | `edit-yeonsu.md` |
+| `/edit-yeonsu` | 연수 자료 주인장 목소리 | **전역** `~/.claude/commands/edit-yeonsu.md` |
 | `/digest` | 주간 다이제스트 | 아래 "주간 다이제스트…" |
 | `/cardnews` | 카드뉴스 PNG 세트 | 아래 "카드뉴스…" |
 | `/hook` | 후킹 티저 카드 1장 | 아래 "후킹 이미지 카드…" |
