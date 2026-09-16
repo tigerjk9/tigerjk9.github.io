@@ -11,7 +11,7 @@ yt_to_post.py — YouTube 영상을 Jekyll 블로그 포스트로 자동 변환
   --lang  LANG         자막 우선 언어 (기본값: ko)
   --no-push            로컬 저장만 하고 git push 하지 않음
   --dry-run            _posts/ 에 저장하지 않고 터미널에 출력만
-  --model  MODEL       Gemini 모델 ID (기본값: gemini-2.0-flash)
+  --model  MODEL       Gemini 모델 ID (기본값: gemini-2.5-flash)
 
 환경변수:
   GEMINI_API_KEY       Google AI Studio API 키 (필수) — .env 파일에 저장 권장
@@ -60,7 +60,7 @@ PLAIN_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "plain_yt_multi_prompt_template.
 import sys as _sys
 _sys.path.insert(0, str(SCRIPT_DIR))
 from image_fetcher import fetch_and_inject_image, inject_permalink, normalize_question_title, normalize_title_dash, get_existing_taxonomy, CROSSOVER_DOMAINS, replace_image_markers, replace_frame_markers, download_image  # noqa: E402
-DEFAULT_MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "gemini-2.5-flash"
 MAX_TRANSCRIPT_CHARS = 80000  # Gemini 컨텍스트 한도 초과 방지
 MAX_TRANSCRIPT_CHARS_PER_URL = 40000  # 복수 URL 시 영상당 최대 글자 수
 
