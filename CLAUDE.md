@@ -33,7 +33,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 
 앞의 둘은 `bootstrap.ps1`에 수정 반영했다(claude-config `a367a64`).
 
-5-b단계(Codex 자산 재생성, 2026-09-16 추가)는 같은 머신의 Codex/ChatGPT 쪽 사본을 다시 만든다. `~/.codex/`의 스킬 어댑터·에이전트는 `~/.claude/`에서 생성되는 파생물이라, 소스를 고치고 재생성하지 않으면 낡은 채 남는다. `codex-port/sync.py --apply`(스킬·커맨드) → `agents.py --apply`(네이티브 에이전트) → `mcp.py --apply`(MCP) 세 줄이고, 셋 다 미리보기가 기본이며 생성물을 손으로 고쳤으면 종료코드 2로 멈춘다. **생성물은 커밋하지 않는다** — 머신마다 각자 생성한다. Claude Code 대화 세션과 Cowork 설정·플러그인은 Codex 데스크톱이 이미 자동 import하므로(`external-agent-import-sync-enabled`) 이 단계 대상이 아니다.
+5-b단계(Codex 자산 재생성, 2026-09-16 추가)는 같은 머신의 Codex/ChatGPT 쪽 사본을 다시 만든다. `~/.codex/`의 스킬 어댑터·에이전트는 `~/.claude/`에서 생성되는 파생물이라, 소스를 고치고 재생성하지 않으면 낡은 채 남는다. `codex-port/sync.py --apply`(스킬·커맨드) → `agents.py --apply`(네이티브 에이전트) → `mcp.py --apply`(MCP) 세 줄이고, 셋 다 미리보기가 기본이며 생성물을 손으로 고쳤으면 종료코드 2로 멈춘다. **생성물은 커밋하지 않는다** — 머신마다 각자 생성한다. Claude Code 대화 세션과 Cowork 설정·플러그인은 Codex 데스크톱이 이미 자동 import하므로(`external-agent-import-sync-enabled`) 이 단계 대상이 아니다. 반대 방향(Codex→Claude)도 wrap이 아니라 `SessionStart` 훅이 `codex-port/reverse.py --quiet --apply`로 세션마다 끌어온다 — wrap은 내보내는 쪽만 책임진다.
 
 
 ### 슬래시 커맨드 카탈로그
