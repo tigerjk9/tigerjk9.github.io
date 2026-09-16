@@ -20,7 +20,7 @@ bundle exec rake version        # 버전 일괄 업데이트
 ### 마무리 커맨드
 
 `/wrap` — 작업 세션 마무리 전역 스킬 (`~/.claude/skills/wrap/SKILL.md`).
-PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → **전역 자산 동기화** → /compact 안내 6단계를 순서대로 실행한다.
+PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → **전역 자산 동기화** → **Codex 자산 재생성** → /compact 안내를 순서대로 실행한다.
 
 5단계(전역 자산 동기화)는 `~/.claude`의 스킬·에이전트·커맨드를 비공개 저장소 `tigerjk9/claude-config`로 밀어 **다른 머신에서도 잡히게** 한다(2026-09-09 추가). 프로젝트 저장소 push는 `~/.claude`를 건드리지 않아, 한 머신에서 만든 전역 스킬이 wrap을 해도 다른 머신에 전달되지 않는 문제가 있었다. `~/.claude/.gitignore`가 `/*`로 전부 무시한 뒤 `skills/`·`agents/`·`commands/`·`CLAUDE.md`만 여는 허용목록 방식이라 **새로 만드는 전역 스킬은 자동으로 대상에 포함**되고, 자격증명·세션·메모리는 구조적으로 올라가지 않는다. 대량설치분(gstack 555MB 포함 스킬 92·에이전트 19)과 외부 클론 `hwpx-skill`은 제외 — 새 머신은 `~/.claude/bootstrap.ps1`로 받는다.
 
@@ -32,6 +32,9 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 - **구버전 `commands/wrap.md` 제거** — 5단계짜리 구 커맨드가 남아 있으면 같은 `/wrap` 이름을 선점해 **6단계 스킬이 등록되지 않는다**(실측: 삭제 직후 스킬 등록됨)
 
 앞의 둘은 `bootstrap.ps1`에 수정 반영했다(claude-config `a367a64`).
+
+5-b단계(Codex 자산 재생성, 2026-09-16 추가)는 같은 머신의 Codex/ChatGPT 쪽 사본을 다시 만든다. `~/.codex/`의 스킬 어댑터·에이전트는 `~/.claude/`에서 생성되는 파생물이라, 소스를 고치고 재생성하지 않으면 낡은 채 남는다. `codex-port/sync.py --apply`(스킬·커맨드) → `agents.py --apply`(네이티브 에이전트) → `mcp.py --apply`(MCP) 세 줄이고, 셋 다 미리보기가 기본이며 생성물을 손으로 고쳤으면 종료코드 2로 멈춘다. **생성물은 커밋하지 않는다** — 머신마다 각자 생성한다. Claude Code 대화 세션과 Cowork 설정·플러그인은 Codex 데스크톱이 이미 자동 import하므로(`external-agent-import-sync-enabled`) 이 단계 대상이 아니다.
+
 
 ### 슬래시 커맨드 카탈로그
 
@@ -56,7 +59,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 | `/lecture-archive` | 강의자료 zip → `_lectures/` 큐레이션(개발 중) | 아래 "강의자료 큐레이션…" |
 | `/column` | 클로드 직접 집필 전문가 칼럼(유튜브 자막 지원, 저장 직후 `py scripts/column_qa.py`로 후처리 2패스 필수) | `column.md` |
 | `/tidy-claude-md` | CLAUDE.md 진단·정리(6지표 채점, 교훈 보존) | `tidy-claude-md.md` |
-| `/wrap` | 세션 마무리(PRD→CLAUDE.md→메모리→커밋→전역 동기화) | 전역 `~/.claude/skills/wrap/SKILL.md` |
+| `/wrap` | 세션 마무리(PRD→CLAUDE.md→메모리→커밋→전역 동기화→Codex 재생성) | 전역 `~/.claude/skills/wrap/SKILL.md` |
 
 ## Architecture
 
