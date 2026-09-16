@@ -279,10 +279,10 @@ def check_naver() -> None:
                 status = OK if days > 7 else (WARN if days > 0 else FAIL)
                 hint = ""
                 if 0 < days <= 7:
-                    # 2026-09-16에 --force-login이 자격증명 입력 없이 갱신됐다(1회 관측).
-                    # 재현되면 월 1회 예약으로 수동 단계를 없앤다 — 지금이 확인할 차례다.
+                    # 무인 갱신은 2026-09-16에 반증됐다 — 쿠키는 새로 받지만 서버가 거부한다.
+                    # 사람이 실제로 로그인해야 하고, 그 뒤 --check-session으로 서버 기준 확인.
                     hint = (" → py -u scripts/naver_crosspost.py --force-login"
-                            " (입력 없이 갱신되는지 확인. 되면 월 1회 예약으로 자동화)")
+                            " (사람이 직접 로그인. 끝나면 --check-session으로 서버 확인)")
                 elif days <= 0:
                     hint = " → 만료됨. --force-login으로 직접 로그인 필요"
                 add("네이버", status,
