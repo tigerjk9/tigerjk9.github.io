@@ -39,7 +39,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 
 ### 슬래시 커맨드 카탈로그
 
-`edit-*` 4개는 **전역**(`~/.claude/commands/`)이고 `/hook`은 **전역 스킬**(`~/.claude/skills/hook/`)이다(2026-09-16 이관). 프로젝트 스코프였을 때는 다른 폴더에서도, Codex에서도 잡히지 않았다 — `codex-port/sync.py`가 `~/.claude/`만 읽고 Codex는 프로젝트별 스킬을 지원하지 않기 때문이다. 이관하면서 문서에 박혀 있던 `C:/Users/windo/...` **다른 PC 경로를 걷어내고**, `BLOG_ROOT` 환경변수 → 관례 경로 후보 순으로 저장소를 찾는 절을 넣었다. 나머지 커맨드는 여전히 프로젝트 스코프라 이 저장소에서만 잡힌다.
+**표의 커맨드는 전부 전역이다** — 저장소의 `.claude/commands/`에는 `book-review`·`cardnews`·`column`·`paper`·`paraph`·`video` 여섯 개만 남는다(전역 쪽이 이 파일들을 읽어가는 **단일 진실 소스**라 지우면 안 된다). 2026-09-16에 나머지 12개(`edit-*` 4 · `hook` · `digest` · `lecture-archive` · `naver` · `plain-paraph` · `plain-video` · `tidy-claude-md` · `yeonsu`)와 스킬 `lecture-archive-orchestrator`를 전역으로 옮겼다. 프로젝트 스코프였을 때는 다른 폴더에서도, Codex에서도 잡히지 않았다 — `codex-port/sync.py`가 `~/.claude/`만 읽고 Codex는 프로젝트별 스킬을 지원하지 않기 때문이다. 이관하면서 문서에 박혀 있던 `C:/Users/windo/...` **다른 PC 경로를 걷어내고**, `BLOG_ROOT` 환경변수 → 관례 경로 후보 순으로 저장소를 찾는 절을 넣었다. 전역 자산 7곳에 **다른 PC 경로**(`C:/Users/windo/...`)가 박혀 있어 전역인데도 이 머신에서 못 쓰는 상태였다(`book-review`·`column` SKILL.md의 `BLOG_ROOT`, `paper.md`, `hook-image`의 폰트·`.env` 폴백, `edu-news`·`tech-news`). 전부 `BLOG_ROOT` 환경변수 → 관례 경로 후보 순으로 찾는 방식으로 바꿨다. **전역화할 때 경로를 박으면 그 순간 다른 PC에서 죽는다** — 이 저장소 경로가 필요하면 항상 해석 절을 넣는다.
 
 블로그 자동화·유지보수 슬래시 커맨드 전체 목록. 상세는 각 커맨드 파일(`.claude/commands/<name>.md`)과 아래 해당 섹션 참고.
 
