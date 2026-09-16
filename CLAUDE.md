@@ -39,7 +39,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 
 ### 슬래시 커맨드 카탈로그
 
-`edit-*` 4개는 **전역**(`~/.claude/commands/`)이다(2026-09-16 이관). 프로젝트 스코프였을 때는 다른 폴더에서도, Codex에서도 잡히지 않았다 — `codex-port/sync.py`가 `~/.claude/`만 읽고 Codex는 프로젝트별 스킬을 지원하지 않기 때문이다. 이관하면서 문서에 박혀 있던 `C:/Users/windo/...` **다른 PC 경로를 걷어내고**, `BLOG_ROOT` 환경변수 → 관례 경로 후보 순으로 저장소를 찾는 절을 넣었다. 나머지 커맨드는 여전히 프로젝트 스코프라 이 저장소에서만 잡힌다.
+`edit-*` 4개는 **전역**(`~/.claude/commands/`)이고 `/hook`은 **전역 스킬**(`~/.claude/skills/hook/`)이다(2026-09-16 이관). 프로젝트 스코프였을 때는 다른 폴더에서도, Codex에서도 잡히지 않았다 — `codex-port/sync.py`가 `~/.claude/`만 읽고 Codex는 프로젝트별 스킬을 지원하지 않기 때문이다. 이관하면서 문서에 박혀 있던 `C:/Users/windo/...` **다른 PC 경로를 걷어내고**, `BLOG_ROOT` 환경변수 → 관례 경로 후보 순으로 저장소를 찾는 절을 넣었다. 나머지 커맨드는 여전히 프로젝트 스코프라 이 저장소에서만 잡힌다.
 
 블로그 자동화·유지보수 슬래시 커맨드 전체 목록. 상세는 각 커맨드 파일(`.claude/commands/<name>.md`)과 아래 해당 섹션 참고.
 
@@ -57,7 +57,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 | `/edit-yeonsu` | 연수 자료 주인장 목소리 | **전역** `~/.claude/commands/edit-yeonsu.md` |
 | `/digest` | 주간 다이제스트 | 아래 "주간 다이제스트…" |
 | `/cardnews` | 카드뉴스 PNG 세트 | 아래 "카드뉴스…" |
-| `/hook` | 후킹 티저 카드 1장 | 아래 "후킹 이미지 카드…" |
+| `/hook` | 후킹 티저 카드 1장 | **전역 스킬** `~/.claude/skills/hook/` · 아래 "후킹 이미지 카드…" |
 | `/naver` | 네이버 블로그 크로스포스팅 | 아래 "네이버…" |
 | `/lecture-archive` | 강의자료 zip → `_lectures/` 큐레이션(개발 중) | 아래 "강의자료 큐레이션…" |
 | `/column` | 클로드 직접 집필 전문가 칼럼(유튜브 자막 지원, 저장 직후 `py scripts/column_qa.py`로 후처리 2패스 필수) | `column.md` |
@@ -479,7 +479,8 @@ py -X utf8 scripts/cardnews.py --style diagram --topic "..."          # 밝은 �
   - **아키타입 5종** (`--archetype {auto,journey,comparison,cycle,steps,quadrant}`, 기본 `auto`=LLM이 내용에 맞게 선택): **journey**(기대 직선+핀 vs 현실 Catmull-Rom 위빙 경로+노드) · **comparison**(좌우 2패널+헤더밴드+VS 배지) · **cycle**(원둘레 노드+시계방향 호 화살표) · **steps**(번호 원+라벨+설명 세로 흐름+연결선) · **quadrant**(십자축+화살표+4사분면+축 low/high/명 라벨).
   - LLM은 고른 아키타입 스펙만 내고(`cardnews_diagram_prompt_template.txt`, 단정체·환각금지 상속), 파이썬 디스패처 `render_diagram_svg`가 `render_{journey,comparison,cycle,steps,quadrant}_svg`로 라우팅(미지값 journey 폴백)해 렌더(`cardnews_diagram_template.html`). 공통 헬퍼 `_diag_open/_diag_close/_title/_arrowhead/_wrap_kr/_put_lines`. 라벨은 명사·짧게(길면 폰트 자동 축소·충돌 회피). 아웃트로 없이 하단 `@Dot_Connector` 푸터. `cards.json`에 `style:diagram`+archetype 저장 → `--rerender`가 스펙만으로 무과금 재렌더(스펙 필드 수정 후). 색: 크림 `#f3f0e9`·네이비 `#2b2d3a`·오렌지 `#e8631f`.
   - **cinematic(기본값)은 완전 무영향**(라이브 URL dry-run 비회귀 검증). 신규 파일 2개(template·prompt) + `cardnews.py` 함수군. 5종 전부 Edge 캡처 PNG 육안 검증 완료.
-  - **전역 스킬화 (2026-08-02)**: `~/.claude/skills/cardnews/SKILL.md`로 어느 cwd에서든 사용(엔진은 블로그 repo 절대경로 호출, 리소스는 `__file__` 기준 해석이라 cwd 무관 — `_load_dotenv`도 `REPO_ROOT/.env`). 엔진·브랜드 자산(logo·.env·.fonts)이 블로그 repo에 묶여 그 저장소가 있어야 동작. 전역 스킬은 스타일 선택→아키타입→생성 워크플로 포함. 프로젝트 커맨드(`.claude/commands/cardnews.md`)는 in-repo 상대경로로 병존.
+  - **`/hook`도 전역 스킬 (2026-09-16)**: `~/.claude/skills/hook/`. cardnews와 같은 이유·같은 방식이다. 다만 **엔진 경로를 박지 않는다** — cardnews의 `ENGINE`에 다른 PC 경로(`C:/Users/windo/...`)가 박혀 있어 이 머신에서는 틀린 값이었고, 같은 실수를 반복하지 않으려고 둘 다 `BLOG_ROOT` 환경변수 → 관례 경로 후보 순으로 찾는 방식으로 통일했다. 전역 스킬 `hook-image`는 **다른 스킬**이다(인스타 캡션용 질문 한 줄 커버, 자체 스크립트·폰트 포함). 이름이 비슷하니 혼동하지 말 것.
+- **전역 스킬화 (2026-08-02)**: `~/.claude/skills/cardnews/SKILL.md`로 어느 cwd에서든 사용(엔진은 블로그 repo 절대경로 호출, 리소스는 `__file__` 기준 해석이라 cwd 무관 — `_load_dotenv`도 `REPO_ROOT/.env`). 엔진·브랜드 자산(logo·.env·.fonts)이 블로그 repo에 묶여 그 저장소가 있어야 동작. 전역 스킬은 스타일 선택→아키타입→생성 워크플로 포함. 프로젝트 커맨드(`.claude/commands/cardnews.md`)는 in-repo 상대경로로 병존.
 
 ## 후킹 이미지 카드 (`/hook`, 2026-07-31)
 
