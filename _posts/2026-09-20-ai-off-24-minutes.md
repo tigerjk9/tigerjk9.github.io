@@ -10,11 +10,11 @@ header:
 ---
 
 <figure>
-<img src="/assets/ai-off-24-minutes-panel.jpg" alt="에듀테크 코리아 페어 2026 세션 무대. 배경에 '교사는 무엇을 맡고, AI에게 무엇을 맡길 것인가'라는 세션 주제가 적혀 있고, 맨 오른쪽에 교사 실행 사례 발표자로 앉아 있다.">
-<figcaption>에듀테크 코리아 페어 2026, EdTech Arena 무대. '교사는 무엇을 맡고, AI에게 무엇을 맡길 것인가'를 주제로 열린 세션에서 교사 실행 사례를 나눴습니다.</figcaption>
+<img src="/assets/ai-off-24-minutes-panel.jpg" alt="에듀테크 코리아 페어 2026 세션 장면. 배경에 '교사는 무엇을 맡고, AI에게 무엇을 맡길 것인가'라는 세션 주제가 적혀 있고, 맨 오른쪽에 교사 실행 사례 발표자로 앉아 있다.">
+<figcaption>에듀테크 코리아 페어 2026, EdTech Arena. '교사는 무엇을 맡고, AI에게 무엇을 맡길 것인가'를 주제로 열린 세션에서 교사 실행 사례를 나눴습니다.</figcaption>
 </figure>
 
-지난 9월 17일부터 19일까지 서울 코엑스에서 열린 에듀테크 코리아 페어에서, EdTech Arena 무대의 교사 실행 사례로 짧은 발표를 했습니다. 세션의 주제는 '교사는 무엇을 맡고, AI에게 무엇을 맡길 것인가'였습니다. 그 물음에 제 수업으로 답해 보려 했고, 그날 나눈 이야기를 여기에 정리해 둡니다. 그날의 발표 교안은 글 끝에서 내려받으실 수 있게 두었습니다.
+지난 9월 17일부터 19일까지 서울 코엑스에서 열린 에듀테크 코리아 페어에서, EdTech Arena 세션의 교사 실행 사례로 짧은 발표를 했습니다. 세션의 주제는 '교사는 무엇을 맡고, AI에게 무엇을 맡길 것인가'였습니다. 그 물음에 제 수업으로 답해 보려 했고, 그날 나눈 이야기를 여기에 정리해 둡니다. 그날의 발표 교안은 글 끝에서 내려받으실 수 있게 두었습니다.
 
 트로이 목마 이야기로 시작하겠습니다. 겉으로는 거대한 목마 한 마리지만, 그 안에는 병사들이 숨어 있었습니다. 이것을 성 안에 들이는 일이 어떤 결과를 부를지 알려면 겉모습이 아니라 그 이면, 곧 본질을 봐야 했습니다.
 
@@ -88,18 +88,18 @@ header:
 
 예컨대 고등학교 과학에서 실험 데이터를 해석한다면, 학생이 먼저 그래프의 이상한 점을 찾고 설명 가설을 적게 합니다. 이후 AI로 대안 설명을 받아 비교하되, 어떤 설명을 채택할지는 근거를 들어 학생이 정하게 합니다. 국어나 역사에서도 원문과 사료에 대한 첫 해석은 학생에게 남기고, AI는 반론을 내놓거나 빠진 관점을 찾는 단계에 투입할 수 있습니다. 그러니 Minus AI의 자리는 몇 분 동안 기기를 금지하는 고정 규칙이 아닙니다. 배움의 핵심 판단을 학생이 먼저 수행하도록 순서를 설계하는 원칙입니다.
 
-## 고맙습니다, 그리고 교안을 나눕니다
+## 발표 교안을 나눕니다
 
 <figure style="max-width:420px; margin-inline:auto;">
 <img src="/assets/ai-off-24-minutes-badge.jpg" alt="에듀테크 코리아 페어 2026 발표자 명찰. 대전 둔천초등학교 교사 김진관, SPEAKER라고 적혀 있다.">
-<figcaption>이 자리에 서게 해 주신 모든 분께 감사드립니다.</figcaption>
+<figcaption>에듀테크 코리아 페어 2026 발표자 명찰입니다.</figcaption>
 </figure>
 
-발표를 끝까지 들어 주시고 좋은 질문을 건네주신 선생님들, 자리를 함께해 주신 분들께 감사드립니다. 무대에서 못다 한 말은 여기에 적어 두었고, 그날 쓴 발표 교안도 아래에 두었습니다. 정답을 담은 자료는 아닙니다. 각자의 교실에서 무엇을 남기고 무엇을 고칠지 함께 고민하는 출발점으로 쓰이면 좋겠습니다. 자료를 활용하실 때는 출처(닷커넥터 김진관)를 밝혀 주시기를 부탁드립니다.
+발표를 들어 주시고 좋은 질문을 건네주신 선생님들께 고맙습니다. 그날 다 하지 못한 이야기를 여기에 적어 두었고, 발표 교안도 아래에 두었습니다. 정답을 담은 자료는 아닙니다. 각자의 교실에서 무엇을 남기고 무엇을 고칠지 함께 고민하는 출발점으로 쓰이면 좋겠습니다. 자료를 활용하실 때는 출처(닷커넥터 김진관)를 밝혀 주시기를 부탁드립니다.
 
 <div style="margin:2em 0; padding:1.4em 1.5em; border:1px solid rgba(128,128,128,.28); border-radius:14px; background:rgba(88,166,255,.07);">
 <p style="margin:0 0 .35em; font-weight:700; font-size:1.05em;">발표 교안 내려받기</p>
-<p style="margin:0 0 1em; opacity:.85; font-size:.95em; line-height:1.6;">이날 무대에서 쓴 발표 교안 전문입니다. 활용하실 때는 출처(닷커넥터 김진관)를 밝혀 주세요. (PDF · 약 9.8MB)</p>
+<p style="margin:0 0 1em; opacity:.85; font-size:.95em; line-height:1.6;">이날 발표에 쓴 교안 전문입니다. 활용하실 때는 출처(닷커넥터 김진관)를 밝혀 주세요. (PDF · 약 9.8MB)</p>
 <a href="/assets/ai-off-24-minutes-slides.pdf" download="40분 중 20분, AI를 껐습니다 (김진관).pdf" style="display:inline-flex; align-items:center; gap:.5em; padding:.72em 1.25em; background:#2f6feb; color:#ffffff; border-radius:10px; text-decoration:none; font-weight:600;">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
 발표 교안 PDF 받기
