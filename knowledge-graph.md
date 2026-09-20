@@ -600,12 +600,64 @@ class: "page--knowledge-graph"
     return mapping;
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // 끊긴 컴포넌트 연결: 태그를 전혀 공유하지 않아 본체와 분리된 소군집(섬)이
+  //   화면 밖으로 떠다니지 않도록, 각 고립 컴포넌트를 본체(최대 컴포넌트)의
+  //   가장 비슷한 글에 얇은 링크(weight 0.02)로 잇는다. 힘이 아니라 링크 인력으로
+  //   끌어들여야 섬이 본체에 자연스럽게 흡수된다.
+  // ─────────────────────────────────────────────────────────────
+  function bridgeComponents(nodes, edges) {
+    const N = nodes.length;
+    if (!N) return;
+    const adj = Array.from({ length: N }, () => []);
+    edges.forEach((e) => { adj[e.source].push(e.target); adj[e.target].push(e.source); });
+    const comp = new Array(N).fill(-1);
+    let nc = 0;
+    for (let s = 0; s < N; s++) {
+      if (comp[s] !== -1) continue;
+      const stack = [s]; comp[s] = nc;
+      while (stack.length) {
+        const v = stack.pop();
+        for (const u of adj[v]) if (comp[u] === -1) { comp[u] = nc; stack.push(u); }
+      }
+      nc++;
+    }
+    if (nc <= 1) return; // 이미 하나로 연결됨
+    const size = new Array(nc).fill(0);
+    comp.forEach((c) => size[c]++);
+    let giant = 0;
+    for (let c = 1; c < nc; c++) if (size[c] > size[giant]) giant = c;
+    const giantIdx = [];
+    for (let i = 0; i < N; i++) if (comp[i] === giant) giantIdx.push(i);
+    const done = new Set();
+    for (let i = 0; i < N; i++) {
+      const c = comp[i];
+      if (c === giant || done.has(c)) continue;
+      done.add(c);
+      // 컴포넌트 대표: 태그가 가장 많은 노드
+      let rep = i;
+      for (let j = 0; j < N; j++)
+        if (comp[j] === c && (nodes[j].tags || []).length > (nodes[rep].tags || []).length) rep = j;
+      // 본체에서 가장 비슷한 글(공유 태그 → 같은 카테고리 순)에 연결
+      const repTags = new Set(nodes[rep].tags || []);
+      let best = giantIdx[0], bestScore = -1;
+      for (const gI of giantIdx) {
+        let shared = 0;
+        (nodes[gI].tags || []).forEach((t) => { if (repTags.has(t)) shared++; });
+        const score = shared * 10 + (nodes[gI].group === nodes[rep].group ? 3 : 0);
+        if (score > bestScore) { bestScore = score; best = gI; }
+      }
+      edges.push({ source: rep, target: best, weight: 0.02 });
+    }
+  }
+
   function init(data) {
     const nodes = (data.nodes || []).map((n, i) => Object.assign({ idx: i }, n));
     if (!nodes.length) { spinner.innerHTML = '<p>표시할 글이 없습니다.</p>'; return; }
 
     // ── Build edges (tag IDF) + degree ──
     const { idf, edges } = buildEdges(nodes);
+    bridgeComponents(nodes, edges); // 끊긴 컴포넌트(섬)를 본체에 얇게 연결 — 화면 밖 떠다님 방지
     nodes.forEach((n) => { n.degree = 0; });
     edges.forEach((e) => { nodes[e.source].degree++; nodes[e.target].degree++; });
 
@@ -654,9 +706,11 @@ class: "page--knowledge-graph"
     if (commSize.has(CONFIG.OTHER)) communities.push(CONFIG.OTHER);
 
     // ── Seed positions per community (seeding only — no fixed bubbles) ──
-    const cr = Math.min(W, H) * 0.34;
+    const cr = Math.min(W, H) * 0.30;
     const seed = new Map();
     communities.forEach((c, i) => {
+      // '기타'(작은 군집 묶음)는 실제 군집이 아니므로 중앙에 시딩 — 링크 따라 본체에 흡수되게
+      if (c === CONFIG.OTHER) { seed.set(c, { x: W / 2, y: H / 2 }); return; }
       const a = (2 * Math.PI * i / communities.length) - Math.PI / 2;
       seed.set(c, { x: W / 2 + cr * Math.cos(a), y: H / 2 + cr * Math.sin(a) });
     });
@@ -738,6 +792,9 @@ class: "page--knowledge-graph"
     function clusterForce(alpha) {
       updateCentroids();
       nodes.forEach((n) => {
+        // '기타'는 무관한 소군집 묶음이라 한 centroid로 모으면 빈 공간에 뭉쳐 동떨어져 보인다.
+        // 응집력을 빼고 각자의 링크·gravity에 맡겨 본체에 흡수되게 한다.
+        if (n.comm === CONFIG.OTHER) return;
         const c = centroid.get(n.comm); if (!c) return;
         n.vx += (c.x - n.x) * 0.08 * alpha;
         n.vy += (c.y - n.y) * 0.08 * alpha;
@@ -746,21 +803,33 @@ class: "page--knowledge-graph"
 
     const sim = d3.forceSimulation(nodes)
       .force('link', linkForce)
-      .force('charge', d3.forceManyBody().strength(-26))
+      // distanceMax: 반발력을 근거리로 제한 — 없으면 모든 노드가 서로 밀어내
+      // 연결이 약한/끊긴 군집이 화면 밖으로 흩어진다(동떨어진 클러스터의 직접 원인).
+      .force('charge', d3.forceManyBody().strength(-26).distanceMax(340))
       .force('collide', d3.forceCollide((n) => n.r + 2).strength(0.85).iterations(2))
       .force('cluster', clusterForce)
+      // 전역 중심 인력(gravity) — 연결이 약한 군집도 중심으로 모아 한 화면에 담기게 한다.
+      // 저차수(연결 적은/끊긴) 노드일수록 중심으로 강하게 당겨, 동떨어진 군집이 화면 밖으로
+      // 새는 것을 막는다. 잘 연결된 노드는 링크에 맡기고 약한 gravity만 준다.
+      // 화면이 가로로 넓으므로 x 기준은 약하게(가로로 퍼지도록), y는 강하게(세로로 모으도록).
+      // '기타'(어디에도 강하게 안 붙는 소군집 노드)는 중심으로 강하게 당겨 본체 안에 자리잡게 한다.
+      .force('x', d3.forceX(W / 2).strength((n) => n.comm === CONFIG.OTHER ? 0.35 : Math.max(0.035, 0.22 / (1 + n.degree))))
+      .force('y', d3.forceY(H / 2).strength((n) => n.comm === CONFIG.OTHER ? 0.35 : Math.max(0.06, 0.30 / (1 + n.degree))))
       .stop();
 
     // 전체 노드가 뷰포트에 들어오도록 bounding box 기준 zoom 맞춤
     function fitToView(padding) {
-      padding = padding || 60;
+      padding = padding || 70;
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       nodes.forEach((n) => {
-        if (n.x < minX) minX = n.x; if (n.x > maxX) maxX = n.x;
-        if (n.y < minY) minY = n.y; if (n.y > maxY) maxY = n.y;
+        // 노드 반경까지 포함해 가장자리 노드가 잘리지 않게 한다
+        if (n.x - n.r < minX) minX = n.x - n.r;
+        if (n.x + n.r > maxX) maxX = n.x + n.r;
+        if (n.y - n.r < minY) minY = n.y - n.r;
+        if (n.y + n.r > maxY) maxY = n.y + n.r;
       });
       const gw = (maxX - minX) || 1, gh = (maxY - minY) || 1;
-      const scale = Math.min(W / (gw + padding * 2), H / (gh + padding * 2), 1.2);
+      const scale = Math.min(W / (gw + padding * 2), H / (gh + padding * 2), 1.4);
       const tx = W / 2 - (minX + maxX) / 2 * scale;
       const ty = H / 2 - (minY + maxY) / 2 * scale;
       svg.transition().duration(dur(450))
@@ -771,7 +840,7 @@ class: "page--knowledge-graph"
     const warm = REDUCED ? 80 : 300;
     for (let i = 0; i < warm; i++) sim.tick();
     tick();
-    fitToView(60);
+    fitToView(70);
     spinner.style.display = 'none';
     setTimeout(() => { if (hint) hint.style.opacity = '0'; }, 2500);
 
@@ -929,7 +998,7 @@ class: "page--knowledge-graph"
         currentFilterOpacity = () => 1;
         nodeCircles.attr('opacity', 1);
         commLabelSel.attr('opacity', 1);
-        fitToView(60);
+        fitToView(70);
       } else {
         currentFilterOpacity = (n) => String(n.comm) === catStr ? 1 : CONFIG.FADE_OP;
         nodeCircles.attr('opacity', currentFilterOpacity);
@@ -1002,7 +1071,7 @@ class: "page--knowledge-graph"
       W = wrap.clientWidth; H = wrap.clientHeight;
       svg.attr('width', W).attr('height', H);
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { if (activeFilter === 'all' && !activeNode) fitToView(60); }, 200);
+      resizeTimer = setTimeout(() => { if (activeFilter === 'all' && !activeNode) fitToView(70); }, 200);
     });
     ro.observe(wrap);
   }
