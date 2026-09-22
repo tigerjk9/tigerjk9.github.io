@@ -719,6 +719,16 @@ scripts/
 
 **클로드 집필(`/column`·수동)에도 동일 정책**: 위 함수는 자동화 스크립트(Gemini 출력) 전용이라 `/column` 등 클로드가 직접 쓰는 글은 거치지 않는다. 제목을 지을 때 **대시로 부제를 붙이지 말 것**(`본문 — 부제` 금지) — 한 문장으로 쓰거나 정보 보존이 필요하면 쉼표로 잇는다. 이미 있는 대시 제목은 쉼표 치환.
 
+## 공통: 시크릿 (이 저장소는 public)
+
+**커밋 전 차단 훅 — 머신마다 한 번 켜야 한다**: `git config core.hooksPath scripts/hooks`. 안 켜면 조용히 꺼진 채로 있다. `scripts/hooks/secret_scan.py`가 스테이징 내용에서 실제 규격의 키(Google 39자·Anthropic·GitHub 36자·AWS·Slack·개인키·네이버 `NID_AUT`/`NID_SES`)와 금지 파일명(`.env`·`*cookies.json`·`settings.local.json`·`*.pem`)을 막는다. 워크숍 교재의 자리표시자(`sk-ant-oat01-yyy`·`ghp_xxxxx`)는 통과시킨다 — **오탐이 한 번 나면 그때부터 `--no-verify`로 우회하게 되므로 오탐 0이 설계 목표다.** `pre-commit`은 `.gitattributes`에서 `eol=lf` 고정(CRLF면 Git Bash가 bad interpreter로 죽는다).
+
+**`.claude/settings.local.json`이 키를 삼킨다 (2026-09-22 실측)**: 명령줄에 키를 인라인으로 한 번 치면(`GEMINI_API_KEY="AIza..." python ...`) Claude Code가 그 **명령 문자열 전체를** 허용목록에 적는다. 사람이 커밋한 게 아니라 도구가 대신 기록했고, 그 파일이 추적되고 있어 2026-02-28부터 공개돼 있었다. `.env`를 아무리 잘 막아도 이 경로로 뚫린다 — **키는 `.env`에서 로드하고 명령줄에 쓰지 않는다.** 이 파일과 `scripts/naver_cookies.json`(네이버 세션 쿠키)은 `8559179`에서 추적 해제·gitignore 등록했다. 둘 다 노출 시점에 이미 무효였다.
+
+**히스토리 재작성은 하지 않았다**: 값이 죽어 있어 실익이 적고 1947커밋 공개 Pages 저장소 force-push 비용이 크다. **살아 있는 키가 노출되면 판단이 달라진다** — 그때는 폐기·회전이 1순위이고(히스토리를 지워도 이미 유출된 값은 못 되돌린다) 재작성은 그 다음이다.
+
+**점검 방법**: `git log --all -S<접두사>` pickaxe는 커밋마다 diff를 떠서 패턴당 10분 걸린다. `git cat-file --batch-all-objects`로 blob을 한 번에 스트리밍 스캔하는 쪽이 훨씬 빠르다(6,282개 수십 초). `kakao_js_key`는 도메인 제한 공개 클라이언트 키라 커밋이 정상이다.
+
 ## 공통: git push 주의사항
 
 원격에 로컬에 없는 커밋이 있으면 push가 실패한다. `--autostash` 옵션이 unstaged 변경사항을 자동으로 처리한다:
