@@ -108,3 +108,10 @@ scripts/health_check.log
 /output/
 /.agents/
 /AGENTS.md
+
+# 시크릿 — 공개 저장소이므로 절대 추적하지 않는다 (2026-09-22 노출 정리)
+# settings.local.json: Bash 허용목록에 API 키가 통째로 박혀 공개됐던 전례가 있다
+.claude/settings.local.json
+# 네이버 세션 쿠키(NID_AUT/NID_SES) — 계정 자격증명
+scripts/naver_cookies.json
+**/cookies.json

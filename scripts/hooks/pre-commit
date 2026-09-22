@@ -1,0 +1,10 @@
+#!/bin/sh
+# 시크릿 사전 차단. 활성화는 머신마다 한 번: git config core.hooksPath scripts/hooks
+# 이 머신엔 `python`이 없고 `py`만 있다(2026-09-22 실측) — 후보를 순서대로 찾는다.
+for PY in py python3 python; do
+  if command -v "$PY" >/dev/null 2>&1; then
+    exec "$PY" -X utf8 "$(dirname "$0")/secret_scan.py"
+  fi
+done
+echo "  [pre-commit] 파이썬을 찾지 못해 시크릿 검사를 건너뜁니다." >&2
+exit 0

@@ -8,3 +8,6 @@ CHANGELOG.md                    text merge=union
 docs/_docs/18-history.md        text merge=union
 
 *.md                            text
+
+# git 훅은 Git Bash가 sh로 실행한다 — CRLF면 bad interpreter 로 죽는다
+scripts/hooks/pre-commit        text eol=lf
