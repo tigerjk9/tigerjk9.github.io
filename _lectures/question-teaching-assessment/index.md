@@ -39,9 +39,7 @@ header:
 
 - **[발표용 공유 웹앱 열기](https://tigerjk9.github.io/question-teaching-assessment/){:target="_blank"}** — 프로젝터로 띄우고 청중에게 QR로 공유하는 143장 슬라이드 뷰어(공개). 영상 슬라이드는 재생되지 않으니 실제 발표에서 시청한다.
 - **[현장 강의용 대본 PDF 내려받기(143쪽 · 슬라이드+발표 노트)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/question-teaching-assessment-handbook.pdf){:target="_blank"}** — 슬라이드 화면과 그 슬라이드의 발표 노트를 한 쪽에 담았다. 강의장에서 보며 읽고 진행하는 자료다(1부는 슬라이드별 대본, 2부는 화면만).
-- **[Canva 원본 열기(편집)](https://www.canva.com/design/DAHWGzCe8A4/qvwtu6hJeYVNhXDbHChXrg/edit){:target="_blank"}** — 슬라이드를 직접 고칠 수 있는 원본
-- **[발표 대본 PDF 내려받기(27쪽)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/question-teaching-assessment-script.pdf){:target="_blank"}** — 1부 질문 중심 수업의 슬라이드별 발표 대본
-- **[PPTX 원본 내려받기(143장 · 약 80MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/question-teaching-assessment.pptx){:target="_blank"}**
+- **[Canva 원본 열기(편집)](https://www.canva.com/design/DAHWGzCe8A4/qvwtu6hJeYVNhXDbHChXrg/edit){:target="_blank"}** — 슬라이드를 직접 고칠 수 있는 원본- **[PPTX 원본 내려받기(143장 · 약 80MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/question-teaching-assessment.pptx){:target="_blank"}**
 
 <details class="script-details">
 <summary>슬라이드별 발표 대본 · 1부 질문 중심 수업 (84장, 펼쳐 보기)</summary>
