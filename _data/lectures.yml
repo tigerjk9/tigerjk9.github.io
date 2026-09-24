@@ -1,3 +1,24 @@
+- slug: question-teaching-assessment
+  title: "질문 중심 수업과 서·논술형 평가"
+  subtitle: "질문으로 가르치고 배우기 · 정답을 넘어 더 깊은 생각으로 · 143장 · 두 파트"
+  audience: "초등 교사"
+  slide_count: 143
+  chapter_count: 6
+  date: "2026-09-24"
+  hub_url: /lectures/question-teaching-assessment/
+  locked: true
+  locked_payload: "AlfpfX30CMVu48wNJqFK8VWfkzQQ5E/wFXZwFbJDlrh3yAmcs6yugqXuySNWZDxIyLjiyCws1KnYSaHW5jIYKYsAh7hwbNkfQNEB3eG0W04nNN3LWy8tx+kRBWaFjdiQjenXQs8ZBvNtL3qqHLo="
+  thumbnail: /assets/lectures/covers/ad8a2c48650b7774.jpg
+  author: "2026 학생 질문 중심 수업·평가 초등 선도교원 연수 (교육청 배포 발표 원고)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "교육청 배포 발표 원고 143장을 질문 중심 수업과 서·논술형 평가 두 흐름으로 정리한 큐레이션"
+  tags:
+    - 질문중심수업
+    - 서논술형평가
+    - 질문형성기법
+    - 과정중심평가
+    - 교원연수
+
 - slug: seoul-citizen-ai-literacy
   title: "AI를 읽는 힘, 인간을 생각하는 시간"
   subtitle: "서울시민대학교 강연 · 85개 화면과 전체 발표 대본"
