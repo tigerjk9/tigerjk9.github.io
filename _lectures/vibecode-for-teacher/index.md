@@ -43,6 +43,12 @@ header:
 
 - **[vibecode-for-teacher · GitHub 저장소](https://github.com/lifeofpi-ux/vibecode-for-teacher){:target="_blank"}**
 
+## 함께 보는 강의
+
+이 책의 내용을 강의 슬라이드 85장(PART 1~4 + 부록)으로 정리한 자료도 함께 볼 수 있다.
+
+- **[바이브 코딩 강의 자료](https://tigerjk9.github.io/vibecoding-lecture/){:target="_blank"}**
+
 ## 목차
 
 **PART 01. 문제 발견 — 내 불편함이 앱이 되기까지**
