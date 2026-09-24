@@ -1,3 +1,20 @@
+- slug: seoul-citizen-ai-literacy
+  title: "AI를 읽는 힘, 인간을 생각하는 시간"
+  subtitle: "서울시민대학교 강연 · 85개 화면과 전체 발표 대본"
+  audience: "AI와 함께 배우고 일하는 시민·교육자"
+  duration_min: 120
+  slide_count: 85
+  chapter_count: 8
+  date: "2026-09-24"
+  hub_url: /lectures/seoul-citizen-ai-literacy/
+  thumbnail: https://tigerjk9.github.io/seoul-citizen-ai-literacy/assets/og-image.jpg
+  author: "김진관 (닷커넥터)"
+  tags:
+    - AI리터러시
+    - 학습과학
+    - 자기주도학습
+    - 발표자료
+
 - slug: ai-off-for-20-minutes
   title: "40분 중 20분, AI를 껐습니다"
   subtitle: "수업설계안에 담긴 판단과 성찰 · 2026 에듀테크 코리아 페어 발표"
