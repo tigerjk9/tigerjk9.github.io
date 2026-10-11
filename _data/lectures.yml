@@ -1,3 +1,23 @@
+- slug: justvuild-03-lecture
+  title: "클로드코드와 깃허브로 반복작업을 워크플로우화하고 웹앱으로 확장하기"
+  subtitle: "JUST VUILD 2026 사전연수 3회차 · 82개 화면과 전체 발표 대본"
+  audience: "유·초·중·고·특수 전 학교급 교사"
+  duration_min: 90
+  slide_count: 82
+  chapter_count: 7
+  date: "2026-10-12"
+  hub_url: /lectures/justvuild-03-lecture/
+  locked: true
+  locked_payload: "AjJplwRTTDr+CIu5crgoksG7hJjDvCBT0JAHsF3PGGlUABLI0kwDwyM04RfMDoC4ldD2dWga+yulEJgyR891MT8/aT02PD4nS5w4safgruA1LgILW84OFeiL/Kt8fspmQEf5onNC"
+  thumbnail: /assets/lectures/covers/ca35b4fff93497b3.jpg
+  author: "김진관 (닷커넥터)"
+  tags:
+    - 클로드코드
+    - 에이전트스킬
+    - 깃허브
+    - 업무자동화
+    - 발표자료
+
 - slug: question-teaching-assessment
   title: "질문 중심 수업과 서·논술형 평가"
   subtitle: "질문으로 가르치고 배우기 · 정답을 넘어 더 깊은 생각으로 · 143장 · 두 파트"
