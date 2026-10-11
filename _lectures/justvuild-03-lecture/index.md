@@ -4,7 +4,7 @@ layout: lecture
 permalink: /lectures/justvuild-03-lecture/
 sitemap: false
 noindex: true
-date: 2026-10-12
+date: 2026-10-11
 author_profile: false
 toc: false
 header:
