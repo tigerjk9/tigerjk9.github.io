@@ -34,6 +34,17 @@ LINE = (51, 65, 85)
 
 BOOKS = [
     {
+        "volume": 9,
+        "slug": "book-09",
+        "accent": (163, 230, 53),   # lime-400
+        "eyebrow": "강의 교재",
+        "footer": "집필 닷커넥터 김진관 · JUST VUILD 2026 사전연수 3회차",
+        "title_lines": ["클로드코드와 깃허브로 반복작업을 워크플로우화하고", "웹앱으로 확장하기"],
+        "subtitle": "문제 정의서 한 장, SKILL.md 한 장, 주소 하나",
+        "chips": ["7장 + 부록 A~D", "전 학교급 교사"],
+        "status": "최신",
+    },
+    {
         "volume": 8,
         "slug": "book-08",
         "accent": (34, 211, 238),   # cyan-400
@@ -42,7 +53,7 @@ BOOKS = [
         "title_lines": ["요즘 교사를 위한", "웹앱 만들기 with 바이브 코딩"],
         "subtitle": "PRD·MVP에서 API·AI·Supabase·로컬 배포까지, 코드 없이 웹앱 만들기",
         "chips": ["4부 8장 + 부록", "교사 · 비개발자"],
-        "status": "최신",
+        "status": None,
     },
     {
         "volume": 7,
