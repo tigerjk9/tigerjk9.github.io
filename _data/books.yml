@@ -1,7 +1,19 @@
-# 도서 9권. 1~7권과 9권(JUST VUILD 2026 3회차 강의 교재)은 Book-Publisher(tigerjk9/Book-Publisher — 비공개 레포) 완성 원고로
+# 도서 10권. 1~7권과 9권(JUST VUILD 2026 3회차 강의 교재)은 Book-Publisher(tigerjk9/Book-Publisher — 비공개 레포) 완성 원고로
 # 라이브 Vercel 웹 도서에 연결된다(웹 도서가 단일 진실 소스). 8권은 한빛미디어 신간(5인 공저)으로
 # 블로그 내부 큐레이션 정리본(/lectures/vibecode-for-teacher/)에 연결된다.
 # 잠금 카드는 비밀번호 게이트 — URL을 locked_payload로 XOR 암호화(공통 비번). 표지 재생성: py scripts/gen_book_covers.py [7 8] (.fonts/ Pretendard 필요)
+- volume: 10
+  title: "AI를 읽는 힘, 인간을 생각하는 시간"
+  audience: "서울시민·AI 시대의 읽기와 배움에 관심 있는 성인"
+  structure: "들어가며 + 7장 + 마치며"
+  date: "2026-10-14"
+  author: "김진관 (닷커넥터)"
+  external: true
+  locked: true
+  locked_payload: "ApPCfncHeEn0hHEIXaDa4GOJbp4OLksXWeTSrUNh5Wh3q8W03EGyWF5yZ9Dki8gAx6d4k1L1XIdA3etvmKDttJvfL0a2rQ7WS08haf9SVOZSvrcyXKHs5A=="
+  cover: /assets/lectures/books/book-10-cover.jpg
+  status: "최신"
+
 - volume: 9
   title: "클로드코드와 깃허브로 반복작업을 워크플로우화하고 웹앱으로 확장하기"
   audience: "유·초·중·고·특수 전 학교급 교사"
@@ -12,7 +24,6 @@
   locked: true
   locked_payload: "AlgY2V9nsEcSXMA2MuYQrVn9aLdQQwN2MuiBJExodxWPon60p2AuRNmlehVyi3FMU+qvTjv4gWcyEets7WAGlsaFnV7jTZHHTkdh8WMVbbvcLh0FhiM="
   cover: /assets/lectures/books/book-09-cover.jpg
-  status: "최신"
 
 - volume: 8
   title: "요즘 교사를 위한 웹앱 만들기 with 바이브 코딩"
