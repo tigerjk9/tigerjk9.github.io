@@ -207,6 +207,7 @@ py -u scripts/naver_crosspost.py --dry-run     # 대상·분류 미리보기
 py -u scripts/naver_crosspost.py --login       # 최초 1회 수동 로그인 (쿠키 백업)
 py -u scripts/naver_crosspost.py --force-login # 세션 만료일 30일 리셋
 py -u scripts/naver_crosspost.py --update <logNo> --post <파일>  # 기존 글 본문 교체
+scripts\naver_relogin.cmd                      # 세션이 끊겼을 때 재로그인 + 서버 기준 확인 (바탕화면 '네이버 재로그인')
 ```
 
 - **카테고리 자동 분류**: Gemini가 전체 포스트를 3개 카테고리(인공지능교육 인사이트·뇌기반 학습 과학·생각하는 교실, 깊이있는 학습)로 일괄 의미 분류해 캐시. 수동 교정 우선
@@ -215,6 +216,7 @@ py -u scripts/naver_crosspost.py --update <logNo> --post <파일>  # 기존 글 
 - 표·볼드·소제목·이미지가 에디터 네이티브 컴포넌트로 변환, 글 끝에 원 작성일 + 원문 링크 자동 삽입
 - **중복 발행 이중 방지**: 게시 이력 상태 파일 + **발행 직전 네이버 실물 제목 존재 확인**(이력이 유실돼도 재발행 차단). 이력 push는 rebase 충돌 시 union 자동 병합해 로컬 고립을 막고, 실행당·하루 상한으로 몰아쓰기를 억제
 - 발행 URL은 모바일 API 제목 대조로 자동 기록
+- **세션 만료 당일 알림**: 네이버는 세션을 쿠키 표기 만료보다 일찍 끊는다. 스케줄 실행이 만료를 만나면 바탕화면에 재로그인 확인 창을 띄우고(하루 최대 한 번), [예]를 누르면 재로그인과 서버 확인까지 이어진다. 한 번에 한 실행만 브라우저 프로필을 쓰도록 실행 잠금을 건다
 
 </details>
 
