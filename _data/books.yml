@@ -1,7 +1,9 @@
-# 도서 10권. 1~7권과 9권(JUST VUILD 2026 3회차 강의 교재)은 Book-Publisher(tigerjk9/Book-Publisher — 비공개 레포) 완성 원고로
+# 도서 10권. 1~7권, 9권(JUST VUILD 2026 3회차 강의 교재), 10권(서울시민대학교 V10 강연 웹북)은
+# Book-Publisher(tigerjk9/Book-Publisher — 비공개 레포)의 websites/book-0N-*·book-10-* 소스로 배포한
 # 라이브 Vercel 웹 도서에 연결된다(웹 도서가 단일 진실 소스). 8권은 한빛미디어 신간(5인 공저)으로
 # 블로그 내부 큐레이션 정리본(/lectures/vibecode-for-teacher/)에 연결된다.
-# 잠금 카드는 비밀번호 게이트 — URL을 locked_payload로 XOR 암호화(공통 비번). 표지 재생성: py scripts/gen_book_covers.py [7 8] (.fonts/ Pretendard 필요)
+# 잠금 카드는 비밀번호 게이트 — URL을 locked_payload로 AES-256-GCM + PBKDF2 암호화(공통 비번, 복호화는 _pages/lectures.md).
+# 표지 재생성: py scripts/gen_book_covers.py [7 8] (.fonts/ Pretendard 필요)
 - volume: 10
   title: "AI를 읽는 힘, 인간을 생각하는 시간"
   audience: "서울시민·AI 시대의 읽기와 배움에 관심 있는 성인"
