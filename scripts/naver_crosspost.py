@@ -26,6 +26,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import os
 import random
@@ -72,6 +73,9 @@ FONT_SIZE = "15"
 # (2026-07-26 실측: #keep -> #loginStay, name=nvlong).
 KEEP_SELECTORS = ("#loginStay", "input[name='nvlong']", ".input_stay", "#keep")
 LOGIN_WAIT_SEC = 300
+# 다른 실행이 브라우저 프로필을 쓰고 있을 때 수동 실행이 기다리는 시간. 스케줄 실행은 기다리지 않는다
+LOCK_WAIT_SEC = 120
+LOCK_POLL_SEC = 3
 # 네이버 세션은 약 30일 고정 만료(사용해도 연장 안 됨) — 남은 기간이 이 값 이하면 경고
 EXPIRY_WARN_DAYS = 7
 
@@ -517,26 +521,146 @@ def save_cookies(ctx):
         if not any(c["name"] == "NID_AUT" for c in cookies):
             print("  [warn] NID_AUT 없음 — 쿠키 백업 건너뜀 (기존 백업 보존)")
             return
-        COOKIE_FILE.write_text(
-            json.dumps(cookies, ensure_ascii=False), encoding="utf-8")
+        # 쓰는 도중 프로세스가 죽어도 백업이 잘린 채 남지 않도록 임시 파일을 거쳐 바꿔 넣는다
+        tmp = COOKIE_FILE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(cookies, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, COOKIE_FILE)
     except Exception as e:
         print(f"  [warn] 쿠키 백업 실패: {e}")
+
+
+def _expiry_rank(c) -> float:
+    """만료 시각. 세션 쿠키(만료 없음)는 0으로 본다."""
+    e = c.get("expires")
+    return float(e) if isinstance(e, (int, float)) and e > 0 else 0.0
+
+
+# 한 번의 로그인에서 함께 발급되는 인증 쿠키. 섞이면 짝이 안 맞으므로 한 출처에서 통째로 쓴다.
+AUTH_SET = ("NID_AUT", "NID_SES", "nid_inf")
+
+
+def cookies_to_restore(backup: list, profile: list, now: float) -> list:
+    """백업 중 실제로 넣어야 할 쿠키만 고른다.
+
+    인증 쿠키(AUTH_SET)는 NID_AUT의 만료로 어느 쪽이 더 최근 로그인인지 정한 뒤 그쪽 묶음만
+    쓴다. NID_AUT는 로그인 때 한 번 발급되고, NID_SES는 그 로그인 안에서 새로 발급된다.
+
+    프로필(브라우저 자체 저장소)에 같은 쿠키가 있으면 만료가 더 늦은 쪽, 즉 더 최근에
+    발급된 쪽이 이긴다. 네이버는 실행 중에 NID_SES를 새로 발급하는데, 그 실행이 백업 없이
+    끝나면 파일 쪽이 낡는다. 예전 코드는 이때도 파일 값으로 무조건 덮어써 서버에 옛 토큰을
+    보낼 수 있었다(2026-10-06 진단). 만료 시각이 지난 백업 쿠키는 넣어도 즉시 폐기되므로 거른다.
+    """
+    def live(cs):
+        return [c for c in cs if not 0 < _expiry_rank(c) <= now]
+
+    def login(cs):
+        return next((c for c in cs if c["name"] == "NID_AUT"), None)
+
+    backup = live(backup)
+    b_aut, p_aut = login(backup), login(profile)
+    use_backup_auth = b_aut is not None and (
+        p_aut is None or _expiry_rank(b_aut) > _expiry_rank(p_aut))
+
+    have = {(c["name"], c.get("domain"), c.get("path")): _expiry_rank(c) for c in profile}
+    out = []
+    for c in backup:
+        if c["name"] in AUTH_SET:
+            if use_backup_auth:
+                out.append(c)
+            continue
+        rank = _expiry_rank(c)
+        key = (c["name"], c.get("domain"), c.get("path"))
+        if key in have and have[key] >= rank:
+            continue
+        out.append(c)
+    return out
 
 
 def restore_cookies(ctx):
     if not COOKIE_FILE.exists():
         return
     try:
-        cookies = json.loads(COOKIE_FILE.read_text(encoding="utf-8"))
-        # 만료 시각이 지난 쿠키는 복원해도 즉시 폐기된다. 걸러서 넣어야
-        # ctx.cookies() 결과가 '지금 실제로 유효한 것'만 담긴다.
-        now = time.time()
-        fresh = [c for c in cookies
-                 if not isinstance(c.get("expires"), (int, float))
-                 or c["expires"] <= 0 or c["expires"] > now]
-        ctx.add_cookies(fresh)
+        backup = json.loads(COOKIE_FILE.read_text(encoding="utf-8"))
+        add = cookies_to_restore(backup, ctx.cookies(), time.time())
+        if add:
+            ctx.add_cookies(add)
     except Exception as e:
         print(f"  [warn] 쿠키 복원 실패: {e}")
+
+
+RUN_LOCK = PROFILE_DIR / ".run.lock"
+# 잠금은 이 위치의 1바이트에 건다. 파일 앞쪽에 적어 둔 '누가 쥐고 있나'는 다른 실행도 읽을 수 있다.
+_LOCK_BYTE = 4096
+
+
+def _try_lock(fd: int) -> bool:
+    try:
+        if os.name == "nt":
+            import msvcrt
+            os.lseek(fd, _LOCK_BYTE, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return True
+    except OSError:
+        return False
+
+
+def _unlock(fd: int):
+    try:
+        if os.name == "nt":
+            import msvcrt
+            os.lseek(fd, _LOCK_BYTE, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+    except OSError:
+        pass
+    os.close(fd)
+
+
+def _lock_holder() -> str:
+    try:
+        return RUN_LOCK.read_bytes()[:200].decode("utf-8", "replace").strip() or "알 수 없음"
+    except OSError:
+        return "알 수 없음"
+
+
+@contextlib.contextmanager
+def run_lock(label: str, wait_sec: int):
+    """브라우저 프로필(scripts/.naver_profile)은 한 번에 한 실행만 쓰게 한다.
+
+    2026-10-14 재현: 한 실행이 프로필을 열어 둔 상태에서 두 번째 실행이 브라우저를 띄우면
+    두 번째 쪽은 launch 4단 폴백이 모두 TargetClosedError로 끝난다. PC를 켜면 놓친 스케줄
+    (StartWhenAvailable)이 몇 분 안에 돌기 때문에 부팅 직후 수동 /naver와 겹치기 쉽다.
+    잠금은 프로세스가 죽으면 OS가 풀어 주므로 낡은 잠금 파일 때문에 막히지 않는다.
+    """
+    PROFILE_DIR.mkdir(exist_ok=True)
+    fd = os.open(str(RUN_LOCK), os.O_RDWR | os.O_CREAT)
+    deadline = time.time() + wait_sec
+    told = False
+    try:
+        while not _try_lock(fd):
+            if time.time() >= deadline:
+                print(f"[BUSY] 다른 크로스포스팅 실행이 브라우저 프로필을 쓰고 있습니다 ({_lock_holder()}).")
+                print("       그 실행이 끝난 뒤 다시 실행하세요. 이번 실행은 브라우저를 열지 않고 끝냅니다.")
+                raise SystemExit(3)
+            if not told:
+                print(f"다른 실행({_lock_holder()})이 끝나기를 최대 {wait_sec}초 기다립니다...")
+                told = True
+            time.sleep(LOCK_POLL_SEC)
+    except BaseException:  # [BUSY]·기다리다 Ctrl+C — 잠금은 못 잡았으니 핸들만 닫는다
+        os.close(fd)
+        raise
+    try:
+        info = f"pid={os.getpid()} 시작 {time.strftime('%Y-%m-%d %H:%M:%S')} 인자: {label}"
+        os.lseek(fd, 0, os.SEEK_SET)
+        os.write(fd, info.encode("utf-8")[:200].ljust(200))
+    except OSError:
+        pass  # 표시용 정보일 뿐이다. 잠금은 이미 잡았다
+    try:
+        yield
+    finally:
+        _unlock(fd)
 
 
 def launch(playwright, headless=False):
@@ -550,7 +674,7 @@ def launch(playwright, headless=False):
     환경도 있으니 msedge/기본, 샌드박스 on/off 순으로 폴백한다.
     """
     PROFILE_DIR.mkdir(exist_ok=True)
-    last = None
+    errors = []
     for extra in ({"channel": "msedge", "chromium_sandbox": True},
                   {"channel": "msedge", "chromium_sandbox": False},
                   {"chromium_sandbox": True},
@@ -561,9 +685,14 @@ def launch(playwright, headless=False):
                 viewport={"width": 1400, "height": 900}, locale="ko-KR", **extra)
             break
         except Exception as e:
-            last = e
+            errors.append(e)
     else:
-        raise last
+        # 네 단계가 모두 '뜨자마자 닫힘'이면 이 프로필을 쓰는 브라우저가 이미 떠 있다
+        # (2026-10-14 재현: 두 번째 실행은 약 20초 만에 전부 TargetClosedError로 실패).
+        if all(_browser_gone(e) for e in errors):
+            print("[FAIL] 브라우저가 뜨자마자 닫혔습니다. scripts/.naver_profile을 쓰는 창이 "
+                  "이미 열려 있을 가능성이 큽니다. 네이버 자동화 창을 닫고 다시 실행하세요.")
+        raise errors[-1]
     ctx.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     try:
         ctx.grant_permissions(["clipboard-read", "clipboard-write"],
@@ -637,21 +766,62 @@ def warn_if_expiring(ctx):
     print("!" * 62)
 
 
+def _is_login_form(url: str) -> bool:
+    # 글롭의 *는 '/'를 못 넘어서, url= 파라미터가 인코딩되지 않은 주소를 놓친다. 접두사로 본다.
+    return url.startswith("https://nid.naver.com/nidlogin.login")
+
+
+PROBE_NOTICE = (
+    "<!doctype html><meta charset='utf-8'><title>네이버 세션 확인</title>"
+    "<body style='font:16px/1.7 sans-serif;margin:48px;color:#222'>"
+    "<h2>네이버 세션이 만료되었습니다</h2>"
+    "<p>세션을 확인하려고 연 화면이라 로그인 입력창이 없습니다.</p>"
+    "<p>로그인을 기다리는 실행이면 잠시 뒤 로그인 화면으로 바뀝니다. "
+    "스케줄 실행이나 <code>--check-session</code>이면 이 창은 곧 닫힙니다.</p>"
+    "<p>다시 로그인하려면 블로그 저장소에서 "
+    "<code>py -u scripts/naver_crosspost.py --login</code></p>")
+
+
+def _serve_probe_notice(route):
+    route.fulfill(status=200, content_type="text/html; charset=utf-8", body=PROBE_NOTICE)
+
+
 def verify_login(page) -> bool:
     """서버 기준 세션 유효성 확인. 쿠키가 있어도 서버가 만료시켰으면 무효.
 
     만료 세션으로 postwrite에 진입하면 nidlogin.login으로 리다이렉트되고,
     유효하면 에디터 URL에 머무른다 (2026-07-23 양방향 실측).
     nidlogin.login 직접 방문은 로그인 상태와 무관하게 폼에 머물러 판별 불가.
+
+    확인하는 동안에는 로그인 폼 요청을 안내 화면으로 바꿔 끼운다. 스케줄 실행과
+    --check-session은 판정 직후 창을 닫는데, 그 창에 진짜 폼이 떠 있으면 거기에
+    로그인하던 사람 앞에서 창이 꺼진다(2026-10-14 진단). 판정은 URL로 하므로 결과는
+    같고, 실제 로그인은 do_login이 가로채기를 푼 뒤 폼을 따로 연다.
+    가로채기는 지금 네이버가 postwrite에서 로그인 폼으로 '클라이언트 측'에서 보내기 때문에
+    걸린다(2026-10-14 실측). HTTP 302로 바뀌면 route가 리다이렉트 대상을 보지 못해
+    예전처럼 진짜 폼이 보일 뿐, 판정은 그대로다.
+
+    접속 자체가 실패하면(시간 초과 등) None을 돌려준다. 부팅 직후 네트워크가 붙기 전에 돈
+    스케줄 회차를 '세션 끊김'으로 판정하면 오탐 확인 창이 뜨기 때문이다. None도 거짓으로
+    읽히므로 '유효할 때만 진행'하는 호출부는 그대로 동작한다.
     """
+    try:
+        page.route(_is_login_form, _serve_probe_notice)
+    except Exception:
+        pass  # 가로채기를 못 걸어도 판정은 할 수 있다
     try:
         page.goto(f"https://blog.naver.com/{BLOG_ID}/postwrite",
                   wait_until="domcontentloaded", timeout=30000)
         page.wait_for_timeout(3000)
         return "nidlogin" not in page.url
     except Exception as e:
-        print(f"  [warn] 세션 검증 실패: {e}")
-        return False
+        print(f"  [warn] 세션 검증 실패(네이버 접속 안 됨): {e}")
+        return None
+    finally:
+        try:
+            page.unroute(_is_login_form, _serve_probe_notice)
+        except Exception:
+            pass
 
 
 def apply_keep_login(page) -> bool:
@@ -748,20 +918,107 @@ def do_login(ctx, page=None, check_existing=True) -> bool:
     return True
 
 
-def ensure_session(ctx, page, allow_login: bool) -> bool:
+RELOGIN_CMD = ROOT / "scripts" / "naver_relogin.cmd"
+# 마지막으로 재로그인 확인 창을 띄운 날짜. 서버 검증을 통과한 실행이 지운다.
+ALERT_FILE = PROFILE_DIR / ".expired_alert"
+
+
+def _show_relogin_prompt() -> bool:
+    """'지금 다시 로그인할까요?' 확인 창을 띄운다. 띄우는 데 성공하면 True.
+
+    이 PC는 Windows 알림이 통째로 꺼져 있어(ToastEnabled=0, 2026-10-14 확인) 토스트는
+    보이지 않는다. 확인 창은 별도 프로세스로 띄우고 기다리지 않는다. 자리를 비운 사이
+    스케줄 작업이 창에 묶여 다음 회차까지 막히면 안 되기 때문이다. [예]면 재로그인을 연다.
+    """
+    if os.name != "nt":
+        return False
+    import base64
+    import subprocess
+
+    def q(s):
+        return "'" + str(s).replace("'", "''") + "'"
+
+    msg = ("네이버 세션이 끊겨 블로그 자동 발행(네이버 크로스포스팅)이 멈췄습니다.\n\n"
+           "지금 다시 로그인할까요? [예]를 누르면 로그인 창이 뜹니다.\n"
+           "나중에 하려면 바탕화면의 '네이버 재로그인' 아이콘을 실행하세요.")
+    # 20시간 뒤 저절로 닫는다. 자리를 며칠 비워도 창이 날마다 쌓이지 않게 하려는 것이다.
+    script = (f"$r = (New-Object -ComObject WScript.Shell).Popup({q(msg)}, 72000, "
+              f"{q('네이버 재로그인 필요')}, 4148)\n"      # 예/아니요 + 경고 아이콘 + 맨 앞
+              f"if ($r -eq 6) {{ Start-Process -FilePath {q(RELOGIN_CMD)} "
+              f"-WorkingDirectory {q(ROOT)} }}")
+    encoded = base64.b64encode(script.encode("utf-16-le")).decode("ascii")
+    # DETACHED_PROCESS로 띄우면 콘솔이 없는 powershell이 창을 띄우지 못하고 곧바로 0으로
+    # 끝난다(2026-10-15 실측). 숨은 콘솔(CREATE_NO_WINDOW)을 주면 창이 뜨고 끝까지 산다.
+    hidden = subprocess.CREATE_NO_WINDOW | subprocess.CREATE_NEW_PROCESS_GROUP
+    for flags in (hidden | subprocess.CREATE_BREAKAWAY_FROM_JOB, hidden):  # 작업 객체 탈출 시도
+        try:
+            proc = subprocess.Popen(["powershell", "-NoProfile", "-EncodedCommand", encoded],
+                                    creationflags=flags, close_fds=True, stdin=subprocess.DEVNULL,
+                                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError:
+            continue
+        # 프로세스가 떴다고 창이 뜬 것은 아니다. 창이 떠 있으면 응답을 기다리느라 살아 있다.
+        try:
+            proc.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            return True
+        return False  # 창 없이 곧바로 끝났다. 기록하지 않아 다음 실행이 다시 시도한다
+    return False
+
+
+def alert_expired(today: "str | None" = None) -> bool:
+    """세션이 끊겨 스케줄 실행이 멈췄음을 사람에게 알린다. 끊긴 상태가 이어지면 하루 최대 한 번.
+
+    2026-09-17~25(8일)과 10-02~14(12일)에는 [EXPIRED]가 로그에만 쌓여 아무도 몰랐다.
+    한 번만 알리면 창을 닫고 잊었을 때 똑같이 방치되므로 날마다 한 번 다시 띄운다.
+    창을 띄우지 못하면 기록하지 않아 다음 실행이 다시 시도한다.
+    """
+    today = today or time.strftime("%Y-%m-%d")
+    try:
+        if ALERT_FILE.read_text(encoding="utf-8").strip() == today:
+            return False
+    except OSError:
+        pass
+    if not _show_relogin_prompt():
+        return False
+    try:
+        ALERT_FILE.write_text(today, encoding="utf-8")
+    except OSError:
+        pass
+    return True
+
+
+def clear_expired_alert():
+    try:
+        ALERT_FILE.unlink()
+    except OSError:
+        pass
+
+
+def ensure_session(ctx, page, allow_login: bool) -> "bool | None":
     """발행 전 세션 보장. 쿠키 존재 + 서버 유효성까지 확인하고,
     만료면 (허용된 경우) 로그인 창을 띄워 그 자리에서 복구한다.
+    네이버에 접속하지 못해 판정할 수 없으면 스케줄 실행은 None을 돌려준다(끊겼다고 알리지 않음).
     """
     if is_logged_in(ctx):
-        if verify_login(page):
+        ok = verify_login(page)
+        if ok:
             warn_if_expiring(ctx)
             return True
-        print("[EXPIRED] 네이버 세션 만료 — 쿠키는 있으나 서버가 거부했습니다.")
+        if ok is None:
+            print("[OFFLINE] 네이버에 접속하지 못해 세션을 확인하지 못했습니다.")
+            if not allow_login:
+                print("다음 회차에 다시 확인합니다.")
+                return None
+        else:
+            print("[EXPIRED] 네이버 세션 만료 — 쿠키는 있으나 서버가 거부했습니다.")
     else:
         print("[EXPIRED] 로그인 쿠키가 없습니다.")
 
     if not allow_login:
         print("조치: py scripts/naver_crosspost.py --login  (로그인 상태 유지 자동 체크됨)")
+        if alert_expired():
+            print("재로그인 확인 창을 띄웠습니다 (끊긴 상태가 이어지면 하루 한 번).")
         return False
 
     print("자동 복구: 로그인 창을 엽니다 (끄려면 --no-auto-login).")
@@ -1336,6 +1593,18 @@ def main():
 
     print(f"\n=== 실행 {time.strftime('%Y-%m-%d %H:%M:%S')} ===")
 
+    # 브라우저를 여는 실행은 게시 이력을 읽기 '전에' 잠금부터 잡는다. 기다리는 동안 다른 실행이
+    # 발행을 마치면 먼저 읽어 둔 이력은 낡은 것이 되고, 그대로 쓰면 중복 발행과 이력 덮어쓰기가 난다.
+    # 스케줄 실행(--no-auto-login)은 기다리지 않고 건너뛰고, 수동 실행은 잠시 기다린다.
+    opens_browser = not (args.audit or args.fix_ledger or args.classify_gemini or args.dry_run)
+    lock = (run_lock(" ".join(sys.argv[1:]) or "(인자 없음)",
+                     0 if args.no_auto_login else LOCK_WAIT_SEC)
+            if opens_browser else contextlib.nullcontext())
+    with lock:
+        _run(args)
+
+
+def _run(args):
     state = load_json(STATE_FILE, {"posted": {}})
     # 대상 산정 전에 원격 이력을 합친다. 이 순서가 아니면 원격에만 기록된 발행분이
     # 미게시로 잡혀 그대로 중복 발행된다(2026-08-03 실제 사고, 20편).
@@ -1385,6 +1654,9 @@ def main():
 
     with sync_playwright() as pw:
         ctx = launch(pw)
+        # 서버 검증을 통과한 실행은 어떤 경로로 끝나든(발행할 글 없음·일일 상한·예외 포함)
+        # 마지막에 백업을 갱신한다. 그 사이 네이버가 새로 발급한 토큰을 놓치지 않기 위해서다.
+        verified = False
         try:
             page = ctx.pages[0] if ctx.pages else ctx.new_page()
 
@@ -1392,6 +1664,7 @@ def main():
                 # --force-login은 '이미 유효한 세션' 지름길을 건너뛰고 폼을 띄운다
                 if not do_login(ctx, page, check_existing=not args.force_login):
                     raise SystemExit(2)
+                verified = True  # do_login이 서버 검증까지 마쳤다
                 print("이어서 발행하려면: py scripts/naver_crosspost.py --limit 15")
                 return
 
@@ -1401,14 +1674,17 @@ def main():
                 report_session(ctx)
                 warn_if_expiring(ctx)
                 ok = is_logged_in(ctx) and verify_login(page)
+                verified = ok
                 print("세션 유효 — 발행 가능" if ok
                       else "[EXPIRED] 세션 무효 — py scripts/naver_crosspost.py --login")
                 raise SystemExit(0 if ok else 2)
 
             # 만료면 그 자리에서 로그인 창을 띄워 복구하고 이어서 발행한다.
             # 스케줄러(비대화 실행)는 --no-auto-login으로 기존 즉시 종료 동작 유지.
-            if not ensure_session(ctx, page, allow_login=not args.no_auto_login):
-                raise SystemExit(2)
+            ok = ensure_session(ctx, page, allow_login=not args.no_auto_login)
+            if not ok:
+                raise SystemExit(4 if ok is None else 2)  # 4 = 접속 실패로 판정 못 함
+            verified = True
 
             if args.update:
                 if not args.post or not pending:
@@ -1418,7 +1694,6 @@ def main():
                 html = md_to_html(post, include_images=not args.no_images)
                 url = update_post(page, args.update, html, args.debug)
                 print(f"[OK] 본문 교체 완료: {url or '(URL 미확인)'}")
-                save_cookies(ctx)
                 return
 
             if not pending:
@@ -1513,8 +1788,10 @@ def main():
                     wait = random.randint(args.min_wait, args.max_wait)
                     print(f"  다음 글까지 {wait}초 대기...")
                     time.sleep(wait)
-            save_cookies(ctx)  # 세션 쿠키 갱신분 백업
         finally:
+            if verified:
+                save_cookies(ctx)
+                clear_expired_alert()  # 다음에 끊기면 처음부터 다시 알린다
             try:
                 ctx.close()
             except Exception:

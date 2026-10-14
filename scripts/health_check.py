@@ -263,6 +263,30 @@ def check_data() -> None:
 
 
 # ── 7. 네이버 크로스포스팅 ──────────────────────────────────────────────────
+def judge_naver_task(code: str, relogged_after: bool = False) -> tuple[str, str]:
+    """NaverCrosspost의 마지막 결과 코드를 판정한다. 세션이 살았는지는 이것이 기준이다.
+
+    쿠키에 적힌 만료일은 증거가 아니다. 2026-10-02부터 서버가 세션을 거부했는데도
+    쿠키는 '만료까지 23일'이라 점검이 정상으로 보였다(그 사이 12일간 발행이 멈춤).
+    종료코드는 naver_crosspost.py가 정한다: 2=세션 만료, 3=다른 실행과 겹쳐 건너뜀,
+    4=네이버에 접속하지 못해 판정 못 함. relogged_after는 그 회차 뒤에 세션 검증을 통과한
+    실행(재로그인 등)이 쿠키 백업을 갱신했다는 뜻이다.
+    """
+    code = code.strip()
+    if code in ("0", "267009"):          # 267009 = 실행 중
+        return OK, ""
+    if code == "2" and relogged_after:
+        return WARN, "마지막 회차는 세션 만료로 실패했지만 그 뒤 다시 로그인됨 — 다음 회차에서 재개 확인"
+    if code == "2":
+        return FAIL, ("세션이 끊겨 자동 발행이 멈춤 → 바탕화면 '네이버 재로그인' "
+                      "(또는 py -u scripts/naver_crosspost.py --login)")
+    if code == "3":
+        return OK, "다른 실행과 겹쳐 이번 회차만 건너뜀"
+    if code == "4":
+        return WARN, "네이버에 접속하지 못해 세션을 확인하지 못함(네트워크) — 다음 회차를 지켜본다"
+    return WARN, ""
+
+
 def check_naver() -> None:
     cookies = SCRIPTS / ".naver_profile/cookies.json"
     if not cookies.exists():
@@ -286,7 +310,8 @@ def check_naver() -> None:
                 elif days <= 0:
                     hint = " → 만료됨. --force-login으로 직접 로그인 필요"
                 add("네이버", status,
-                    f"세션 만료까지 {days}일 ({exp.astimezone():%Y-%m-%d}){hint}")
+                    f"쿠키 표기 만료까지 {days}일 ({exp.astimezone():%Y-%m-%d}){hint}"
+                    " — 네이버가 더 일찍 끊을 수 있어 실제 상태는 스케줄 결과로 본다")
         except Exception as exc:  # noqa: BLE001
             add("네이버", WARN, f"쿠키 파싱 실패 — {type(exc).__name__}")
 
@@ -296,15 +321,21 @@ def check_naver() -> None:
                 ["powershell", "-NoProfile", "-Command",
                  "$i=Get-ScheduledTaskInfo -TaskName NaverCrosspost -ErrorAction Stop;"
                  "$t=Get-ScheduledTask -TaskName NaverCrosspost;"
-                 "\"$($t.State)|$($i.LastTaskResult)|$($i.LastRunTime)\""],
+                 "\"$($t.State)|$($i.LastTaskResult)|$($i.LastRunTime.ToString('yyyy-MM-ddTHH:mm:ss'))\""],
                 capture_output=True, text=True, timeout=30)
             line = out.stdout.strip()
             if out.returncode != 0 or "|" not in line:
                 add("네이버", FAIL, "스케줄 작업 NaverCrosspost 없음 — 재등록 필요")
             else:
                 state, code, last = line.split("|", 2)
-                add("네이버", OK if code.strip() in ("0", "267009") else WARN,
-                    f"스케줄 작업 {state} · 마지막 결과 {code} · {last}")
+                try:  # 세션 검증을 통과한 실행은 쿠키 백업을 갱신한다
+                    relogged = (cookies.exists() and datetime.fromtimestamp(cookies.stat().st_mtime)
+                                > datetime.fromisoformat(last.strip()))
+                except ValueError:
+                    relogged = False
+                status, note = judge_naver_task(code, relogged_after=relogged)
+                add("네이버", status, f"스케줄 작업 {state} · 마지막 결과 {code.strip()} · {last}"
+                    + (f" — {note}" if note else ""))
         except Exception as exc:  # noqa: BLE001
             add("네이버", WARN, f"스케줄 작업 조회 실패 — {type(exc).__name__}")
 

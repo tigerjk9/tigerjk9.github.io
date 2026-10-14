@@ -11,3 +11,6 @@ docs/_docs/18-history.md        text merge=union
 
 # git 훅은 Git Bash가 sh로 실행한다 — CRLF면 bad interpreter 로 죽는다
 scripts/hooks/pre-commit        text eol=lf
+
+# cmd.exe는 LF 줄바꿈에서 줄을 잘못 읽을 수 있다
+scripts/*.cmd                   text eol=crlf
