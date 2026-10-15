@@ -1,56 +1,67 @@
 ---
-title: "OpenResearch: 코딩 에이전트를 연구 동반자로"
+title: "OpenResearch, 코딩 에이전트를 연구 에이전트로 바꾸는 alphaXiv의 로컬 우선 하네스"
 date: 2026-10-16 00:10:09 +0900
 categories: [AI, 기술]
 tags: [AI, 에이전트, 연구자동화, 오픈소스, LLM, 소프트웨어개발, 생산성, 로컬우선]
 header:
-  teaser: /assets/openresearch-research-agent-harness-thumb.jpg
+  teaser: /assets/openresearch-research-agent-harness-screenshot.jpg
 permalink: /post/openresearch-research-agent-harness/
 ---
-`alphaXiv` 프로젝트의 **OpenResearch**는 코딩 에이전트를 연구 에이전트로 전환하는 혁신적인 도구이다. 이 플랫폼은 문헌 검토부터 가설 수립, 실험 실행, 결과물 생성에 이르는 연구 과정을 가속한다. 사용자 데이터 주권을 최우선으로 삼는 로컬 우선 방식을 채택한다.
+OpenResearch는 연구 에이전트를 위한 로컬 우선 하네스이자 워크스페이스다. alphaXiv가 공개한 오픈소스 프로젝트로, GitHub 저장소 설명은 "Turn your coding agents into research agents", 곧 코딩 에이전트를 연구 에이전트로 바꾼다는 것이다. Claude Code나 Codex 같은 코딩 에이전트에 논문 검색, 실험을 돌릴 컴퓨팅 환경, 실험 기록을 연결해 문헌 검토와 가설 수립, 실험 실행, 연구 산출물 작성을 맡기는 방식이다. README는 코파일럿을 찾는 사람이든 자율 연구(autoresearch) 도구를 찾는 사람이든 작업 속도를 높여 준다고 소개한다.
+
+저장소는 MIT 라이선스이고 Rust로 작성됐다. 예전 주소 alphaXiv/openresearch-cli에서 지금의 alphaXiv/OpenResearch로 이름을 바꿨으며, 2026년 10월 16일 기준 GitHub 별은 7,200개를 넘었다.
 
 <figure>
-<img src="/assets/openresearch-research-agent-harness-thumb.jpg" alt="OpenResearch: 코딩 에이전트를 연구 동반자로">
+<img src="/assets/openresearch-research-agent-harness-screenshot.jpg" alt="OpenResearch 데스크톱 앱에서 연구 에이전트와 나눈 대화와 실험 로그가 함께 보이는 화면">
+<figcaption>OpenResearch 데스크톱 앱 화면. 가운데에 연구 에이전트와 나눈 대화가, 오른쪽에 실험 로그가 보인다. 왼쪽 프로젝트 목록의 nanochat은 데모 프로젝트다.</figcaption>
 </figure>
 
-## OpenResearch의 역할
+## 작동 방식
 
-**OpenResearch**는 연구 에이전트를 위한 로컬 중심의 하네스이자 워크스페이스를 제공한다. 이 도구는 기존의 코딩 에이전트를 활용하여 연구자들이 문헌을 검토하고, 가설을 세우며, 실험을 실행하고, 연구 산출물을 만드는 과정을 돕는다. 코파일럿 기능부터 자율 연구 도구에 이르기까지, **OpenResearch**는 다양한 방식으로 연구 작업을 효과적으로 가속한다.
+README가 설명하는 작동 방식은 코딩 에이전트, 문헌 연동, 컴퓨팅, 실험 기록의 네 갈래로 나뉜다.
 
-## 연구 워크플로우 지원
+| 항목 | 내용 |
+|---|---|
+| 코딩 에이전트 | Claude Code, Codex, OpenCode, Cursor, Google Antigravity를 기본 지원한다. OpenCode를 쓰면 LM Studio, oMLX, Ollama 또는 사용자 지정 엔드포인트를 거쳐 로컬 모델도 쓸 수 있다. |
+| 문헌 연동 | alphaXiv, bioRxiv, PubMed와 연동된다. 에이전트는 관련 논문을 찾아 근거 있는 가설을 세우고, 자신이 돌리는 실험을 기존 연구와 연결한다. |
+| 컴퓨팅 | 실험을 로컬에서 돌리거나 SSH, Slurm, Kubernetes, Modal, Tinker, Ray, Hugging Face Jobs, OpenResearch 관리형 컴퓨팅 가운데서 고른다. |
+| 실험 기록 | 모든 실험을 로컬 SQL 데이터베이스에 기록하고 로그, 코드, 산출물을 사용자 컴퓨터에 보관한다. 에이전트는 이 기록을 보고 과거 결과에서 배워 다음에 무엇을 시도할지 정한다. 데스크톱 앱에서는 에이전트가 한 일과 각 결과의 근거를 살펴볼 수 있다. |
 
-**OpenResearch**는 연구 과정 전반을 포괄하는 다양한 기능을 통합하여 워크플로우를 지원한다. 아래 표는 **OpenResearch**가 제공하는 주요 기능을 설명한다.
+## 연구 데이터는 사용자 컴퓨터에
 
-| 기능             | 설명                                                                                                                                                                                                                                                               |
-| :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **코딩 에이전트 호환성** | Claude Code, Codex, OpenCode, Cursor, Google Antigravity 등 주요 코딩 에이전트를 기본 지원한다. OpenCode로 LM Studio, oMLX, Ollama 같은 로컬 모델이나 사용자 지정 엔드포인트를 활용할 수도 있다.                                                             |
-| **문헌 검색 및 가설 수립** | alphaXiv, bioRxiv, PubMed와 연동하여 에이전트가 관련 논문을 찾도록 돕는다. 이를 기반으로 에이전트는 근거 있는 가설을 세우고, 진행 중인 실험을 기존 연구와 연관 짓는다.                                                                           |
-| **다양한 컴퓨팅 환경** | 실험은 로컬 환경에서 실행하거나 SSH, Slurm, Kubernetes, Modal, Tinker, Ray, Hugging Face Jobs 등 다양한 컴퓨팅 환경을 활용할 수 있다. OpenResearch가 제공하는 관리형 컴퓨팅 환경도 선택할 수 있다.                                                   |
-| **실험 기억 및 학습**   | 모든 실험 과정을 로컬 SQL 데이터베이스에 기록한다. 로그, 코드, 산출물은 사용자 컴퓨터에 보관된다. 에이전트는 이전 결과를 학습하여 다음에 시도할 작업을 결정한다. 데스크톱 앱에서는 에이전트의 작업 내용과 각 결과의 근거를 쉽게 확인할 수 있다. |
+README는 연구를 직접 보관하고 소유하라고 강조한다. 모든 작업을 로컬에서 실행할 수 있고, 개발진은 사용자의 코드나 에이전트 실행 기록(agent traces)을 수집하지 않는다고 밝힌다. 프로젝트, 대화, 실험, 로그, 산출물은 사용자 컴퓨터에 남고 사용자가 관리한다.
 
-**OpenResearch**는 이러한 기능들을 유기적으로 연결하여 연구자가 복잡한 작업을 효율적으로 수행하도록 지원한다.
+다만 공식 릴리스 빌드는 기본 설정에서 두 종류의 데이터를 백그라운드로 보낸다. 하나는 개략적인 제품 사용 분석 이벤트이고, 다른 하나는 에이전트가 작성하는 상세 피드백이다. 둘 다 임의로 만든 설치 ID에 연결되며, 사용자가 꺼야 전송이 멈춘다. README에 따르면 이 데이터에는 코드, 프롬프트, 파일 내용이나 경로, 저장소 이름, 토큰, 이메일, 프로젝트·실험 식별자가 들어가지 않는다.
 
-## 로컬 우선 설계와 데이터 주권
+에이전트 피드백은 버그 신고, 기능 요청, OpenResearch에 대한 전반적인 불만을 담아 보내는 보고서다. 에이전트는 연구나 코드에 관한 민감한 정보를 빼고 보고서를 쓰도록 지시받는다.
 
-**OpenResearch**의 핵심 철학은 **로컬 우선(Local-first)** 원칙이다. 이 원칙은 사용자의 데이터 주권과 프라이버시를 최우선으로 여긴다. 모든 연구 작업은 사용자 로컬 컴퓨터에서 실행될 수 있다.
+사용 분석과 에이전트 피드백은 데스크톱 앱의 Settings에서, 또는 터미널에서 `orx telemetry off`를 실행해 둘 다 끌 수 있다.
 
-**OpenResearch**는 사용자 코드, 프롬프트, 파일 내용이나 경로, 저장소 이름, 토큰, 이메일 등 민감한 정보를 수집하지 않는다. 프로젝트, 대화 기록, 실험 결과, 로그, 모든 산출물은 사용자의 컴퓨터에만 저장되며, 온전히 사용자 본인이 관리한다. 이러한 설계는 사용자가 자신의 연구 데이터에 대한 완전한 통제권을 갖도록 보장한다.
+## 설치와 요구 사항
 
-## 설치 및 접근 방법
+개발진은 데스크톱 앱을 권장한다. 플랫폼별 설치 파일과 요구 사항은 다음과 같다.
 
-**OpenResearch**는 편리한 설치 방법을 제공하며, 데스크톱 앱 사용을 권장한다.
+| 플랫폼 | 설치 파일 | 요구 사항 |
+|---|---|---|
+| macOS | OpenResearch.dmg | macOS 11 이상 |
+| Windows (베타) | OpenResearch-Setup.exe | Git for Windows |
+| Linux | AppImage (x86_64, ARM64) | glibc 2.35 이상 |
 
-*   **데스크톱 앱**: macOS, Windows (베타), Linux (x86_64, ARM64)용 설치 파일을 제공한다.
-*   **독립 실행형 CLI**: macOS 또는 Linux 환경에서 `curl -LsSf https://openresearch.sh/install.sh | sh` 명령으로 설치한다. CLI는 `orx up` 명령으로 로컬 대시보드(http://127.0.0.1:4791)를 연다. 관리 대상 Mac에서는 CLI 설치가 기기 관리 정책에 의해 차단될 수 있으므로, 서명 및 공증된 데스크톱 앱 사용을 권장한다. 데스크톱 앱 내 설정에서 터미널용 `orx` 명령어를 설치할 수도 있다.
-*   `openresearch.sh` 웹사이트에서 계정을 생성하면 이메일 소식을 받고 **OpenResearch**의 관리형 컴퓨팅 서비스를 이용할 수 있다.
+Windows 안내 문서에 따르면 Git for Windows는 git 때문에만 필요한 것이 아니다. orx가 실험을 실행할 때 쓰는 `bash`와 coreutils를 여기서만 얻을 수 있어서 반드시 설치해야 한다.
 
-## 사용 분석 정책
+독립 실행형 CLI는 macOS와 Linux에서 다음 명령으로 설치한다.
 
-**OpenResearch**의 공식 릴리스 빌드는 익명의 사용 분석 이벤트를 전송한다. 이 이벤트는 임의의 설치 ID에 연결된 개략적인 사용 정보를 포함한다. 사용자 코드, 프롬프트, 파일 내용이나 경로, 저장소 이름, 토큰, 이메일, 프로젝트 및 실험 식별자 등 민감한 정보는 분석에 포함되지 않는다. 사용자는 데스크톱 앱의 설정 메뉴 또는 `orx telemetry off` 명령으로 언제든지 사용 분석을 중단할 수 있다.
+```sh
+curl -LsSf https://openresearch.sh/install.sh | sh
+orx up
+```
 
-## 복잡계 이론의 시선으로 보면
+`orx up`을 실행하면 `http://127.0.0.1:4791`에서 로컬 대시보드가 열린다. 기기 관리 정책이 걸린 Mac에서는 `install.sh`로 설치한 CLI가 아직 서명되지 않아 차단될 수 있다. 이때는 서명과 공증을 거친 데스크톱 앱을 쓰면 된다. 앱의 Settings → Updates → Install the `orx` command 메뉴에서 터미널용 `orx` 명령을 설치할 수도 있다.
 
-에이전트가 로컬 SQL 데이터베이스에 기록된 과거 실험 결과로부터 학습하고, 이를 바탕으로 다음 연구 전략을 조정하는 방식은 복잡계 이론의 **적응 시스템(Adaptive System)** 개념과 매우 유사하다. 시스템이 내부 상태나 외부 환경 피드백에 맞춰 스스로 행동을 조절하는 것처럼, 연구 에이전트도 자신의 '기억'을 바탕으로 가설과 실험 접근 방식을 반복적으로 정교화한다. 이는 국소적인 상호작용과 기억이 전역적인 행동으로 나타나는 자기 조직화 과정과 본질적으로 같다.
+openresearch.sh에서 계정을 만들면 이메일로 소식을 받고 OpenResearch 관리형 컴퓨팅을 쓸 수 있다.
 
 ## 출처
-- C:/Users/windo/AppData/Local/Temp/claude/C--Users-windo-Desktop-03-------Github-Desktop-tigerjk9-github-io/4be0d2c9-c078-45ed-9c1c-6560eafe202d/scratchpad/b2/in/openresearch.md
+
+- alphaXiv, OpenResearch GitHub 저장소 README. https://github.com/alphaXiv/OpenResearch
+- OpenResearch 문서. https://openresearch.sh/docs
+- OpenResearch Windows 안내(docs/windows.md). https://github.com/alphaXiv/OpenResearch/blob/main/docs/windows.md
