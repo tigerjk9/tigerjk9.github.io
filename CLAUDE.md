@@ -813,7 +813,7 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 **알려진 동작 특성**:
 - **`_pages` include 필수**: `_config.yml`에 `include: [_pages]` 누락 시 `/lectures/` 404. Jekyll은 `_` 접두사 디렉토리를 기본 무시한다.
-- **PDF iframe 자동 로드 금지**: 강의 페이지에 `<iframe src="….pdf">`를 항상 로드하면 모바일 브라우저가 렌더 대신 **페이지 진입 즉시 다운로드**를 트리거한다(문해력 교안에서 실측). 다운로드형 자료는 `.gyoan-btn` 내려받기 버튼(`download` 속성) + 클릭 시 lazy iframe 미리보기(≤1023px 미리보기 숨김) 패턴을 쓴다 — `_lectures/literacy-reading-muscle/index.md` 참고.
+- **PDF iframe 자동 로드 금지**: 강의 페이지에 `<iframe src="….pdf">`를 항상 로드하면 모바일 브라우저가 렌더 대신 **페이지 진입 즉시 다운로드**를 트리거한다(문해력 교안에서 실측). 다운로드형 자료는 `.gyoan-btn` 내려받기 버튼(`download` 속성) + 클릭 시 lazy iframe 미리보기(≤1023px 미리보기 숨김) 패턴을 쓴다 — `_lectures/literacy-reading-muscle/index.md` 참고. **미리보기 iframe의 PDF는 반드시 같은 출처(`/assets/...`) 파일이어야 한다 (2026-11-06 실측)**: GitHub 릴리스 자산은 `Content-Disposition: attachment` + `application/octet-stream`으로 내려오고 CORS 헤더도 없어서, iframe에 넣으면 화면에 그려지지 않고 파일만 내려받히며 fetch→blob 우회도 막힌다. 내려받기 링크는 릴리스여도 되지만 미리보기는 저장소 안 사본을 가리킨다(`question-inquiry-coop-lesson`이 그 예, 6.8MB). `literacy-reading-muscle`의 미리보기는 릴리스 URL(gyoan.pdf 10MB)이라 같은 이유로 지금도 동작하지 않는다 — 사본을 두거나 미리보기 버튼을 빼야 한다. 여러 자료를 한 페이지에 두면 버튼마다 `data-preview="<slot id>"`로 묶는다.
 - **외부 기관명 de-institutionalization**: 제3자 강의자료를 블로그에 올릴 때 기관명(KIST 등)은 청중명(교육자)으로 치환. HTML 치환 패턴: `sed`보다 Python `str.replace()` 순서 주의 (긴 표현 먼저).
 - **커버 이미지**: 강의 현장 사진은 초상권 위반 가능. Pillow로 1200×630 텍스트+터미널 모크업 생성(`Malgun Gothic` 폰트 필수). `assets/lectures/<slug>/cover.jpg` 위치.
 - **Python 3.9 호환**: 모든 스크립트가 `from __future__ import annotations` + `typing.Union/Optional/List/Dict` 사용. PEP 604 `bytes | str`은 사용자 환경에서 작동 안 함.
