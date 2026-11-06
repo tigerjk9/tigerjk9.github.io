@@ -790,7 +790,7 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 
 ### 자료실 탭과 대용량 자료 (2026-08-19)
 
-상단 탭 이름은 **자료실**이다(구 "강의자료" — 저서 10권·워크숍 강의·도서 원고에 교실 자료까지 들어와 범위가 안 맞았다). 라벨은 `_data/navigation.yml`·`_pages/lectures.md` front matter·`_layouts/lecture.html` breadcrumb 세 곳에 있으니 함께 고친다. 허브 섹션은 서재 → 워크숍 강의 → **교실 자료**(`_data/resources.yml`) → 도서 원고 순이며, 교실 자료 카드는 `.lecture-card--media` 마크업을 그대로 쓰되 크레딧 라벨만 원작/큐레이션 대신 **자료/아카이빙**이다.
+상단 탭 이름은 **자료실**이다(구 "강의자료" — 저서 10권·워크숍 강의·도서 원고에 교실 자료까지 들어와 범위가 안 맞았다). 라벨은 `_data/navigation.yml`·`_pages/lectures.md` front matter·`_layouts/lecture.html` breadcrumb 세 곳에 있으니 함께 고친다. 허브 섹션은 서재 → 워크숍 강의 → **교실 자료**(`_data/resources.yml`) → 도서 원고 순이며, 교실 자료 카드는 `.lecture-card--media` 마크업을 그대로 쓰되 크레딧 라벨만 원작/큐레이션 대신 **자료/아카이빙**이다. 교실 자료 카드도 `locked: true` + `locked_payload`로 잠글 수 있다(2026-11-06, `_pages/lectures.md` 자료 루프에 강의 카드와 같은 분기 추가). 잠근 페이지는 `sitemap: false`·`noindex: true`를 넣고, 카드 썸네일은 `covers/` 해시 경로, 그 페이지의 PDF는 `_config.yml` defaults에 `sitemap: false` 범위를 둔다(jekyll-sitemap은 정적 파일도 싣는다). 첫 사례가 `question-inquiry-coop-lesson`(협력수업 과정안+공동연수 자료)이다.
 
 **대용량 자료는 저장소에 넣지 않는다 (CRITICAL)**. 발행 사이트가 이미 약 865MB인데 GitHub Pages 한도가 1GB다. 수십 MB 이상 다운로드 자료는 **GitHub 릴리스 자산**으로 올리고 페이지에서 링크만 건다(릴리스는 이 한도에 미포함, 파일당 2GB). 첫 사례가 `eval-assessment-2026` 태그 — 대전교육과학연구원 서·논술형 평가도구 29개 218MB, 안내 페이지 `_lectures/eval-assessment-tool/`. 두 번째가 `vibecode-for-teacher-book` 태그(8권 4교지 원고 43MB)다.
 
@@ -823,6 +823,14 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 - **KIST zip 통합 검증 통과**: orchestrate.py가 zip 5종 자산(slides.v2.html·instructor-notes.v2.md·handout.v2.html·labs.md·07_feature_ideas.md) 자동 발견, Playwright Chromium으로 98장 PNG 캡처 성공, `atom_mode: feature_catalog` 자동 결정.
 
 ---
+
+## 공통: 여러 건을 한 번에 돌릴 때 (2026-11-06 배치 9건에서 정착)
+
+- **`--no-push`로 병렬 생성 → QA → 경로를 명시한 커밋 한 번.** 스크립트마다 commit·push를 시키면 같은 인덱스를 두고 경쟁한다. `--no-push`는 git을 아예 건드리지 않으므로 백그라운드로 동시에 돌려도 된다.
+- **DDG 이미지 검색은 병렬로 돌리면 뒤쪽 실행이 전부 `202 Ratelimit`으로 떨어진다.** 이미지가 빠진 글은 원 자료의 대표 이미지(GitHub README 히어로의 raw.githubusercontent.com 주소)나 PDF 첫 쪽 렌더(`fitz` 96dpi → jpg)로 보강한다. GitHub OG 이미지(opengraph.githubassets.com)도 429를 낸다.
+- **로컬 `.md`·PDF를 입력으로 주면 출처에 임시 파일 경로가 그대로 들어간다.** QA에서 서지로 바꾼다. 이 경로를 잡는 스윕은 Python으로 하되 heredoc 안에서 역슬래시가 든 패턴(윈도 경로)을 쓰지 않는다 — Bash 툴 heredoc이 역슬래시를 한 겹 벗겨 유니코드 이스케이프 오류가 난다(메모리 `feedback_bash_heredoc_backslash`). `chr(92)`로 조립하거나 스크립트 파일을 따로 만든다.
+- **234쪽짜리 보고서는 `/paper`가 앞 10만 자만 쓴다.** 연구요약이 앞에 있는 KEDI 현안보고 류는 그대로 돌려도 되지만, 결론 장이 뒤에 있으면 `fitz`로 요약·본론·결론 쪽만 뽑은 PDF를 만들어 넘긴다. 그림 캡션에는 보고서의 `[그림 Ⅲ-9]` 식 번호를 적어 대조 가능하게 한다.
+- **`/column`은 승인 게이트가 있다.** 배치 안에 섞여 와도 초안은 스크래치패드에 두고 `column_qa.py`를 통과시킨 뒤 대화에 내놓는다. 사용자가 "다 배포하고 끝내"처럼 일괄 승인을 주면 그때 `_posts/`에 저장한다.
 
 ## 공통: 자동화 포스트 후처리 QA 체크리스트 (`/edit-paper`·`/edit-video`·`/edit-paraph`·`/edit-yeonsu`)
 
