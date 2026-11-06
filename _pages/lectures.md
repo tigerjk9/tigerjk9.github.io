@@ -60,7 +60,7 @@ standalone: true
 
 <div class="lecture-card-grid">
 {% for res in site.data.resources %}
-  <a href="{{ res.url }}" class="lecture-card lecture-card--media">
+  <a href="{% if res.locked %}#{% else %}{{ res.url }}{% endif %}" class="lecture-card lecture-card--media{% if res.locked %} is-locked{% endif %}"{% if res.locked %} data-locked="{{ res.locked_payload }}"{% endif %}>
     {% if res.thumbnail %}<div class="card-thumb"><img src="{{ res.thumbnail }}" alt="{{ res.title }}" loading="lazy"></div>{% endif %}
     {% if res.curator %}<span class="card-badge">교육자 큐레이션</span>{% endif %}
     <div class="card-body">
@@ -69,6 +69,7 @@ standalone: true
       <div class="card-meta">
         <span>{{ res.audience }}</span>{% if res.meta %} <span class="dot"></span> <span>{{ res.meta }}</span>{% endif %}
       </div>
+      {% if res.locked %}<div class="lock-note"><i class="fas fa-lock" aria-hidden="true"></i> 비밀번호 보호</div>{% endif %}
     </div>
     {% if res.curator %}
     <div class="card-credit">

@@ -2,6 +2,8 @@
 title: "질문에서 탐구로, 탐구에서 깊이로, 협력수업 과정안과 질문 중심 수업 공동연수"
 layout: lecture
 permalink: /lectures/question-inquiry-coop-lesson/
+sitemap: false
+noindex: true
 date: 2026-11-06
 author_profile: false
 toc: true
@@ -28,29 +30,29 @@ header:
 
 ## 자료 내려받기
 
-두 파일 모두 GitHub 릴리스에 올려 두었다. 릴리스는 한글 파일 이름을 지우므로 영문 이름으로 내려받게 되며, 내려받은 뒤 이름을 바꿔 보관하면 된다. 미리보기는 PDF를 화면에 그릴 수 있는 데스크톱 브라우저에서만 열리고, 모바일에서는 내려받기 버튼으로 받아 열면 된다.
+내려받기 버튼을 누르면 원본 제목 그대로 저장된다. 미리보기는 버튼을 눌렀을 때에만 PDF를 불러와 화면 안에서 넘겨 보는 것으로, PDF를 그릴 수 있는 데스크톱 브라우저에서 열린다. 모바일에서는 내려받기 버튼으로 받아 열면 된다.
 
 ### 협력수업 교수학습과정안
 
 <div class="gyoan-actions">
-  <a class="gyoan-btn gyoan-btn--download" href="https://github.com/tigerjk9/tigerjk9.github.io/releases/download/question-inquiry-coop-lesson-2026/coop-lesson-plan-g6-science-electricity.pdf"><i class="fas fa-download" aria-hidden="true"></i> 과정안 내려받기 <span class="gyoan-btn__meta">PDF · 9쪽 · 0.5MB</span></a>
+  <a class="gyoan-btn gyoan-btn--download" href="/assets/lectures/question-inquiry-coop-lesson/coop-lesson-plan-g6-science-electricity.pdf" download="2026 서부 제6지구 자율장학협의회 협력수업 교수학습과정안.pdf"><i class="fas fa-download" aria-hidden="true"></i> 과정안 내려받기 <span class="gyoan-btn__meta">PDF · 9쪽 · 0.5MB</span></a>
   <button type="button" class="gyoan-btn gyoan-btn--preview" data-preview="plan-preview"><i class="fas fa-eye" aria-hidden="true"></i> <span class="gyoan-btn__label">미리보기 열기</span></button>
 </div>
 
-<div id="plan-preview" class="gyoan-preview-slot" data-pdf="https://github.com/tigerjk9/tigerjk9.github.io/releases/download/question-inquiry-coop-lesson-2026/coop-lesson-plan-g6-science-electricity.pdf"></div>
+<div id="plan-preview" class="gyoan-preview-slot" data-pdf="/assets/lectures/question-inquiry-coop-lesson/coop-lesson-plan-g6-science-electricity.pdf"></div>
 
-단원 개관, 내용 체계와 성취기준, 단원 학습 계열과 12차시 지도 계획, 단원 평가 계획, 개념기반 탐구학습 설계 주안점, 학급 실태 분석, 본시(7차시) 교수·학습 과정안, 칠판 활용 계획, 과정중심 평가와 자기평가 계획이 차례로 들어 있다. 내려받는 파일 이름은 coop-lesson-plan-g6-science-electricity.pdf다.
+단원 개관, 내용 체계와 성취기준, 단원 학습 계열과 12차시 지도 계획, 단원 평가 계획, 개념기반 탐구학습 설계 주안점, 학급 실태 분석, 본시(7차시) 교수·학습 과정안, 칠판 활용 계획, 과정중심 평가와 자기평가 계획이 차례로 들어 있다.
 
 ### 공동연수 자료
 
 <div class="gyoan-actions">
-  <a class="gyoan-btn gyoan-btn--download" href="https://github.com/tigerjk9/tigerjk9.github.io/releases/download/question-inquiry-coop-lesson-2026/question-inquiry-training-deck.pdf"><i class="fas fa-download" aria-hidden="true"></i> 연수 자료 내려받기 <span class="gyoan-btn__meta">PDF · 96장 · 6.3MB</span></a>
+  <a class="gyoan-btn gyoan-btn--download" href="/assets/lectures/question-inquiry-coop-lesson/question-inquiry-training-deck.pdf" download="2026 서부 제6지구 자율장학협의회 협력수업 공동연수 자료.pdf"><i class="fas fa-download" aria-hidden="true"></i> 연수 자료 내려받기 <span class="gyoan-btn__meta">PDF · 96장 · 6.3MB</span></a>
   <button type="button" class="gyoan-btn gyoan-btn--preview" data-preview="deck-preview"><i class="fas fa-eye" aria-hidden="true"></i> <span class="gyoan-btn__label">미리보기 열기</span></button>
 </div>
 
-<div id="deck-preview" class="gyoan-preview-slot" data-pdf="https://github.com/tigerjk9/tigerjk9.github.io/releases/download/question-inquiry-coop-lesson-2026/question-inquiry-training-deck.pdf"></div>
+<div id="deck-preview" class="gyoan-preview-slot" data-pdf="/assets/lectures/question-inquiry-coop-lesson/question-inquiry-training-deck.pdf"></div>
 
-학생 질문이 중요한 까닭, 질문 중심 수업의 뜻과 용어, 질문형성기법(QFT), 수업 사례 네 가지 순서로 96장이 이어진다. 슬라이드에 애니메이션 단계가 그대로 담겨 같은 화면이 몇 장씩 겹쳐 보이는 곳이 있는데, 강의 흐름을 그대로 옮긴 것이다. 내려받는 파일 이름은 question-inquiry-training-deck.pdf다.
+학생 질문이 중요한 까닭, 질문 중심 수업의 뜻과 용어, 질문형성기법(QFT), 수업 사례 네 가지 순서로 96장이 이어진다. 슬라이드에 애니메이션 단계가 그대로 담겨 같은 화면이 몇 장씩 겹쳐 보이는 곳이 있는데, 강의 흐름을 그대로 옮긴 것이다.
 
 <script>
 (function () {
@@ -61,11 +63,17 @@ header:
       var open = slot.classList.toggle('open');
       btn.querySelector('.gyoan-btn__label').textContent = open ? '미리보기 닫기' : '미리보기 열기';
       // iframe을 클릭 시점에 만들어야 모바일 브라우저가 페이지 진입만으로 PDF 다운로드를 시작하지 않는다
-      if (open && !slot.querySelector('iframe')) {
-        var f = document.createElement('iframe');
-        f.src = slot.getAttribute('data-pdf');
-        f.title = 'PDF 미리보기';
-        slot.appendChild(f);
+      if (open) {
+        if (!slot.querySelector('iframe')) {
+          var f = document.createElement('iframe');
+          f.src = slot.getAttribute('data-pdf') + '#view=FitH';
+          f.title = 'PDF 미리보기';
+          slot.appendChild(f);
+        }
+        slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        // 닫을 때 뷰어를 비워 두면 숨은 PDF가 메모리를 쥐지 않고, 다시 열 때 첫 쪽부터 시작한다
+        slot.innerHTML = '';
       }
     });
   });

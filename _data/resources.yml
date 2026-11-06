@@ -7,7 +7,9 @@
   meta: "PDF 9쪽 + 96장"
   date: "2026-11-06"
   url: /lectures/question-inquiry-coop-lesson/
-  thumbnail: /assets/lectures/question-inquiry-coop-lesson/cover.jpg
+  locked: true
+  locked_payload: "AmWlYpklPmjZ9IlpW3P/40JfOfWtgKSGZrNgtiFRBtwJhdjvTR1liu0MTCxYRT3OJGkEkCIoeC6mJwm+7T5E+80SisEVq/ouZ3Abp8hK5Ivsup2LHjmZDL4uLQc3uhx8eNFAspmeaSyKpiiqSdo="
+  thumbnail: /assets/lectures/covers/2f0b806be1e466ef.jpg
   author: "강연호 (협력수업) · 이초희 (공동연수)"
   curator: "김진관 (닷커넥터)"
   curation_note: "같은 날 쓰인 수업 과정안과 연수 자료를 한 쌍으로 읽도록 정리한 아카이브"

@@ -208,6 +208,11 @@ plugins:
 
 # Defaults
 defaults:
+  # 잠금 카드 자료의 PDF가 sitemap으로 새지 않게 한다 (jekyll-sitemap은 정적 파일도 싣는다)
+  - scope:
+      path: "assets/lectures/question-inquiry-coop-lesson"
+    values:
+      sitemap: false
   # _posts
   - scope:
       path: ""
