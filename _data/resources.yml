@@ -1,5 +1,23 @@
 # 교실 자료 — 현장에서 바로 내려받아 쓰는 자료 아카이브.
 # 용량이 큰 원본 파일은 GitHub 릴리스에 두고 링크한다 (Pages 1GB 한도 보호).
+- slug: question-inquiry-coop-lesson
+  title: "질문에서 탐구로, 탐구에서 깊이로, 협력수업 과정안과 질문 중심 수업 공동연수"
+  subtitle: "6학년 과학 「전기의 이용」 개념기반 탐구 과정안 9쪽 · 질문형성기법(QFT)·사례 4종 공동연수 96장 · 2026 자율장학협의회"
+  audience: "초등 교사"
+  meta: "PDF 9쪽 + 96장"
+  date: "2026-11-06"
+  url: /lectures/question-inquiry-coop-lesson/
+  thumbnail: /assets/lectures/question-inquiry-coop-lesson/cover.jpg
+  author: "강연호 (협력수업) · 이초희 (공동연수)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "같은 날 쓰인 수업 과정안과 연수 자료를 한 쌍으로 읽도록 정리한 아카이브"
+  tags:
+    - 질문중심수업
+    - 개념기반탐구학습
+    - 질문형성기법
+    - 협력수업
+    - 교원연수
+
 - slug: eval-assessment-tool
   title: "2026학년도 초등학교 서·논술형 평가도구 개발 자료"
   subtitle: "1·2학기 국어·수학·사회·과학 · 3~6학년 · 채점기준표·피드백·생기부 기재 예시 포함"
