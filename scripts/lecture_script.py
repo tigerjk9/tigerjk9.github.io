@@ -14,7 +14,7 @@ lecture_script.py — 다양한 입력(YouTube/웹/PDF/파일)에서 교사 연�
   --slug  SLUG         파일명 슬러그
   --no-push            로컬 저장만
   --dry-run            출력만 (파일 저장 없음)
-  --model  MODEL       Gemini 모델 ID (기본값: gemini-2.5-flash)
+  --model  MODEL       Gemini 모델 ID (기본값: gemini-3.5-flash-lite)
 
 환경변수:
   GEMINI_API_KEY       Google AI Studio API 키 (필수) — .env 파일에 저장 권장
@@ -58,7 +58,7 @@ from image_fetcher import fetch_and_inject_image, inject_permalink, normalize_qu
 POSTS_DIR = REPO_ROOT / "_posts"
 PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "lecture_prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_lecture_prompt_template.txt"
-DEFAULT_MODEL = "gemini-2.5-flash"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 MAX_CONTENT_CHARS = 80000
 
 

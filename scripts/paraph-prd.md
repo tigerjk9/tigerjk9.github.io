@@ -179,7 +179,7 @@ python scripts/web_to_post.py <URL> --dry-run        # 출력만, 저장 안 함
 python scripts/web_to_post.py <URL> --no-push        # 로컬 저장만
 python scripts/web_to_post.py <URL> --slug SLUG      # 파일명 슬러그 지정
 python scripts/web_to_post.py <URL> --date YYYY-MM-DD
-python scripts/web_to_post.py <URL> --model gemini-2.5-flash
+python scripts/web_to_post.py <URL> --model gemini-3.5-flash-lite
 python scripts/web_to_post.py <URL> --into _posts/YYYY-MM-DD-slug.md  # 머지
 ```
 

@@ -61,10 +61,10 @@
 
 ```bash
 python scripts/web_to_post.py <URL> [URL2 ...] --plain
-python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash
+python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-3.5-flash-lite
 ```
 
-> `/plain-video`는 `yt_to_post.py` 기본 모델 `gemini-2.0-flash`가 폐기(404)되어 `--model gemini-2.5-flash`를 반드시 명시. `web_to_post.py` 기본값은 이미 `gemini-2.5-flash`.
+> `/plain-video`는 `yt_to_post.py` 기본 모델이 폐기된 `gemini-2.0-flash`(404)였던 시절에 `--model`을 반드시 명시해야 했다. 지금은 `yt_to_post.py`·`web_to_post.py` 기본값이 모두 `gemini-3.5-flash-lite`다.
 
 `--dry-run`·`--no-push`·`--slug`·`--date`·`--notes`(웹 단일) 등 기존 옵션 모두 상속.
 

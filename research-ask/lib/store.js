@@ -3,7 +3,7 @@
 
 const BLOG_ORIGIN = process.env.BLOG_ORIGIN || 'https://tigerjk9.github.io';
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
-const GEN_MODEL = process.env.GEN_MODEL || 'gemini-2.5-flash';
+const GEN_MODEL = process.env.GEN_MODEL || 'gemini-3.5-flash-lite';
 const EMBED_MODEL = 'gemini-embedding-001';
 const DATA_TTL_MS = 6 * 60 * 60 * 1000; // 6시간마다 인덱스 갱신
 
@@ -207,10 +207,10 @@ export async function generate(prompt, maxTokens = 2000, apiKey = '') {
     body: JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       generationConfig: {
-        temperature: 0.3,
         maxOutputTokens: maxTokens,
-        // 2.5-flash는 thinking 토큰이 maxOutputTokens를 소진해 답변이 잘림 → thinking 비활성
-        thinkingConfig: { thinkingBudget: 0 },
+        // thinking 토큰이 maxOutputTokens를 소진하면 답변이 잘림 → 사고 최소화.
+        // 3.5-flash-lite는 thinkingBudget을 400으로 거부하고 temperature는 무시한다
+        thinkingConfig: { thinkingLevel: 'minimal' },
       },
     }),
   });

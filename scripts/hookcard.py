@@ -546,7 +546,7 @@ def main() -> None:
     ap.add_argument("--image", help="사진을 직접 지정")
     ap.add_argument("--no-image", action="store_true", help="사진 없이 그라디언트 배경")
     ap.add_argument("--dry-run", action="store_true", help="카피 JSON만 출력")
-    ap.add_argument("--model", default="gemini-2.5-flash")
+    ap.add_argument("--model", default="gemini-3.5-flash-lite")
     args = ap.parse_args()
 
     if args.rerender:

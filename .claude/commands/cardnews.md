@@ -100,7 +100,7 @@ py -X utf8 scripts/cardnews.py --style diagram --topic "..." --dry-run          
 - `--no-search` : DDG 검색 폴백 생략
 - `--no-outro` : 브랜드 아웃트로 카드 생략
 - `--out DIR` : 출력 폴더 지정
-- `--model M` : 카피·배정 모델 (기본 gemini-2.5-flash)
+- `--model M` : 카피·배정 모델 (기본 gemini-3.5-flash-lite)
 - `--rerender DIR` : cards.json 수정 후 **Gemini 재호출 없이** 카드만 다시 렌더
 - `--keep-images` : `--out` 폴더의 기존 이미지를 재사용하고 **카피만 다시 생성**
   (톤을 바꿔 다시 뽑을 때. 프레임 재추출·이미지 재생성 비용 0)

@@ -31,7 +31,7 @@ except Exception:
 REPO_ROOT = Path(__file__).resolve().parent.parent
 POSTS_DIR = REPO_ROOT / "_posts"
 TEMPLATE = REPO_ROOT / "scripts" / "digest_prompt_template.txt"
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.5-flash-lite"
 EXCERPT_CHARS = 500
 DIGEST_TAG = "주간다이제스트"
 

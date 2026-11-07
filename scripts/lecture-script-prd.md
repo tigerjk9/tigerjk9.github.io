@@ -47,7 +47,7 @@
 | `--slug` | 자동 생성 | 파일명 슬러그 |
 | `--no-push` | — | 로컬 저장만 |
 | `--dry-run` | — | 출력만, 저장 없음 |
-| `--model` | gemini-2.5-flash | Gemini 모델 ID |
+| `--model` | gemini-3.5-flash-lite | Gemini 모델 ID |
 
 ## 6. 출력 구조
 

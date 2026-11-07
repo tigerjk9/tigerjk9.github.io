@@ -513,7 +513,7 @@ def gemini_copy(model_name: str, prompt: str) -> dict:
     model = genai.GenerativeModel(model_name)
     resp = model.generate_content(
         prompt,
-        generation_config={"response_mime_type": "application/json", "temperature": 0.5},
+        generation_config={"response_mime_type": "application/json"},
     )
     return json.loads(resp.text)
 
@@ -566,7 +566,7 @@ def repair_cards(model_name: str, cards: "list[dict]", bad: "list[dict]") -> "li
     )
     model = genai.GenerativeModel(model_name)
     resp = model.generate_content(
-        prompt, generation_config={"response_mime_type": "application/json", "temperature": 0.4})
+        prompt, generation_config={"response_mime_type": "application/json"})
     for fix in json.loads(resp.text).get("cards", []):
         i = fix.get("index")
         if isinstance(i, int) and 0 <= i < len(cards):
@@ -604,7 +604,7 @@ def match_images(model_name: str, cards: "list[dict]", cands: "list[dict]") -> "
                      f"배열 길이는 정확히 {len(cards)}.")
         model = genai.GenerativeModel(model_name)
         resp = model.generate_content(
-            parts, generation_config={"response_mime_type": "application/json", "temperature": 0.2})
+            parts, generation_config={"response_mime_type": "application/json"})
         raw = json.loads(resp.text).get("assign", [])
         out: "list[int | None]" = []
         used: "set[int]" = set()
@@ -1466,7 +1466,7 @@ def main() -> None:
     ap.add_argument("--no-outro", action="store_true", help="브랜드 아웃트로 카드 생략")
     ap.add_argument("--keep-images", action="store_true",
                     help="--out 폴더의 기존 이미지를 재사용하고 카피만 다시 생성")
-    ap.add_argument("--model", default="gemini-2.5-flash", help="카피 생성 모델")
+    ap.add_argument("--model", default="gemini-3.5-flash-lite", help="카피 생성 모델")
     ap.add_argument("--style", choices=["cinematic", "diagram"], default="cinematic",
                     help="cinematic(기본 다크 사진 카드) 또는 diagram(밝은 개념 다이어그램)")
     ap.add_argument("--topic", default=None,

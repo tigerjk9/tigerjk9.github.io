@@ -39,7 +39,7 @@ OUT = ROOT / "assets" / "prompt-library.json"
 CACHE = ROOT / "scripts" / ".prompt_library_cache.json"
 CSV_URL = "https://raw.githubusercontent.com/f/prompts.chat/main/prompts.csv"
 SOURCE_URL = "https://prompts.chat/"
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.5-flash-lite"
 
 # (act 이름, 교육 카테고리) — act 이름은 prompts.csv의 act 컬럼과 정확히 일치해야 한다.
 WHITELIST = [
@@ -149,8 +149,7 @@ def translate_batch(model, items):
     )
     resp = model.generate_content(
         PROMPT_TMPL.format(items=payload),
-        generation_config={"response_mime_type": "application/json",
-                           "temperature": 0.4},
+        generation_config={"response_mime_type": "application/json"},
     )
     return json.loads(resp.text)  # 순서 보존 리스트
 

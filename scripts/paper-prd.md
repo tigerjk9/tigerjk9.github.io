@@ -15,7 +15,7 @@ PDF 입력
   → pdfplumber: 첫 2페이지에서 arXiv ID / DOI 추출 (extract_paper_metadata)
   → pdfplumber: 전문 텍스트 추출 (최대 100,000자)
   → prompt_template.txt + 기존 카테고리/태그 + {PAPER_METADATA} 주입
-  → Gemini API (gemini-2.5-flash): 한국어 포스트 생성
+  → Gemini API (gemini-3.5-flash-lite): 한국어 포스트 생성
   → fetch_and_inject_image (inject_body=False when figures exist, teaser only)
   → _posts/YYYY-MM-DD-slug.md 저장
   → git add → commit → push
@@ -95,7 +95,7 @@ python scripts/pdf_to_post.py <PDF경로>            # 변환 + git push + PDF �
 python scripts/pdf_to_post.py <PDF경로> --dry-run  # 출력만, 저장 안 함
 python scripts/pdf_to_post.py <PDF경로> --no-push  # 로컬 저장만 (PDF는 삭제됨)
 python scripts/pdf_to_post.py <PDF경로> --keep-pdf # 원본 PDF 보존
-python scripts/pdf_to_post.py <PDF경로> --model gemini-2.5-flash  # 기본값
+python scripts/pdf_to_post.py <PDF경로> --model gemini-3.5-flash-lite  # 기본값
 ```
 
 `_papers/*.pdf`는 `.gitignore`에 등록되어 저장소에 커밋되지 않는다. 기본 동작은 처리 후 원본 삭제 — 로컬 용량이 쌓이지 않도록 한다.

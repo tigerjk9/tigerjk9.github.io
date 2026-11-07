@@ -66,4 +66,4 @@ python scripts/web_to_post.py https://example.com/new-source --into _posts/2026-
 - `--no-push` : git push 없이 로컬 저장만
 - `--slug SLUG` : 파일명 슬러그 직접 지정
 - `--date YYYY-MM-DD` : 포스트 날짜 지정
-- `--model MODEL` : Gemini 모델 ID (기본값: gemini-2.5-flash)
+- `--model MODEL` : Gemini 모델 ID (기본값: gemini-3.5-flash-lite)

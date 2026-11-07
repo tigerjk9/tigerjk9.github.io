@@ -103,7 +103,7 @@ PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "prompt_template.txt"
 EDIT_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_paper_prompt_template.txt"
 MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "paper_multi_prompt_template.txt"
 EDIT_MULTI_PROMPT_TEMPLATE_PATH = SCRIPT_DIR / "edit_paper_multi_prompt_template.txt"
-DEFAULT_MODEL = "gemini-2.5-flash"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 MAX_CHARS = 100000  # Gemini 컨텍스트 한도 초과 방지
 
 # Figure 추출 필터 기준

@@ -126,7 +126,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 - 백엔드: `research-ask/` — 의존성 제로 Vercel 서버리스(Gemini REST 직접 호출). `api/health`(프로브)·`api/embed`(쿼리 임베딩)·`api/ask`(RAG 답변). 블로그 정적 파일(`research-db.json`+`research-rag-index.json`)을 콜드스타트에 fetch·6h 캐시 → **콘텐츠가 늘어도 서비스 재배포 불필요**. `_config.yml` exclude 등록(Jekyll 빌드 제외)
 - 임베딩: `scripts/build_embeddings.py` — gemini-embedding-001 768차원, 포스트당 overview+6섹션 청크(현재 ~700청크), int8 양자화(per-vector scale, base64). `research-emb-posts.json`(허브 클라 코사인용 ~108KB) + `research-rag-index.json`(RAG용 ~765KB)
 - **유사도 게이트 (중요)**: gemini-embedding은 무관 질의도 top1 0.5~0.6이 나옴(실측: 김치찌개 0.52, 주식 0.60, 관련 질의 0.79). 절대 컷 하나로는 판별 불가 → `ask.js` MIN_SIM 0.6 + TOP_GATE 0.63, `research.md` AI_TOP_GATE 0.62 + top1 대비 상대 컷 0.08. 무관 질문은 생성 호출 없이 차단
-- **thinking 토큰 함정**: gemini-2.5-flash는 thinking이 기본 켜져 있어 maxOutputTokens를 소진해 답변이 잘림 → `generationConfig.thinkingConfig.thinkingBudget: 0` 필수 (`lib/store.js`)
+- **thinking 토큰 함정**: thinking이 켜져 있으면 사고 토큰이 maxOutputTokens를 먼저 써 버려 답변이 잘린다(2.5-flash 실측) → `generationConfig.thinkingConfig.thinkingLevel: 'minimal'`로 고정 (`lib/store.js`). 예전 방식 `thinkingBudget: 0`은 3.5-flash-lite가 HTTP 400으로 거부하므로 되살리지 않는다(2026-11-07 실측)
 - **라이트모드 가독성 함정 (CRITICAL)**: `main.scss`의 `html[data-theme="light"] a { color: #0078c8 }`(특이성 0,1,1)가 커스텀 페이지 버튼형 앵커의 흰 텍스트(단일 클래스 0,1,0)를 덮어 **파란 배경+파란 글자**가 됨 (2026-07-03 챗봇에서 실측). research.md·ask.md는 전 셀렉터에 `#rh-app`/`#ask-app` ID 프리픽스(1,1,0)로 방어 완료. **새 커스텀 페이지를 만들 땐 반드시 컨테이너 ID 프리픽스로 스타일을 스코프**할 것. 챗봇 인용 `[n]`은 단락당 1회만 붙도록 프롬프트에 명시(문장마다 붙으면 가독성 붕괴)
 - **사이드바 토글 겹침 함정 (2026-07-04)**: `assets/js/sidebar-toggle.js`가 layout `default` 페이지(`/research/`·`/ask/` — `.sidebar` 요소 없음)에서도 플로팅 ☰/✕ 버튼을 body에 추가해 본문 제목을 가렸다. `initSidebarToggle()` 맨 앞에 `if (!document.querySelector('.sidebar')) return;` 조기 반환 추가로 해결. **layout default 커스텀 페이지를 새로 만들 때 이 버튼이 뜨는지 항상 확인**
 - 프론트: `research.md` AI 검색 토글(Enter 실행, 유사도순 재정렬) + `ask.md` 챗 UI(`[n]` 인용→출처 링크, 출처 카드, sessionless). 둘 다 `/api/health` 프로브 성공 시에만 AI UI 노출 — **서비스 미배포여도 사이트는 완전 정상**
@@ -411,7 +411,7 @@ python scripts/web_to_post.py <URL> --into _posts/YYYY-MM-DD-slug.md  # 머지 �
 
 ```bash
 python scripts/web_to_post.py <URL> [URL2 ...] --plain              # /plain-paraph (web)
-python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash  # /plain-video (youtube)
+python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-3.5-flash-lite  # /plain-video (youtube)
 ```
 
 - **신규 스크립트 없음** — 기존 `web_to_post.py`·`yt_to_post.py`에 `--plain` 플래그만 추가. 로더가 `plain → edit → default` 3-way로 템플릿을 고른다. 이미지·프레임 분기는 전부 `args.edit` 게이트라 plain(edit=False)은 default 자동주입 경로로 흐른다.
@@ -423,6 +423,15 @@ python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-2.5-flash  
 - **차단 소스 우회**: 403·게이트 페이지(axios·anthropic resources 등)는 본문 추출 실패로 환각 메타 포스트(쿠키 정책 등)를 양산한다. 즉시 삭제하고, 원문 PDF가 있으면 `py -3.12 -m markitdown <pdf> -o <임시.md>` → 첫 줄에 `# <제목>` prepend → `python scripts/web_to_post.py <임시.md> --plain` (fetch_content가 로컬 파일 경로 직접 지원) → 출처를 원문으로 교정 → 임시 파일 삭제. (2026-06-15 anthropic 사례에서 검증)
 
 ---
+
+## 공통: Gemini 기본 모델 (2026-11-07)
+
+모든 생성 스크립트·챗봇·연결 레포의 기본값은 `gemini-3.5-flash-lite`다. `gemini-2.5-flash`가 2026-12-01부터 이 모델로 자동 전환된다는 공지에 맞춰 미리 옮겼다(가격 동일, 입력 $0.30·출력 $2.50 / 100만 토큰).
+
+- **`thinkingBudget`은 400 오류다.** 사고량은 `thinkingLevel`(`minimal`·`low`·`medium`·`high`)로 정하고 기본값은 `minimal`이다. REST로 부르는 곳(`research-ask/lib/store.js`·`build_vocab_db.py`)은 `minimal`을 명시한다
+- **`temperature`·`top_p`·`top_k`는 무시된다.** 그래서 걷어냈다. 결정성·형식은 프롬프트와 JSON 모드로 맞춘다
+- `candidate_count > 1`과 모델 턴으로 끝나는 요청(프리필)도 400이다. 지금 쓰는 곳은 없다
+- 구 SDK `google-generativeai` 0.8.5로도 JSON 모드·이미지 입력이 그대로 동작한다(실측)
 
 ## 공통: Gemini 중복출력 가드 (`_strip_duplicate_post`, 2026-06-15)
 
@@ -469,7 +478,7 @@ py -X utf8 scripts/cardnews.py --style diagram --topic "..."          # 밝은 �
 
 - **디자인 (2026-07-27 다크 시네마틱으로 전면 리뉴얼)**: 짙은 차콜 그라디언트 배경 + 좌상단 흰 스크립트 로고(`prep_logo(ink=…)`가 `assets/logo.jpg`를 밝기 기반 알파로 배경 제거 + 하단 슬로건 띠를 연속 런 20% 기준 블록 삭제 → 투명 `logo.png`를 **흰 잉크**로 칠함. 행 잉크 총량 기준은 굵은 획을 띠로 오탐하니 금지) + 우상단 노란 닷네트워크 SVG 마크, 헤드라인 2단(흰 주제 라벨 + `#f5e14e` 핵심 주장, 마침표 없음), 노란 세로 바 본문 2~3줄(**단정체 — 구버전 존칭체에서 뒤집힘**), 라운드 16:9 이미지(top 655·926×509), 큰 페이지 번호 + `출처: OOO`. **마지막 장은 고정 브랜드 아웃트로**(`cardnews_outro.html` — 닷커넥터·@Dot_Connector·linktr.ee 필 버튼·소셜 3종 simple-icons 경로. 문구는 `cardnews.py`의 `BRAND` dict)
 - **헤드라인 폰트 = Black Han Sans (실측으로 특정)**: 레퍼런스 카드의 글리프높이:잉크폭(95:740)이 Pretendard Black(91:617)과 안 맞고 BHS(78:604)와 일치 → OFL 폰트를 `.fonts/`에 자동 다운로드(`ensure_headline_font`, `.fonts/`는 gitignore라 클론마다 없음). 크기는 CSS 고정이 아니라 **템플릿 내 JS가 60~122px에서 자동 축소** — 본문 블록 하단이 y=626을 넘지 않을 때까지 2px씩 줄인다(레퍼런스도 글자 수에 따라 122/94/76px로 달라짐). 좌표·색은 레퍼런스 PNG를 픽셀 측정해 맞췄고(로고·마크·푸터 ±2px), 레이아웃 회귀 검증도 같은 픽셀 대조로 한다
-- **카피**: `cardnews_prompt_template.txt` → gemini-2.5-flash JSON 모드. `headline_top`(주제 라벨) + `headline_highlight`(**그 자체로 완결된 단언** — 구버전의 '이어읽기 한 문장' 구조 폐기) + `body`(2~3줄 배열) + `image_hint`/`image_query`. 따옴표는 스크립트가 강제 제거
+- **카피**: `cardnews_prompt_template.txt` → gemini-3.5-flash-lite JSON 모드. `headline_top`(주제 라벨) + `headline_highlight`(**그 자체로 완결된 단언** — 구버전의 '이어읽기 한 문장' 구조 폐기) + `body`(2~3줄 배열) + `image_hint`/`image_query`. 따옴표는 스크립트가 강제 제거
 - **카피 톤 (2026-07-27 2차 조정)**: "퇴근길 스마트폰 독자에게 쉽게, 그러나 얕지 않게" — 전문 용어는 그 자리에서 괄호로 풀고 카드마다 수치·고유명·메커니즘 중 하나는 남긴다. **친절함은 존댓말이 아니라 쉬운 설명에서 나온다**(단정체 유지). 훈계조·상투어 금지. **프롬프트만으로는 안 지켜진다** — "쉽게 쓰라"고만 하면 Gemini가 존칭체로 뒤집고 금지어(중요하다)·명사형 헤드라인·훈계조를 그대로 낸다(실측). 그래서 `validate_cards`(정규식 3종 + 헤드라인 `~다` 종결 검사) → `repair_cards`(위반 카드만 되돌려 재작성, 최대 2회) 루프를 코드에 넣었고, 남은 위반은 로그에 경고로 뜬다. 본문 줄바꿈은 `wrap_body`가 어절 단위 DP로 재배치(32자 초과 시 CSS가 접으면서 "늘었다." 같은 한 어절 고아 줄이 생김)
 - **이미지 (원자료 캡처 → 생성 → 검색 3단)**: ① YouTube 실프레임(암전 프레임 회피 문턱 mean 9·std 7 — 22로 잡으면 검은 배경 강의가 6장 중 5장 탈락. 푸터에 실측 `화면 MM:SS`) / 기사 본문 이미지·og:image(썸네일 URL을 `_upsize`로 원본 승급 — 위키 220px→1280px, 안 하면 0장) / 논문은 **"Figure N" 캡션 위 영역을 페이지째 렌더**(`get_images()` 래스터 추출은 벡터 도해를 놓치고 부록 프롬프트 스크린샷을 1순위로 끌어옴 — 실측 후 교체, `p.N` 표기) ② `gemini-2.5-flash-image` 생성(16:9는 `generationConfig.imageConfig`, 다크 시네마틱 톤) ③ DDG 검색 ④ 인용 패널. 카드↔이미지는 **멀티모달이 후보 이미지를 직접 보고 배정**(실패 시 순서대로)
 - **표시 방식 3종**: 흰 바탕 도표(`_is_paper` — 가장자리 흰색 75% 판정)는 종이 패널 `contain`, 세로로 긴 사진은 어두운 박스 `fit`, 나머지는 `cover`. `cards.json`의 `images[]`가 `{path, fit, note}`라 `--rerender`가 그대로 복원한다

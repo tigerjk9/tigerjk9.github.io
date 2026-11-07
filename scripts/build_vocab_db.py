@@ -166,10 +166,11 @@ def _load_dotenv() -> None:
 def gemini_json(model: str, prompt: str) -> dict:
     """REST 직접 호출. google-generativeai SDK 를 쓰지 않는 이유가 있다.
 
-    gemini-2.5-flash 는 thinking 이 기본 켜져 있어 maxOutputTokens 를 사고 과정이
-    먼저 소진한다. 그러면 JSON 이 중간에 끊겨 파싱이 통째로 실패한다(실측: 19개
-    연속 'Unterminated string'). thinkingBudget: 0 으로 꺼야 하는데 이 머신의
+    thinking 이 켜져 있으면 maxOutputTokens 를 사고 과정이 먼저 소진한다. 그러면
+    JSON 이 중간에 끊겨 파싱이 통째로 실패한다(2.5-flash 실측: 19개 연속
+    'Unterminated string'). thinkingLevel 을 minimal 로 못 박아야 하는데 이 머신의
     SDK 버전은 GenerationConfig 에서 thinking_config 를 거부한다.
+    3.5-flash-lite 는 예전 방식인 thinkingBudget 을 400 으로 거부한다.
     research-ask/lib/store.js 가 같은 이유로 REST 를 쓴다.
     """
     import ssl
@@ -195,9 +196,8 @@ def gemini_json(model: str, prompt: str) -> dict:
                 "required": ["easy_gloss", "example_general",
                              "example_subject", "subject"],
             },
-            "temperature": 0.4,
             "maxOutputTokens": 800,
-            "thinkingConfig": {"thinkingBudget": 0},
+            "thinkingConfig": {"thinkingLevel": "minimal"},
         },
     }).encode("utf-8")
     req = urllib.request.Request(url, data=body,
@@ -300,7 +300,7 @@ def main() -> None:
     ap.add_argument("--targets", type=int, default=DEFAULT_TARGETS, help="대상 어휘 수")
     ap.add_argument("--limit", type=int, help="이번 실행에서 새로 생성할 최대 항목 수")
     ap.add_argument("--dry-run", action="store_true", help="API 호출 없이 대상·프롬프트만")
-    ap.add_argument("--model", default="gemini-2.5-flash")
+    ap.add_argument("--model", default="gemini-3.5-flash-lite")
     ap.add_argument("--reselect", action="store_true", help="대상 목록 다시 선정")
     ap.add_argument("--revalidate", action="store_true",
                     help="캐시 항목을 검증만 다시 (API 미호출). 검증 규칙을 고친 뒤 쓴다")

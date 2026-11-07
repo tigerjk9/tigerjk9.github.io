@@ -198,7 +198,7 @@ def classify_gemini(posts: list[dict]) -> dict:
         raise RuntimeError("GEMINI_API_KEY 미설정 (.env 확인)")
     import google.generativeai as genai
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(model_name="gemini-2.5-flash")
+    model = genai.GenerativeModel(model_name="gemini-3.5-flash-lite")
 
     result = {}
     chunk_size = 50

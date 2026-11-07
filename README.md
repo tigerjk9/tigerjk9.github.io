@@ -49,13 +49,13 @@ Claude Code에서 슬래시 커맨드로 호출하면 각 스크립트가 콘텐
 
 | 커맨드 | 입력 | 출력 | 모델 |
 |--------|------|------|------|
-| `/paraph` | 웹 URL (단일·복수·머지) | 패러프레이즈 포스트 | gemini-2.5-flash |
-| `/video` | YouTube URL (단일·복수) | 영상 요약 포스트 | gemini-2.5-flash |
-| `/paper` | PDF 논문 | 고정 6섹션 논문리뷰 | gemini-2.5-flash |
-| `/yeonsu` | URL·PDF·파일 (복수 통합) | 교원 연수 탐구 에세이 | gemini-2.5-flash |
+| `/paraph` | 웹 URL (단일·복수·머지) | 패러프레이즈 포스트 | gemini-3.5-flash-lite |
+| `/video` | YouTube URL (단일·복수) | 영상 요약 포스트 | gemini-3.5-flash-lite |
+| `/paper` | PDF 논문 | 고정 6섹션 논문리뷰 | gemini-3.5-flash-lite |
+| `/yeonsu` | URL·PDF·파일 (복수 통합) | 교원 연수 탐구 에세이 | gemini-3.5-flash-lite |
 | `/edit-*` | 위와 동일 | 주인장 목소리 강화 버전 | 〃 |
 | `/plain-*` | 웹·YouTube | 교육 앵커링 없는 담백한 전달 | 〃 |
-| `/digest` | 지난 7일 포스트 | 주간 다이제스트 (cron 자동) | gemini-2.5-flash |
+| `/digest` | 지난 7일 포스트 | 주간 다이제스트 (cron 자동) | gemini-3.5-flash-lite |
 | `/naver` | `_posts/` 마크다운 | 네이버 블로그 크로스포스팅 (스케줄러 일 2회 자동) | Playwright (분류만 gemini) |
 
 ### 공통 출력 품질 규칙
@@ -171,7 +171,7 @@ python scripts/lecture_script.py <입력> --level 초급    # 수준 (기본 중
 
 ```bash
 python scripts/web_to_post.py <URL> --plain
-python scripts/yt_to_post.py <URL> --plain --model gemini-2.5-flash
+python scripts/yt_to_post.py <URL> --plain --model gemini-3.5-flash-lite
 ```
 
 </details>
