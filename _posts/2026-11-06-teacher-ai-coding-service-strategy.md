@@ -9,6 +9,8 @@ permalink: /post/teacher-ai-coding-service-strategy/
 ---
 AI 코딩 도구는 교사에게 교실 문제를 직접 해결할 기회를 준다. 다만 교육 서비스를 만드는 일은 코드 생성에 그치지 않고, 웹 서비스의 기본 구조 이해, 교사 신분에 따르는 법적·윤리적 제약, 장기 운영 전략까지 함께 요구한다. 라이프오브파이와 비상교육이 펴낸 『교실 문제를 해결하는 교사 개발자를 위한 지침서』(40쪽)와 틸더스의 AI 코딩 CLI 설치 안내를 묶어 정리했다.
 
+> 이 글이 바탕으로 삼은 지침서 원문을 내려받을 수 있다. [『교실 문제를 해결하는 교사 개발자를 위한 지침서』 내려받기 (PDF, 40쪽, 10MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/teacher-developer-essentials.pdf)
+
 <figure>
 <img src="/assets/teacher-ai-coding-service-strategy-src2-thumb.png" alt="틸더스 AI 코딩 CLI 설치 안내">
 </figure>
@@ -122,5 +124,5 @@ AI가 작성한 코드의 약 45%에서 보안 취약점이 발견된다는 연�
 인류는 오랜 시간 동안 도구를 사용하여 환경에 적응하고 문제를 해결해 왔다. 교사가 직접 AI 코딩 도구를 활용하여 교실 환경에 최적화된 서비스를 개발하는 현상은, 외부의 범용 도구를 그대로 받아들이는 데서 나아가, 특정 환경의 고유한 맥락 안에서 문화적 변이를 스스로 만들어 내는 과정과 닮았다. 이는 특정 집단의 필요와 제약에 맞춰 도구를 발명하고 개선하는 인류의 기본적인 진화 메커니즘을 디지털 시대에 재현하는 모습이라 볼 수 있다.
 
 ## 출처
-- 라이프오브파이·비상교육, 『교실 문제를 해결하는 교사 개발자를 위한 지침서, 피가 되고 살이 되는 교사의 서비스 개발 방법론』 (VIBE CODING TEACHER DEVELOPER, PDF 40쪽)
+- 라이프오브파이·비상교육, 『교실 문제를 해결하는 교사 개발자를 위한 지침서, 피가 되고 살이 되는 교사의 서비스 개발 방법론』 (VIBE CODING TEACHER DEVELOPER, PDF 40쪽) — [PDF 내려받기](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/teacher-developer-essentials.pdf)
 - 틸더스, 「AI 코딩 CLI 설치 안내」 <https://tuilders-cli-setup.vercel.app/>
