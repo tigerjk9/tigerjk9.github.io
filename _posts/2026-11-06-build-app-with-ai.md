@@ -10,6 +10,8 @@ permalink: /post/build-app-with-ai/
 
 틸더스 정용석이 2026년 10월 22일 JUST VUILD 2026 사전연수 6강으로 강의한 「내 프로그램에 날개를, 데이터·API·AI 그리고 CLI」 슬라이드 104장을 정리했다. 인공지능이 문법을 대신 짜 주는 바이브 코딩에서 개발의 핵심은 코드를 외우는 일이 아니라, 무엇을 저장하고(데이터), 무엇과 연결하며(API), AI에 어떤 판단을 맡길지(AI) 설계하고, 그 작업을 폴더째 맡길 작업 공간(CLI)을 갖추는 일이다.
 
+> 강의 슬라이드 원본을 내려받을 수 있다. [「내 프로그램에 날개를」 6강 슬라이드 내려받기 (PDF, 104쪽, 8MB)](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/tuilders-lecture6-data-api-ai-cli.pdf)
+
 <figure>
 <img src="/assets/build-app-with-ai-thumb.jpg" alt="JUST VUILD 2026 사전연수 6강 표지 슬라이드">
 <figcaption>JUST VUILD 2026 사전연수 6강 「내 프로그램에 날개를」 표지 슬라이드.</figcaption>
@@ -114,4 +116,4 @@ CLI(Command Line Interface)는 마우스 대신 글자 명령으로 컴퓨터를
 CLI 환경에서 AI 에이전트에게 "이 프로젝트의 데이터 저장 방식을 설명해줘", "API 키가 노출된 곳이 있는지 찾아줘" 와 같이 폴더 전체를 대상으로 하는 작업을 맡길 수 있다.
 
 ## 출처
-- 틸더스 정용석, 「내 프로그램에 날개를, 데이터·API·AI 그리고 CLI」, JUST VUILD 2026 사전연수 6강 슬라이드 (2026. 10. 22., 104장 합본)
+- 틸더스 정용석, 「내 프로그램에 날개를, 데이터·API·AI 그리고 CLI」, JUST VUILD 2026 사전연수 6강 슬라이드 (2026. 10. 22., 104장 합본) — [PDF 내려받기](https://github.com/tigerjk9/tigerjk9.github.io/releases/download/lecture-materials/tuilders-lecture6-data-api-ai-cli.pdf)
