@@ -9,7 +9,7 @@
 
 <br>
 
-[![Live](https://img.shields.io/badge/blog-tigerjk9.github.io-2ec4cc?style=for-the-badge&logo=jekyll&logoColor=white)](https://tigerjk9.github.io) [![Posts](https://img.shields.io/badge/posts-592-4c9aff?style=for-the-badge)](https://tigerjk9.github.io) [![Research](https://img.shields.io/badge/papers-188-8e75b2?style=for-the-badge)](https://tigerjk9.github.io/research/) [![Last commit](https://img.shields.io/github/last-commit/tigerjk9/tigerjk9.github.io?style=for-the-badge&color=555)](https://github.com/tigerjk9/tigerjk9.github.io/commits/main) [![License](https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge)](LICENSE)
+[![Live](https://img.shields.io/badge/blog-tigerjk9.github.io-2ec4cc?style=for-the-badge&logo=jekyll&logoColor=white)](https://tigerjk9.github.io) [![Posts](https://img.shields.io/badge/posts-794-4c9aff?style=for-the-badge)](https://tigerjk9.github.io) [![Research](https://img.shields.io/badge/papers-248-8e75b2?style=for-the-badge)](https://tigerjk9.github.io/research/) [![Last commit](https://img.shields.io/github/last-commit/tigerjk9/tigerjk9.github.io?style=for-the-badge&color=555)](https://github.com/tigerjk9/tigerjk9.github.io/commits/main) [![License](https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge)](LICENSE)
 
 <br>
 
@@ -35,11 +35,11 @@
 
 | | 기능 | 한 줄 소개 |
 |---|------|-----------|
-| 🔎 | **[리서치 허브](https://tigerjk9.github.io/research/)** | AI·교육 논문리뷰 188편을 태그·연도·키워드로 걸러 발견·시사점까지 카드에서 바로 읽는다. 의미 기반 AI 검색 포함 |
+| 🔎 | **[리서치 허브](https://tigerjk9.github.io/research/)** | AI·교육 논문리뷰 248편을 태그·연도·키워드로 걸러 발견·시사점까지 카드에서 바로 읽는다. 의미 기반 AI 검색 포함 |
 | 💬 | **[AI에게 묻기](https://tigerjk9.github.io/ask/)** | 논문리뷰 코퍼스를 근거로 답하는 RAG 챗봇. 방문자가 본인 Gemini 키를 넣으면 누구나 대화 가능(BYOK) |
 | 🕸️ | **[지식 그래프](https://tigerjk9.github.io/knowledge-graph/)** | 태그 IDF 가중 엣지 + Louvain 군집을 클라이언트에서 계산하는 D3 포스 그래프 |
 | 🧑‍🏫 | **[소개 페이지](https://tigerjk9.github.io/about/)** | 프로필 사진을 하프톤 도트로 캔버스 렌더링하고, 실루엣 가장자리에서 오로라 그라디언트 선이 성과 노드로 뻗는 인터랙티브 그래프 히어로. 연차·저서·포스트 수는 빌드마다 자동 집계 |
-| 🤖 | **자동화 파이프라인** | 논문·영상·웹·연수자료를 한국어 포스트로 바꾸는 스크립트 6종 + 주간 다이제스트 cron + 네이버 블로그 자동 크로스포스팅 |
+| 🤖 | **자동화 파이프라인** | 논문·영상·웹·연수자료를 한국어 포스트로 바꾸는 스크립트 + 카드뉴스·후킹 카드 + 주간 다이제스트 cron + 네이버 블로그 자동 크로스포스팅 |
 
 ---
 
@@ -57,6 +57,11 @@ Claude Code에서 슬래시 커맨드로 호출하면 각 스크립트가 콘텐
 | `/plain-*` | 웹·YouTube | 교육 앵커링 없는 담백한 전달 | 〃 |
 | `/digest` | 지난 7일 포스트 | 주간 다이제스트 (cron 자동) | gemini-3.5-flash-lite |
 | `/naver` | `_posts/` 마크다운 | 네이버 블로그 크로스포스팅 (스케줄러 일 2회 자동) | Playwright (분류만 gemini) |
+| `/cardnews` | URL·PDF·주제 | 1080×1350 카드뉴스 PNG 세트 (사진 10장 또는 개념 다이어그램 1장) | gemini-3.5-flash-lite + 이미지 생성 |
+| `/hook` | 포스트·URL·PDF | 소셜용 티저 카드 1장 (2행 헤드라인) | gemini-3.5-flash-lite + 이미지 생성 |
+
+> [!NOTE]
+> `gemini-2.5-flash`가 2026-12-01부터 `gemini-3.5-flash-lite`로 자동 전환된다는 공지에 맞춰 2026-11-07에 기본 모델을 옮겼다. 가격은 같다. 새 모델은 `thinkingBudget`을 HTTP 400으로 거부하므로 사고량은 `thinkingLevel`(`minimal`·`low`·`medium`·`high`)로만 정하고, `temperature`는 무시되어 걷어냈다.
 
 ### 공통 출력 품질 규칙
 
@@ -226,7 +231,7 @@ scripts\naver_relogin.cmd                      # 세션이 끊겼을 때 재로�
 
 ### 🔎 리서치 허브 — `/research/`
 
-AI·교육 논문리뷰 **188편**을 태그·연도·키워드로 탐색하는 전용 페이지. 그라디언트 히어로 + 통계 행(논문리뷰·원문 링크·태그·연도 범위) + 카드 인라인 확장 UI.
+AI·교육 논문리뷰 **248편**을 태그·연도·키워드로 탐색하는 전용 페이지. 그라디언트 히어로 + 통계 행(논문리뷰·원문 링크·태그·연도 범위) + 카드 인라인 확장 UI.
 
 - **데이터**: `scripts/build_research_db.py`가 논문리뷰 포스트를 2계층(고정 6섹션 / 자유 구조)으로 파싱해 `assets/research-db.json` 정적 생성
 - **카드 확장**: 연구 목적·주요 발견·시사점·탐구 질문을 원문 이동 없이 읽고 arXiv/DOI 원문으로 바로 이동
@@ -269,6 +274,7 @@ AI·교육 논문리뷰 **188편**을 태그·연도·키워드로 탐색하는 
 | 웰빙 코너 | `wellbeing.js` (모듈별 try/catch 격리) |
 | NE 수업 디자이너 | `tools/ne-designer/` — 책·인물·곤란을 입력하면 노벨 엔지니어링 7단계 수업 계획과 Gems 캐릭터 프롬프트(안전 가드레일 포함)를 만들어 주는 정적 단독 페이지 |
 | 학습자 어휘 사전 | `tools/vocab/` — 어휘 497개를 학습자 등급과 대조하는 정적 단독 도구 |
+| 지도 도법 교육 웹앱 | `tools/map-projection/` — 메르카토르와 Equal Earth를 비교하고 나라 크기를 실제 넓이로 겹쳐 보는 비판적 지도학 도구 (`?embed=1`로 글에 삽입) |
 | 프롬프트 라이브러리 | [`/prompts/`](https://tigerjk9.github.io/prompts/) — 교육자용 프롬프트를 카테고리·검색·복사로 큐레이션 (prompts.chat 원본 한국어 번안) |
 
 `tools/<슬러그>/index.html`은 front matter 없이 정적 파일로 그대로 배포되어, 테마 CSS·사이드바 스크립트의 간섭 없이 자체 완결 도구를 올릴 수 있다.
@@ -281,9 +287,9 @@ AI·교육 논문리뷰 **188편**을 태그·연도·키워드로 탐색하는 
 
 ---
 
-## 📚 강의자료 아카이브 — `/lectures/`
+## 📚 자료실 — `/lectures/`
 
-블로그 본문(`_posts`)과 완전히 분리된 별도 Jekyll collection. 강의 한 건당 허브 1장 + 기능 페이지 N개 + 원본 슬라이드·핸드아웃·OG 커버 한 묶음으로 큐레이션한다.
+저서·강의·교실 자료·도서 원고를 모은 허브다. 화면은 서재(저서 11권) → 워크숍 강의 → 교실 자료 → 도서 원고 순이다. 강의는 블로그 본문(`_posts`)과 완전히 분리된 별도 Jekyll collection으로, 강의 한 건당 허브 1장 + 기능 페이지 N개 + 원본 슬라이드·핸드아웃·OG 커버 한 묶음으로 큐레이션한다.
 
 ```
 /lectures/                            아카이브 인덱스
@@ -295,6 +301,7 @@ AI·교육 논문리뷰 **188편**을 태그·연도·키워드로 탐색하는 
 ```
 
 - **격리 모드**: `_posts` 사이드바·지식 그래프·검색·카테고리 카운트에 침투 0건
+- **대용량 자료는 GitHub 릴리스로**: Pages 한도(1GB) 때문에 수십 MB짜리 교안·원고·평가 도구는 저장소가 아니라 릴리스 자산으로 올리고 링크만 건다. 릴리스가 한글 파일명을 지우므로 영문 이름으로 올린다. 포스트에 붙는 원 자료 PDF도 같은 방식이다(`lecture-materials`). 이관 도구는 `scripts/offload_to_release.py`
 - **첫 사례**: `claude-code-edu` — Claude Code 실무 활용 교육자 워크숍. K-12 교사·연구자 듀얼 트랙으로 22개 기능 슬라이드 + 7면 핸드아웃
 - **외부 링크형 카드**: 별도 배포된 자료(공교육 AX 핸드북·학생용 생성형 AI 안내서·AIEP 계정 관리 튜토리얼)는 허브 카드에서 바로 외부 사이트로 연결. 표지는 사이트 히어로 스크린샷
 - **도서 원고 섹션**: 완성 원고 10권을 링크 카드로 편입(`_data/books.yml`). 1~7권·9권·10권은 Book-Publisher 원고로 카드를 누르면 라이브 Vercel 웹 도서가 새 탭으로 열리고(원고 개정 시 웹 도서만 재배포), 8권은 한빛미디어 신간을 블로그 내부 큐레이션 정리본으로 연결. 통일 표지는 `scripts/gen_book_covers.py`로 생성, 카드에 저자 크레딧 표시
@@ -312,7 +319,13 @@ pip install -r scripts/requirements.txt
 
 # 3) API 키 (.env는 gitignore)
 cp .env.example .env
+
+# 4) 자동화 건강검진 (생성 호출 없음, 무과금)
+py -X utf8 scripts/health_check.py
 ```
+
+> [!TIP]
+> 건강검진은 죽은 모델 ID·낡은 브라우저 UA·네이버 세션 만료·`assets/` 용량을 4초 안에 점검한다. Windows 작업 스케줄러가 매일 09:30에 돌리고, 문제가 있으면 다음 Claude Code 세션을 열 때 한 줄로 알린다. 배치를 돌리기 전에 먼저 실행한다.
 
 `.env` 형식 — 모든 자동화 스크립트가 여기서 자동 로드:
 
@@ -336,7 +349,7 @@ bundle exec rake preview   # 테마 테스트
 ```
 _posts/            블로그 포스트 (YYYY-MM-DD-slug.md)
 _papers/           논문 PDF 원본 (/paper 입력, gitignore)
-_lectures/         강의자료 collection (격리)
+_lectures/         자료실 강의 collection (격리)
 assets/            이미지 (flat) + research-*.json (허브·챗봇 데이터)
 research-ask/       AI 챗봇 백엔드 (Vercel 서버리스, 의존성 제로)
 scripts/
@@ -348,8 +361,12 @@ scripts/
   build_research_db.py      논문리뷰 → research-db.json
   build_embeddings.py       임베딩 인덱스 (허브 검색 + RAG)
   image_fetcher.py          이미지 공용 모듈 (OG→Pexels→DDG)
+  cardnews.py · hookcard.py  /cardnews, /hook (Edge 헤드리스 렌더)
+  naver_crosspost.py        /naver (Playwright, 스케줄러 일 2회)
+  health_check.py           자동화 건강검진 (무과금)
+  offload_to_release.py     대용량 자료 → GitHub 릴리스 이관
   *_prompt_template.txt     각 스킬별 Gemini 프롬프트
-.claude/commands/  슬래시 커맨드 정의
+.claude/commands/  프로젝트 전용 커맨드 6개 (나머지는 전역 ~/.claude 스킬·커맨드)
 .github/workflows/ CI + 주간 다이제스트 cron
 _config.yml        사이트 설정 (timezone: Asia/Seoul 필수)
 _data/navigation.yml  상단 메뉴
@@ -366,7 +383,8 @@ _data/navigation.yml  상단 메뉴
 | 검색 | Lunr.js |
 | 댓글 | Giscus (기본 비활성) |
 | 분석 | Google Analytics `G-Y8TNBPZQEZ` |
-| 호스팅 | GitHub Pages (블로그) + Vercel (AI 챗봇 백엔드) |
+| 생성 모델 | `gemini-3.5-flash-lite` (임베딩 `gemini-embedding-001`) |
+| 호스팅 | GitHub Pages (블로그) + Vercel (AI 챗봇 백엔드) + GitHub 릴리스 (대용량 자료) |
 
 ---
 
