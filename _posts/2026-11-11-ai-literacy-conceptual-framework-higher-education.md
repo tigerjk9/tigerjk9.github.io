@@ -98,4 +98,4 @@ permalink: /post/ai-literacy-conceptual-framework-higher-education/
 
 ## 출처
 
-Zhou, X., & Schofield, L. (2024). Developing a conceptual framework for Artificial Intelligence (AI) literacy in higher education. *Journal of Learning Development in Higher Education*, (31). https://journal.aldinhe.ac.uk/index.php/jldhe/article/view/1354
+Zhou, X., & Schofield, L. (2024). Developing a conceptual framework for Artificial Intelligence (AI) literacy in higher education. *Journal of Learning Development in Higher Education*, (31). https://doi.org/10.47408/jldhe.vi31.1354
