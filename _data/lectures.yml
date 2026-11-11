@@ -1,3 +1,22 @@
+- slug: harness-engineering-101
+  title: "하네스 엔지니어링 101 입문"
+  subtitle: "초급 교사를 위한 열 편 · 개념 5편과 따라 하기 실습 5편"
+  audience: "코딩 경험이 거의 없는 교사"
+  chapter_count: 10
+  date: "2026-11-11"
+  hub_url: /lectures/harness-engineering-101/
+  locked: true
+  locked_payload: "AiX8P6V6YfrEXeuDeQMv1WEx7yi5ZFWhFI5ZrUoJmlGfHl2grn4EMS/Pnsq9T1Sf6wcUehzLDvr0PA8IcfMpK2knSMOZ2oz1x75h6eY6PhdsboDDklMjmqJi7LYWpcHwlRzCKjq60yav"
+  thumbnail: /assets/lectures/covers/be4e5f12f9e1e3e3.jpg
+  author: "Isuru Wijesiri"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "원문 Harness Engineering 101을 초급 교사 눈높이로 풀어 쓴 학습 노트"
+  tags:
+    - AI에이전트
+    - 하네스엔지니어링
+    - 클로드코드
+    - 실습
+
 - slug: justvuild-03-lecture
   title: "클로드코드와 깃허브로 반복작업을 워크플로우화하고 웹앱으로 확장하기"
   subtitle: "JUST VUILD 2026 사전연수 3회차 · 82개 화면과 전체 발표 대본"
