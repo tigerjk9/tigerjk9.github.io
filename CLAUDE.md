@@ -813,6 +813,8 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 - 릴리스는 교차 출처라 `<a download="한글이름">`이 **무시된다**. 방문자는 영문 파일명으로 받으므로 페이지 표에 한글 제목·쪽수·용량을 함께 적는다.
 - 이 머신엔 Ruby가 없어 `jekyll build` 사전 검증이 불가하다. 푸시 후 `gh run watch`로 배포를 확인하고 라이브 URL을 Edge 헤드리스로 캡처해 검증한다.
 
+**하네스 101 강의 영상 (2026-11-12, 제작 중)**: 자료실 잠금 강의 `harness-engineering-101` 10편을 편마다 목소리 없는 자막+합성 배경음 튜토리얼 영상으로 만드는 작업은 이 저장소가 아니라 **비공개 저장소 `tigerjk9/harness-101-videos`**에 있다(원본만, 렌더 산출물 `out/` 제외, 완성 mp4는 릴리스 `wip-videos`). 어느 머신에서든 `gh repo clone tigerjk9/harness-101-videos` 후 그 저장소의 `HANDOFF.md`부터 읽고 이어 간다. 원작 본문이 CC BY-NC-ND 4.0이라 저자 허락 전 공개 배포 금지.
+
 **진입점**:
 ```powershell
 /lecture-archive <zip-path> [--slug <slug>] [--dry-run] [--no-push] [--skip-playwright] [--rerun parser|curator|builder]
