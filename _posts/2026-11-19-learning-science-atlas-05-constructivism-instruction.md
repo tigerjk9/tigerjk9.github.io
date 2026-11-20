@@ -10,6 +10,10 @@ permalink: /post/learning-science-atlas-05-constructivism-instruction/
 description: "피아제와 비고츠키, 브루너에서 출발해 비계, 인지적 도제, 상황학습, 개념 변화, 형성평가와 피드백, 협동 학습, 능동적 학습으로 이어지는 흐름이다."
 ---
 
+<div class="notice--info" style="font-size:.85em" markdown="1">
+**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · [1 기초](/post/learning-science-atlas-01-foundations/) · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · [3 인지부하](/post/learning-science-atlas-03-cognitive-load/) · [4 기억 전략](/post/learning-science-atlas-04-memory-strategies/) · **5 구성주의** · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · [8 뇌과학](/post/learning-science-atlas-08-neuroscience/) · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · [개념 사전](/post/learning-science-atlas-glossary/) · [3D 지도 열기](/tools/learning-science-atlas/)
+</div>
+
 피아제와 비고츠키, 브루너에서 출발해 비계, 인지적 도제, 상황학습, 개념 변화, 형성평가와 피드백, 협동 학습, 능동적 학습으로 이어지는 흐름이다. 학습을 지식의 구성과 공동체 참여로 보는 관점과, 그 관점을 둘러싼 "안내냐 탐구냐" 논쟁이 함께 담겨 있다. 학습과학 아틀라스의 아홉 클러스터 중 5번째인 이 글은 1956년부터 2014년까지의 연구 32편을 시간순으로 정리했다. 이 분야에서 가장 많이 인용된 연구는 Lave(1991)의 「상황학습, 합법적 주변 참여」, Vygotsky(1978)의 「사회 속의 마음」, Kolb(1984)의 「경험학습」이다.
 
 <figure>

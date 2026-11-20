@@ -10,6 +10,10 @@ permalink: /post/learning-science-atlas-08-neuroscience/
 description: "학습을 뇌 수준에서 설명하려는 연구들이다."
 ---
 
+<div class="notice--info" style="font-size:.85em" markdown="1">
+**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · [1 기초](/post/learning-science-atlas-01-foundations/) · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · [3 인지부하](/post/learning-science-atlas-03-cognitive-load/) · [4 기억 전략](/post/learning-science-atlas-04-memory-strategies/) · [5 구성주의](/post/learning-science-atlas-05-constructivism-instruction/) · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · **8 뇌과학** · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · [개념 사전](/post/learning-science-atlas-glossary/) · [3D 지도 열기](/tools/learning-science-atlas/)
+</div>
+
 학습을 뇌 수준에서 설명하려는 연구들이다. 헵의 가설과 장기 강화, 해마의 장소 세포, 기억의 분자 기전, 수면과 기억 응고화, 도파민 예측 오류와 호기심, 정서와 학습, 수 감각, 예측하는 뇌 이론, 그리고 교실에 퍼진 신경 신화에 대한 경고까지 담았다. 학습과학 아틀라스의 아홉 클러스터 중 8번째인 이 글은 1949년부터 2014년까지의 연구 16편을 시간순으로 정리했다. 이 분야에서 가장 많이 인용된 연구는 Rumelhart(1986)의 「오차 역전파로 표상 학습하기」, Friston(2010)의 「자유에너지 원리」, Schultz(1997)의 「예측과 보상의 신경 기질」이다.
 
 <figure>

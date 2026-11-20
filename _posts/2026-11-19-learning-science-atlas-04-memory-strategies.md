@@ -10,6 +10,10 @@ permalink: /post/learning-science-atlas-04-memory-strategies/
 description: "당장은 어렵게 느껴지지만 오래 남는 공부법에 관한 연구들이다."
 ---
 
+<div class="notice--info" style="font-size:.85em" markdown="1">
+**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · [1 기초](/post/learning-science-atlas-01-foundations/) · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · [3 인지부하](/post/learning-science-atlas-03-cognitive-load/) · **4 기억 전략** · [5 구성주의](/post/learning-science-atlas-05-constructivism-instruction/) · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · [8 뇌과학](/post/learning-science-atlas-08-neuroscience/) · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · [개념 사전](/post/learning-science-atlas-glossary/) · [3D 지도 열기](/tools/learning-science-atlas/)
+</div>
+
 당장은 어렵게 느껴지지만 오래 남는 공부법에 관한 연구들이다. 인출 연습, 분산, 교차, 생성 효과가 실험실과 교실에서 어떻게 검증되었는지, 그리고 학습 양식이나 손 필기, 디지털 네이티브처럼 널리 퍼진 믿음이 어떻게 검토되었는지 따라간다. 학습과학 아틀라스의 아홉 클러스터 중 4번째인 이 글은 1978년부터 2016년까지의 연구 16편을 시간순으로 정리했다. 이 분야에서 가장 많이 인용된 연구는 Dunlosky(2013)의 「효과적인 학습 기법으로 학생 학습 향상하기」, Roediger(2006)의 「시험을 통한 학습 증진」, Pashler(2008)의 「학습 양식, 개념과 증거」이다.
 
 <figure>

@@ -10,6 +10,10 @@ permalink: /post/learning-science-atlas-03-cognitive-load/
 description: "작업기억이 좁다는 사실을 수업 설계의 출발점으로 삼은 이론군이다."
 ---
 
+<div class="notice--info" style="font-size:.85em" markdown="1">
+**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · [1 기초](/post/learning-science-atlas-01-foundations/) · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · **3 인지부하** · [4 기억 전략](/post/learning-science-atlas-04-memory-strategies/) · [5 구성주의](/post/learning-science-atlas-05-constructivism-instruction/) · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · [8 뇌과학](/post/learning-science-atlas-08-neuroscience/) · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · [개념 사전](/post/learning-science-atlas-glossary/) · [3D 지도 열기](/tools/learning-science-atlas/)
+</div>
+
 작업기억이 좁다는 사실을 수업 설계의 출발점으로 삼은 이론군이다. 풀이 예제, 주의 분산, 양식, 중복, 전문성 역전 효과처럼 교재와 슬라이드를 만들 때 바로 쓸 수 있는 원리가 이 계보에서 나왔다. 학습과학 아틀라스의 아홉 클러스터 중 3번째인 이 글은 1985년부터 2019년까지의 연구 15편을 시간순으로 정리했다. 이 분야에서 가장 많이 인용된 연구는 Sweller(1988)의 「문제해결 중 인지부하와 학습」, Kirschner(2006)의 「최소 안내 교수가 효과가 없는 이유」, Sweller(1998)의 「인지 구조와 교수설계」이다.
 
 <figure>
