@@ -19,7 +19,9 @@ description: "인지부하이론, 정보처리이론, 인지심리학, 체화된
 
 그 연결을 한눈에 보려고 1885년 에빙하우스부터 2025년 AI 튜터 실험까지 학습과학의 고전과 최신 연구 162편을 골라 3D 지도로 만들었다. 연구 사이에는 계승, 비판, 분야 간 다리를 뜻하는 영향 관계 326개를 이었고, 핵심 개념 70개를 사전으로 묶었다. 이름은 학습과학 아틀라스다.
 
-<p><a class="btn btn--primary btn--large" href="/tools/learning-science-atlas/" target="_blank">학습과학 아틀라스 전체 화면으로 열기</a></p>
+<p><a class="btn btn--primary btn--large" href="/learning-science-atlas/">학습과학 아틀라스 열기</a> <a class="btn btn--inverse btn--large" href="/tools/learning-science-atlas/" target="_blank">전체 화면</a></p>
+
+아틀라스는 블로그 상단 메뉴의 "학습과학 아틀라스"에서 언제든 열 수 있다.
 
 <div style="position:relative;height:660px;border-radius:12px;overflow:hidden;border:1px solid rgba(127,127,127,.25);margin:1.5em 0">
   <iframe src="/tools/learning-science-atlas/?embed=1" title="학습과학 아틀라스" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
@@ -90,6 +92,16 @@ description: "인지부하이론, 정보처리이론, 인지심리학, 체화된
 10. Bastani 외(2025), 안전장치 없는 생성형 AI는 학습을 해칠 수 있다
 
 마지막 두 편을 나란히 읽으면 질문 하나가 남는다. 생각의 일부를 몸과 도구에 맡기는 것이 인간 인지의 본성이라면, AI에 맡겨도 되는 것과 머릿속에 남겨야 하는 것의 경계는 어디인가. 같은 해 나온 Kestin 외(2025)의 하버드 실험은 학습과학 원리로 설계한 AI 튜터가 우수한 능동학습 수업보다 두 배 넘는 학습 향상을 보였다고 보고했다. 도구가 같아도 설계가 결과를 가른다는 점에서, 이 지도의 오래된 연구들이 AI 시대에 오히려 더 쓸모 있어질지도 모른다.
+
+## 내려받기
+
+지도 밖에서도 읽고 쓸 수 있도록 세 가지 파일을 함께 공개한다.
+
+| 파일 | 내용 |
+|---|---|
+| [요약집 PDF](/assets/learning-science-atlas/learning-science-atlas-summary.pdf) | 162편의 의의, 핵심 요약, 쉬운 비유, 교실 적용, 계보와 투어 10개, 개념 사전 70개를 담은 인쇄용 A4 70쪽 |
+| [BibTeX 서지](/assets/learning-science-atlas/learning-science-atlas.bib) | Zotero, EndNote 등 문헌 관리 도구로 바로 가져올 수 있는 162편의 서지 |
+| [CSV 목록](/assets/learning-science-atlas/learning-science-atlas.csv) | 엑셀에서 여는 전체 목록과 요약, 영향 관계, 무료 전문 링크 |
 
 ## 지도를 읽을 때 주의할 점
 

@@ -11,7 +11,7 @@ description: "작업기억, 스키마, 인출 연습, 비계, 어포던스, 예�
 ---
 
 <div class="notice--info" style="font-size:.85em" markdown="1">
-**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · [1 기초](/post/learning-science-atlas-01-foundations/) · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · [3 인지부하](/post/learning-science-atlas-03-cognitive-load/) · [4 기억 전략](/post/learning-science-atlas-04-memory-strategies/) · [5 구성주의](/post/learning-science-atlas-05-constructivism-instruction/) · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · [8 뇌과학](/post/learning-science-atlas-08-neuroscience/) · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · **개념 사전** · [3D 지도 열기](/tools/learning-science-atlas/)
+**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · [1 기초](/post/learning-science-atlas-01-foundations/) · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · [3 인지부하](/post/learning-science-atlas-03-cognitive-load/) · [4 기억 전략](/post/learning-science-atlas-04-memory-strategies/) · [5 구성주의](/post/learning-science-atlas-05-constructivism-instruction/) · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · [8 뇌과학](/post/learning-science-atlas-08-neuroscience/) · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · **개념 사전** · [3D 지도 열기](/learning-science-atlas/)
 </div>
 
 학습과학 논문을 읽다 보면 같은 개념이 분야마다 조금씩 다른 이름으로 나온다. 학습과학 아틀라스에 담은 연구 162편에서 반복해 등장하는 핵심 개념 70개를 아홉 갈래로 묶어 쉬운 말로 정리했다. 각 개념 옆의 연구를 따라가면 그 개념이 처음 제안되거나 크게 발전한 자리를 찾을 수 있다. 아틀라스의 "목록·개념" 버튼에서 개념을 누르면 관련 연구들이 지도 위에서 한꺼번에 빛난다.

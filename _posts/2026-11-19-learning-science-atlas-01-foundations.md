@@ -11,7 +11,7 @@ description: "학습을 과학으로 다루기 시작한 순간부터, 행동주
 ---
 
 <div class="notice--info" style="font-size:.85em" markdown="1">
-**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · **1 기초** · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · [3 인지부하](/post/learning-science-atlas-03-cognitive-load/) · [4 기억 전략](/post/learning-science-atlas-04-memory-strategies/) · [5 구성주의](/post/learning-science-atlas-05-constructivism-instruction/) · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · [8 뇌과학](/post/learning-science-atlas-08-neuroscience/) · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · [개념 사전](/post/learning-science-atlas-glossary/) · [3D 지도 열기](/tools/learning-science-atlas/)
+**학습과학 아틀라스 시리즈** · [허브](/post/learning-science-atlas/) · **1 기초** · [2 정보처리](/post/learning-science-atlas-02-information-processing/) · [3 인지부하](/post/learning-science-atlas-03-cognitive-load/) · [4 기억 전략](/post/learning-science-atlas-04-memory-strategies/) · [5 구성주의](/post/learning-science-atlas-05-constructivism-instruction/) · [6 메타인지·동기](/post/learning-science-atlas-06-metacognition-motivation/) · [7 체화된 인지](/post/learning-science-atlas-07-embodied-cognition/) · [8 뇌과학](/post/learning-science-atlas-08-neuroscience/) · [9 학습공학·AI](/post/learning-science-atlas-09-learning-engineering-ai/) · [개념 사전](/post/learning-science-atlas-glossary/) · [3D 지도 열기](/learning-science-atlas/)
 </div>
 
 학습을 과학으로 다루기 시작한 순간부터, 행동주의가 학교를 지배하던 시기, 그리고 마음의 내부를 다시 연구 대상으로 삼은 인지혁명까지를 다룬다. 듀이의 경험 교육론도 이 출발점에 함께 놓았다. 학습과학 아틀라스의 아홉 클러스터 중 1번째인 이 글은 1885년부터 1967년까지의 연구 8편을 시간순으로 정리했다. 이 분야에서 가장 많이 인용된 연구는 Tolman(1948)의 「쥐와 인간의 인지도」, Bartlett(1932)의 「기억하기」, Dewey(1938)의 「경험과 교육」이다.
