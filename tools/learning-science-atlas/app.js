@@ -393,7 +393,7 @@
     const pTo = document.getElementById('pTo'); const goPath = () => { const b = resolveWork(pTo.value); if (!b) { toast('목록에서 연구를 골라 주세요'); return; } startPath(w, b); };
     document.getElementById('pToGo').onclick = goPath; pTo.addEventListener('keydown', e => { if (e.key === 'Enter') goPath(); });
     const sb = document.getElementById('shareBtn');
-    sb.onclick = ev => { ev.preventDefault(); const u = location.origin + location.pathname + '#' + w.id; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast('이 연구로 바로 오는 링크를 복사했습니다'), () => prompt('링크', u)); };
+    sb.onclick = ev => { ev.preventDefault(); const u = (params.get('inblog') === '1' ? location.origin + '/learning-science-atlas/' : location.origin + location.pathname) + '#' + w.id; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast('이 연구로 바로 오는 링크를 복사했습니다'), () => prompt('링크', u)); };
     pbody.scrollTop = 0; panel.classList.add('open');
   }
   function flyTo(w, dist) {
@@ -638,7 +638,9 @@
   // ---------- stats ----------
   const yMin = Math.min(...WORKS.map(w => w.y)), yMax = Math.max(...WORKS.map(w => w.y));
   document.getElementById('stats').textContent = `연구 ${WORKS.length}편 · 영향 관계 ${EDGES.length}개 · 투어 ${TOURS.length}개 · 개념 ${GLOSS.reduce((a, g) => a + g.items.length, 0)}개 · ${yMin}–${yMax}`;
-  if (/github\.io$/.test(location.hostname) && !EMBED) {
+  const INBLOG = params.get('inblog') === '1';
+  if (/github\.io$/.test(location.hostname)) { const dlb = document.getElementById('dlBox'); if (dlb) dlb.hidden = false; }
+  if (/github\.io$/.test(location.hostname) && !EMBED && !INBLOG) {
     const a = document.createElement('a'); a.href = '/post/learning-science-atlas/'; a.className = 'backlink'; a.textContent = '← 닷커넥터 블로그 글 보기';
     document.getElementById('brand').appendChild(a);
   }
