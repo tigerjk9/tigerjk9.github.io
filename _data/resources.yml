@@ -1,5 +1,22 @@
 # 교실 자료 — 현장에서 바로 내려받아 쓰는 자료 아카이브.
 # 용량이 큰 원본 파일은 GitHub 릴리스에 두고 링크한다 (Pages 1GB 한도 보호).
+- slug: prompt-library
+  title: "교육용 프롬프트 라이브러리"
+  subtitle: "prompts.chat(CC0) 프롬프트 32개를 교사 실무에 맞춰 한국어로 번안 · 7개 범주 · 키워드 검색과 원클릭 복사"
+  audience: "교사"
+  meta: "프롬프트 32개 · 7개 범주"
+  date: "2026-11-20"
+  url: /prompts/
+  thumbnail: /assets/lectures/covers/prompt-library.jpg
+  author: "prompts.chat (CC0)"
+  curator: "김진관 (닷커넥터)"
+  curation_note: "교사 실무에 맞는 프롬프트만 골라 한국어로 번안하고 범주별로 묶은 라이브러리"
+  tags:
+    - 프롬프트
+    - 생성형AI
+    - 수업설계
+    - 교사업무
+
 - slug: question-inquiry-coop-lesson
   title: "질문에서 탐구로, 탐구에서 깊이로, 협력수업 과정안과 질문 중심 수업 공동연수"
   subtitle: "6학년 과학 「전기의 이용」 개념기반 탐구 과정안 9쪽 · 질문형성기법(QFT)·사례 4종 공동연수 96장 · 2026 자율장학협의회"

@@ -13,7 +13,7 @@ main:
     url: https://vibe-project-collection.vercel.app/
   - title: "자료실"
     url: /lectures/
-  - title: "프롬프트"
-    url: /prompts/
+  - title: "학습과학 아틀라스"
+    url: /learning-science-atlas/
   - title: "소개"
     url: /about/
