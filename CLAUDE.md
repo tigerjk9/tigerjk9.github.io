@@ -179,6 +179,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 | NE 수업 디자이너 (노벨 엔지니어링 수업 설계기) | `tools/ne-designer/index.html` (front matter 없는 정적 단독 HTML) |
 | 학습자 친화적 어휘 사전 (497개, 등급 대조) | `tools/vocab/index.html`, `assets/vocab-db.json` |
 | 지도 도법 교육 웹앱 (메르카토르↔Equal Earth·실제 크기 겹쳐보기) | `tools/map-projection/index.html`(+`vendor/` self-host), `scripts/map-projection-prd.md` |
+| 학습과학 아틀라스 (학습과학 연구 162편 3D 계보 지도, 상단 탭) | `tools/learning-science-atlas/index.html`(Three.js r147, 데이터·vendor 파일을 한 폴더에 평면 배치), 상단 탭 래퍼 `learning-science-atlas.md`(layout wide, `?inblog=1` iframe), 내려받기 `assets/learning-science-atlas/`(요약집 PDF·bib·csv), 시리즈 글 `_posts/2026-11-19-learning-science-atlas*.md` 11편 |
 | 포스트 번호 표시 (홈·단일·검색 공통 넘버링) | `_layouts/single.html`, `_includes/archive-single.html`, `assets/js/lunr/lunr-store.js`·`lunr-en.js`, `assets/css/main.scss` |
 | 검색 키보드 단축키 (`/`·`Ctrl/Cmd+K`) | `assets/js/search-shortcut.js`, `_includes/search/search_form.html`, `_includes/scripts.html` |
 | 소개 페이지 그래프 히어로 (하프톤 도트 초상 + 지식그래프형 내비) | `_pages/about.md`, `_layouts/about.html` |
@@ -800,6 +801,8 @@ git fetch origin && git rebase origin/main --autostash && git push origin main
 ### 자료실 탭과 대용량 자료 (2026-08-19)
 
 상단 탭 이름은 **자료실**이다(구 "강의자료" — 저서 11권·워크숍 강의·도서 원고에 교실 자료까지 들어와 범위가 안 맞았다). 라벨은 `_data/navigation.yml`·`_pages/lectures.md` front matter·`_layouts/lecture.html` breadcrumb 세 곳에 있으니 함께 고친다. 허브 섹션은 서재 → 워크숍 강의 → **교실 자료**(`_data/resources.yml`) → 도서 원고 순이며, 교실 자료 카드는 `.lecture-card--media` 마크업을 그대로 쓰되 크레딧 라벨만 원작/큐레이션 대신 **자료/아카이빙**이다. 교실 자료 카드도 `locked: true` + `locked_payload`로 잠글 수 있다(2026-11-06, `_pages/lectures.md` 자료 루프에 강의 카드와 같은 분기 추가). 잠근 페이지는 `sitemap: false`·`noindex: true`를 넣고, 카드 썸네일은 `covers/` 해시 경로, 그 페이지의 PDF는 `_config.yml` defaults에 `sitemap: false` 범위를 둔다(jekyll-sitemap은 정적 파일도 싣는다). 첫 사례가 `question-inquiry-coop-lesson`(협력수업 과정안+공동연수 자료)이다.
+
+**상단 탭 개편 (2026-11-20)**: "프롬프트" 탭을 내리고 그 자리에 **학습과학 아틀라스**(`/learning-science-atlas/`)를 올렸다. 프롬프트 라이브러리(`/prompts/`)는 자료실 교실 자료 카드(`_data/resources.yml`의 `prompt-library`, 표지 `assets/lectures/covers/prompt-library.jpg`)로 옮겼다. 아틀라스 원본 데이터(works-1~5.js, graph*.js, tours.js, glossary.js, meta.js)는 `tools/learning-science-atlas/`에 있고, 요약과 영향 관계는 원문 대조 검증을 거쳤다. 블로그 테마가 `series:` 상자를 렌더링하지 않으므로 시리즈 글은 본문 상단의 `notice--info` 내비게이션 블록으로 서로 잇는다.
 
 **대용량 자료는 저장소에 넣지 않는다 (CRITICAL)**. 발행 사이트가 이미 약 865MB인데 GitHub Pages 한도가 1GB다. 수십 MB 이상 다운로드 자료는 **GitHub 릴리스 자산**으로 올리고 페이지에서 링크만 건다(릴리스는 이 한도에 미포함, 파일당 2GB). 첫 사례가 `eval-assessment-2026` 태그 — 대전교육과학연구원 서·논술형 평가도구 29개 218MB, 안내 페이지 `_lectures/eval-assessment-tool/`. 두 번째가 `vibecode-for-teacher-book` 태그(8권 4교지 원고 43MB)다. **포스트의 원 자료 PDF도 같은 방식이다** (2026-11-08) — 공용 태그 `lecture-materials`에 영문 파일명으로 올리고, 글 첫 문단 아래 인용 상자(`> …내려받기 (PDF, N쪽, NMB)`)와 `## 출처` 줄 끝 두 곳에 링크를 건다. 첫 문단 뒤에 넣어야 자동 발췌(description)가 안내 문구로 바뀌지 않는다. 사례: `teacher-developer-essentials.pdf`(교사 개발자 지침서 40쪽)·`tuilders-lecture6-data-api-ai-cli.pdf`(틸더스 6강 104쪽). `/paper`·`/plain-paraph` 배치는 원본 PDF를 지우거나 임시 파일로만 쓰므로, 나중에 내려받기를 붙이려면 원본을 다시 받아야 한다. 올린 뒤에는 공개 주소에서 받은 파일의 sha256을 원본과 대조한다.
 
