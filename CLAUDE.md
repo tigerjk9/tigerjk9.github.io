@@ -103,6 +103,8 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 
 포스트 기본 레이아웃은 `single` (author profile, read time, related posts 활성화). 댓글은 기본 비활성; 활성화하려면 front matter에 `comments: true` 추가.
 
+**데일리 인텔리전스 (Live-Artifact, 2026-11-23)**: `https://tigerjk9.github.io/Live-Artifact/`는 이 저장소가 아니라 공개 저장소 **`tigerjk9/Live-Artifact`**가 GitHub Pages 프로젝트 사이트로 배포한다. 교육 뉴스·AI 교육 논문·AI 기술 뉴스 수집기 세 곳(`Auto-Edu-news-Collector`·`Auto-AI-Edu-Paper-Curator`·`Auto-AI-Tech-news-Collector`)이 모은 하루치를 그 저장소의 Actions가 매일 오전 지면으로 만든다. 지면이 비거나 수집기가 멈췄을 때, 기능을 바꿀 때는 그 저장소에서 작업하고 운영 지침은 그 저장소의 `CLAUDE.md`를 따른다. 이 저장소에 있는 것은 소개 글 `_posts/2026-11-06-daily-intelligence-live-artifact.md`(표지 `assets/live-artifact-daily-intelligence-thumb.jpg`)와 그 글의 네이버 교차 게시 이력뿐이다. 소개 글은 2026-11-05 제359호를 기준으로 다섯 화면과 누적 8,204건을 적었으므로, Live-Artifact의 화면 구성이 바뀌면 이 글이 옛 설명으로 남는다. 2026-05-03 `claude-live-artifact-automation`은 Claude 코워크의 Live Artifact 기능을 다룬 글이고 이 프로젝트와는 관계없다.
+
 ### Custom Features
 
 **Knowledge Graph** (`/knowledge-graph/`):
