@@ -184,7 +184,7 @@ PRD 정리 → CLAUDE.md 정리 → 메모리 저장 → git commit & push → *
 | 학습과학 아틀라스 (학습과학 연구 162편 3D 계보 지도, 상단 탭) | `tools/learning-science-atlas/index.html`(Three.js r147, 데이터·vendor 파일을 한 폴더에 평면 배치), 상단 탭 래퍼 `learning-science-atlas.md`(layout wide, `?inblog=1` iframe), 내려받기 `assets/learning-science-atlas/`(요약집 PDF·bib·csv), 시리즈 글 `_posts/2026-11-19-learning-science-atlas*.md` 11편 |
 | 포스트 번호 표시 (홈·단일·검색 공통 넘버링) | `_layouts/single.html`, `_includes/archive-single.html`, `assets/js/lunr/lunr-store.js`·`lunr-en.js`, `assets/css/main.scss` |
 | 검색 키보드 단축키 (`/`·`Ctrl/Cmd+K`) | `assets/js/search-shortcut.js`, `_includes/search/search_form.html`, `_includes/scripts.html` |
-| 소개 페이지 그래프 히어로 (하프톤 도트 초상 + 지식그래프형 내비) | `_pages/about.md`, `_layouts/about.html` |
+| 소개 페이지 캐리커처 히어로 (버블헤드 3레이어 + 말풍선 + 섹션 노드) · 1분 소개 영상 | `_pages/about.md`, `_layouts/about.html`, `assets/about-buddy-*.webp`, `assets/about-showreel-60s.mp4` |
 | 이미 읽은 글 표시 (localStorage `readPosts`) | `assets/js/read-tracker.js`, `_includes/scripts.html`, `assets/css/main.scss` |
 
 **독자 편의 UI (2026-07-25)** — 기조(다크 에디토리얼·블루 액센트·미니멀) 유지하며 추가:
