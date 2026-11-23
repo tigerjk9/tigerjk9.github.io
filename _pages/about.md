@@ -13,18 +13,20 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 <p class="ab-intro">연구 · 기여 · 연결 · 순환 · 성장을 추구하는 <b>연결주의자</b>의 기록</p>
 </div>
 <figure class="ab-me">
-<span class="ab-ring"><canvas id="ab-face" width="480" height="480" role="img" aria-label="김진관 — 점으로 이뤄진 초상"></canvas><noscript><img src="/assets/dot-connector-portrait.png" alt="김진관"></noscript></span>
+<p class="ab-say" id="ab-say" aria-hidden="true"><span class="g">안녕하세요, 닷커넥터 김진관입니다!</span><span class="l">안녕하세요, 닷커넥터 김진관입니다!</span></p>
+<button type="button" class="ab-buddy" id="ab-buddy" aria-label="손 흔드는 김진관 캐리커처 — 누르면 고개를 흔들어요" data-lines="안녕하세요, 닷커넥터 김진관입니다!|점 하나는 작아도, 이으면 별자리가 돼요.|머리가 큰 건… 생각이 많아서예요.|아래로 내리면 1분짜리 소개 영상도 있어요.|궁금한 점을 눌러 보세요. 제가 설명할게요." data-poke="어이쿠, 어지러워요!|생각이 출렁출렁~|한 번 더 누르면 아이디어가 쏟아져요.|흔들어도 결론은 같아요. 연결!"><span class="bh-shadow" aria-hidden="true"></span><span class="bh-fig"><img class="bh-body" src="/assets/about-buddy-body.webp" alt="" width="371" height="894" decoding="async"><img class="bh-hand" src="/assets/about-buddy-hand.webp" alt="" width="371" height="894" decoding="async"><img class="bh-head" src="/assets/about-buddy-head.webp" alt="" width="371" height="894" decoding="async"></span></button>
 <figcaption><b>김진관</b>대전둔천초등학교 교사 · 닷커넥터</figcaption>
 </figure>
 <nav class="ab-nodes" aria-label="소개 섹션 바로가기">
-<a class="ab-node" href="/knowledge-graph/" data-x="51" data-y="20" data-d="1.2"><span class="t">블로그 기록 <em>{{ site.posts | size }}편</em></span><span class="s">논문 리뷰 · 지식그래프</span></a>
-<a class="ab-node" href="#path" data-x="40" data-y="24" data-d="0.9"><span class="t">수업·평가 설계</span><span class="s">질문 중심 · 깊이 있는 학습</span></a>
-<a class="ab-node" href="#path" data-x="64" data-y="32" data-d="1.1"><span class="t">AI 디지털 교육 <em>선도교사</em></span><span class="s">교육부 · AIEDAP 마스터교원</span></a>
-<a class="ab-node" href="#books" data-x="71" data-y="58" data-d="1.0"><span class="t">함께 쓴 책 <em>{{ site.data.published_books | size }}권</em></span><span class="s">한빛미디어 · 박영사 · 앤써북</span></a>
-<a class="ab-node" href="#papers" data-x="62" data-y="74" data-d="1.25"><span class="t">학술 논문 <em>3편</em></span><span class="s">AI 스토리텔링 교육</span></a>
-<a class="ab-node" href="#path" data-x="28" data-y="67" data-d="1.05"><span class="t">AI 티처스쿨 <em>대표</em></span><span class="s">대전 초중고 교사 커뮤니티</span></a>
-<a class="ab-node" href="#music" data-x="33" data-y="80" data-d="1.3"><span class="t">음악 <em>1집</em></span><span class="s">CCM 'Oh My Soul'</span></a>
-<a class="ab-node" href="#dev" data-x="46" data-y="82" data-d="1.15"><span class="t">웹 도구 <em>40+</em></span><span class="s">바이브코딩 컬렉션 · 리서치 허브 · 챗봇</span></a>
+<a class="ab-node" href="/knowledge-graph/" data-x="85" data-y="17" data-d="1.2" data-say="블로그에 벌써 {{ site.posts | size }}편을 남겼어요."><span class="t">블로그 기록 <em>{{ site.posts | size }}편</em></span><span class="s">논문 리뷰 · 지식그래프</span></a>
+<a class="ab-node" href="#path" data-x="16" data-y="55" data-d="0.9" data-say="질문이 살아 있는 수업과 평가를 설계해요."><span class="t">수업·평가 설계</span><span class="s">질문 중심 · 깊이 있는 학습</span></a>
+<a class="ab-node" href="#path" data-x="73" data-y="41" data-d="1.1" data-say="AI는 도구, 주인공은 아이들이에요."><span class="t">AI 디지털 교육 <em>선도교사</em></span><span class="s">교육부 · AIEDAP 마스터교원</span></a>
+<a class="ab-node" href="#books" data-x="85" data-y="54" data-d="1.0" data-say="혼자 말고 함께, 책 {{ site.data.published_books | size }}권을 썼어요."><span class="t">함께 쓴 책 <em>{{ site.data.published_books | size }}권</em></span><span class="s">한빛미디어 · 박영사 · 앤써북</span></a>
+<a class="ab-node" href="#papers" data-x="70" data-y="67" data-d="1.25" data-say="AI 스토리텔링 교육을 연구해 논문 3편을 썼어요."><span class="t">학술 논문 <em>3편</em></span><span class="s">AI 스토리텔링 교육</span></a>
+<a class="ab-node" href="#path" data-x="31" data-y="65" data-d="1.05" data-say="대전 선생님들과 AI 티처스쿨에서 함께 배워요."><span class="t">AI 티처스쿨 <em>대표</em></span><span class="s">대전 초중고 교사 커뮤니티</span></a>
+<a class="ab-node" href="#music" data-x="14" data-y="75" data-d="1.3" data-say="노래도 해요. CCM 정규 1집 'Oh My Soul'!"><span class="t">음악 <em>1집</em></span><span class="s">CCM 'Oh My Soul'</span></a>
+<a class="ab-node" href="#dev" data-x="84" data-y="80" data-d="1.15" data-say="필요한 도구는 직접 만들어요. 벌써 40개가 넘어요."><span class="t">웹 도구 <em>40+</em></span><span class="s">바이브코딩 컬렉션 · 리서치 허브 · 챗봇</span></a>
+<a class="ab-node" href="#reel" data-x="30" data-y="84" data-d="1.2" data-say="1분 영상으로 제 이야기를 들려 드릴게요."><span class="t">소개 영상 <em>1분</em></span><span class="s">점이 별자리가 되기까지</span></a>
 </nav>
 <p class="ab-chips"><span>AI 디지털 교육</span><span>질문 중심 수업·평가 설계</span><span>깊이 있는 학습</span><span>학습과학</span><span>전문적 학습 공동체</span><span>웹 서비스 개발</span><span>집필·칼럼</span></p>
 </header>
@@ -39,6 +41,23 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 </section>
 
 <div class="ab-wrap">
+<section class="ab-sec ab-reel" id="reel">
+<h2>소개 영상</h2>
+<p class="ab-sub">1분 · 세로 영상 · 소리 있음</p>
+<div class="ab-reel-in">
+<div class="ab-reel-frame">
+<video controls playsinline preload="none" poster="/assets/about-showreel-poster.jpg" width="720" height="1280" aria-label="닷커넥터 김진관 소개 영상(1분)">
+<source src="/assets/about-showreel-60s.mp4" type="video/mp4">
+<a href="/assets/about-showreel-60s.mp4">소개 영상 내려받기(MP4)</a>
+</video>
+</div>
+<div class="ab-reel-copy">
+<blockquote class="ab-reel-q"><p>세상의 모든 것은<br>저마다 하나의 점</p><p>점들을 이으면<br><em>세상에 없던 별자리</em></p></blockquote>
+<p>블로그에 남긴 점들이 책과 수업, 웹 도구로 이어지는 과정을 1분에 담았다.</p>
+</div>
+</div>
+</section>
+
 <section class="ab-sec" id="path">
 <h2>걸어온 길</h2>
 <p class="ab-sub">2011년부터 이어 온 시대별 기록 220건 — 시대마다 대표 활동을 추리고, 전체 기록은 눌러 펼칩니다</p>
