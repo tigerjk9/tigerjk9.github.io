@@ -181,7 +181,10 @@ html[data-theme="light"] #about-app .ab-say{--saybg:#fff;box-shadow:0 10px 26px 
 html[data-theme="light"] #about-app .ab-reel-frame{box-shadow:0 22px 48px rgba(31,35,40,.18)}
 #about-app .ab-reel-frame::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:1;pointer-events:none;
   background:linear-gradient(90deg,rgba(230,184,74,.95),rgba(241,143,165,.8) 34%,rgba(157,140,255,.8) 66%,rgba(108,184,255,.95))}
-#about-app .ab-reel-frame video{display:block;width:100%;height:100%;object-fit:cover;background:#05070c}
+#about-app .ab-reel-frame video{display:block;width:100%;height:100%;object-fit:contain;background:#05070c}
+/* 전체화면: 가로 화면에 세로 영상이 잘려 확대되지 않도록 원본 비율 그대로(좌우 여백) */
+#about-app .ab-reel-frame video:fullscreen{object-fit:contain;width:100%;height:100%;background:#000}
+#about-app .ab-reel-frame video:-webkit-full-screen{object-fit:contain;width:100%;height:100%;background:#000}
 #about-app .ab-reel-q{margin:0 0 1.4rem;padding:0;border:0;background:none;font-style:normal}
 #about-app .ab-reel-q p{margin:0 0 .9rem;font-size:clamp(1.35rem,2.6vw,1.9rem);line-height:1.4;font-weight:800;
   letter-spacing:-.03em;color:var(--text)}
