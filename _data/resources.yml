@@ -1,5 +1,20 @@
 # 교실 자료 — 현장에서 바로 내려받아 쓰는 자료 아카이브.
 # 용량이 큰 원본 파일은 GitHub 릴리스에 두고 링크한다 (Pages 1GB 한도 보호).
+- slug: agent-town
+  title: "에이전트 타운, 내 GitHub가 도시가 되는 대시보드"
+  subtitle: "저장소는 건물, AI 에이전트는 시민 · 푸시·PR·빌드 실패가 비행기·구급차·불꽃놀이로 · 소개 영상 2편과 함께"
+  audience: "교사 개발자"
+  meta: "웹 도구 · 영상 2편"
+  date: "2026-11-24"
+  url: /post/agent-town/
+  thumbnail: /assets/lectures/covers/agent-town.jpg
+  author: "김진관 (닷커넥터)"
+  tags:
+    - 에이전트타운
+    - ClaudeCode
+    - AI에이전트
+    - 바이브코딩
+
 - slug: prompt-library
   title: "교육용 프롬프트 라이브러리"
   subtitle: "prompts.chat(CC0) 프롬프트 32개를 교사 실무에 맞춰 한국어로 번안 · 7개 범주 · 키워드 검색과 원클릭 복사"

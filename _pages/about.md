@@ -442,8 +442,24 @@ description: "점을 잇는 사람, 닷커넥터 김진관. 지식·경험·사�
 <td><a href="/tools/vocab/">학습자 친화적 어휘 사전</a></td>
 <td>등급 대조 어휘 사전</td>
 </tr>
+<tr>
+<td><a href="https://tigerjk9.github.io/agent-town/">에이전트 타운</a></td>
+<td>내 GitHub 저장소는 건물, AI 에이전트는 시민이 되는 실시간 도시 대시보드</td>
+</tr>
 </tbody>
 </table>
+<div class="ab-reel-in" id="agent-town" style="margin-top:2.4rem">
+<div class="ab-reel-frame">
+<video controls playsinline preload="none" poster="/assets/agent-town-reel-update-poster.jpg" width="720" height="1280" aria-label="에이전트 타운 업데이트 영상(53초)">
+<source src="/assets/agent-town-reel-update.mp4" type="video/mp4">
+<a href="/assets/agent-town-reel-update.mp4">에이전트 타운 영상 내려받기(MP4)</a>
+</video>
+</div>
+<div class="ab-reel-copy">
+<blockquote class="ab-reel-q"><p>보기 좋은 도시에서<br><em>일이 보이는 도시로</em></p></blockquote>
+<p>에이전트 타운은 저장소 하나를 건물 하나로 세운다. 에이전트는 하는 일마다 다른 방으로 출근하고, 푸시와 빌드 실패, 배포는 비행기와 구급차, 불꽃놀이가 된다. <a href="https://tigerjk9.github.io/agent-town/">도시 열어 보기</a> · <a href="/post/agent-town/">소개 글과 영상 2편</a></p>
+</div>
+</div>
 </section>
 
 <section class="ab-sec" id="channels">
