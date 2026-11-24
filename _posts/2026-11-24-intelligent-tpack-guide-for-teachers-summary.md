@@ -1,6 +1,6 @@
 ---
 title: "교사를 위한 Intelligent-TPACK 가이드"
-date: 2026-10-31 08:39:00 +0900
+date: 2026-11-24 10:51:00 +0900
 categories: [AI, 교육]
 tags: [Intelligent-TPACK, TPACK, AI윤리, 교사전문성, 교사연수, AI교육]
 description: "기존 TPACK 프레임워크가 AI 시대 교사의 새로운 지식 요구와 윤리적 측면을 온전히 담아내지 못하는 한계를 어떻게 해결할 수 있을까? Celik(2023)의 Intelligent-TPACK 모델은 효과적이고도 윤리적인 AI 통합 방안을 모색하여 소개하고 있다."
