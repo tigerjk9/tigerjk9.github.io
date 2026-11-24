@@ -213,6 +213,10 @@ defaults:
       path: "assets/lectures/question-inquiry-coop-lesson"
     values:
       sitemap: false
+  - scope:
+      path: "assets/lectures/work-fast-learn-slow"
+    values:
+      sitemap: false
   # _posts
   - scope:
       path: ""

@@ -1,3 +1,21 @@
+- slug: work-fast-learn-slow
+  title: "업무는 빠르게, 배움은 느리게"
+  subtitle: "AI-교사 협업 · 2026 수업 나눔 토크 콘서트 발표 · 슬라이드 16장과 발표 대본"
+  audience: "교사"
+  duration_min: 10
+  date: "2026-11-24"
+  hub_url: /lectures/work-fast-learn-slow/
+  locked: true
+  locked_payload: "AiqEqGWQx4u8I7J3UwYh1BWookCbFosmy4sCZDqbZ2Ax3jtq1VlsAx/X7Dcu8TNng9xW0XhyRgg9nFKDbUnrqe/m54PXaVYCYY50pbu8S7QrWVuzvf+KGk9IkiaCccMrNXtwF2Bm"
+  thumbnail: /assets/lectures/covers/eb5282945ad5550f.jpg
+  author: "김진관 (닷커넥터)"
+  tags:
+    - AI수업설계
+    - 디지털기반아날로그수업
+    - AI리터러시
+    - 교사업무
+    - 발표자료
+
 - slug: harness-engineering-101
   title: "하네스 엔지니어링 101 입문"
   subtitle: "초급 교사를 위한 열 편 · 개념 5편과 따라 하기 실습 5편"
