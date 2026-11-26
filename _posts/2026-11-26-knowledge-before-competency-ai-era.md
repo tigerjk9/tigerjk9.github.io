@@ -2,10 +2,12 @@
 title: "AI 시대, 왜 역량보다 지식이 먼저인가? 21편의 연구로 본 근거와 쟁점"
 date: 2026-11-26 11:00:00 +0900
 categories: [학습과학, 교육]
-tags: [지식교육, 역량중심교육, 생성형AI, 학습과학, 인지부하이론, 메타인지, 교육과정, 문헌리뷰]
+tags: [논문리뷰, 지식교육, 역량중심교육, 생성형AI, 학습과학, 인지부하이론, 메타인지, 교육과정, 문헌리뷰]
 description: "생성형 AI가 답을 대신 주는 시대에도 지식교육이 역량교육의 토대여야 하는 이유를 무작위 실험, 메타분석, 국제기구 보고서, 교육과정 이론 21편으로 정리하고, 연구들이 공유하는 결론과 서로 갈리는 지점을 짚는다."
 permalink: /post/knowledge-before-competency-ai-era/
 ---
+
+생성형 AI가 답을 대신 주는 시대에도 지식교육이 역량교육보다 먼저여야 하는 이유를, AI 시대의 실험 연구와 인지과학, 교실·정책 연구, 교육과정 이론 21편으로 정리했다.
 
 > "어디서 찾을 수 있는지 아는 것"과 "실제로 아는 것"은 다르다.
 > Oakley 외, *The Memory Paradox* (2025)
@@ -350,10 +352,10 @@ AI가 모든 것을 대신 기억해 주는 시대일수록, 무엇이 맞고 �
 
 ---
 
-## 참고문헌
+## 출처
 
 **출발점**
-- Oakley, B., Johnston, M., Chen, K.-Z., Jung, E., & Sejnowski, T. (2026). The Memory Paradox: Why Our Brains Need Knowledge in an Age of AI. In *The Artificial Intelligence Revolution* (pp. 573–628). Springer. [링크](https://link.springer.com/chapter/10.1007/978-3-032-11814-1_22) · [SSRN 프리프린트](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5250447)
+- Oakley, B., Johnston, M., Chen, K.-Z., Jung, E., & Sejnowski, T. (2026). The Memory Paradox: Why Our Brains Need Knowledge in an Age of AI. In *The Artificial Intelligence Revolution* (pp. 573–628). Springer. [링크](https://link.springer.com/chapter/10.1007/978-3-032-11814-1_22) · [SSRN 프리프린트](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5250447) · [arXiv](https://arxiv.org/abs/2506.11015)
 
 **A. AI 시대의 직접 증거**
 - Bastani, H., Bastani, O., Sungu, A., Ge, H., Kabakcı, Ö., & Mariman, R. (2025). Generative AI without guardrails can harm learning: Evidence from high school mathematics. *PNAS*, 122(26), e2422633122. [https://doi.org/10.1073/pnas.2422633122](https://doi.org/10.1073/pnas.2422633122)
