@@ -30,29 +30,29 @@ permalink: /post/knowledge-before-competency-ai-era/
 
 ## 한눈에 보기
 
-| # | 연구 | 출처 | 연구 설계 | 한 줄 요약 | 링크 |
-|---|---|---|---|---|---|
-| 1 | Bastani 외 (2025) | PNAS | 현장 무작위 실험, 고교생 약 1,000명 | AI로 연습하면 점수가 오르지만, AI를 빼면 시험 점수 17% 하락 | [논문](https://doi.org/10.1073/pnas.2422633122) · [무료 PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC12232635) |
-| 2 | OECD (2026) | Digital Education Outlook 2026 | 국제기구 증거 종합 | 과제를 AI로 잘 해내는 것이 곧 학습은 아니다 | [보고서](https://www.oecd.org/en/publications/oecd-digital-education-outlook-2026_062a7394-en.html) |
-| 3 | Shen & Tamkin (2026) | arXiv (Anthropic) | 무작위 실험, 개발자 | AI로 배운 집단의 숙달 점수 17% 낮음, 특히 디버깅 | [논문](https://arxiv.org/abs/2601.20245) · [해설](https://www.anthropic.com/research/AI-assistance-coding-skills) |
-| 4 | Lehmann 외 (2025) | arXiv / SSRN | 사전등록 실험 2개 + 현장 연구 | LLM은 사전지식 많은 학생은 돕고 적은 학생은 해친다 | [논문](https://arxiv.org/abs/2409.09047) |
-| 5 | Fan 외 (2025) | British Journal of Educational Technology | 무작위 실험, 4개 집단 | 에세이 점수는 올랐지만 지식 습득·전이 차이 없음 | [논문](https://doi.org/10.1111/bjet.13544) |
-| 6 | Dell'Acqua 외 (2026) | Organization Science | 현장 실험, BCG 컨설턴트 758명 | AI 능력 밖 과제에서 AI 사용자의 정답률 19% 낮음 | [논문](https://doi.org/10.1287/orsc.2025.21838) |
-| 7 | Lee 외 (2025) | CHI 2025 (Microsoft Research) | 지식노동자 319명 설문 | AI를 믿을수록 비판적 사고 감소, 자기 확신이 클수록 증가 | [논문](https://doi.org/10.1145/3706598.3713778) |
-| 8 | Budzyń 외 (2025) | Lancet Gastroenterology & Hepatology | 다기관 관찰 연구 | AI에 익숙해진 의사가 AI 없이 할 때 선종 발견율 28.4%에서 22.4%로 | [논문](https://doi.org/10.1016/S2468-1253(25)00133-5) |
-| 9 | 미네소타대 CEHD (2026) | 전문가 합의 보고서 | 전문가 합의 연구 | 무분별한 AI 사용은 기억 형성과 고차적 사고를 위협 | [보고서](https://www.cehd.umn.edu/AI-expert-consensus-report-2026) |
-| 10 | Kirschner, Sweller & Clark (2006) | Educational Psychologist | 이론·증거 종합 | 최소 안내 수업은 강한 안내 수업보다 덜 효과적 | [논문](https://doi.org/10.1207/s15326985ep4102_1) |
-| 11 | Tricot & Sweller (2014) | Educational Psychology Review | 이론 리뷰 | 지적 능력의 핵심은 영역 특수적 지식 | [논문](https://doi.org/10.1007/s10648-013-9243-1) |
-| 12 | Sala & Gobet (2019), Gobet & Sala (2023) | Collabra / Perspectives on Psychological Science | 2차 메타분석 | 일반 인지 훈련의 원전이 효과는 작거나 없음 | [2019](https://doi.org/10.1525/collabra.203) · [2023](https://doi.org/10.1177/17456916221091830) |
-| 13 | Tetzlaff 외 (2025) | Learning and Instruction | 메타분석, 60개 실험 | 초보자는 안내 많은 수업, 숙련자는 안내 적은 수업이 유리 | [논문(OA)](https://doi.org/10.1016/j.learninstruc.2025.102142) |
-| 14 | Willingham (2007) / Recht & Leslie (1988) | American Educator / J. of Educational Psychology | 리뷰 / 실험 | 비판적 사고와 독해는 배경지식에 달려 있다 | [Willingham](https://www.aft.org/sites/default/files/media/2014/Crit_Thinking.pdf) · [Recht & Leslie](https://doi.org/10.1037/0022-0663.80.1.16) |
-| 15 | Grissmer 외 (2023) | EdWorkingPaper | 입학 추첨(자연 실험) | 지식 중심 학교 입학 시 읽기 성취 16 백분위 상승 | [논문](https://edworkingpapers.com/ai23-755) |
-| 16 | Smith 외 (2021) | Reading Psychology | 비판적 문헌 리뷰 | 배경지식은 약한 독해력을 일부 보완 | [논문](https://doi.org/10.1080/02702711.2021.1888348) |
-| 17 | Stockard 외 (2018) | Review of Educational Research | 메타분석, 328편 | 직접교수법 효과는 50년간 일관되게 긍정적 | [논문](https://doi.org/10.3102/0034654317751919) |
-| 18 | OECD PISA 2015 분석 / McKinsey (2017) | OECD / McKinsey | 국제 비교 상관 분석 | 교사 주도 수업이 대부분 + 탐구 수업 일부가 최적 | [OECD](https://www.oecd.org/content/dam/oecd/en/publications/reports/2018/11/the-science-of-teaching-science_b00c65f8/f5bd9e57-en.pdf) · [McKinsey](https://www.mckinsey.com/industries/education/our-insights/how-to-improve-student-educational-outcomes-new-insights-from-data-analytics) |
-| 19 | Young & Muller (2013) | Review of Education | 교육과정 이론 | 역량 담론은 지식의 역할을 약화시킨다, '힘 있는 지식' | [논문](https://doi.org/10.1002/rev3.3017) |
-| 20 | OECD Learning Compass 2030 | OECD 개념 노트 | 정책 프레임워크 | 역량과 지식은 경쟁 관계가 아니다 | [PDF](https://www.oecd.org/content/dam/oecd/en/about/projects/edu/education-2040/concept-notes/OECD_Learning_Compass_2030_concept_note.pdf) |
-| 21 | 「역량기반 교육과정의 딜레마」 (2020) | 교육과정연구 38(4) | 국내 교육과정 논쟁 검토 | 2015 개정 이후 역량 대 지식 논쟁을 정리 | [KCI](https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002667686) |
+| # | 연구 · 출처 · 설계 | 핵심 결과 |
+|---|---|---|
+| 1 | **Bastani 외 (2025)**<br>PNAS<br>현장 무작위 실험, 고교생 약 1,000명<br>[논문](https://doi.org/10.1073/pnas.2422633122) · [무료 PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC12232635) | AI로 연습하면 점수가 오르지만, AI를 빼면 시험 점수 17% 하락 |
+| 2 | **OECD (2026)**<br>Digital Education Outlook 2026<br>국제기구 증거 종합<br>[보고서](https://www.oecd.org/en/publications/oecd-digital-education-outlook-2026_062a7394-en.html) | 과제를 AI로 잘 해내는 것이 곧 학습은 아니다 |
+| 3 | **Shen & Tamkin (2026)**<br>arXiv (Anthropic)<br>무작위 실험, 개발자<br>[논문](https://arxiv.org/abs/2601.20245) · [해설](https://www.anthropic.com/research/AI-assistance-coding-skills) | AI로 배운 집단의 숙달 점수 17% 낮음, 특히 디버깅 |
+| 4 | **Lehmann 외 (2025)**<br>arXiv / SSRN<br>사전등록 실험 2개 + 현장 연구<br>[논문](https://arxiv.org/abs/2409.09047) | LLM은 사전지식 많은 학생은 돕고 적은 학생은 해친다 |
+| 5 | **Fan 외 (2025)**<br>British Journal of Educational Technology<br>무작위 실험, 4개 집단<br>[논문](https://doi.org/10.1111/bjet.13544) | 에세이 점수는 올랐지만 지식 습득·전이 차이 없음 |
+| 6 | **Dell'Acqua 외 (2026)**<br>Organization Science<br>현장 실험, BCG 컨설턴트 758명<br>[논문](https://doi.org/10.1287/orsc.2025.21838) | AI 능력 밖 과제에서 AI 사용자의 정답률 19% 낮음 |
+| 7 | **Lee 외 (2025)**<br>CHI 2025 (Microsoft Research)<br>지식노동자 319명 설문<br>[논문](https://doi.org/10.1145/3706598.3713778) | AI를 믿을수록 비판적 사고 감소, 자기 확신이 클수록 증가 |
+| 8 | **Budzyń 외 (2025)**<br>Lancet Gastroenterology & Hepatology<br>다기관 관찰 연구<br>[논문](https://doi.org/10.1016/S2468-1253(25)00133-5) | AI에 익숙해진 의사가 AI 없이 할 때 선종 발견율 28.4%에서 22.4%로 |
+| 9 | **미네소타대 CEHD (2026)**<br>전문가 합의 보고서<br>전문가 합의 연구<br>[보고서](https://www.cehd.umn.edu/AI-expert-consensus-report-2026) | 무분별한 AI 사용은 기억 형성과 고차적 사고를 위협 |
+| 10 | **Kirschner, Sweller & Clark (2006)**<br>Educational Psychologist<br>이론·증거 종합<br>[논문](https://doi.org/10.1207/s15326985ep4102_1) | 최소 안내 수업은 강한 안내 수업보다 덜 효과적 |
+| 11 | **Tricot & Sweller (2014)**<br>Educational Psychology Review<br>이론 리뷰<br>[논문](https://doi.org/10.1007/s10648-013-9243-1) | 지적 능력의 핵심은 영역 특수적 지식 |
+| 12 | **Sala & Gobet (2019), Gobet & Sala (2023)**<br>Collabra / Perspectives on Psychological Science<br>2차 메타분석<br>[2019](https://doi.org/10.1525/collabra.203) · [2023](https://doi.org/10.1177/17456916221091830) | 일반 인지 훈련의 원전이 효과는 작거나 없음 |
+| 13 | **Tetzlaff 외 (2025)**<br>Learning and Instruction<br>메타분석, 60개 실험<br>[논문(OA)](https://doi.org/10.1016/j.learninstruc.2025.102142) | 초보자는 안내 많은 수업, 숙련자는 안내 적은 수업이 유리 |
+| 14 | **Willingham (2007) / Recht & Leslie (1988)**<br>American Educator / J. of Educational Psychology<br>리뷰 / 실험<br>[Willingham](https://www.aft.org/sites/default/files/media/2014/Crit_Thinking.pdf) · [Recht & Leslie](https://doi.org/10.1037/0022-0663.80.1.16) | 비판적 사고와 독해는 배경지식에 달려 있다 |
+| 15 | **Grissmer 외 (2023)**<br>EdWorkingPaper<br>입학 추첨(자연 실험)<br>[논문](https://edworkingpapers.com/ai23-755) | 지식 중심 학교 입학 시 읽기 성취 16 백분위 상승 |
+| 16 | **Smith 외 (2021)**<br>Reading Psychology<br>비판적 문헌 리뷰<br>[논문](https://doi.org/10.1080/02702711.2021.1888348) | 배경지식은 약한 독해력을 일부 보완 |
+| 17 | **Stockard 외 (2018)**<br>Review of Educational Research<br>메타분석, 328편<br>[논문](https://doi.org/10.3102/0034654317751919) | 직접교수법 효과는 50년간 일관되게 긍정적 |
+| 18 | **OECD PISA 2015 분석 / McKinsey (2017)**<br>OECD / McKinsey<br>국제 비교 상관 분석<br>[OECD](https://www.oecd.org/content/dam/oecd/en/publications/reports/2018/11/the-science-of-teaching-science_b00c65f8/f5bd9e57-en.pdf) · [McKinsey](https://www.mckinsey.com/industries/education/our-insights/how-to-improve-student-educational-outcomes-new-insights-from-data-analytics) | 교사 주도 수업이 대부분 + 탐구 수업 일부가 최적 |
+| 19 | **Young & Muller (2013)**<br>Review of Education<br>교육과정 이론<br>[논문](https://doi.org/10.1002/rev3.3017) | 역량 담론은 지식의 역할을 약화시킨다, '힘 있는 지식' |
+| 20 | **OECD Learning Compass 2030**<br>OECD 개념 노트<br>정책 프레임워크<br>[PDF](https://www.oecd.org/content/dam/oecd/en/about/projects/edu/education-2040/concept-notes/OECD_Learning_Compass_2030_concept_note.pdf) | 역량과 지식은 경쟁 관계가 아니다 |
+| 21 | **「역량기반 교육과정의 딜레마」 (2020)**<br>교육과정연구 38(4)<br>국내 교육과정 논쟁 검토<br>[KCI](https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002667686) | 2015 개정 이후 역량 대 지식 논쟁을 정리 |
 
 ---
 
