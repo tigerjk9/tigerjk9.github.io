@@ -433,10 +433,10 @@ def load_merge_prompt_template(
 
 def call_gemini_api(prompt: str, model: str) -> str:
     try:
-        import google.generativeai as genai
+        from google import genai
     except ImportError:
         raise RuntimeError(
-            "google-generativeai 패키지가 설치되지 않았습니다.\n"
+            "google-genai 패키지가 설치되지 않았습니다.\n"
             "pip install -r scripts/requirements.txt"
         )
 
@@ -444,11 +444,10 @@ def call_gemini_api(prompt: str, model: str) -> str:
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY 환경변수가 설정되지 않았습니다.")
 
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
     print(f"[INFO] Gemini API 호출 중 (모델: {model}) ...")
-    gemini_model = genai.GenerativeModel(model_name=model)
-    response = gemini_model.generate_content(prompt)
-    return _strip_code_fence(response.text)
+    response = client.models.generate_content(model=model, contents=prompt)
+    return _strip_code_fence(response.text or "")
 
 
 def _strip_code_fence(text: str) -> str:

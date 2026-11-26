@@ -20,7 +20,6 @@ pdf_to_post.py — PDF 논문을 Jekyll 블로그 포스트로 자동 변환
 from __future__ import annotations
 
 import argparse
-import base64
 import hashlib
 import io
 import os
@@ -421,10 +420,11 @@ def call_gemini_api(
 ) -> str:
     """Google Gemini SDK 호출 → 마크다운 문자열 반환. figures가 있으면 멀티모달."""
     try:
-        import google.generativeai as genai
+        from google import genai
+        from google.genai import types
     except ImportError:
         raise RuntimeError(
-            "google-generativeai 패키지가 설치되어 있지 않습니다.\n"
+            "google-genai 패키지가 설치되어 있지 않습니다.\n"
             "pip install -r scripts/requirements.txt"
         )
 
@@ -435,13 +435,9 @@ def call_gemini_api(
             "export GEMINI_API_KEY=AIza..."
         )
 
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     print(f"[INFO] Gemini API 호출 중 (모델: {model}) ...")
-    gemini_model = genai.GenerativeModel(
-        model_name=model,
-        system_instruction=system_prompt,
-    )
 
     # 멀티모달 파트 구성
     parts: list = [f"{preamble}{paper_text}"]
@@ -459,19 +455,16 @@ def call_gemini_api(
             try:
                 img_bytes = local_path.read_bytes()
                 parts.append(f"\n[Figure: {asset_url}]")
-                parts.append(
-                    {
-                        "inline_data": {
-                            "mime_type": mime,
-                            "data": base64.b64encode(img_bytes).decode(),
-                        }
-                    }
-                )
+                parts.append(types.Part.from_bytes(data=img_bytes, mime_type=mime))
             except Exception as e:
                 print(f"[WARN] Figure 이미지 읽기 실패 ({asset_url}): {e}")
 
-    response = gemini_model.generate_content(parts)
-    return response.text
+    response = client.models.generate_content(
+        model=model,
+        contents=parts,
+        config=types.GenerateContentConfig(system_instruction=system_prompt),
+    )
+    return response.text or ""
 
 
 # ──────────────────────────────────────────────────────────────

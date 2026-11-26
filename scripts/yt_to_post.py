@@ -353,17 +353,18 @@ def call_gemini_api_multimodal(prompt: str, model: str, image_paths: "list[Path]
     """Gemini 멀티모달 API 호출 (이미지 파일 + 텍스트).
 
     이미지는 [Frame N] 레이블과 함께 프롬프트 앞에 배치된다.
-    PIL 미설치 시 genai.protos.Blob 방식으로 폴백.
+    PIL 미설치 시 types.Part.from_bytes 방식으로 폴백.
     """
     try:
-        import google.generativeai as genai
+        from google import genai
+        from google.genai import types
     except ImportError:
-        raise RuntimeError("google-generativeai 패키지가 설치되어 있지 않습니다.")
+        raise RuntimeError("google-genai 패키지가 설치되어 있지 않습니다.")
 
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY 환경변수가 설정되지 않았습니다.")
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     try:
         from PIL import Image as _PILImage
@@ -381,9 +382,7 @@ def call_gemini_api_multimodal(prompt: str, model: str, image_paths: "list[Path]
             parts.append(_PILImage.open(str(img_path)))
         else:
             img_bytes = img_path.read_bytes()
-            parts.append(genai.protos.Part(
-                inline_data=genai.protos.Blob(mime_type="image/jpeg", data=img_bytes)
-            ))
+            parts.append(types.Part.from_bytes(data=img_bytes, mime_type="image/jpeg"))
         loaded += 1
 
     parts.append(prompt)
@@ -393,9 +392,8 @@ def call_gemini_api_multimodal(prompt: str, model: str, image_paths: "list[Path]
         return call_gemini_api(prompt, model)
 
     print(f"[INFO] Gemini 멀티모달 API 호출 중 ({loaded}개 프레임 + 텍스트, 모델: {model}) ...")
-    gemini_model = genai.GenerativeModel(model_name=model)
-    response = gemini_model.generate_content(parts)
-    return _strip_code_fence(response.text)
+    response = client.models.generate_content(model=model, contents=parts)
+    return _strip_code_fence(response.text or "")
 
 
 def format_upload_date(upload_date: str) -> str:
@@ -594,10 +592,10 @@ def load_multi_prompt_template(
 def call_gemini_api(prompt: str, model: str) -> str:
     """Google Gemini SDK 호출 → 마크다운 문자열 반환 (텍스트 전용)."""
     try:
-        import google.generativeai as genai
+        from google import genai
     except ImportError:
         raise RuntimeError(
-            "google-generativeai 패키지가 설치되어 있지 않습니다.\n"
+            "google-genai 패키지가 설치되어 있지 않습니다.\n"
             "pip install -r scripts/requirements.txt"
         )
 
@@ -608,12 +606,11 @@ def call_gemini_api(prompt: str, model: str) -> str:
             "export GEMINI_API_KEY=AIza..."
         )
 
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     print(f"[INFO] Gemini API 호출 중 (모델: {model}) ...")
-    gemini_model = genai.GenerativeModel(model_name=model)
-    response = gemini_model.generate_content(prompt)
-    return _strip_code_fence(response.text)
+    response = client.models.generate_content(model=model, contents=prompt)
+    return _strip_code_fence(response.text or "")
 
 
 def _strip_code_fence(text: str) -> str:

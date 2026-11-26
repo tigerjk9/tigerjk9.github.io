@@ -27,7 +27,7 @@ from pathlib import Path
 import requests
 
 try:
-    import google.generativeai as genai
+    from google import genai
 except Exception:  # noqa
     genai = None
 
@@ -143,13 +143,14 @@ PROMPT_TMPL = """당신은 한국 교육 현장을 잘 아는 프롬프트 큐�
 """
 
 
-def translate_batch(model, items):
+def translate_batch(client, items):
     payload = "\n\n".join(
         f'### act: {it["act"]}\n{it["prompt"]}' for it in items
     )
-    resp = model.generate_content(
-        PROMPT_TMPL.format(items=payload),
-        generation_config={"response_mime_type": "application/json"},
+    resp = client.models.generate_content(
+        model=MODEL,
+        contents=PROMPT_TMPL.format(items=payload),
+        config={"response_mime_type": "application/json"},
     )
     return json.loads(resp.text)  # 순서 보존 리스트
 
@@ -161,10 +162,9 @@ def main():
 
     key = load_env_key()
     if not key or genai is None:
-        print("[ERROR] GEMINI_API_KEY 또는 google-generativeai 없음")
+        print("[ERROR] GEMINI_API_KEY 또는 google-genai 없음")
         sys.exit(1)
-    genai.configure(api_key=key)
-    model = genai.GenerativeModel(MODEL)
+    model = genai.Client(api_key=key)  # translate_batch(model, ...) 호출부 유지
 
     print("[INFO] prompts.csv 다운로드 중...")
     rows = fetch_csv_rows()

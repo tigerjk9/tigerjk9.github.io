@@ -472,18 +472,17 @@ def calc_slide_range(duration_min: int) -> tuple[int, int]:
 
 def call_gemini(prompt: str, model: str) -> str:
     try:
-        import google.generativeai as genai
+        from google import genai
     except ImportError:
-        raise RuntimeError("google-generativeai 미설치. pip install google-generativeai")
+        raise RuntimeError("google-genai 미설치. pip install google-genai")
 
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY가 설정되지 않았습니다. .env 파일을 확인하세요.")
 
-    genai.configure(api_key=api_key)
-    model_obj = genai.GenerativeModel(model)
-    response = model_obj.generate_content(prompt)
-    return response.text
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(model=model, contents=prompt)
+    return response.text or ""
 
 
 # ──────────────────────────────────────────────────────────────

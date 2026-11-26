@@ -196,9 +196,8 @@ def classify_gemini(posts: list[dict]) -> dict:
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY 미설정 (.env 확인)")
-    import google.generativeai as genai
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(model_name="gemini-3.5-flash-lite")
+    from google import genai
+    client = genai.Client(api_key=api_key)
 
     result = {}
     chunk_size = 50
@@ -213,7 +212,7 @@ def classify_gemini(posts: list[dict]) -> dict:
                 f" | 태그: {','.join(p['tags'])} | 도입부: {excerpt}"
             )
         prompt = GEMINI_CLASSIFY_PROMPT.replace("{ITEMS}", "\n".join(items))
-        res = model.generate_content(prompt)
+        res = client.models.generate_content(model="gemini-3.5-flash-lite", contents=prompt)
         text = res.text or ""
         parsed = {}
         for line in text.splitlines():

@@ -86,9 +86,9 @@ def check_models(env: dict) -> set[str]:
         add("모델", WARN, f"모델 {len(refs)}종 참조 — 키가 없어 대조 생략")
         return set()
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=env["GEMINI_API_KEY"])
-        live = {m.name.split("/")[-1] for m in genai.list_models()}
+        from google import genai
+        client = genai.Client(api_key=env["GEMINI_API_KEY"])
+        live = {m.name.split("/")[-1] for m in client.models.list()}
     except Exception as exc:  # noqa: BLE001
         add("모델", FAIL, f"모델 목록 조회 실패 — {type(exc).__name__}: {str(exc)[:120]}")
         return set()
@@ -105,7 +105,7 @@ def check_models(env: dict) -> set[str]:
 
 # ── 3. 파이썬 의존성 ────────────────────────────────────────────────────────
 IMPORT_NAME = {
-    "google-generativeai": "google.generativeai",
+    "google-genai": "google.genai",
     "beautifulsoup4": "bs4",
     "PyMuPDF": "fitz",
     "duckduckgo-search": "duckduckgo_search",

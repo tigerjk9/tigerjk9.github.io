@@ -436,7 +436,7 @@ python scripts/yt_to_post.py <URL> [URL2 ...] --plain --model gemini-3.5-flash-l
 - **`thinkingBudget`은 400 오류다.** 사고량은 `thinkingLevel`(`minimal`·`low`·`medium`·`high`)로 정하고 기본값은 `minimal`이다. REST로 부르는 곳(`research-ask/lib/store.js`·`build_vocab_db.py`)은 `minimal`을 명시한다
 - **`temperature`·`top_p`·`top_k`는 무시된다.** 그래서 걷어냈다. 결정성·형식은 프롬프트와 JSON 모드로 맞춘다
 - `candidate_count > 1`과 모델 턴으로 끝나는 요청(프리필)도 400이다. 지금 쓰는 곳은 없다
-- 구 SDK `google-generativeai` 0.8.5로도 JSON 모드·이미지 입력이 그대로 동작한다(실측)
+- SDK는 `google-genai`(`from google import genai`, `genai.Client(api_key=...).models.generate_content(model=, contents=, config=)`)다. 지원이 끝난 `google-generativeai`에서 2026-11-26에 옮겼다. 이미지는 PIL 객체나 `types.Part.from_bytes`, JSON 모드는 `config={"response_mime_type": "application/json"}`, 시스템 지시는 `GenerateContentConfig(system_instruction=)`로 준다. 임베딩은 `task_type="RETRIEVAL_DOCUMENT"`로 기존 벡터와 코사인 0.9998이 나와 재계산이 필요 없었다(실측)
 
 ## 공통: Gemini 중복출력 가드 (`_strip_duplicate_post`, 2026-06-15)
 

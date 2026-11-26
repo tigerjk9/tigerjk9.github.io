@@ -113,23 +113,21 @@ def load_existing(path: Path) -> "dict[tuple, dict]":
         return {}
 
 
-def embed_batch(texts: "list[str]", genai) -> "list[list[float]]":
+def embed_batch(texts: "list[str]", client) -> "list[list[float]]":
     """배치 임베딩 + 429 백오프. output_dimensionality 미지원이면 truncate."""
     delay = 5
     for attempt in range(7):
         try:
             try:
-                res = genai.embed_content(
-                    model=EMBED_MODEL, content=texts,
-                    task_type="retrieval_document",
-                    output_dimensionality=DIM)
+                res = client.models.embed_content(
+                    model=EMBED_MODEL, contents=texts,
+                    config={"task_type": "RETRIEVAL_DOCUMENT",
+                            "output_dimensionality": DIM})
             except TypeError:
-                res = genai.embed_content(
-                    model=EMBED_MODEL, content=texts,
-                    task_type="retrieval_document")
-            embs = res["embedding"]
-            if texts and not isinstance(embs[0], list):
-                embs = [embs]
+                res = client.models.embed_content(
+                    model=EMBED_MODEL, contents=texts,
+                    config={"task_type": "RETRIEVAL_DOCUMENT"})
+            embs = [list(x.values) for x in res.embeddings]
             # 차원 보정: MRL truncate + (양자화 단계에서 renormalize)
             return [e[:DIM] for e in embs]
         except Exception as e:
@@ -154,8 +152,8 @@ def main():
         print("[ERROR] GEMINI_API_KEY 미설정 (.env 확인)")
         sys.exit(1)
 
-    import google.generativeai as genai
-    genai.configure(api_key=api_key)
+    from google import genai
+    client = genai.Client(api_key=api_key)
 
     db = json.loads(DB_PATH.read_text(encoding="utf-8"))
     if args.limit:
@@ -180,7 +178,7 @@ def main():
     t0 = time.time()
     for i in range(0, len(todo), BATCH):
         batch = todo[i:i + BATCH]
-        embs = embed_batch([c["text"] for c in batch], genai)
+        embs = embed_batch([c["text"] for c in batch], client)
         for c, e in zip(batch, embs):
             c["v"], c["s"] = quantize(e)
         done += len(batch)

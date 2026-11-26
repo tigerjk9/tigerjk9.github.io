@@ -68,13 +68,13 @@ def call_gemini(slide: Dict[str, Any], catalog: List[Dict[str, Any]]) -> Optiona
     """실제 Gemini 호출. .env GEMINI_API_KEY 사용."""
     import os
     try:
-        import google.generativeai as genai
+        from google import genai
     except ImportError:
         return None
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         return None
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
     catalog_text = "\n".join(f"- {f['id']} {f['name']} — {f.get('def', '')}" for f in catalog)
     prompt = f"""다음 슬라이드를 카탈로그에서 하나의 기능에 분류하라.
 
@@ -86,9 +86,8 @@ def call_gemini(slide: Dict[str, Any], catalog: List[Dict[str, Any]]) -> Optiona
 {catalog_text}
 
 분류 결과를 기능명만 한 줄로 답하라. 매칭되는 것이 없으면 'NONE'."""
-    model = genai.GenerativeModel("gemini-3.5-flash-lite")
-    resp = model.generate_content(prompt)
-    name = resp.text.strip()
+    resp = client.models.generate_content(model="gemini-3.5-flash-lite", contents=prompt)
+    name = (resp.text or "").strip()
     if name == "NONE":
         return None
     # 카탈로그에 실제 존재하는 기능명인지 검증

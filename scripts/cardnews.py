@@ -508,12 +508,11 @@ def collect_pdf_figures(pdf: Path, outdir: Path, limit: int = MAX_CANDIDATES) ->
 # ---------------------------------------------------------------- Gemini
 
 def gemini_copy(model_name: str, prompt: str) -> dict:
-    import google.generativeai as genai
-    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-    model = genai.GenerativeModel(model_name)
-    resp = model.generate_content(
-        prompt,
-        generation_config={"response_mime_type": "application/json"},
+    from google import genai
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+    resp = client.models.generate_content(
+        model=model_name, contents=prompt,
+        config={"response_mime_type": "application/json"},
     )
     return json.loads(resp.text)
 
@@ -547,8 +546,8 @@ def validate_cards(cards: "list[dict]") -> "list[dict]":
 
 def repair_cards(model_name: str, cards: "list[dict]", bad: "list[dict]") -> "list[dict]":
     """위반 카드만 Gemini에 되돌려 다시 쓰게 한다 (내용은 유지, 표현만 교정)."""
-    import google.generativeai as genai
-    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+    from google import genai
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
     payload = [{"index": b["index"], "위반": b["issues"], "카드": cards[b["index"]]} for b in bad]
     prompt = (
         "아래 카드뉴스 카피가 규칙을 어겼다. 담긴 사실과 논지는 그대로 두고 표현만 고쳐라.\n\n"
@@ -564,9 +563,9 @@ def repair_cards(model_name: str, cards: "list[dict]", bad: "list[dict]") -> "li
         + '\n\n출력은 JSON만: {"cards": [{"index": n, "headline_top": "...", '
           '"headline_highlight": "...", "body": ["...", "..."]}, ...]}'
     )
-    model = genai.GenerativeModel(model_name)
-    resp = model.generate_content(
-        prompt, generation_config={"response_mime_type": "application/json"})
+    resp = client.models.generate_content(
+        model=model_name, contents=prompt,
+        config={"response_mime_type": "application/json"})
     for fix in json.loads(resp.text).get("cards", []):
         i = fix.get("index")
         if isinstance(i, int) and 0 <= i < len(cards):
@@ -583,8 +582,8 @@ def match_images(model_name: str, cards: "list[dict]", cands: "list[dict]") -> "
         return fallback
     try:
         from PIL import Image as PILImage
-        import google.generativeai as genai
-        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+        from google import genai
+        client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
         parts: list = [
             "카드뉴스 각 장에 붙일 사진을 고른다. 아래 후보 이미지들을 직접 보고, "
             "카드의 주장과 시각적으로 가장 잘 맞는 후보를 하나씩 배정하라.\n"
@@ -602,9 +601,9 @@ def match_images(model_name: str, cards: "list[dict]", cands: "list[dict]") -> "
         parts.append("카드 목록:\n" + json.dumps(deck, ensure_ascii=False, indent=1))
         parts.append('출력은 JSON만: {"assign": [카드0의 후보번호 또는 null, 카드1의 ..., ...]} '
                      f"배열 길이는 정확히 {len(cards)}.")
-        model = genai.GenerativeModel(model_name)
-        resp = model.generate_content(
-            parts, generation_config={"response_mime_type": "application/json"})
+        resp = client.models.generate_content(
+            model=model_name, contents=parts,
+            config={"response_mime_type": "application/json"})
         raw = json.loads(resp.text).get("assign", [])
         out: "list[int | None]" = []
         used: "set[int]" = set()

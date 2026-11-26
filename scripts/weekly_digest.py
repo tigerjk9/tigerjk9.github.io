@@ -131,11 +131,10 @@ def call_gemini(prompt: str) -> str:
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY 미설정 (.env 확인)")
-    import google.generativeai as genai
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(model_name=MODEL)
-    res = model.generate_content(prompt)
-    return res.text
+    from google import genai
+    client = genai.Client(api_key=api_key)
+    res = client.models.generate_content(model=MODEL, contents=prompt)
+    return res.text or ""
 
 
 def sanitize(text: str) -> str:
