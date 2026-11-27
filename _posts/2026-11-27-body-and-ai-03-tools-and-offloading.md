@@ -97,6 +97,8 @@ MIT 미디어랩 연구진은 참여자들이 에세이를 쓰는 동안 뇌파�
 
 게으름은 도구를 만든 동력이었을지 모른다. 그런데 도구가 생각의 핵심까지 넘겨받을 수 있게 된 지금, 같은 게으름이 영리함이 될지 위축이 될지는 무엇을 넘기느냐에 달려 있다. 1편에서 본 프로게이머의 단축키처럼, 조작은 도구에 넘기고 판단은 내가 쥐는 방식이 하나의 답이 될 수 있다.
 
+생성형 AI에 생각을 맡기는 문제, 곧 맡긴 지식을 내 것으로 착각하는 이유와 맡긴 생각을 다시 내 것으로 회수하는 방법은 [생각을 맡긴다는 것 시리즈](/post/outsourcing-mind-01-offloading-tradeoffs/) 6편에서 더 깊이 다뤘다.
+
 ## 더 생각해 볼 질문
 
 1. 내가 매일 쓰는 도구 중 몸의 일부처럼 느껴지는 것과 아직 '물건'으로 느껴지는 것은 무엇이 다를까?
@@ -115,4 +117,4 @@ MIT 미디어랩 연구진은 참여자들이 에세이를 쓰는 동안 뇌파�
 - Kosmyna, N., et al. (2025). Your brain on ChatGPT: Accumulation of cognitive debt when using an AI assistant for essay writing task. *arXiv:2506.08872*. [arxiv.org/abs/2506.08872](https://arxiv.org/abs/2506.08872)
 - Cong-Lem, N., & Thuy-Dung, N. T. (2026). Towards a framework for understanding and assessing critical thinking in generative AI-enhanced learning environments: A scoping review. *European Journal of Psychology of Education, 41*(2), 41. [doi.org/10.1007/s10212-026-01089-y](https://doi.org/10.1007/s10212-026-01089-y)
 - Chen, X. (2026). Layer-sensitive cognitive offloading in generative AI-assisted writing: Supported performance and independent no-AI outcomes. *Frontiers in Psychology, 17*, 1906199. [doi.org/10.3389/fpsyg.2026.1906199](https://doi.org/10.3389/fpsyg.2026.1906199)
-- 함께 읽기: [AI가 과연 생각의 수고를 없애는가?](/post/does-ai-remove-cognitive-effort/) · [AI가 다 알려 주는 시대에 왜 여전히 머릿속 지식이 필요한가?](/post/oakley-2026-memory-paradox/)
+- 함께 읽기: [AI가 과연 생각의 수고를 없애는가?](/post/does-ai-remove-cognitive-effort/) · [생각을 맡긴다는 것 시리즈 1편, 생각을 바깥에 맡기는 것은 늘 손해일까?](/post/outsourcing-mind-01-offloading-tradeoffs/) · [AI가 다 알려 주는 시대에 왜 여전히 머릿속 지식이 필요한가?](/post/oakley-2026-memory-paradox/)
